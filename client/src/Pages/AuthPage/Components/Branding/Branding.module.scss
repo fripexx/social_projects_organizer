@@ -1,0 +1,32 @@
+.container{
+    border-radius: 0px 0px 30px 30px;
+    background: var(--Color-Dark, #212121);
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+    display: flex;
+    padding: 74px 26px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    max-width: 350px;
+    margin: 0 auto;
+}
+
+.title{
+    color: var(--Color-White, #FDFDFD);
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+}
+
+.desk{
+    color: var(--Color-White, #FDFDFD);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}

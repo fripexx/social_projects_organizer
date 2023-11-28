@@ -1,0 +1,45 @@
+
+.label {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.title {
+    color: var(--Color-Dark, #212121);
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.input {
+    all: unset;
+    border-radius: 50%;
+    border: 1px solid var(--Color-Light-Grey-Blue, #CACAD8);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    min-width: 20px;
+    max-width: 20px;
+    height: 20px;
+    min-height: 20px;
+    max-height: 20px;
+    cursor: pointer;
+    &:checked{
+        &:after{
+            content: "";
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            background: var(--Color-Light-Grey-Blue, #CACAD8);
+            position: absolute;
+        }
+    }
+}

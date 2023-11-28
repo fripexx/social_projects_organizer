@@ -1,0 +1,41 @@
+.form {
+    max-width: 450px;
+    width: 100%;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.title {
+    display: flex;
+    margin: 50px 0px 30px;
+    justify-content: center;
+    align-items: center;
+    align-self: stretch;
+    text-align: center;
+}
+
+.links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+}
+
+.link {
+    color: var(--Color-Dark, #212121);
+    text-align: center;
+    font-family: Inter;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    border-right: 1px solid var(--Color-Dark, #212121FF);
+    text-align: center;
+    text-decoration: none;
+    display: block;
+
+    &:last-of-type {
+        border-right: 0px;
+    }
+}

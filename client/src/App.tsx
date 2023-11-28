@@ -1,12 +1,20 @@
 import React from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
-import AuthPage from "./Pages/AuthPage";
+import {routes} from "./Routes/routes";
 
 const App = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path={"/login"} element={<AuthPage/>}/>
+                {routes.map(route => {
+                    return (
+                        <Route
+                            key={route.name}
+                            path={route.path}
+                            element={<route.component/>}
+                        />
+                    )
+                })}
             </Routes>
         </BrowserRouter>
     );
