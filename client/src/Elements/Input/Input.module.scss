@@ -42,7 +42,19 @@
         background: var(--Color-White, #FDFDFD);
     }
 
-    &[data-error="true"]{
+}
+
+.input__error {
+    border-color: var(--Color-Red, #EF0000FF);
+    &:focus {
         border-color: var(--Color-Red, #EF0000FF);
     }
+}
+
+.text_error {
+    display: block;
+    font-size: 14px;
+    line-height: 16px;
+    color: var(--Color-Red, #EF0000FF);
+    padding-top: 5px;
 }
