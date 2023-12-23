@@ -32,14 +32,15 @@
     min-height: 20px;
     max-height: 20px;
     cursor: pointer;
-    &:checked{
-        &:after{
-            content: "";
-            border-radius: 50%;
-            width: 14px;
-            height: 14px;
-            background: var(--Color-Light-Grey-Blue, #CACAD8);
-            position: absolute;
-        }
+}
+
+.input__checked{
+    &:after{
+        content: "";
+        border-radius: 50%;
+        width: 14px;
+        height: 14px;
+        background: var(--Color-Light-Grey-Blue, #CACAD8);
+        position: absolute;
     }
 }
