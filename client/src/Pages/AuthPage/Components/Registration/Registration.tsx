@@ -1,14 +1,97 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import classes from "./Registration.module.scss";
 import {NavLink} from "react-router-dom";
+import {useAppDispatch, useAppSelector} from "../../../../store/hooks/redux";
 import Radio from "../../../../Elements/Radio/Radio";
 import Input from "../../../../Elements/Input/Input";
 import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
+import {RegistrationRequestType} from "../../../../store/types/RegistrationRequestType";
+import {registration} from "../../../../store/thunks/UserThunks";
+
+interface ErrorState {
+    name: string | boolean,
+    surname: string | boolean,
+    email: string | boolean,
+    phone: string | boolean,
+    password: string | boolean,
+    repeatPassword: string | boolean,
+}
+
+interface RegistrationState extends RegistrationRequestType{
+    repeatPassword: string,
+}
 
 const Registration: FC = () => {
+    const dispatch = useAppDispatch();
+    const errorRegistration = useAppSelector(state => state.UserReducer.error)
+
+    const [errorState, setErrorState] = useState<ErrorState>({
+        name: false,
+        surname: false,
+        email: false,
+        phone: false,
+        password: false,
+        repeatPassword: false,
+    })
+    const [formState, setFormState] = useState<RegistrationState>({
+        typeUser: 'smm_manager',
+        name: "",
+        surname: "",
+        email: "",
+        phone: "",
+        password: "",
+        repeatPassword: ""
+    })
+
+    const onChangeInput = (e: React.FormEvent<HTMLInputElement>):void => {
+        e.preventDefault();
+
+        const value: string = e.currentTarget.value;
+        const name: string = e.currentTarget.name;
+
+        setFormState(prevState => ({...prevState, [name]: value }))
+        if(value) setErrorState(prevState => ({...prevState, [name]: false }))
+    }
+    const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        const isInvalidName = formState.name.length === 0;
+        const isInvalidSurname = formState.surname.length === 0;
+        const isInvalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email);
+        const isInvalidPhone = !/^(\+38)?(0\d{9})$/.test(formState.phone);
+        const isInvalidPassword = formState.password.length < 8;
+        const isInvalidRepeatPassword = formState.password !== formState.repeatPassword;
+
+        if (isInvalidName || isInvalidSurname || isInvalidEmail || isInvalidPhone || isInvalidPassword || isInvalidRepeatPassword) {
+            if (isInvalidName) setErrorState(prevState => ({ ...prevState, name: "Введіть ім'я" }));
+            if (isInvalidSurname) setErrorState(prevState => ({ ...prevState, surname: "Введіть прізвище" }));
+            if (isInvalidEmail) setErrorState(prevState => ({ ...prevState, email: "Введіть коректну пошту" }));
+            if (isInvalidPhone) setErrorState(prevState => ({ ...prevState, phone: "Введіть номер телефону типу +380999999999" }));
+            if (isInvalidPassword) setErrorState(prevState => ({ ...prevState, password: "Пароль не може бути меньше 8 символів" }));
+            if (isInvalidRepeatPassword) setErrorState(prevState => ({ ...prevState, repeatPassword: "Не співпадають паролі" }));
+
+            return false;
+        }
+
+        setErrorState({
+            name: false,
+            surname: false,
+            email: false,
+            phone: false,
+            password: false,
+            repeatPassword: false,
+        });
+
+        const { repeatPassword, ...copiedObject } = formState;
+
+
+        dispatch(registration(copiedObject));
+
+    };
+
     return (
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={onSubmitForm}>
 
             <Title level={2} className={classes.title}>
                 Реєстрація
@@ -22,31 +105,34 @@ const Registration: FC = () => {
 
                 <Radio
                     label={"SMM-менеджер"}
-                    placeholder={""}
-                    name={'type_user'}
-                    value={'smm_manager'}
-                    defaultChecked={true}
+                    name={"typeUser"}
+                    value={"smm_manager"}
+                    checked={formState.typeUser === "smm_manager"}
+                    onChange={onChangeInput}
                 />
 
                 <Radio
                     label={"Замовник"}
-                    placeholder={""}
-                    name={'type_user'}
-                    value={'customer'}
+                    name={"typeUser"}
+                    value={"customer"}
+                    checked={formState.typeUser === "customer"}
+                    onChange={onChangeInput}
                 />
 
                 <Radio
                     label={"Таргетолог"}
-                    placeholder={""}
-                    name={'type_user'}
-                    value={'targetologist'}
+                    name={"typeUser"}
+                    value={"targetologist"}
+                    checked={formState.typeUser === "targetologist"}
+                    onChange={onChangeInput}
                 />
 
                 <Radio
                     label={"Дизайнер"}
-                    placeholder={""}
-                    name={'type_user'}
-                    value={'designer'}
+                    name={"typeUser"}
+                    value={"designer"}
+                    checked={formState.typeUser === "designer"}
+                    onChange={onChangeInput}
                 />
 
             </div>
@@ -56,28 +142,40 @@ const Registration: FC = () => {
                 type={"name"}
                 label={"Ім’я"}
                 placeholder={""}
-                name={'name'}
+                name={"name"}
+                value={formState.name}
+                onChange={onChangeInput}
+                error={errorState.name}
             />
 
             <Input
                 type={"surname"}
                 label={"Прізвище"}
                 placeholder={""}
-                name={'surname'}
+                name={"surname"}
+                value={formState.surname}
+                onChange={onChangeInput}
+                error={errorState.surname}
             />
 
             <Input
                 type={"email"}
                 label={"Пошта"}
                 placeholder={""}
-                name={'email'}
+                name={"email"}
+                value={formState.email}
+                onChange={onChangeInput}
+                error={errorState.email}
             />
 
             <Input
                 type={"tel"}
                 label={"Номер телефону"}
                 placeholder={""}
-                name={'tel'}
+                name={"phone"}
+                value={formState.phone}
+                onChange={onChangeInput}
+                error={errorState.phone}
             />
 
             <Input
@@ -85,13 +183,19 @@ const Registration: FC = () => {
                 label={"Пароль"}
                 placeholder={""}
                 name={"password"}
+                value={formState.password}
+                onChange={onChangeInput}
+                error={errorState.password}
             />
 
             <Input
                 type={"password"}
                 label={"Повторити пароль"}
                 placeholder={""}
-                name={"repeat_password"}
+                name={"repeatPassword"}
+                value={formState.repeatPassword}
+                onChange={onChangeInput}
+                error={errorState.repeatPassword}
             />
 
             <Submit>

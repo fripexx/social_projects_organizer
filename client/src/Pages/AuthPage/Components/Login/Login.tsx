@@ -1,13 +1,55 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import classes from "./Login.module.scss";
+import {NavLink} from "react-router-dom";
 import Input from "../../../../Elements/Input/Input";
 import Submit from "../../../../Elements/Submit/Submit";
-import {NavLink} from "react-router-dom";
 import Title from "../../../../Elements/Title/Title";
+import {useAppDispatch} from "../../../../store/hooks/redux";
+import {login} from "../../../../store/thunks/UserThunks";
+import {AuthRequestType} from "../../../../store/types/AuthRequestType";
+
+interface ErrorState {
+    email: string | boolean,
+    password: string | boolean,
+}
 
 const Login:FC = () => {
+    const dispatch = useAppDispatch()
+
+    const [errorState, setErrorState] = useState<ErrorState>({email: false, password: false})
+    const [formState, setFormState] = useState<AuthRequestType>({email: "", password: ""})
+
+    const onChangeInput = (e: React.FormEvent<HTMLInputElement>):void => {
+        e.preventDefault();
+
+        const value: string = e.currentTarget.value;
+        const name: string = e.currentTarget.name;
+
+
+        setFormState(prevState => ({...prevState, [name]: value }))
+        if(value) setErrorState(prevState => ({...prevState, [name]: false }))
+    }
+    const onSubmitForm = (e: React.FormEvent<HTMLFormElement>):boolean => {
+        e.preventDefault();
+
+        const isInvalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email);
+        const isInvalidPassword = formState.password.length < 8;
+
+        if (isInvalidEmail || isInvalidPassword) {
+            if (isInvalidEmail) setErrorState(prevState => ({ ...prevState, email: "Введіть коректну пошту" }));
+            if (isInvalidPassword) setErrorState(prevState => ({ ...prevState, password: "Пароль не може бути меньше 8 символів" }));
+
+            return false;
+        }
+
+        setErrorState({ email: false, password: false });
+        dispatch(login(formState));
+
+        return false;
+    };
+
     return (
-        <form className={classes.form}>
+        <form className={classes.form} onSubmit={onSubmitForm}>
 
             <Title level={2} className={classes.title}>
                 Авторизація
@@ -17,7 +59,10 @@ const Login:FC = () => {
                 type={"email"}
                 label={"Пошта"}
                 placeholder={""}
-                name={'email'}
+                name={"email"}
+                value={formState.email}
+                onChange={onChangeInput}
+                error={errorState.email}
             />
 
             <Input
@@ -25,6 +70,9 @@ const Login:FC = () => {
                 label={"Пароль"}
                 placeholder={""}
                 name={"password"}
+                value={formState.password}
+                onChange={onChangeInput}
+                error={errorState.password}
             />
 
             <Submit>
