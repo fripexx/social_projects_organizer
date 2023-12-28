@@ -45,6 +45,7 @@ class UserService {
         const user = await UserModel.findOne({email})
 
         if(!user)  throw ApiError.BadRequest("Користувач з таким email не знайдений")
+        if(user.isActivated === false) throw ApiError.UnconfirmedEmail();
 
         const isPassEquals = await bcrypt.compare(password, user.password);
 
