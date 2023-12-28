@@ -8,6 +8,7 @@ import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
 import {RegistrationRequestType} from "../../../../store/types/RegistrationRequestType";
 import {registration} from "../../../../store/thunks/UserThunks";
+import Error from "../../../../Elements/Error/Error";
 
 interface ErrorState {
     name: string | boolean,
@@ -24,7 +25,7 @@ interface RegistrationState extends RegistrationRequestType{
 
 const Registration: FC = () => {
     const dispatch = useAppDispatch();
-    const errorRegistration = useAppSelector(state => state.UserReducer.error)
+    const errorNotification = useAppSelector(state => state.UserReducer.error)
 
     const [errorState, setErrorState] = useState<ErrorState>({
         name: false,
@@ -84,7 +85,6 @@ const Registration: FC = () => {
         });
 
         const { repeatPassword, ...copiedObject } = formState;
-
 
         dispatch(registration(copiedObject));
 
@@ -197,6 +197,11 @@ const Registration: FC = () => {
                 onChange={onChangeInput}
                 error={errorState.repeatPassword}
             />
+
+            {errorNotification &&
+                <Error>{errorNotification}</Error>
+            }
+
 
             <Submit>
                 Реєстрація

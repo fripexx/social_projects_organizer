@@ -28,3 +28,16 @@ export const registration = createAsyncThunk(
         }
     }
 );
+
+export const logout = createAsyncThunk(
+    'user/registration',
+    async (_, thunkAPI) => {
+        try {
+            const response = await instanceServer.post<AuthResponseType>('/logout');
+            return response.data;
+        } catch (e) {
+            if(isAxiosError(e)) return thunkAPI.rejectWithValue(e?.response?.data.message);
+            return thunkAPI.rejectWithValue('Непередбачена помилка');
+        }
+    }
+);
