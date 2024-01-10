@@ -6,11 +6,13 @@ import Branding from "./Components/Branding/Branding";
 import Registration from "./Components/Registration/Registration";
 import Title from "../../Elements/Title/Title";
 import Paragraph from "../../Elements/Paragraph/Paragraph";
+import {useAppSelector} from "../../store/hooks/redux";
 
 
 const AuthPage: React.FC = () => {
 
     const location = useLocation();
+    const isAuth = useAppSelector(state => state.UserReducer.isAuth);
 
     return (
         <div className={classes.page}>
@@ -35,7 +37,7 @@ const AuthPage: React.FC = () => {
                 <div className={classes.container}>
 
                     <Title level={1} className={classes.content_title}>
-                        Lorem Ipsum
+                        {isAuth ? "Авторизован" : "Не авторизован"}
                     </Title>
 
                     <Paragraph className={classes.content_text}>

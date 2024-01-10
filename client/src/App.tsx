@@ -1,8 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {BrowserRouter, Route, Routes} from 'react-router-dom';
 import {routes} from "./Routes/routes";
+import {useAppDispatch} from "./store/hooks/redux";
+import {checkAuth} from "./store/thunks/UserThunks";
 
 const App = () => {
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        if(localStorage.getItem('token')) {
+            dispatch(checkAuth())
+        }
+    }, []);
+
     return (
         <BrowserRouter>
             <Routes>

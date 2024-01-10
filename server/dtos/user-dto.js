@@ -11,5 +11,6 @@ module.exports = class UserDto {
         this.phone = model.phone;
         this.typeUser = model.typeUser;
         this.isActivated = model.isActivated;
+        this.photo = model.photo;
     }
 }

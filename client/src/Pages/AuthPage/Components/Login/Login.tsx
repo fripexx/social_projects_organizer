@@ -4,9 +4,10 @@ import {NavLink} from "react-router-dom";
 import Input from "../../../../Elements/Input/Input";
 import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
-import {useAppDispatch} from "../../../../store/hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../../store/hooks/redux";
 import {login} from "../../../../store/thunks/UserThunks";
 import {AuthRequestType} from "../../../../store/types/AuthRequestType";
+import Error from "../../../../Elements/Error/Error";
 
 interface ErrorState {
     email: string | boolean,
@@ -15,6 +16,7 @@ interface ErrorState {
 
 const Login:FC = () => {
     const dispatch = useAppDispatch()
+    const errorNotification = useAppSelector(state => state.UserReducer.error)
 
     const [errorState, setErrorState] = useState<ErrorState>({email: false, password: false})
     const [formState, setFormState] = useState<AuthRequestType>({email: "", password: ""})
@@ -78,6 +80,10 @@ const Login:FC = () => {
             <Submit>
                 Вхід
             </Submit>
+
+            {errorNotification &&
+                <Error>{errorNotification}</Error>
+            }
 
             <div className={classes.links}>
 
