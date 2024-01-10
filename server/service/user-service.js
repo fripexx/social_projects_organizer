@@ -35,7 +35,7 @@ class UserService {
     async activate(activationLink) {
         const user = await UserModel.findOne({activationLink})
 
-        if (!user)  throw ApiError.BadRequest('Некоректна силка активації');
+        if (!user) throw ApiError.BadRequest('Некоректна силка активації');
 
         user.isActivated = true;
         await user.save();
@@ -44,12 +44,12 @@ class UserService {
     async login(email, password) {
         const user = await UserModel.findOne({email})
 
-        if(!user)  throw ApiError.BadRequest("Користувач з таким email не знайдений")
-        if(user.isActivated === false) throw ApiError.UnconfirmedEmail();
+        if (!user) throw ApiError.BadRequest("Користувач з таким email не знайдений")
+        if (user.isActivated === false) throw ApiError.UnconfirmedEmail();
 
         const isPassEquals = await bcrypt.compare(password, user.password);
 
-        if(!isPassEquals) throw ApiError.BadRequest("Невірний пароль")
+        if (!isPassEquals) throw ApiError.BadRequest("Невірний пароль")
 
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto})
@@ -59,20 +59,33 @@ class UserService {
         return {...tokens, user: userDto}
     }
 
+    async sendActivateLink(email) {
+        const user = await UserModel.findOne({email})
+
+        if (!user) throw ApiError.BadRequest("Користувач з таким email не знайдений")
+        if (user.isActivated === true) throw ApiError.BadRequest("Користувач з таким email вже авторизований")
+
+
+        const userDto = new UserDto(user);
+        await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${user.activationLink}`);
+
+        return {activationLink: user.activationLink, user: userDto}
+    }
+
     async logout(refreshToken) {
-        const token  = await tokenService.removeToken(refreshToken);
+        const token = await tokenService.removeToken(refreshToken);
         return token;
     }
 
     async refresh(refreshToken) {
-        if(!refreshToken) {
+        if (!refreshToken) {
             throw ApiError.UnauthorizedError();
         }
 
         const userData = await tokenService.validateRefreshToken(refreshToken);
         const tokenFromDB = await tokenService.findToken(refreshToken);
 
-        if(!userData || !tokenFromDB){
+        if (!userData || !tokenFromDB) {
             throw ApiError.UnauthorizedError();
         }
 

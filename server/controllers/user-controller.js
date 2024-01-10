@@ -32,6 +32,14 @@ class UserController {
             next(e);
         }
     }
+    async sendActivateLink(req, res, next) {
+        try {
+            const {email} = req.body;
+            const userData = await UserService.sendActivateLink(email);
+        } catch (e) {
+            next(e);
+        }
+    }
     async logout(req, res, next) {
         try {
             const {refreshToken} = req.cookies;
