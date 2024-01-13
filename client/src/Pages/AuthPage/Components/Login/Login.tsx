@@ -5,7 +5,7 @@ import Input from "../../../../Elements/Input/Input";
 import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks/redux";
-import {login} from "../../../../store/thunks/UserThunks";
+import {login, sendActivateLink} from "../../../../store/thunks/UserThunks";
 import {AuthRequestType} from "../../../../store/types/AuthRequestType";
 import Error from "../../../../Elements/Error/Error";
 
@@ -49,6 +49,11 @@ const Login:FC = () => {
 
         return false;
     };
+console.log(formState.email)
+    const sendActivateLinkCallback = (e: React.FormEvent<HTMLElement>):void => {
+        e.preventDefault();
+        dispatch(sendActivateLink(formState.email));
+    };
 
     return (
         <form className={classes.form} onSubmit={onSubmitForm}>
@@ -83,6 +88,12 @@ const Login:FC = () => {
 
             {errorNotification &&
                 <Error>{errorNotification.message}</Error>
+            }
+
+            {errorNotification?.status === 403 &&
+                <span onClick={sendActivateLinkCallback} className={classes.send_activate_link}>
+                    Повторно відправити повідомлення на пошту
+                </span>
             }
 
             <div className={classes.links}>

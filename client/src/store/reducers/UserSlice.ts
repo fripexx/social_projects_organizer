@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {UserType} from "../types/UserType";
 import {AuthResponseType} from "../types/AuthResponseType";
-import {checkAuth, login, logout, registration} from "../thunks/UserThunks";
+import {checkAuth, login, logout, registration, sendActivateLink} from "../thunks/UserThunks";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 
 
@@ -84,6 +84,15 @@ export const userSlice = createSlice({
             state.user = null;
             state.isAuth = false;
             localStorage.removeItem('token');
+            state.error = action.payload;
+        },
+
+        /* Check Auth */
+        [sendActivateLink.pending.type]: (state) => {},
+        [sendActivateLink.fulfilled.type]: (state, action: PayloadAction) => {
+            state.error = null;
+        },
+        [sendActivateLink.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.error = action.payload;
         },
     }
