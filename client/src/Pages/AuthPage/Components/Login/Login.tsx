@@ -82,7 +82,7 @@ const Login:FC = () => {
             </Submit>
 
             {errorNotification &&
-                <Error>{errorNotification}</Error>
+                <Error>{errorNotification.message}</Error>
             }
 
             <div className={classes.links}>

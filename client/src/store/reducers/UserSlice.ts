@@ -2,20 +2,21 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {UserType} from "../types/UserType";
 import {AuthResponseType} from "../types/AuthResponseType";
 import {checkAuth, login, logout, registration} from "../thunks/UserThunks";
+import {ErrorResponseType} from "../types/ErrorResponseType";
 
 
 interface UserState {
     user: UserType | null;
     isLoading: boolean;
     isAuth: boolean;
-    error: string;
+    error: ErrorResponseType | null;
 }
 
 const initialState: UserState = {
     user: null,
     isLoading: false,
     isAuth: false,
-    error: '',
+    error: null,
 }
 
 export const userSlice = createSlice({
@@ -29,11 +30,11 @@ export const userSlice = createSlice({
         },
         [login.fulfilled.type]: (state, action: PayloadAction<UserType>) => {
             state.isLoading = false;
-            state.error = ''
+            state.error = null;
             state.user = action.payload;
             state.isAuth = true;
         },
-        [login.rejected.type]: (state,  action: PayloadAction<string>) => {
+        [login.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
@@ -44,11 +45,11 @@ export const userSlice = createSlice({
         },
         [registration.fulfilled.type]: (state, action: PayloadAction<UserType>) => {
             state.isLoading = false;
-            state.error = ''
+            state.error = null;
             state.user = action.payload;
             state.isAuth = true;
         },
-        [registration.rejected.type]: (state,  action: PayloadAction<string>) => {
+        [registration.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
@@ -59,11 +60,11 @@ export const userSlice = createSlice({
         },
         [logout.fulfilled.type]: (state, action: PayloadAction<AuthResponseType>) => {
             state.isLoading = false;
-            state.error = ''
+            state.error = null;
             state.user = null;
             state.isAuth = false
         },
-        [logout.rejected.type]: (state,  action: PayloadAction<string>) => {
+        [logout.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
@@ -74,16 +75,16 @@ export const userSlice = createSlice({
         },
         [checkAuth.fulfilled.type]: (state, action: PayloadAction<UserType>) => {
             state.isLoading = false;
-            state.error = ''
+            state.error = null;
             state.user = action.payload;
             state.isAuth = true;
         },
-        [checkAuth.rejected.type]: (state,  action: PayloadAction<string>) => {
+        [checkAuth.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
-            state.error = action.payload;
             state.user = null;
             state.isAuth = false;
             localStorage.removeItem('token');
+            state.error = action.payload;
         },
     }
 })

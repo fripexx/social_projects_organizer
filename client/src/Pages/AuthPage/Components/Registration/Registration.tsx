@@ -199,7 +199,7 @@ const Registration: FC = () => {
             />
 
             {errorNotification &&
-                <Error>{errorNotification}</Error>
+                <Error>{errorNotification.message}</Error>
             }
 
 

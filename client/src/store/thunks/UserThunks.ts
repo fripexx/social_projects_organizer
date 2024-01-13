@@ -4,6 +4,7 @@ import {AuthRequestType} from "../types/AuthRequestType";
 import {AuthResponseType} from "../types/AuthResponseType";
 import {RegistrationRequestType} from "../types/RegistrationRequestType";
 import axios, {isAxiosError} from "axios";
+import {ErrorResponseType} from "../types/ErrorResponseType";
 export const login = createAsyncThunk(
     'user/login',
     async (obj: AuthRequestType, thunkAPI) => {
@@ -12,8 +13,17 @@ export const login = createAsyncThunk(
             localStorage.setItem('token', response.data.accessToken);
             return response.data.user;
         } catch (e) {
-            if(isAxiosError(e)) return thunkAPI.rejectWithValue(e?.response?.data.message);
-            return thunkAPI.rejectWithValue("Помилка авторизації");
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Помилка авторизації"
+            }
+
+            if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );
@@ -26,8 +36,17 @@ export const registration = createAsyncThunk(
             localStorage.setItem('token', response.data.accessToken);
             return response.data.user;
         } catch (e) {
-            if(isAxiosError(e)) return thunkAPI.rejectWithValue(e?.response?.data.message);
-            return thunkAPI.rejectWithValue('Непередбачена помилка');
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );
@@ -40,8 +59,17 @@ export const logout = createAsyncThunk(
             localStorage.removeItem('token')
             return response.data;
         } catch (e) {
-            if(isAxiosError(e)) return thunkAPI.rejectWithValue(e?.response?.data.message);
-            return thunkAPI.rejectWithValue('Непередбачена помилка');
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );
@@ -54,8 +82,17 @@ export const checkAuth = createAsyncThunk(
             localStorage.setItem('token', response.data.accessToken);
             return response.data.user;
         } catch (e) {
-            if(isAxiosError(e)) return thunkAPI.rejectWithValue(e?.response?.data.message);
-            return thunkAPI.rejectWithValue('Непередбачена помилка');
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );
