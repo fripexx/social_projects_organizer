@@ -47,7 +47,7 @@ export const userSlice = createSlice({
             state.isLoading = false;
             state.error = null;
             state.user = action.payload;
-            state.isAuth = true;
+            state.isAuth = false;
         },
         [registration.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
@@ -88,11 +88,15 @@ export const userSlice = createSlice({
         },
 
         /* Check Auth */
-        [sendActivateLink.pending.type]: (state) => {},
+        [sendActivateLink.pending.type]: (state) => {
+            state.isLoading = true;
+        },
         [sendActivateLink.fulfilled.type]: (state, action: PayloadAction) => {
+            state.isLoading = false;
             state.error = null;
         },
         [sendActivateLink.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
             state.error = action.payload;
         },
     }

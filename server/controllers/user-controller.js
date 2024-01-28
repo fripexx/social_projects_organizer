@@ -35,7 +35,9 @@ class UserController {
     async sendActivateLink(req, res, next) {
         try {
             const {email} = req.body;
-            const userData = await UserService.sendActivateLink(email);
+            await UserService.sendActivateLink(email);
+
+            return res.json();
         } catch (e) {
             next(e);
         }

@@ -49,7 +49,7 @@ const Login:FC = () => {
 
         return false;
     };
-console.log(formState.email)
+
     const sendActivateLinkCallback = (e: React.FormEvent<HTMLElement>):void => {
         e.preventDefault();
         dispatch(sendActivateLink(formState.email));

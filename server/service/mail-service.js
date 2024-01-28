@@ -17,16 +17,16 @@ class MailService {
             // connectionTimeout: 30000
         })
     }
-    async sendActivationMail(to, link) {
+    async sendActivationMail(email, link) {
         await  this.transporter.sendMail({
             from: process.env.SMTP_USER,
-            to,
+            to: [email],
             subject: "Активація аккаунта на " + process.env.API_URL,
             text: "",
             html:
                 `
                     <div>
-                        <h1>Для активації перейдіть по посиланню</h1>
+                        <h1>Social Project Organizer</h1>
                         <a href="${link}">${link}</a>
                     </div>
                 `,

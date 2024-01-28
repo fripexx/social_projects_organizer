@@ -102,7 +102,7 @@ export const sendActivateLink = createAsyncThunk(
     async (email: string, thunkAPI) => {
         try {
             const response = await instanceServer.post('/send-activate-link', {email});
-            return response.data;
+            return response;
         } catch (e) {
             const response: ErrorResponseType = {
                 status: 0,
@@ -113,8 +113,7 @@ export const sendActivateLink = createAsyncThunk(
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
-
-            return thunkAPI.rejectWithValue(response);
+            return response;
         }
     }
 );

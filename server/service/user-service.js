@@ -23,7 +23,7 @@ class UserService {
             phone,
             activationLink
         })
-        await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${activationLink}`);
+        await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${activationLink}`);
 
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto});
@@ -63,13 +63,11 @@ class UserService {
         const user = await UserModel.findOne({email})
 
         if (!user) throw ApiError.BadRequest("Користувач з таким email не знайдений")
-        if (user.isActivated === true) throw ApiError.BadRequest("Користувач з таким email вже авторизований")
+        if (user.isActivated === true) throw ApiError.BadRequest("Користувач з таким email вже активований")
 
+        await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${user.activationLink}`);
 
-        const userDto = new UserDto(user);
-        await mailService.sendActivationMail(email, `${process.env.API_URL}/api/activate/${user.activationLink}`);
-
-        return {activationLink: user.activationLink, user: userDto}
+        return email;
     }
 
     async logout(refreshToken) {
