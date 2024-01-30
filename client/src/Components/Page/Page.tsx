@@ -1,10 +1,15 @@
-import React, {FC} from 'react';
+import React, {FC, ReactNode} from 'react';
 import classes from "./Page.module.scss";
 
-const Page: FC = () => {
-    return (
-        <div className={classes.page}>
+interface PageProps {
+    children: ReactNode;
+    [key: string]: any;
+}
 
+const Page: FC<PageProps> = ({children, ...pageProps}) => {
+    return (
+        <div className={classes.page} {...pageProps}>
+            {children}
         </div>
     );
 };

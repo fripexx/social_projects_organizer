@@ -1,9 +1,12 @@
 import React from "react";
 import AuthPage from "../Pages/AuthPage/AuthPage";
+import AccountPage from "../Pages/AccountPage/AccountPage";
 
 interface Route {
+    key: string;
     name: string;
     path: string;
+    icon: string;
     component: React.FC;
     redirectIfAuthenticated?: boolean;
     requiresAuth?: boolean;
@@ -11,15 +14,27 @@ interface Route {
 
 export const routes: Route[] = [
     {
-        name: "auth",
+        key: "auth",
+        name: "Авторизація",
         path: "/login",
         component: AuthPage,
+        icon: "",
         redirectIfAuthenticated: true,
     },
     {
-        name: "registration",
+        key: "registration",
+        name: "Реєстрація",
         path: "/registration",
         component: AuthPage,
+        icon: "",
         redirectIfAuthenticated: true
+    },
+    {
+        key: "projects",
+        name: "Проєкти",
+        path: "/projects",
+        component: AccountPage,
+        icon: "",
+        redirectIfAuthenticated: false
     },
 ];

@@ -31,7 +31,7 @@ const App = () => {
                 {routes.map(route => {
                     return (
                         <Route
-                            key={route.name}
+                            key={route.key}
                             path={route.path}
                             element={
                                 route.redirectIfAuthenticated && isAuth ? (
