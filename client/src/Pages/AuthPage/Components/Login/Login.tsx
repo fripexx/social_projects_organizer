@@ -1,6 +1,6 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import classes from "./Login.module.scss";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import Input from "../../../../Elements/Input/Input";
 import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
@@ -8,15 +8,16 @@ import {useAppDispatch, useAppSelector} from "../../../../store/hooks/redux";
 import {login, sendActivateLink} from "../../../../store/thunks/UserThunks";
 import {AuthRequestType} from "../../../../store/types/AuthRequestType";
 import Error from "../../../../Elements/Error/Error";
-
 interface ErrorState {
     email: string | boolean,
     password: string | boolean,
 }
 
 const Login:FC = () => {
+    const navigate = useNavigate()
     const dispatch = useAppDispatch()
     const errorNotification = useAppSelector(state => state.UserReducer.error)
+    const shouldRedirectToProjectsPage = useAppSelector(state => state.UserReducer.shouldRedirectToProjectsPage)
 
     const [errorState, setErrorState] = useState<ErrorState>({email: false, password: false})
     const [formState, setFormState] = useState<AuthRequestType>({email: "", password: ""})
@@ -49,11 +50,16 @@ const Login:FC = () => {
 
         return false;
     };
-
     const sendActivateLinkCallback = (e: React.FormEvent<HTMLElement>):void => {
         e.preventDefault();
         dispatch(sendActivateLink(formState.email));
     };
+
+    useEffect(() => {
+        if (shouldRedirectToProjectsPage) {
+            navigate('/projects');
+        }
+    }, [shouldRedirectToProjectsPage, navigate]);
 
     return (
         <form className={classes.form} onSubmit={onSubmitForm}>

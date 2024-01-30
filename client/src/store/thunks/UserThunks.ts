@@ -52,7 +52,7 @@ export const registration = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk(
-    'user/registration',
+    'user/logout',
     async (_, thunkAPI) => {
         try {
             const response = await instanceServer.post<AuthResponseType>('/logout');

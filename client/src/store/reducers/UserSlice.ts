@@ -10,6 +10,8 @@ interface UserState {
     isLoading: boolean;
     isAuth: boolean;
     error: ErrorResponseType | null;
+    shouldRedirectToProjectsPage: boolean;
+    shouldRedirectToLoginPage: boolean;
 }
 
 const initialState: UserState = {
@@ -17,6 +19,8 @@ const initialState: UserState = {
     isLoading: false,
     isAuth: false,
     error: null,
+    shouldRedirectToProjectsPage: false,
+    shouldRedirectToLoginPage: false,
 }
 
 export const userSlice = createSlice({
@@ -33,6 +37,7 @@ export const userSlice = createSlice({
             state.error = null;
             state.user = action.payload;
             state.isAuth = true;
+            state.shouldRedirectToProjectsPage = true;
         },
         [login.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
@@ -46,8 +51,9 @@ export const userSlice = createSlice({
         [registration.fulfilled.type]: (state, action: PayloadAction<UserType>) => {
             state.isLoading = false;
             state.error = null;
-            state.user = action.payload;
-            state.isAuth = false;
+            //state.user = action.payload;
+            state.isAuth = true;
+            state.shouldRedirectToLoginPage = true;
         },
         [registration.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
@@ -63,6 +69,8 @@ export const userSlice = createSlice({
             state.error = null;
             state.user = null;
             state.isAuth = false
+            state.shouldRedirectToProjectsPage = false;
+            state.shouldRedirectToLoginPage = false;
         },
         [logout.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
