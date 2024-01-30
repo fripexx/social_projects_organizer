@@ -9,6 +9,7 @@ import Title from "../../../../Elements/Title/Title";
 import {RegistrationRequestType} from "../../../../store/types/RegistrationRequestType";
 import {registration} from "../../../../store/thunks/UserThunks";
 import Error from "../../../../Elements/Error/Error";
+import Success from "../../../../Elements/Success/Success";
 
 interface ErrorState {
     name: string | boolean,
@@ -25,7 +26,6 @@ interface RegistrationState extends RegistrationRequestType{
 const Registration: FC = () => {
     const navigate = useNavigate()
     const dispatch = useAppDispatch();
-    const user = useAppSelector(state => state.UserReducer.user);
     const errorNotification = useAppSelector(state => state.UserReducer.error);
     const shouldRedirectToLoginPage = useAppSelector(state => state.UserReducer.shouldRedirectToLoginPage)
 
@@ -39,12 +39,12 @@ const Registration: FC = () => {
     })
     const [formState, setFormState] = useState<RegistrationState>({
         typeUser: 'smm_manager',
-        name: "Петро",
-        surname: "Порошенко",
-        email: "fripexxdev@gmail.com",
-        phone: "+380996309164",
-        password: "genelec2012",
-        repeatPassword: "genelec2012"
+        name: "",
+        surname: "",
+        email: "",
+        phone: "",
+        password: "",
+        repeatPassword: ""
     })
 
     const onChangeInput = (e: React.FormEvent<HTMLInputElement>):void => {
@@ -220,9 +220,9 @@ const Registration: FC = () => {
             }
 
             {shouldRedirectToLoginPage &&
-                <p>
+                <Success>
                     Ви успішно зареєструвались! Щоб розпочати, перейдіть на сторінку авторизації та увійдіть в свій обліковий запис.
-                </p>
+                </Success>
             }
 
             <div className={classes.links}>
