@@ -5,8 +5,8 @@ interface Route {
     name: string;
     path: string;
     component: React.FC;
-    hideAuth?: boolean;
-    privat?: boolean;
+    redirectIfAuthenticated?: boolean;
+    requiresAuth?: boolean;
 }
 
 export const routes: Route[] = [
@@ -14,10 +14,12 @@ export const routes: Route[] = [
         name: "auth",
         path: "/login",
         component: AuthPage,
+        redirectIfAuthenticated: true,
     },
     {
         name: "registration",
         path: "/registration",
         component: AuthPage,
+        redirectIfAuthenticated: true
     },
 ];

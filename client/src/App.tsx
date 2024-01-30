@@ -1,17 +1,29 @@
-import React, {useEffect} from 'react';
-import {BrowserRouter, Route, Routes} from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {BrowserRouter, Route, Routes, Navigate } from 'react-router-dom';
 import {routes} from "./Routes/routes";
-import {useAppDispatch} from "./store/hooks/redux";
+import {useAppDispatch, useAppSelector} from "./store/hooks/redux";
 import {checkAuth} from "./store/thunks/UserThunks";
+import Loader from "./Elements/Loader/Loader";
 
 const App = () => {
     const dispatch = useAppDispatch();
+    const isAuth = useAppSelector(state => state.UserReducer.isAuth)
+    const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
     useEffect(() => {
-        if(localStorage.getItem('token')) {
-            dispatch(checkAuth())
-        }
-    }, []);
+        const checkAuthentication = async () => {
+            if (localStorage.getItem('token')) {
+                await dispatch(checkAuth());
+            }
+            setIsCheckingAuth(false);
+        };
+
+        checkAuthentication();
+    }, [dispatch]);
+
+    if (isCheckingAuth) {
+        return <Loader/>;
+    }
 
     return (
         <BrowserRouter>
@@ -21,7 +33,13 @@ const App = () => {
                         <Route
                             key={route.name}
                             path={route.path}
-                            element={<route.component/>}
+                            element={
+                                route.redirectIfAuthenticated && isAuth ? (
+                                    <Navigate to="/projects" />
+                                ) : (
+                                    <route.component />
+                                )
+                            }
                         />
                     )
                 })}
