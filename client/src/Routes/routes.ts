@@ -1,8 +1,9 @@
 import React from "react";
 import AuthPage from "../Pages/AuthPage/AuthPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
+import userIcon from "../assets/images/user.svg"
 
-interface Route {
+export interface Route {
     key: string;
     name: string;
     path: string;
@@ -10,6 +11,7 @@ interface Route {
     component: React.FC;
     redirectIfAuthenticated?: boolean;
     requiresAuth?: boolean;
+    showInUserMenu: boolean;
 }
 
 export const routes: Route[] = [
@@ -20,6 +22,7 @@ export const routes: Route[] = [
         component: AuthPage,
         icon: "",
         redirectIfAuthenticated: true,
+        showInUserMenu: false,
     },
     {
         key: "registration",
@@ -27,14 +30,47 @@ export const routes: Route[] = [
         path: "/registration",
         component: AuthPage,
         icon: "",
-        redirectIfAuthenticated: true
+        redirectIfAuthenticated: true,
+        showInUserMenu: false,
+    },
+    {
+        key: "profile",
+        name: "Профіль",
+        path: "/profile",
+        component: AccountPage,
+        icon: userIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInUserMenu: true,
     },
     {
         key: "projects",
         name: "Проєкти",
         path: "/projects",
         component: AccountPage,
-        icon: "",
-        redirectIfAuthenticated: false
+        icon: userIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInUserMenu: true,
+    },
+    {
+        key: "settings",
+        name: "Налаштування",
+        path: "/settings",
+        component: AccountPage,
+        icon: userIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInUserMenu: true,
+    },
+    {
+        key: "notes",
+        name: "Нотатки",
+        path: "/notes",
+        component: AccountPage,
+        icon: userIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInUserMenu: true,
     },
 ];

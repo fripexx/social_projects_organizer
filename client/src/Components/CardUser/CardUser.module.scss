@@ -1,0 +1,66 @@
+.container {
+    border-radius: 0px 0px 30px 30px;
+    background: var(--Color-Dark, #212121);
+    box-shadow: 0px 4px 10px 0px rgba(0, 0, 0, 0.15);
+    display: flex;
+    width: 100%;
+    padding: 74px 26px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.name {
+    color: var(--Color-White, #FDFDFD);
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.email {
+    color: var(--Color-White, #FDFDFD);
+    font-family: Inter;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    text-align: center;
+    text-decoration: none;
+    &:hover{
+        text-decoration: underline;
+    }
+}
+
+.contaier_photo {
+    border-radius: 50px;
+    border: 2px solid var(--Color-White, #FDFDFD);
+    display: flex;
+    width: 100px;
+    height: 100px;
+    padding: 5px;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.photo_profile {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    display: block;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.icon_no_image {
+    display: block;
+
+    path {
+        fill: var(--Color-White);
+    }
+}

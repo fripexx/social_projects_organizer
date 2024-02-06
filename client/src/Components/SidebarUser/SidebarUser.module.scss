@@ -1,4 +1,50 @@
-.container{
-    background: var(--Color-Grey);
+.container {
+    background: var(--Color-Grey, #F7F7FA);
     height: 100%;
+    width: 300px;
+    padding: 0px 15px 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-self: stretch;
+    gap: 25px;
+}
+
+.logout {
+    all: unset;
+    border-radius: 10px;
+    display: flex;
+    padding: 10px 15px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 10px;
+    color: var(--Color-Dark, #212121);
+    font-family: Inter;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+    transition: 0.2s ease;
+
+    svg {
+        display: block;
+
+        path {
+            transition: 0.2s ease;
+            fill: var(--Color-Dark, #212121);
+        }
+    }
+
+    &:hover{
+        background: var(--Color-Dark, #212121);
+        color: var(--Color-White, #FDFDFDFF);
+
+        svg {
+            path {
+                fill: var(--Color-White, #FDFDFDFF)
+            }
+        }
+    }
 }

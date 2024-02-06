@@ -34,10 +34,14 @@ const App = () => {
                             key={route.key}
                             path={route.path}
                             element={
-                                route.redirectIfAuthenticated && isAuth ? (
-                                    <Navigate to="/projects" />
+                                route.requiresAuth && !isAuth ? (
+                                    <Navigate to="/login" />
                                 ) : (
-                                    <route.component />
+                                    route.redirectIfAuthenticated && isAuth ? (
+                                        <Navigate to="/projects" />
+                                    ) : (
+                                        <route.component />
+                                    )
                                 )
                             }
                         />

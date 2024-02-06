@@ -1,0 +1,57 @@
+.container {
+    display: flex;
+    padding: 25px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+    height: 100%;
+}
+
+.link {
+    display: flex;
+    padding: 5px 8px;
+    align-items: center;
+    gap: 15px;
+    text-decoration: none;
+    color: var(--Color-Light-Grey-Blue, #CACAD8);
+    font-family: Inter;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    transition: 0.1s ease;
+    &:hover{
+        color: var(--Color-Dark, #212121);
+
+        .icon {
+            path {
+                fill: var(--Color-Dark, #212121);
+            }
+        }
+    }
+}
+
+.link_active {
+    color: var(--Color-Dark, #212121);
+
+    .icon {
+        path {
+            fill: var(--Color-Dark, #212121);
+        }
+    }
+}
+
+.icon {
+    display: block;
+    width: 24px;
+    height: 24px;
+
+    path {
+        transition: 0.1s ease;
+        fill: var(--Color-Light-Grey-Blue, #CACAD8);
+    }
+}
+
+.text {
+
+}
