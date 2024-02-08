@@ -19,7 +19,7 @@ const CardUser:FC<CardUserProps> = ({user, ...cardUserProps}) => {
                     <img
                         className={classes.photo_profile}
                         loading={"lazy"}
-                        src={"https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Visit_of_Bill_Gates%2C_Chairman_of_Breakthrough_Energy_Ventures%2C_to_the_European_Commission_5_%28cropped%29.jpg/800px-Visit_of_Bill_Gates%2C_Chairman_of_Breakthrough_Energy_Ventures%2C_to_the_European_Commission_5_%28cropped%29.jpg"}
+                        src={photo}
                         alt=""
                     />
                 }

@@ -2,6 +2,9 @@ import React from "react";
 import AuthPage from "../Pages/AuthPage/AuthPage";
 import AccountPage from "../Pages/AccountPage/AccountPage";
 import userIcon from "../assets/images/user.svg"
+import UserProjectsPage from "../Pages/UserProjectsPage/UserProjectsPage";
+import AccountSettingsPage from "../Pages/AccountSettingsPage/AccountSettingsPage";
+import UserNotePage from "../Pages/UserNotePage/UserNotePage";
 
 export interface Route {
     key: string;
@@ -34,6 +37,16 @@ export const routes: Route[] = [
         showInUserMenu: false,
     },
     {
+        key: "projects",
+        name: "Проєкти",
+        path: "/projects",
+        component: UserProjectsPage,
+        icon: userIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInUserMenu: true,
+    },
+    {
         key: "profile",
         name: "Профіль",
         path: "/profile",
@@ -44,20 +57,10 @@ export const routes: Route[] = [
         showInUserMenu: true,
     },
     {
-        key: "projects",
-        name: "Проєкти",
-        path: "/projects",
-        component: AccountPage,
-        icon: userIcon,
-        requiresAuth: true,
-        redirectIfAuthenticated: false,
-        showInUserMenu: true,
-    },
-    {
         key: "settings",
         name: "Налаштування",
         path: "/settings",
-        component: AccountPage,
+        component: AccountSettingsPage,
         icon: userIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
@@ -67,7 +70,7 @@ export const routes: Route[] = [
         key: "notes",
         name: "Нотатки",
         path: "/notes",
-        component: AccountPage,
+        component: UserNotePage,
         icon: userIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,

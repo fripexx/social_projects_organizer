@@ -1,0 +1,10 @@
+.container {
+    height: 100px;
+    max-height: 100px;
+    min-height: 100px;
+    width: 100%;
+    padding: 10px 25px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
