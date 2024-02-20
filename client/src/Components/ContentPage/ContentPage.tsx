@@ -1,6 +1,6 @@
-import React, {FC, ReactNode} from 'react';
+import React, {FC, HTMLAttributes, ReactNode} from 'react';
 
-interface ContentPageProps {
+interface ContentPageProps extends HTMLAttributes<HTMLDivElement>{
     children: ReactNode;
     [key: string]: any;
 }

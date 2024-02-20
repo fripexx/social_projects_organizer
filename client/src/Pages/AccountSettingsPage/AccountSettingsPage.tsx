@@ -12,10 +12,14 @@ import {FormStateType} from "./types/FormStateType";
 import {ErrorFormStateType} from "./types/ErrorFormStateType";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {editUser} from "../../store/thunks/UserThunks";
+import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
+import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/ModalConfirmAction";
+import Loader from "../../Elements/Loader/Loader";
 
 const AccountSettingsPage: FC = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user);
+    const isLoading = useAppSelector(state => state.UserReducer.isLoading);
     const [formState, setFormState] = useState<FormStateType>({
         name: user?.name ? user.name : "",
         surname: user?.surname ? user.surname : "",
@@ -32,6 +36,7 @@ const AccountSettingsPage: FC = () => {
         photo: false,
         telegram: false
     })
+    const [activeModal, setActiveModal] = useState<boolean>(false)
 
     const onChangeInput = (e: React.FormEvent<HTMLInputElement>): void => {
         e.preventDefault();
@@ -83,7 +88,16 @@ const AccountSettingsPage: FC = () => {
             if (formState.hasOwnProperty(key)) formData.append(key, formState[key]);
         }
 
-        dispatch(editUser(formData))
+        dispatch(editUser(formData));
+        setActiveModal(false);
+    }
+    const showConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setActiveModal(prevState => !prevState);
+    }
+    const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        setActiveModal(false);
     }
 
     return (
@@ -91,7 +105,7 @@ const AccountSettingsPage: FC = () => {
 
             <SidebarUser/>
 
-            <ContentPage>
+            <ContentPage style={{position: "relative"}}>
 
                 <HeaderPage>
 
@@ -104,7 +118,7 @@ const AccountSettingsPage: FC = () => {
                         icon={saveIcon}
                         iconColor={"var(--Color-Green)"}
                         style={{marginLeft: "auto"}}
-                        onClick={onSubmitForm}
+                        onClick={showConfirmModal}
                     />
 
                 </HeaderPage>
@@ -119,7 +133,20 @@ const AccountSettingsPage: FC = () => {
 
                 </Content>
 
+                {isLoading &&
+                    <Loader/>
+                }
+
             </ContentPage>
+
+            <ModalBackdrop isOpen={activeModal}>
+                <ModalConfirmAction
+                    text={"Ви впевнені що хочете змінити дані облікового запису?"}
+                    onCancel={closeModal}
+                    onConfirm={onSubmitForm}
+                />
+            </ModalBackdrop>
+
         </Page>
     );
 };
