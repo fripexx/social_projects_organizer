@@ -1,4 +1,5 @@
 const UserService = require('../service/user-service')
+const FileService = require('../service/file-service')
 const {validationResult} = require('express-validator')
 const ApiError = require('../exceptions/api-error')
 class UserController {
@@ -69,6 +70,19 @@ class UserController {
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30*24*60*60*100, httpOnly: true, /* secure: true */ })
 
             return res.json(userData)
+        } catch (e) {
+            next(e);
+        }
+    }
+    async editUser(req, res, next) {
+        try {
+            const { name, surname, email, phone, telegram } = req.body;
+            const photo = req?.photo;
+            const user = await req.user;
+
+            const data = await UserService.editUser(user, {...req.body, photo});
+
+            return res.json(data);
         } catch (e) {
             next(e);
         }

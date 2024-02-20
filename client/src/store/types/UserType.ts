@@ -1,3 +1,5 @@
+import {FileType} from "./FileType";
+
 export interface UserType {
     id: string,
     typeUser: 'customer' | 'smm_manager' | 'targetologist' | 'designer',
@@ -5,5 +7,5 @@ export interface UserType {
     surname: string,
     email: string,
     phone: string,
-    photo: string
+    photo: FileType
 }

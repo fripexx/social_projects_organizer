@@ -2,9 +2,12 @@ const UserModel = require('../models/user-model');
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
 const mailService = require('./mail-service')
+const FileService = require('./file-service')
 const tokenService = require('./token-service')
 const UserDto = require("../dtos/user-dto")
 const ApiError = require('../exceptions/api-error')
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 class UserService {
     async registration(typeUser, email, password, name, surname, phone) {
@@ -26,6 +29,8 @@ class UserService {
         await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${activationLink}`);
 
         const userDto = new UserDto(user);
+        await userDto.setPhotoData();
+
         const tokens = tokenService.generateTokens({...userDto});
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
@@ -52,6 +57,8 @@ class UserService {
         if (!isPassEquals) throw ApiError.BadRequest("Невірний пароль")
 
         const userDto = new UserDto(user);
+        await userDto.setPhotoData();
+
         const tokens = tokenService.generateTokens({...userDto})
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -89,15 +96,43 @@ class UserService {
 
         const user = await UserModel.findOne({_id: userData.id})
         const userDto = new UserDto(user);
+        await userDto.setPhotoData();
+
         const tokens = tokenService.generateTokens({...userDto})
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
-
         return {...tokens, user: userDto}
     }
 
     async getAllUsers() {
 
+    }
+
+    async editUser(userData, editData) {
+        const findUser = await UserModel.findOne({_id: userData.id});
+
+        for (const key in editData) {
+            const newValue = editData[key];
+
+            if(!newValue || !key in findUser) continue;
+
+            if(findUser[key] !== newValue && typeof findUser[key] === "string" && typeof newValue === "string") {
+                findUser[key] = newValue;
+            }
+        }
+
+        if(editData.photo) {
+            if(findUser.photo instanceof  ObjectId) await FileService.deleteImage(findUser.photo);
+            const photoData = await FileService.uploadImage(editData.photo, userData.id, "User");
+            findUser.photo = photoData.id;
+        }
+
+        await findUser.save();
+
+        const userDto = new UserDto(findUser);
+        await userDto.setPhotoData();
+
+        return userDto;
     }
 }
 

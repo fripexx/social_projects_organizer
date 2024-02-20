@@ -22,7 +22,7 @@ const AccountSettingsForm:FC<AccountSettingsFormProps> = ({formState, errorState
                 setImageSrc(reader.result as string);
             };
         } else {
-            setImageSrc(formState.photo);
+            setImageSrc(formState.photo ? `${process.env.REACT_APP_API_URL}/${formState.photo}`:"");
         }
     }, [formState.photo])
 

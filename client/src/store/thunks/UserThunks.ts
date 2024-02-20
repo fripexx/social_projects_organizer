@@ -5,6 +5,7 @@ import {AuthResponseType} from "../types/AuthResponseType";
 import {RegistrationRequestType} from "../types/RegistrationRequestType";
 import axios, {isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
+import * as fs from "fs";
 export const login = createAsyncThunk(
     'user/login',
     async (obj: AuthRequestType, thunkAPI) => {
@@ -103,6 +104,36 @@ export const sendActivateLink = createAsyncThunk(
         try {
             const response = await instanceServer.post('/send-activate-link', {email});
             return response;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return response;
+        }
+    }
+);
+
+export const editUser = createAsyncThunk(
+    'user/editUser',
+    async (data: FormData, thunkAPI) => {
+        try {
+            const response = await instanceServer.post<AuthResponseType>(
+                '/edit-user',
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                },
+            );
+
+            return response.data;
         } catch (e) {
             const response: ErrorResponseType = {
                 status: 0,

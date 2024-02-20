@@ -15,11 +15,11 @@ const CardUser:FC<CardUserProps> = ({user, ...cardUserProps}) => {
 
             <div className={classes.contaier_photo}>
 
-                {photo &&
+                {photo && photo?.cropped &&
                     <img
                         className={classes.photo_profile}
                         loading={"lazy"}
-                        src={photo}
+                        src={`${process.env.REACT_APP_API_URL}/${photo.cropped["300"]}`}
                         alt=""
                     />
                 }

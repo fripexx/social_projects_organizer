@@ -10,16 +10,18 @@ import Content from "../../Components/Content/Content";
 import AccountSettingsForm from "./Components/AccountSettingsForm/AccountSettingsForm";
 import {FormStateType} from "./types/FormStateType";
 import {ErrorFormStateType} from "./types/ErrorFormStateType";
-import {useAppSelector} from "../../store/hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
+import {editUser} from "../../store/thunks/UserThunks";
 
 const AccountSettingsPage: FC = () => {
+    const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user);
     const [formState, setFormState] = useState<FormStateType>({
         name: user?.name ? user.name : "",
         surname: user?.surname ? user.surname : "",
         email: user?.email ? user.email : "",
         phone: user?.phone ? user.phone : "",
-        photo: user?.photo ? user.photo : "",
+        photo: user?.photo?.cropped ? user.photo.cropped["300"] : "",
         telegram: ""
     })
     const [errorState, setErrorState] = useState<ErrorFormStateType>({
@@ -74,6 +76,14 @@ const AccountSettingsPage: FC = () => {
             photo: false,
             telegram: false
         });
+
+        const formData = new FormData();
+
+        for (const key in formState) {
+            if (formState.hasOwnProperty(key)) formData.append(key, formState[key]);
+        }
+
+        dispatch(editUser(formData))
     }
 
     return (
