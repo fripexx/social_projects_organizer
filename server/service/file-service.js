@@ -32,14 +32,23 @@ class FileService {
 
             const fileDto = new FileDto(deletedFile);
 
-            const path = fileDto.path;
-            if(path) await fs.unlink(path);
+            const path = fileDto?.path;
+
+            try {
+                if (path) await fs.unlink(path);
+            } catch (error) {
+                console.error('Помилка під час видалення файлу:', error);
+            }
 
             const cropped = fileDto?.cropped;
-            if(cropped) {
-                for (const key in cropped) {
-                    if (cropped.hasOwnProperty(key)) await fs.unlink(cropped[key]);
-                }
+            if (cropped) {
+                await Promise.all(Object.values(cropped).map(async (croppedPath) => {
+                    try {
+                        if (croppedPath) await fs.unlink(croppedPath);
+                    } catch (error) {
+                        console.error('Помилка під час видалення файлу:', error);
+                    }
+                }));
             }
 
             await FileModel.deleteOne({_id: fileDto.id})

@@ -1,65 +1,66 @@
-const multer = require('multer');
-const path = require('path');
 const sharp = require('sharp');
+const path = require('path');
+const fs = require('fs');
+const fsPromises = require('fs').promises;
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, 'uploads/profile_photos'),
-    filename: (req, file, cb) => cb(null, `${Date.now()}${path.extname(file.originalname)}`)
-});
-
-const fileFilter = (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-        cb(null, true);
-    } else {
-        cb(new Error('Неприпустимий формат файлу'), false);
-    }
+// Функція для збереження оригінального файлу
+const saveOriginalFile = async (file, uploadDir) => {
+    const fileName = `${Date.now()}.${file.mimetype.split('/')[1]}`;
+    const filePath = path.join('uploads', 'profile_photos', fileName).replace(/\\/g, '/');
+    await file.mv(filePath);
+    return filePath; // Заміна зворотніх слешів на косі слеші
 };
 
-const uploadAccountMiddleware = multer({ storage: storage, fileFilter: fileFilter }).single('photo');
-
-const createCroppedImages = async (file) => {
-    const image = sharp(file.path);
-    const fileName = file.filename.split(".")[0];
-    const fileType = file.filename.split(".")[1];
+// Функція для кропування та збереження файлу різного розміру
+const saveCroppedFile = async (originalFilePath, uploadDir, sizes) => {
     const croppedImages = {};
 
-    await Promise.all([
-        { size: 300, path: `uploads/profile_photos/${fileName}-300x300.${fileType}` },
-        { size: 600, path: `uploads/profile_photos/${fileName}-600x600.${fileType}` },
-        { size: 1080, path: `uploads/profile_photos/${fileName}-1080x1080.${fileType}` }
-    ].map(async ({ size, path }) => {
-        await image.clone().resize(size, size).toFile(path);
-        croppedImages[size] = path;
-        return path;
-    }));
+    for (const size of sizes) {
+        const croppedFileName = `${path.basename(originalFilePath, path.extname(originalFilePath))}-${size.width}x${size.height}${path.extname(originalFilePath)}`;
+        const croppedFilePath = path.join('uploads', 'profile_photos', croppedFileName).replace(/\\/g, '/');
+
+        await sharp(originalFilePath)
+            .resize(size.width, size.height)
+            .toFile(croppedFilePath);
+
+        croppedImages[`${size.width}`] = croppedFilePath;
+    }
+
+    await sharp.cache({files: 0});
 
     return croppedImages;
 };
 
-module.exports = async (req, res, next) => {
-    uploadAccountMiddleware(req, res, async (err) => {
-        if (err) return res.status(400).send({ error: err.message });
+// Middleware для обробки фотографій
+const uploadAccountMiddleware = async (req, res, next) => {
+    if (!req.files || !req.files.photo) {
+        return next();
+    }
 
-        if (req.file) {
-            try {
-                const originalImagePath = req.file.path.replace(/\\/g, '/');
-                const croppedImages = await createCroppedImages(req.file);
+    const file = req.files.photo;
+    const uploadDir = path.resolve(__dirname, '..', 'uploads', 'profile_photos');
+    const sizes = [{ width: 300, height: 300 }, { width: 600, height: 600 }, { width: 1080, height: 1080 }];
 
-                req.photo = {
-                    ...req.file,
-                    path: {
-                        original: originalImagePath,
-                        cropped: croppedImages,
-                    }
-                };
+    try {
+        // Зберігання оригінального файлу
+        const originalFilePath = await saveOriginalFile(file, uploadDir);
 
-                next();
-            } catch (error) {
-                return res.status(500).send({ error: 'Помилка обробки зображення' });
+        // Зберігання та отримання шляхів кропнутих файлів
+        const croppedImages = await saveCroppedFile(originalFilePath, uploadDir, sizes);
+
+        req.photo = {
+            ...file,
+            path: {
+                original: originalFilePath,
+                cropped: croppedImages
             }
-        } else {
-            next();
-        }
+        };
 
-    });
+        next();
+    } catch (err) {
+        console.error('Error processing photo:', err);
+        next();
+    }
 };
+
+module.exports = uploadAccountMiddleware;
