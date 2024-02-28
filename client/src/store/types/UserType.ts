@@ -7,5 +7,6 @@ export interface UserType {
     surname: string,
     email: string,
     phone: string,
-    photo: FileType
+    photo: FileType,
+    telegram: string,
 }

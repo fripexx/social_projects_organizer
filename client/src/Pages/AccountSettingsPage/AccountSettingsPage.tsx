@@ -26,7 +26,7 @@ const AccountSettingsPage: FC = () => {
         email: user?.email ? user.email : "",
         phone: user?.phone ? user.phone : "",
         photo: user?.photo?.cropped ? user.photo.cropped["300"] : "",
-        telegram: ""
+        telegram: user?.telegram ? user.telegram : "",
     })
     const [errorState, setErrorState] = useState<ErrorFormStateType>({
         name: false,
@@ -57,18 +57,32 @@ const AccountSettingsPage: FC = () => {
     const onSubmitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
 
+        const formData = new FormData();
+
+        for (const key in formState) {
+            if (formState.hasOwnProperty(key)) formData.append(key, formState[key]);
+        }
+
+        dispatch(editUser(formData));
+        setActiveModal(false);
+    }
+    const showConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+
         const isInvalidName = formState.name.length === 0;
         const isInvalidSurname = formState.surname.length === 0;
         const isInvalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email);
         const isInvalidPhone = !/^(\+38)?(0\d{9})$/.test(formState.phone);
         const isInvalidPhoto = formState.photo instanceof File && formState.photo.size >= 5 * 1024 * 1024;
+        const isInvalidTelegram = !/^(https?:\/\/)?(www\.)?(t\.me|telegram\.me)\/([a-z0-9_]+)$/i.test(formState.telegram);
 
-        if (isInvalidName || isInvalidSurname || isInvalidEmail || isInvalidPhone || isInvalidPhoto) {
+        if (isInvalidName || isInvalidSurname || isInvalidEmail || isInvalidPhone || isInvalidPhoto || isInvalidTelegram) {
             if (isInvalidName) setErrorState(prevState => ({...prevState, name: "Введіть ім'я"}));
             if (isInvalidSurname) setErrorState(prevState => ({...prevState, surname: "Введіть прізвище"}));
             if (isInvalidEmail) setErrorState(prevState => ({...prevState, email: "Введіть коректну пошту"}));
             if (isInvalidPhone) setErrorState(prevState => ({...prevState, phone: "Введіть номер телефону типу +380999999999"}));
             if (isInvalidPhoto) setErrorState(prevState => ({...prevState, photo: "Максимальний розмір файлу 5 МБ"}));
+            if (isInvalidTelegram) setErrorState(prevState => ({...prevState, telegram: "Некоректне посилання на Telegram"}));
 
             return false;
         }
@@ -82,17 +96,6 @@ const AccountSettingsPage: FC = () => {
             telegram: false
         });
 
-        const formData = new FormData();
-
-        for (const key in formState) {
-            if (formState.hasOwnProperty(key)) formData.append(key, formState[key]);
-        }
-
-        dispatch(editUser(formData));
-        setActiveModal(false);
-    }
-    const showConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
         setActiveModal(prevState => !prevState);
     }
     const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {

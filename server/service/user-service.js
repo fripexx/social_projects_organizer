@@ -111,12 +111,25 @@ class UserService {
     async editUser(userData, editData) {
         const findUser = await UserModel.findOne({_id: userData.id});
 
+        // for (const key in editData) {
+        //     const newValue = editData[key];
+        //
+        //     if(!newValue || !key in findUser) continue;
+        //
+        //     if(findUser[key] !== newValue && typeof findUser[key] === "string" && typeof newValue === "string") {
+        //         findUser[key] = newValue;
+        //         console.log(findUser[key]);
+        //     }
+        // }
+
         for (const key in editData) {
             const newValue = editData[key];
 
-            if(!newValue || !key in findUser) continue;
+            if (!newValue) continue;
 
-            if(findUser[key] !== newValue && typeof findUser[key] === "string" && typeof newValue === "string") {
+            const fieldDefinition = UserModel.schema.paths[key];
+
+            if (fieldDefinition.instance === "String" && typeof newValue === "string" && findUser[key] !== newValue) {
                 findUser[key] = newValue;
             }
         }
