@@ -125,8 +125,6 @@ class UserService {
         for (const key in editData) {
             const newValue = editData[key];
 
-            if (!newValue) continue;
-
             const fieldDefinition = UserModel.schema.paths[key];
 
             if (fieldDefinition.instance === "String" && typeof newValue === "string" && findUser[key] !== newValue) {

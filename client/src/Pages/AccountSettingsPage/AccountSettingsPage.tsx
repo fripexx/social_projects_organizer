@@ -74,7 +74,7 @@ const AccountSettingsPage: FC = () => {
         const isInvalidEmail = !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formState.email);
         const isInvalidPhone = !/^(\+38)?(0\d{9})$/.test(formState.phone);
         const isInvalidPhoto = formState.photo instanceof File && formState.photo.size >= 5 * 1024 * 1024;
-        const isInvalidTelegram = !/^(https?:\/\/)?(www\.)?(t\.me|telegram\.me)\/([a-z0-9_]+)$/i.test(formState.telegram);
+        const isInvalidTelegram = formState.telegram ? !/^(https?:\/\/)?(www\.)?(t\.me|telegram\.me)\/([a-z0-9_]+)$/i.test(formState.telegram) : false;
 
         if (isInvalidName || isInvalidSurname || isInvalidEmail || isInvalidPhone || isInvalidPhoto || isInvalidTelegram) {
             if (isInvalidName) setErrorState(prevState => ({...prevState, name: "Введіть ім'я"}));
