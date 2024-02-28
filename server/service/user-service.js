@@ -83,16 +83,12 @@ class UserService {
     }
 
     async refresh(refreshToken) {
-        if (!refreshToken) {
-            throw ApiError.UnauthorizedError();
-        }
+        if (!refreshToken) throw ApiError.UnauthorizedError();
 
         const userData = await tokenService.validateRefreshToken(refreshToken);
         const tokenFromDB = await tokenService.findToken(refreshToken);
 
-        if (!userData || !tokenFromDB) {
-            throw ApiError.UnauthorizedError();
-        }
+        if (!userData || !tokenFromDB) throw ApiError.UnauthorizedError();
 
         const user = await UserModel.findOne({_id: userData.id})
         const userDto = new UserDto(user);
@@ -104,27 +100,11 @@ class UserService {
         return {...tokens, user: userDto}
     }
 
-    async getAllUsers() {
-
-    }
-
     async editUser(userData, editData) {
         const findUser = await UserModel.findOne({_id: userData.id});
 
-        // for (const key in editData) {
-        //     const newValue = editData[key];
-        //
-        //     if(!newValue || !key in findUser) continue;
-        //
-        //     if(findUser[key] !== newValue && typeof findUser[key] === "string" && typeof newValue === "string") {
-        //         findUser[key] = newValue;
-        //         console.log(findUser[key]);
-        //     }
-        // }
-
         for (const key in editData) {
             const newValue = editData[key];
-
             const fieldDefinition = UserModel.schema.paths[key];
 
             if (fieldDefinition.instance === "String" && typeof newValue === "string" && findUser[key] !== newValue) {
