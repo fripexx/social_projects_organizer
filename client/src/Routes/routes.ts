@@ -1,9 +1,9 @@
 import React from "react";
 import AuthPage from "../Pages/AuthPage/AuthPage";
-import AccountPage from "../Pages/AccountPage/AccountPage";
+import AccountSettingsPage from "../Pages/AccountSettingsPage/AccountSettingsPage";
 import userIcon from "../assets/images/user.svg"
 import UserProjectsPage from "../Pages/UserProjectsPage/UserProjectsPage";
-import AccountSettingsPage from "../Pages/AccountSettingsPage/AccountSettingsPage";
+import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import UserNotePage from "../Pages/UserNotePage/UserNotePage";
 
 export interface Route {
@@ -50,7 +50,7 @@ export const routes: Route[] = [
         key: "profile",
         name: "Профіль",
         path: "/profile",
-        component: AccountPage,
+        component: ProfilePage,
         icon: userIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,

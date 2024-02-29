@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import classes from "./AccountSettingsForm.module.scss";
+import classes from "./ProfilePageForm.module.scss";
 import Input from "../../../../Elements/Input/Input";
 import {FormStateType} from "../../types/FormStateType";
 import InputImage from "../../../../Elements/InputImage/InputImage";
@@ -11,7 +11,7 @@ interface AccountSettingsFormProps {
     onChange: (e: React.FormEvent<HTMLInputElement>) => void
 }
 
-const AccountSettingsForm:FC<AccountSettingsFormProps> = ({formState, errorState, onChange}) => {
+const ProfilePageForm:FC<AccountSettingsFormProps> = ({formState, errorState, onChange}) => {
     const [imageSrc, setImageSrc] = useState<string>("");
 
     useEffect(() => {
@@ -95,4 +95,4 @@ const AccountSettingsForm:FC<AccountSettingsFormProps> = ({formState, errorState
     );
 };
 
-export default AccountSettingsForm;
+export default ProfilePageForm;
