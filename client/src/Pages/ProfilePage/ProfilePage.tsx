@@ -37,6 +37,7 @@ const ProfilePage: FC = () => {
         telegram: false
     })
     const [activeModal, setActiveModal] = useState<boolean>(false)
+    const [saveState, setSaveState] = useState<boolean>(false);
 
     const onChangeInput = (e: React.FormEvent<HTMLInputElement>): void => {
         e.preventDefault();
@@ -53,6 +54,8 @@ const ProfilePage: FC = () => {
         }
 
         if (value) setErrorState(prevState => ({...prevState, [name]: false}))
+
+        setSaveState(true);
     }
     const onSubmitForm = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -65,6 +68,7 @@ const ProfilePage: FC = () => {
 
         dispatch(editUser(formData));
         setActiveModal(false);
+        setSaveState(false);
     }
     const showConfirmModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -116,13 +120,15 @@ const ProfilePage: FC = () => {
                         Профіль
                     </Title>
 
-                    <Button
-                        text={"Зберегти"}
-                        icon={saveIcon}
-                        iconColor={"var(--Color-Green)"}
-                        style={{marginLeft: "auto"}}
-                        onClick={showConfirmModal}
-                    />
+                    {saveState &&
+                        <Button
+                            text={"Зберегти"}
+                            icon={saveIcon}
+                            iconColor={"var(--Color-Green)"}
+                            style={{marginLeft: "auto"}}
+                            onClick={showConfirmModal}
+                        />
+                    }
 
                 </HeaderPage>
 
