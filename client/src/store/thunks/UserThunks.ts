@@ -115,7 +115,7 @@ export const sendActivateLink = createAsyncThunk(
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
-            return response;
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );
@@ -145,7 +145,7 @@ export const editUser = createAsyncThunk(
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
-            return response;
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );
