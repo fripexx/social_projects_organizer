@@ -16,6 +16,8 @@ module.exports = class UserDto {
         this.phone = model.phone;
         this.telegram = model.telegram;
         this.typeUser = model.typeUser;
+        this.darkMode = model.darkMode;
+        this.pushNotifications = model.pushNotifications;
         this.isActivated = model.isActivated;
         this.#photoID = model.photo;
     }

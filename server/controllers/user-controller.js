@@ -87,6 +87,18 @@ class UserController {
             next(e);
         }
     }
+    async editSettingsUser(req, res, next) {
+        try {
+            const { darkMode, pushNotifications} = req.body;
+            const user = await req.user;
+
+            const data = await UserService.editSettingsUser(user, {darkMode, pushNotifications});
+
+            return res.json(data);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new UserController();

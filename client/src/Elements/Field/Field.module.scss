@@ -1,0 +1,15 @@
+.field {
+    border-bottom: 1px solid var(--Color-Light-Grey-Blue);
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.text{
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 20px;
+    color: var(--Color-Dark);
+}

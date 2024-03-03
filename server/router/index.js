@@ -28,5 +28,6 @@ router.post('/logout', UserController.logout);
 router.get('/activate/:link', UserController.activate);
 router.get('/refresh', UserController.refresh);
 router.post('/edit-user', [authMiddleware, uploadAccountMiddleware], UserController.editUser);
+router.post('/edit-settings-user', [authMiddleware], UserController.editSettingsUser);
 
 module.exports = router;

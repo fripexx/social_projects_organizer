@@ -6,6 +6,7 @@ import {RegistrationRequestType} from "../types/RegistrationRequestType";
 import axios, {isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import * as fs from "fs";
+import {FormStateType} from "../../Pages/AccountSettingsPage/types/FormStateType";
 export const login = createAsyncThunk(
     'user/login',
     async (obj: AuthRequestType, thunkAPI) => {
@@ -145,6 +146,30 @@ export const editUser = createAsyncThunk(
                 response.message = e.response.data.message;
             }
             return response;
+        }
+    }
+);
+
+export const editSettingsUser = createAsyncThunk(
+    'user/editSettingsUser',
+    async (data: FormStateType, thunkAPI) => {
+        try {
+            const response = await instanceServer.post<Response>(
+                '/edit-settings-user',
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
         }
     }
 );

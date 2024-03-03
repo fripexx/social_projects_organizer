@@ -125,6 +125,20 @@ class UserService {
 
         return userDto;
     }
+
+    async editSettingsUser(userData, editData) {
+        const findUser = await UserModel.findOne({_id: userData.id});
+
+        findUser.darkMode = editData.darkMode;
+        findUser.pushNotifications = editData.pushNotifications;
+
+        await findUser.save();
+  throw ApiError.UnauthorizedError();
+        const userDto = new UserDto(findUser);
+        await userDto.setPhotoData();
+
+        return userDto;
+    }
 }
 
 module.exports = new UserService();

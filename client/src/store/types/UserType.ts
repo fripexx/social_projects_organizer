@@ -9,4 +9,7 @@ export interface UserType {
     phone: string,
     photo: FileType,
     telegram: string,
+    darkMode: boolean,
+    pushNotifications: boolean,
+    isActivated: boolean,
 }
