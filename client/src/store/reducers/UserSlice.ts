@@ -2,15 +2,18 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {UserType} from "../types/UserType";
 import {AuthResponseType} from "../types/AuthResponseType";
 import {
-    checkAuth,
+    addNoteUser,
+    changeNoteUser,
+    checkAuth, deleteNoteUser,
     editSettingsUser,
-    editUser,
+    editUser, getNotesUser,
     login,
     logout,
     registration,
     sendActivateLink
 } from "../thunks/UserThunks";
 import {ErrorResponseType} from "../types/ErrorResponseType";
+import {NoteType} from "../types/NoteType";
 
 
 interface UserState {
@@ -20,6 +23,7 @@ interface UserState {
     error: ErrorResponseType | null;
     shouldRedirectToProjectsPage: boolean;
     shouldRedirectToLoginPage: boolean;
+    notes: NoteType[];
 }
 
 const initialState: UserState = {
@@ -29,6 +33,7 @@ const initialState: UserState = {
     error: null,
     shouldRedirectToProjectsPage: false,
     shouldRedirectToLoginPage: false,
+    notes: [],
 }
 
 export const userSlice = createSlice({
@@ -140,6 +145,65 @@ export const userSlice = createSlice({
             state.user = action.payload;
         },
         [editSettingsUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* Add note user */
+        [addNoteUser.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [addNoteUser.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.notes = [...state.notes, action.payload]
+        },
+        [addNoteUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* Delete note user */
+        [deleteNoteUser.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [deleteNoteUser.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.notes = [...state.notes].filter(note => note.id != action.payload.id);
+        },
+        [deleteNoteUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* Get all note user */
+        [getNotesUser.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [getNotesUser.fulfilled.type]: (state, action: PayloadAction<NoteType[]>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.notes = action.payload;
+        },
+        [getNotesUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* Change note user */
+        [changeNoteUser.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [changeNoteUser.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.notes = state.notes.map(note => {
+                if(note.id === action.payload.id) note.text = action.payload.text
+                return note;
+            });
+        },
+        [changeNoteUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },

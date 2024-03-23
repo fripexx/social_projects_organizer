@@ -1,11 +1,15 @@
 const Router = require('express').Router;
 const UserController = require('../controllers/user-controller');
+const NoteController = require('../controllers/note-controller')
 const router = new Router();
 const {body} = require('express-validator')
 const ApiError = require("../exceptions/api-error");
 const uploadAccountMiddleware = require('../middlewares/upload-account-middleware');
 const authMiddleware = require('../middlewares/auth-middleware')
 
+/**
+ * User routes
+ */
 router.post(
     '/registration',
     body('email').isEmail(),
@@ -29,5 +33,13 @@ router.get('/activate/:link', UserController.activate);
 router.get('/refresh', UserController.refresh);
 router.post('/edit-user', [authMiddleware, uploadAccountMiddleware], UserController.editUser);
 router.post('/edit-settings-user', [authMiddleware], UserController.editSettingsUser);
+
+/**
+ * User notes routes
+ */
+router.post('/add-note-user', [authMiddleware], NoteController.addNoteUser);
+router.delete('/delete-note-user/:id', [authMiddleware], NoteController.deleteNoteUser);
+router.patch('/change-note-user', [authMiddleware], NoteController.changeNoteUser);
+router.get('/get-notes-user', [authMiddleware], NoteController.getAllUser);
 
 module.exports = router;

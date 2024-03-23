@@ -1,0 +1,29 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.textarea {
+    height: 100%;
+    box-sizing: border-box;
+    display: block;
+    border: unset;
+    background: unset;
+    padding: 0px;
+    margin: 0px;
+    outline: none;
+    resize: none;
+    font-family: var(--font-family);
+    font-weight: 300;
+    font-size: 18px;
+    line-height: 20px;
+    min-width: 100%;
+    min-height: 200px;
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+}

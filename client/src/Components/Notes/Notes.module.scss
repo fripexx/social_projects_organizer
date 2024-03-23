@@ -1,0 +1,25 @@
+.notes {
+    column-count: 1;
+    gap: 10px;
+    @media (min-width: 900px) {
+        column-count: 2;
+    }
+    @media (min-width: 1200px) {
+        column-count: 3;
+    }
+    @media (min-width: 1600px) {
+        column-count: 5;
+    }
+    @media (min-width: 1921px) {
+        column-count: 6;
+    }
+    @media (min-width: 2500px) {
+        column-count: 7;
+    }
+    @media (min-width: 3000px) {
+        column-count: 8;
+    }
+    @media (min-width: 3500px) {
+        column-count: 9;
+    }
+}

@@ -7,6 +7,8 @@ import axios, {isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import * as fs from "fs";
 import {FormStateType} from "../../Pages/AccountSettingsPage/types/FormStateType";
+import {NoteType} from "../types/NoteType";
+import {ChangeNoteRequestType} from "../types/ChangeNoteRequestType";
 export const login = createAsyncThunk(
     'user/login',
     async (obj: AuthRequestType, thunkAPI) => {
@@ -166,6 +168,96 @@ export const editSettingsUser = createAsyncThunk(
             }
 
             if(isAxiosError(e) && e?.response){
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const addNoteUser = createAsyncThunk(
+    'user/addNoteUser',
+    async (text: string, thunkAPI) => {
+        try {
+            const response = await instanceServer.post<NoteType>(
+                '/add-note-user',
+                {text}
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const deleteNoteUser = createAsyncThunk(
+    'user/deleteNoteUser',
+    async (id: string, thunkAPI) => {
+        try {
+            const response = await instanceServer.delete<NoteType>(`/delete-note-user/${id}`,);
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const getNotesUser = createAsyncThunk(
+    'user/getNotesUser',
+    async (_, thunkAPI) => {
+        try {
+            const response = await instanceServer.get<NoteType[]>('/get-notes-user',);
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const changeNoteUser = createAsyncThunk(
+    'user/changeNoteUser',
+    async (data: ChangeNoteRequestType, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<NoteType>(
+                '/change-note-user',
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
