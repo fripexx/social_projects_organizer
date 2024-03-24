@@ -9,6 +9,7 @@ import * as fs from "fs";
 import {FormStateType} from "../../Pages/AccountSettingsPage/types/FormStateType";
 import {NoteType} from "../types/NoteType";
 import {ChangeNoteRequestType} from "../types/ChangeNoteRequestType";
+import {ProjectType} from "../types/ProjectType";
 export const login = createAsyncThunk(
     'user/login',
     async (obj: AuthRequestType, thunkAPI) => {
@@ -249,6 +250,53 @@ export const changeNoteUser = createAsyncThunk(
             const response = await instanceServer.patch<NoteType>(
                 '/change-note-user',
                 data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const addProject = createAsyncThunk(
+    'user/addProject',
+    async (name: string, thunkAPI) => {
+        try {
+            const response = await instanceServer.post<ProjectType>(
+                '/add-project',
+                {name}
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const getProjects = createAsyncThunk(
+    'user/getProjects',
+    async (_, thunkAPI) => {
+        try {
+            const response = await instanceServer.get<ProjectType[]>(
+                '/get-projects',
             );
             return response.data;
         } catch (e) {

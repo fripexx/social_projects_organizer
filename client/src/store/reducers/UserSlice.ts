@@ -2,11 +2,11 @@ import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {UserType} from "../types/UserType";
 import {AuthResponseType} from "../types/AuthResponseType";
 import {
-    addNoteUser,
+    addNoteUser, addProject,
     changeNoteUser,
     checkAuth, deleteNoteUser,
     editSettingsUser,
-    editUser, getNotesUser,
+    editUser, getNotesUser, getProjects,
     login,
     logout,
     registration,
@@ -14,6 +14,7 @@ import {
 } from "../thunks/UserThunks";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {NoteType} from "../types/NoteType";
+import {ProjectType} from "../types/ProjectType";
 
 
 interface UserState {
@@ -24,6 +25,7 @@ interface UserState {
     shouldRedirectToProjectsPage: boolean;
     shouldRedirectToLoginPage: boolean;
     notes: NoteType[];
+    projects: ProjectType[];
 }
 
 const initialState: UserState = {
@@ -34,6 +36,7 @@ const initialState: UserState = {
     shouldRedirectToProjectsPage: false,
     shouldRedirectToLoginPage: false,
     notes: [],
+    projects: []
 }
 
 export const userSlice = createSlice({
@@ -204,6 +207,34 @@ export const userSlice = createSlice({
             });
         },
         [changeNoteUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* Add project */
+        [addProject.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [addProject.fulfilled.type]: (state, action: PayloadAction<ProjectType>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.projects = [...state.projects, action.payload];
+        },
+        [addProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* Get projects */
+        [getProjects.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [getProjects.fulfilled.type]: (state, action: PayloadAction<ProjectType[]>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.projects = action.payload;
+        },
+        [getProjects.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },

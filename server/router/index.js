@@ -1,6 +1,7 @@
 const Router = require('express').Router;
 const UserController = require('../controllers/user-controller');
 const NoteController = require('../controllers/note-controller')
+const ProjectController = require('../controllers/project-controller')
 const router = new Router();
 const {body} = require('express-validator')
 const ApiError = require("../exceptions/api-error");
@@ -41,5 +42,12 @@ router.post('/add-note-user', [authMiddleware], NoteController.addNoteUser);
 router.delete('/delete-note-user/:id', [authMiddleware], NoteController.deleteNoteUser);
 router.patch('/change-note-user', [authMiddleware], NoteController.changeNoteUser);
 router.get('/get-notes-user', [authMiddleware], NoteController.getAllUser);
+
+/**
+ * Project routes
+ */
+router.post('/add-project', [authMiddleware], ProjectController.addProject);
+router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
+
 
 module.exports = router;
