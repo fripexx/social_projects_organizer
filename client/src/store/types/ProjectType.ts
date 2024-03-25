@@ -2,6 +2,7 @@ import {FileType} from "./FileType";
 import {NoteType} from "./NoteType";
 
 export interface ProjectType {
+    id: string,
     isActive: boolean,
     name: string,
     logo: FileType | string | null,

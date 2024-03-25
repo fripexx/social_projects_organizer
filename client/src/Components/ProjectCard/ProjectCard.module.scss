@@ -1,0 +1,48 @@
+.project {
+    display: inline-flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    border-radius: 25px;
+    background: var(--Color-Light-Grey-Blue);
+    transition: 0.15s ease;
+    filter: brightness(0.95);
+    min-width: 280px;
+}
+
+.activeProject {
+    @extend .project;
+    text-decoration: none;
+
+    &:hover {
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        transform: scale(1.05);
+        filter: brightness(1);
+    }
+}
+
+.noActiveProject {
+    @extend .project;
+    filter: brightness(0.7);
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+.name {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: normal;
+    color: var(--Color-White);
+}
+
+.customer {
+    font-size: 16px;
+    font-weight: 300;
+    line-height: normal;
+    color: var(--Color-White);
+}

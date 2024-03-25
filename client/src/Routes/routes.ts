@@ -76,4 +76,14 @@ export const routes: Route[] = [
         redirectIfAuthenticated: false,
         showInUserMenu: true,
     },
+    {
+        key: "project",
+        name: "Проєкт",
+        path: "/project/:id",
+        component: UserProjectsPage,
+        icon: userIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInUserMenu: false,
+    },
 ];
