@@ -4,7 +4,7 @@ import plusIcon from "../../assets/images/plus_icon.svg";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {addNoteUser, getNotesUser, deleteNoteUser, changeNoteUser} from "../../store/thunks/UserThunks";
 import Page from "../../Components/Page/Page";
-import SidebarUser from "../../Components/SidebarUser/SidebarUser";
+import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import Title from "../../Elements/Title/Title";
 import Button from "../../Elements/Button/Button";
@@ -82,7 +82,7 @@ const UserNotePage:FC = () => {
     return (
         <Page>
 
-            <SidebarUser/>
+            <Sidebar/>
 
             <ContentPage>
 

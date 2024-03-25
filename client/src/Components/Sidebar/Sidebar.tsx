@@ -1,12 +1,12 @@
 import React, {FC} from 'react';
-import classes from "./SidebarUser.module.scss";
+import classes from "./Sidebar.module.scss";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {routes} from "../../Routes/routes";
 import CardUser from "../CardUser/CardUser";
 import Menu from "../Menu/Menu";
 import {logout} from "../../store/thunks/UserThunks";
 
-const SidebarUser: FC = () => {
+const Sidebar: FC = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user)
     const userRoutes = routes.filter(route => route.showInUserMenu);
@@ -39,4 +39,4 @@ const SidebarUser: FC = () => {
     );
 };
 
-export default SidebarUser;
+export default Sidebar;
