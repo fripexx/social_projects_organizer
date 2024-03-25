@@ -22,5 +22,11 @@ export interface ProjectType {
         contract: string | null,
         strategy: string | null
     },
-    notes: NoteType[]
+    notes: NoteType[],
+    customerData?: {
+        name: string,
+        surname: string
+        email: string,
+        phone: string
+    }
 }
