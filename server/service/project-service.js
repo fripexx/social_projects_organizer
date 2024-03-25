@@ -15,11 +15,14 @@ class ProjectService {
     }
     async getProjects(user) {
         const projects = await ProjectModal.find({ team: user.id });
-        return projects.map(project => {
+        const replaceProjects = await Promise.all(projects.map(async project => {
             const projectDto = new ProjectDto(project);
-            projectDto.setPhotoData();
+            await projectDto.setPhotoData();
+            await projectDto.setCustomerData();
             return projectDto;
-        });
+        }));
+
+        return replaceProjects;
     }
 }
 

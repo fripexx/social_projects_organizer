@@ -1,4 +1,5 @@
 const FileModel = require("../models/file-model");
+const UserModel = require("../models/user-model");
 const FileDto = require("./file-dto");
 module.exports = class ProjectDto {
     #logoID;
@@ -18,6 +19,7 @@ module.exports = class ProjectDto {
         this.isActive = model.isActive;
         this.name = model.name;
         this.administrator = model.administrator;
+        this.customer = model.customer;
         this.team = model.team;
         this.color = model.color;
         this.instagramTokenAPI = model.instagramTokenAPI;
@@ -45,6 +47,27 @@ module.exports = class ProjectDto {
             console.error("Помилка при отриманні фотографії:", error);
         }
     }
+
+    async setCustomerData() {
+        try {
+            if(this.customer) {
+                const findUser = await UserModel.findById(this.customer);
+
+                if(findUser) {
+                    this.customerData = {
+                        name: findUser.name,
+                        surname: findUser.surname,
+                        email: findUser.email,
+                        phone: findUser.phone,
+                    };
+                }
+            }
+
+        } catch (error) {
+            console.error("Помилка при отриманні фотографії:", error);
+        }
+    }
+
     async setFilesData(){
         try {
             if(this.#files.brif) {

@@ -5,6 +5,7 @@ const ProjectSchema = new Schema({
     name: {type: String, required: true},
     logo: {type: Schema.Types.ObjectId, ref: "File", default: null},
     administrator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    customer: {type: Schema.Types.ObjectId, ref: 'User', default: null},
     team: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], required: true },
     color: {type: String, default: null},
     instagramTokenAPI: {type: String, default: null},

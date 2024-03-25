@@ -5,6 +5,7 @@ import userIcon from "../assets/images/user.svg"
 import UserProjectsPage from "../Pages/UserProjectsPage/UserProjectsPage";
 import ProfilePage from "../Pages/ProfilePage/ProfilePage";
 import UserNotePage from "../Pages/UserNotePage/UserNotePage";
+import ProjectPosts from "../Pages/ProjectPosts/ProjectPosts";
 
 export interface Route {
     key: string;
@@ -80,7 +81,7 @@ export const routes: Route[] = [
         key: "project",
         name: "Проєкт",
         path: "/project/:id",
-        component: UserProjectsPage,
+        component: ProjectPosts,
         icon: userIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
