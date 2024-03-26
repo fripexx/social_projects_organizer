@@ -39,7 +39,7 @@ const ProjectCard:FC<ProjectCardProps> = ({project}) => {
     return (
         <>
             {isActive ? (
-                <a href={`/project/${id}`} className={classes.activeProject} style={color ? {backgroundColor: color} : {}}>
+                <a href={`/project/${id}/posts`} className={classes.activeProject} style={color ? {backgroundColor: color} : {}}>
                     <ProjectData project={project}/>
                 </a>
             ) : (
