@@ -23,6 +23,17 @@ class ProjectController {
             next(e);
         }
     }
+    async getProject(req, res, next) {
+        try {
+            const {id} = req.query;
+            const user = await req.user;
+            const projects = await ProjectService.getProject(user, id);
+
+            return res.json(projects);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new ProjectController();

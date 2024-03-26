@@ -1,15 +1,18 @@
-import React, {FC} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import classes from "./Sidebar.module.scss";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {routes} from "../../Routes/routes";
 import CardUser from "../CardUser/CardUser";
 import Menu from "../Menu/Menu";
 import {logout} from "../../store/thunks/UserThunks";
+import ProjectSummary from "../ProjectSummary/ProjectSummary";
 
 const Sidebar: FC = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user)
+    const project = useAppSelector(state => state.ProjectReducer.project)
     const userRoutes = routes.filter(route => route.showInUserMenu);
+    const projectRoutes = routes.filter(route => route.showInProjectMenu);
 
     const onClickLogout = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault();
@@ -19,11 +22,15 @@ const Sidebar: FC = () => {
     return (
         <div className={classes.container}>
 
-            {user &&
+            {project &&
+                <ProjectSummary project={project}/>
+            }
+
+            {user && project === null &&
                 <CardUser user={user}/>
             }
 
-            <Menu links={userRoutes}/>
+            <Menu links={project ? projectRoutes : userRoutes}/>
 
             <button className={classes.logout} onClick={onClickLogout}>
 

@@ -48,6 +48,7 @@ router.get('/get-notes-user', [authMiddleware], NoteController.getAllUser);
  */
 router.post('/add-project', [authMiddleware], ProjectController.addProject);
 router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
+router.get('/get-project', [authMiddleware], ProjectController.getProject);
 
 
 module.exports = router;

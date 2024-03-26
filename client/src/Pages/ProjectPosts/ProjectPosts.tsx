@@ -6,34 +6,39 @@ import Button from "../../Elements/Button/Button";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import Content from "../../Components/Content/Content";
 import Sidebar from "../../Components/Sidebar/Sidebar";
+import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 
 const ProjectPosts:FC = () => {
     return (
-        <Page>
+        <ProjectPage>
 
-            <Sidebar/>
+            <Page>
 
-            <ContentPage>
+                <Sidebar/>
 
-                <HeaderPage>
+                <ContentPage>
 
-                    <Button
-                        text={"Додати"}
-                        icon={plusIcon}
-                        iconColor={"var(--Color-Green)"}
-                        style={{marginLeft: "auto"}}
-                        onClick={() => {}}
-                    />
+                    <HeaderPage>
 
-                </HeaderPage>
+                        <Button
+                            text={"Додати"}
+                            icon={plusIcon}
+                            iconColor={"var(--Color-Green)"}
+                            style={{marginLeft: "auto"}}
+                            onClick={() => {}}
+                        />
 
-                <Content>
-                    Пости
-                </Content>
+                    </HeaderPage>
 
-            </ContentPage>
+                    <Content>
+                        Пости
+                    </Content>
 
-        </Page>
+                </ContentPage>
+
+            </Page>
+
+        </ProjectPage>
     );
 };
 

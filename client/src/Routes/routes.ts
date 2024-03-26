@@ -15,7 +15,8 @@ export interface Route {
     component: React.FC;
     redirectIfAuthenticated?: boolean;
     requiresAuth?: boolean;
-    showInUserMenu: boolean;
+    showInUserMenu?: boolean;
+    showInProjectMenu?: boolean;
 }
 
 export const routes: Route[] = [
@@ -80,11 +81,11 @@ export const routes: Route[] = [
     {
         key: "project",
         name: "Проєкт",
-        path: "/project/:id",
+        path: "/project/:id/posts",
         component: ProjectPosts,
         icon: userIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
-        showInUserMenu: false,
+        showInProjectMenu: true,
     },
 ];

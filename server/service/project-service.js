@@ -1,5 +1,6 @@
 const ProjectModal = require('../models/project-model')
 const ProjectDto = require('../dtos/project-dto');
+const ApiError= require('../exceptions/api-error');
 
 class ProjectService {
     async addProject(name, user) {
@@ -23,6 +24,17 @@ class ProjectService {
         }));
 
         return replaceProjects;
+    }
+    async getProject(user, id) {
+        const findProject = await ProjectModal.findOne({ _id: id, team: user.id });
+
+        if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.')
+
+        const projectDto = new ProjectDto(findProject);
+        await projectDto.setPhotoData();
+        await projectDto.setCustomerData();
+
+        return projectDto;
     }
 }
 
