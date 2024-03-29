@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import classes from "./Menu.module.scss";
 import {Route} from "../../Routes/routes";
-import {NavLink} from "react-router-dom";
+import {NavLink, useParams} from "react-router-dom";
 import {ReactSVG} from 'react-svg'
 
 interface MenuProps {
@@ -10,6 +10,7 @@ interface MenuProps {
 }
 
 const Menu: FC<MenuProps> = ({links, ...menuProps}) => {
+    const {id} = useParams();
 
     return (
         <nav className={classes.container} {...menuProps}>
@@ -23,7 +24,7 @@ const Menu: FC<MenuProps> = ({links, ...menuProps}) => {
                         className={({ isActive}) =>
                             isActive ? classes.link + " " + classes.link_active : classes.link
                         }
-                        to={path}
+                        to={id ? path.replace(":id", id) : path}
                     >
 
                         {icon &&
