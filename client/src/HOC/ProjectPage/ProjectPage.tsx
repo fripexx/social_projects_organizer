@@ -3,6 +3,7 @@ import {getProject} from "../../store/thunks/ProjectThunks";
 import {useLocation, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import Loader from "../../Elements/Loader/Loader";
+import {setProject} from "../../store/reducers/ProjectSlice";
 
 interface ProjectPageProps {
     children: ReactNode
@@ -20,7 +21,11 @@ const ProjectPage: FC<ProjectPageProps> = ({children}) => {
             if (!project || project.id !== params.id) dispatch(getProject(params.id));
         }
     }, [params.id, location.pathname, project]);
-
+    useEffect(() => {
+        return () => {
+            dispatch(setProject(null))
+        }
+    }, []);
     if (project && loading === false) {
         return (
             <>{children}</>

@@ -20,7 +20,11 @@ const initialState: ProjectState = {
 const projectSlice = createSlice({
     name: "project",
     initialState,
-    reducers: {},
+    reducers: {
+        setProject: (state, action: PayloadAction<ProjectType | null>) => {
+            state.project = action.payload;
+        },
+    },
     extraReducers: {
         [getProject.pending.type]: (state) => {
             state.isLoading = true;
@@ -41,3 +45,4 @@ const projectSlice = createSlice({
 })
 
 export default projectSlice.reducer;
+export const { setProject } = projectSlice.actions;
