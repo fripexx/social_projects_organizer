@@ -21,11 +21,7 @@ const ProjectPage: FC<ProjectPageProps> = ({children}) => {
             if (!project || project.id !== params.id) dispatch(getProject(params.id));
         }
     }, [params.id, location.pathname, project]);
-    useEffect(() => {
-        return () => {
-            dispatch(setProject(null))
-        }
-    }, []);
+
     if (project && loading === false) {
         return (
             <>{children}</>
