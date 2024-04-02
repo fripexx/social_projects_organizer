@@ -27,8 +27,7 @@ module.exports = class UserDto {
             const fileModel = await FileModel.findById(this.#photoID);
 
             if(fileModel) {
-                const fileDto = new FileDto(fileModel);
-                this.photo = fileDto;
+                this.photo = new FileDto(fileModel);
             } else {
                 this.photo = null;
             }

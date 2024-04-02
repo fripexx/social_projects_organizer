@@ -90,7 +90,7 @@ class UserService {
 
         if (!userData || !tokenFromDB) throw ApiError.UnauthorizedError();
 
-        const user = await UserModel.findOne({_id: userData.id})
+        const user = await UserModel.findById(userData.id)
         const userDto = new UserDto(user);
         await userDto.setPhotoData();
 
@@ -101,24 +101,19 @@ class UserService {
     }
 
     async editUser(userData, editData) {
-        const findUser = await UserModel.findOne({_id: userData.id});
+        const {name, surname, email, phone, photo, telegram} = editData;
+        const findUser = await UserModel.findByIdAndUpdate(userData.id, {name, surname, email, phone, telegram});
 
-        for (const key in editData) {
-            const newValue = editData[key];
-            const fieldDefinition = UserModel.schema.paths[key];
+        if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
-            if (fieldDefinition.instance === "String" && typeof newValue === "string" && findUser[key] !== newValue) {
-                findUser[key] = newValue;
-            }
-        }
+        if (photo) {
+            if (findUser.photo instanceof ObjectId) await FileService.deleteImage(findUser.photo);
 
-        if(editData.photo) {
-            if(findUser.photo instanceof  ObjectId) await FileService.deleteImage(findUser.photo);
             const photoData = await FileService.uploadImage(editData.photo, userData.id, "User");
             findUser.photo = photoData.id;
-        }
 
-        await findUser.save();
+            await findUser.save();
+        }
 
         const userDto = new UserDto(findUser);
         await userDto.setPhotoData();
@@ -127,13 +122,11 @@ class UserService {
     }
 
     async editSettingsUser(userData, editData) {
-        const findUser = await UserModel.findOne({_id: userData.id});
+        const {darkMode, pushNotifications} = editData
+        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications});
 
-        findUser.darkMode = editData.darkMode;
-        findUser.pushNotifications = editData.pushNotifications;
+        if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
-        await findUser.save();
-  throw ApiError.UnauthorizedError();
         const userDto = new UserDto(findUser);
         await userDto.setPhotoData();
 
