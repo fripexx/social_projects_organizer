@@ -6,6 +6,7 @@ const router = new Router();
 const {body} = require('express-validator')
 const ApiError = require("../exceptions/api-error");
 const uploadAccountMiddleware = require('../middlewares/upload-account-middleware');
+const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
 const authMiddleware = require('../middlewares/auth-middleware')
 
 /**
@@ -49,6 +50,7 @@ router.get('/get-notes-user', [authMiddleware], NoteController.getAllUser);
 router.post('/add-project', [authMiddleware], ProjectController.addProject);
 router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
 router.get('/get-project', [authMiddleware], ProjectController.getProject);
+router.put('/edit-settings-project', [authMiddleware, uploadProjectLogoMiddleware], ProjectController.editSettingsProject);
 
 
 module.exports = router;

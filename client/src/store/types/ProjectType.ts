@@ -9,7 +9,10 @@ export interface ProjectType {
     administrator: string,
     team: string[],
     color: string | null,
+    instagram: string | null,
     instagramTokenAPI: string | null,
+    facebook: string | null,
+    tiktok: string | null,
     linkFigma: string | null,
     linkCanva: string | null,
     workingHours: {

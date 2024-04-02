@@ -1,7 +1,7 @@
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProjectType} from "../types/ProjectType";
-import {getProject} from "../thunks/ProjectThunks";
+import {editSettingsProject, getProject} from "../thunks/ProjectThunks";
 
 interface ProjectState {
     isLoading: boolean,
@@ -40,6 +40,19 @@ const projectSlice = createSlice({
             state.error = action.payload;
             state.project = null;
             state.projectId = null;
+        },
+        [editSettingsProject.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [editSettingsProject.fulfilled.type]: (state, action: PayloadAction<ProjectType>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.project = action.payload;
+            state.projectId = action.payload.id;
+        },
+        [editSettingsProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
         },
     }
 })

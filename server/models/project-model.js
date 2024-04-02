@@ -8,7 +8,10 @@ const ProjectSchema = new Schema({
     customer: {type: Schema.Types.ObjectId, ref: 'User', default: null},
     team: { type: [{ type: Schema.Types.ObjectId, ref: 'User' }], required: true },
     color: {type: String, default: null},
+    instagram: {type: String, default: null},
     instagramTokenAPI: {type: String, default: null},
+    tiktok: {type: String, default: null},
+    facebook: {type: String, default: null},
     linkFigma: {type: String, default: null},
     linkCanva: {type: String, default: null},
     workingHours: {

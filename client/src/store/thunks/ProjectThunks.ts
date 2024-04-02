@@ -29,3 +29,31 @@ export const getProject = createAsyncThunk(
         }
     }
 );
+export const editSettingsProject = createAsyncThunk(
+    'project/editSettingsProject',
+    async (data: FormData, thunkAPI) => {
+        try {
+            const response = await instanceServer.put<ProjectType>(
+                `/edit-settings-project`,
+                data,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                },
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);

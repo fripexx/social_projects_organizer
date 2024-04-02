@@ -34,6 +34,19 @@ class ProjectController {
             next(e);
         }
     }
+    async editSettingsProject(req, res, next) {
+        try {
+            const formData = req.body;
+            const photo = req?.photo;
+            const user = await req.user;
+
+            const project = await ProjectService.editSettingsProject(formData, photo, user);
+
+            return res.json(project);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new ProjectController();

@@ -14,6 +14,7 @@ import settingsIcon from "../assets/images/settings-icon.svg";
 import statisticsIcon from "../assets/images/statistics-icon.svg";
 import postsIcon from "../assets/images/posts-icon.svg";
 import paintIcon from "../assets/images/paint-icon.svg";
+import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 
 export interface Route {
     key: string;
@@ -25,6 +26,7 @@ export interface Route {
     requiresAuth?: boolean;
     showInUserMenu?: boolean;
     showInProjectMenu?: boolean;
+    showOnlyAdmin?: boolean;
 }
 
 export const routes: Route[] = [
@@ -130,11 +132,12 @@ export const routes: Route[] = [
         key: "settings",
         name: "Налаштування",
         path: "/project/:id/settings",
-        component: ProjectPosts,
+        component: ProjectSettings,
         icon: settingsIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
+        showOnlyAdmin: true
     },
     {
         key: "information",

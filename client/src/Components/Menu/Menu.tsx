@@ -3,6 +3,7 @@ import classes from "./Menu.module.scss";
 import {Route} from "../../Routes/routes";
 import {NavLink, useParams} from "react-router-dom";
 import {ReactSVG} from 'react-svg'
+import {useAppSelector} from "../../store/hooks/redux";
 
 interface MenuProps {
     links: Route[];
@@ -11,12 +12,16 @@ interface MenuProps {
 
 const Menu: FC<MenuProps> = ({links, ...menuProps}) => {
     const {id} = useParams();
+    const project = useAppSelector(state => state.ProjectReducer.project);
+    const user = useAppSelector(state => state.UserReducer.user);
 
     return (
         <nav className={classes.container} {...menuProps}>
 
             {links.map(link => {
-                const {key, name, path, icon} = link;
+                const {key, name, path, icon, showOnlyAdmin} = link;
+
+                if(showOnlyAdmin === true && user?.id !== project?.administrator) return;
 
                 return (
                     <NavLink
