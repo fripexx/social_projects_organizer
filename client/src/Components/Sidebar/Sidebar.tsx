@@ -6,9 +6,11 @@ import CardUser from "../CardUser/CardUser";
 import Menu from "../Menu/Menu";
 import {logout} from "../../store/thunks/UserThunks";
 import ProjectSummary from "../ProjectSummary/ProjectSummary";
+import {useLocation} from "react-router-dom";
 
 const Sidebar: FC = () => {
     const dispatch = useAppDispatch();
+    const location = useLocation()
     const user = useAppSelector(state => state.UserReducer.user)
     const project = useAppSelector(state => state.ProjectReducer.project)
     const userRoutes = routes.filter(route => route.showInUserMenu);
@@ -22,11 +24,11 @@ const Sidebar: FC = () => {
     return (
         <div className={classes.container}>
 
-            {project &&
+            {project && location.pathname.indexOf("/project/") === 0  &&
                 <ProjectSummary project={project}/>
             }
 
-            {user && project === null &&
+            {user && location.pathname.indexOf("/project/") === -1  &&
                 <CardUser user={user}/>
             }
 
