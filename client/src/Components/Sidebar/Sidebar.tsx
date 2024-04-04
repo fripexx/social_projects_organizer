@@ -41,7 +41,7 @@ const Sidebar: FC = () => {
                 <CardUser user={user}/>
             }
 
-            <Menu links={project ? projectRoutes : userRoutes}/>
+            <Menu links={project && location.pathname.indexOf("/project/") === 0 ? projectRoutes : userRoutes}/>
 
             <button className={classes.logout} onClick={onClickLogout}>
 
