@@ -1,13 +1,17 @@
-.form{
+.form {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
     height: 100%;
     width: 100%;
     column-gap: 50px;
     row-gap: 15px;
+
+    @media (max-width: 900px) {
+        grid-template-columns:1fr;
+    }
 }
 
-.formColumn{
+.formColumn {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;

@@ -8,6 +8,11 @@
     transition: 0.15s ease;
     filter: brightness(0.95);
     min-width: 280px;
+
+    @media (max-width: 480px) {
+        width: 100%;
+        display: flex;
+    }
 }
 
 .activeProject {

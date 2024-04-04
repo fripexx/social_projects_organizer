@@ -1,4 +1,4 @@
-.container{
+.container {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -10,9 +10,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 15px;
 }
 
-.containerActive{
+.containerActive {
     z-index: 11;
     opacity: 1;
     background: var(--Color-Dark-Alpha);

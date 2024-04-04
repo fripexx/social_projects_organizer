@@ -3,17 +3,25 @@
     grid-template-columns: repeat(2, 1fr);
     height: 100%;
     min-height: 100vh;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+    }
 }
 
 .form {
     background: var(--Color-Grey, #F7F7FA);
-    padding: 0px 15px;
+    padding: 0px 15px 50px;
 }
 
 .content {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 900px) {
+        display: none;
+    }
 }
 
 .container {

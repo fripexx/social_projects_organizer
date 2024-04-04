@@ -7,12 +7,14 @@ import Menu from "../Menu/Menu";
 import {logout} from "../../store/thunks/UserThunks";
 import ProjectSummary from "../ProjectSummary/ProjectSummary";
 import {useLocation} from "react-router-dom";
+import {showSidebar} from "../../store/reducers/UISlice";
 
 const Sidebar: FC = () => {
     const dispatch = useAppDispatch();
     const location = useLocation()
     const user = useAppSelector(state => state.UserReducer.user)
     const project = useAppSelector(state => state.ProjectReducer.project)
+    const showMobileSidebar = useAppSelector(state => state.UIReducer.showMobileSidebar)
     const userRoutes = routes.filter(route => route.showInUserMenu);
     const projectRoutes = routes.filter(route => route.showInProjectMenu);
 
@@ -21,8 +23,15 @@ const Sidebar: FC = () => {
         dispatch(logout())
     };
 
+    useEffect(() => {
+        setTimeout(() => {
+            dispatch(showSidebar(false))
+        }, 1)
+
+    }, [location]);
+
     return (
-        <div className={classes.container}>
+        <div className={classes.container} data-open-mobile={showMobileSidebar}>
 
             {project && location.pathname.indexOf("/project/") === 0  &&
                 <ProjectSummary project={project}/>
