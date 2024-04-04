@@ -21,7 +21,7 @@ const Menu: FC<MenuProps> = ({links, ...menuProps}) => {
             {links.map(link => {
                 const {key, name, path, icon, showOnlyAdmin} = link;
 
-                if(showOnlyAdmin === true && user?.id !== project?.administrator) return;
+                if(showOnlyAdmin === true && user?.id !== project?.administrator) return null;
 
                 return (
                     <NavLink
