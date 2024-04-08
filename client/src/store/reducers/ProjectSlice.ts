@@ -1,13 +1,15 @@
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProjectType} from "../types/ProjectType";
-import {editSettingsProject, getProject} from "../thunks/ProjectThunks";
+import {editSettingsProject, getProject, getNotesProject} from "../thunks/ProjectThunks";
+import {NoteType} from "../types/NoteType";
 
 interface ProjectState {
     isLoading: boolean,
     error: ErrorResponseType | null;
     project: ProjectType | null;
-    projectId: string | null
+    projectId: string | null,
+    notes: NoteType[]
 }
 
 const initialState: ProjectState = {
@@ -15,6 +17,7 @@ const initialState: ProjectState = {
     error: null,
     project: null,
     projectId: null,
+    notes: [],
 }
 
 const projectSlice = createSlice({
@@ -53,6 +56,19 @@ const projectSlice = createSlice({
         [editSettingsProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
+        },
+        [getNotesProject.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [getNotesProject.fulfilled.type]: (state, action: PayloadAction<NoteType[]>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.notes = action.payload;
+        },
+        [getNotesProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+            state.notes = [];
         },
     }
 })

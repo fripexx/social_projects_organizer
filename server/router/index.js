@@ -52,5 +52,10 @@ router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
 router.get('/get-project', [authMiddleware], ProjectController.getProject);
 router.put('/edit-settings-project', [authMiddleware, uploadProjectLogoMiddleware], ProjectController.editSettingsProject);
 
+/**
+ * Project notes routes
+ */
+router.get('/get-notes-project', [authMiddleware], NoteController.getAllProject);
+
 
 module.exports = router;

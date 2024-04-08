@@ -1,4 +1,5 @@
 const NoteService = require("../service/note-service");
+const ProjectService = require("../service/project-service");
 
 class NoteController {
     async addNoteUser(req, res, next) {
@@ -53,6 +54,18 @@ class NoteController {
             next(e)
         }
 
+    }
+    async getAllProject(req, res, next) {
+        try {
+            const {id} = req.query;
+            const user = await req.user;
+
+            const notes = await NoteService.getAllProject(id, user);
+
+            return res.json(notes);
+        } catch (e) {
+            next(e);
+        }
     }
 }
 

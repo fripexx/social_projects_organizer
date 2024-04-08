@@ -15,6 +15,7 @@ import statisticsIcon from "../assets/images/statistics-icon.svg";
 import postsIcon from "../assets/images/posts-icon.svg";
 import paintIcon from "../assets/images/paint-icon.svg";
 import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
+import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
 
 export interface Route {
     key: string;
@@ -163,7 +164,7 @@ export const routes: Route[] = [
         key: "notes",
         name: "Нотатки",
         path: "/project/:id/notes",
-        component: ProjectPosts,
+        component: ProjectNotes,
         icon: notesIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,

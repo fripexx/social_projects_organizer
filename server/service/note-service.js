@@ -1,5 +1,6 @@
 const NoteModel = require('../models/note-model');
 const ApiError = require("../exceptions/api-error");
+const ProjectService = require("../service/project-service");
 const NoteDto = require("../dtos/note-dto");
 
 class NoteService {
@@ -40,6 +41,26 @@ class NoteService {
         const notes = await NoteModel.find(query);
 
         return notes.map(note => new NoteDto(note));
+    }
+
+    async getAllProject(id, user){
+        const findProject = await ProjectService.getProject(user, id);
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
+
+        return await NoteModel.
+            find({'belongTo.id': id, 'belongTo.model': 'Project'}).
+            populate({
+                path: 'author.id',
+                select: 'id name surname photo',
+                populate: {
+                    path: 'photo',
+                    select: '-_id path cropped',
+                    model: 'File'
+                }
+            }).
+            lean().
+            exec();
     }
 }
 

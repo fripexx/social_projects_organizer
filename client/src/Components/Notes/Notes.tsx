@@ -7,9 +7,10 @@ interface NotesProps {
     notes: NoteType[],
     changeCallback?:ChangeCallback,
     deleteCallback?: DeleteCallback,
+    showPhoto?: boolean
 }
 
-const Notes: FC<NotesProps> = ({notes, deleteCallback, changeCallback}) => {
+const Notes: FC<NotesProps> = ({notes, deleteCallback, changeCallback, showPhoto}) => {
     return (
         <div className={classes.notes}>
 
@@ -21,6 +22,7 @@ const Notes: FC<NotesProps> = ({notes, deleteCallback, changeCallback}) => {
                             note={note}
                             deleteCallback={deleteCallback}
                             changeCallback={changeCallback}
+                            showPhoto={showPhoto}
                         />
                     )
                 })
