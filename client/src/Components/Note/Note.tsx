@@ -169,11 +169,11 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
 
                 <div className={classes.footer}>
 
-                    {(showPhoto && note.author.photo) &&
+                    {(showPhoto && typeof note.author !== "string" && note.author.photo !== null) &&
                         <div className={classes.author}>
                             <img
                                 loading={'lazy'}
-                                src={`${process.env.REACT_APP_API_URL}/${note.author.photo}`}
+                                src={`${process.env.REACT_APP_API_URL}/${note.author.photo.cropped['300']}`}
                                 alt=""
                             />
                         </div>
@@ -201,11 +201,11 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
 
                 <div className={classes.footer}>
 
-                    {(showPhoto && note.author.photo) &&
+                    {(showPhoto && typeof note.author !== "string" && note.author.photo !== null) &&
                         <div className={classes.author}>
                             <img
                                 loading={'lazy'}
-                                src={`${process.env.REACT_APP_API_URL}/${note.author.photo}`}
+                                src={`${process.env.REACT_APP_API_URL}/${note.author.photo.cropped['300']}`}
                                 alt=""
                             />
                         </div>

@@ -1,7 +1,7 @@
 const NoteService = require("../service/note-service");
-const ProjectService = require("../service/project-service");
 
 class NoteController {
+    // Users
     async addNoteUser(req, res, next) {
         try {
             const {text} = await req.body;
@@ -15,7 +15,7 @@ class NoteController {
                 }
             }
 
-            const note = await NoteService.createNote(noteParams)
+            const note = await NoteService.createNoteUser(noteParams)
 
             return res.json(note);
         } catch (e) {
@@ -26,7 +26,7 @@ class NoteController {
         try {
             const id = req.params.id;
             const user = await req.user;
-            const data = await NoteService.deleteNote(user, id);
+            const data = await NoteService.deleteNoteUser(user, id);
 
             return res.json(data);
         } catch (e) {
@@ -55,6 +55,8 @@ class NoteController {
         }
 
     }
+
+    //Projects
     async getAllProject(req, res, next) {
         try {
             const {id} = req.query;
