@@ -1,13 +1,12 @@
-const UserModel = require('../models/user-model');
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
+const mongoose = require('mongoose');
+const UserModel = require('../models/user-model');
 const mailService = require('./mail-service')
 const FileService = require('./file-service')
 const tokenService = require('./token-service')
 const UserDto = require("../dtos/user-dto")
 const ApiError = require('../exceptions/api-error')
-const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types;
 
 class UserService {
     async registration(typeUser, email, password, name, surname, phone) {
@@ -17,7 +16,7 @@ class UserService {
 
         const hashPassword = await bcrypt.hash(password, 3)
         const activationLink = uuid.v4()
-        const user = await UserModel.create({
+        const createdUser = await UserModel.create({
             typeUser,
             email,
             password: hashPassword,
@@ -28,8 +27,8 @@ class UserService {
         })
         await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${activationLink}`);
 
+        const user = await UserModel.findById(createdUser._id).populate({path: 'photo', model: 'File'});
         const userDto = new UserDto(user);
-        await userDto.setPhotoData();
 
         const tokens = tokenService.generateTokens({...userDto});
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -38,16 +37,13 @@ class UserService {
     }
 
     async activate(activationLink) {
-        const user = await UserModel.findOne({activationLink})
+        const user = await UserModel.findOneAndUpdate({activationLink}, {isActivated: true})
 
         if (!user) throw ApiError.BadRequest('Некоректна силка активації');
-
-        user.isActivated = true;
-        await user.save();
     }
 
     async login(email, password) {
-        const user = await UserModel.findOne({email})
+        const user = await UserModel.findOne({email}).populate({path: 'photo', model: 'File'});
 
         if (!user) throw ApiError.BadRequest("Користувач з таким email не знайдений")
         if (user.isActivated === false) throw ApiError.UnconfirmedEmail();
@@ -57,8 +53,6 @@ class UserService {
         if (!isPassEquals) throw ApiError.BadRequest("Невірний пароль")
 
         const userDto = new UserDto(user);
-        await userDto.setPhotoData();
-
         const tokens = tokenService.generateTokens({...userDto})
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -78,8 +72,7 @@ class UserService {
     }
 
     async logout(refreshToken) {
-        const token = await tokenService.removeToken(refreshToken);
-        return token;
+        return await tokenService.removeToken(refreshToken);
     }
 
     async refresh(refreshToken) {
@@ -90,10 +83,8 @@ class UserService {
 
         if (!userData || !tokenFromDB) throw ApiError.UnauthorizedError();
 
-        const user = await UserModel.findById(userData.id)
+        const user = await UserModel.findById(userData.id).populate({path: 'photo', model: 'File'});
         const userDto = new UserDto(user);
-        await userDto.setPhotoData();
-
         const tokens = tokenService.generateTokens({...userDto})
 
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
@@ -107,7 +98,7 @@ class UserService {
         if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
         if (photo) {
-            if (findUser.photo instanceof ObjectId) await FileService.deleteImage(findUser.photo);
+            if (mongoose.isValidObjectId(findUser.photo)) await FileService.deleteImage(findUser.photo);
 
             const photoData = await FileService.uploadImage(editData.photo, userData.id, "User");
             findUser.photo = photoData.id;
@@ -115,22 +106,18 @@ class UserService {
             await findUser.save();
         }
 
-        const userDto = new UserDto(findUser);
-        await userDto.setPhotoData();
+        await findUser.populate({path: 'photo', model: 'File'});
 
-        return userDto;
+        return new UserDto(findUser);
     }
 
     async editSettingsUser(userData, editData) {
         const {darkMode, pushNotifications} = editData
-        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications});
+        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications}).populate({path: 'photo', model: 'File'});
 
         if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
-        const userDto = new UserDto(findUser);
-        await userDto.setPhotoData();
-
-        return userDto;
+        return new UserDto(findUser);
     }
 }
 

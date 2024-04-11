@@ -7,14 +7,10 @@ class UserController {
         try {
             const errors = validationResult(req)
 
-            if(!errors.isEmpty()){
-                return next(ApiError.BadRequest("Помилка валідації", errors.array()))
-            }
+            if(!errors.isEmpty()) return next(ApiError.BadRequest("Помилка валідації", errors.array()))
 
             const {typeUser,email, password, name, surname, phone} = req.body;
             const userData = await UserService.registration(typeUser,email, password, name, surname, phone)
-
-            //res.cookie('refreshToken', userData.refreshToken, {maxAge: 30*24*60*60*100, httpOnly: true, /* secure: true */ })
 
             return res.json(userData)
         } catch (e) {
@@ -36,6 +32,7 @@ class UserController {
     async sendActivateLink(req, res, next) {
         try {
             const {email} = req.body;
+
             await UserService.sendActivateLink(email);
 
             return res.json();
@@ -47,6 +44,7 @@ class UserController {
         try {
             const {refreshToken} = req.cookies;
             const token  = await UserService.logout(refreshToken);
+
             res.clearCookie('refreshToken');
 
             return res.json(token);
@@ -57,7 +55,9 @@ class UserController {
     async activate(req, res, next) {
         try {
             const activationLink = req.params.link;
+
             await UserService.activate(activationLink);
+
             return res.redirect(process.env.CLIENT_URL)
         } catch (e) {
             next(e);
@@ -67,6 +67,7 @@ class UserController {
         try {
             const {refreshToken} = req.cookies;
             const userData = await UserService.refresh(refreshToken);
+
             res.cookie('refreshToken', userData.refreshToken, {maxAge: 30*24*60*60*100, httpOnly: true, /* secure: true */ })
 
             return res.json(userData)
@@ -76,10 +77,8 @@ class UserController {
     }
     async editUser(req, res, next) {
         try {
-            const { name, surname, email, phone, telegram } = req.body;
             const photo = req?.photo;
             const user = await req.user;
-
             const data = await UserService.editUser(user, {...req.body, photo});
 
             return res.json(data);
@@ -89,9 +88,8 @@ class UserController {
     }
     async editSettingsUser(req, res, next) {
         try {
-            const { darkMode, pushNotifications} = req.body;
+            const {darkMode, pushNotifications} = req.body;
             const user = await req.user;
-
             const data = await UserService.editSettingsUser(user, {darkMode, pushNotifications});
 
             return res.json(data);

@@ -9,23 +9,17 @@ module.exports = class FileDto {
             model: model.belongTo.model
         }
 
-        if(model?.cropped) this.getCropped(model.cropped)
+        if(model?.cropped) this.addCropped(model.cropped)
     }
 
-    getCropped(obj) {
+    addCropped(obj) {
         try {
             if(obj) {
                 const cropped = obj.toObject();
                 const returnData = {};
 
                 for (const key in cropped) {
-                    if (cropped.hasOwnProperty(key)) {
-                        const croppedPath = cropped[key];
-
-                        if (key !== "_id" && croppedPath) {
-                            returnData[key] = croppedPath;
-                        }
-                    }
+                    if (cropped.hasOwnProperty(key)) if (key !== "_id" && cropped[key]) returnData[key] = cropped[key];
                 }
 
                 this.cropped = returnData;

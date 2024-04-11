@@ -1,12 +1,8 @@
-const FileModel = require("../models/file-model");
-const FileDto = require("../dtos/file-dto");
+const mongoose = require("mongoose");
+const FileDto = require("../dtos/file-dto")
 
 module.exports = class UserDto {
-    email;
-    id;
-    isActivated;
     photo = null;
-    #photoID = null;
 
     constructor(model) {
         this.id = model._id;
@@ -19,22 +15,10 @@ module.exports = class UserDto {
         this.darkMode = model.darkMode;
         this.pushNotifications = model.pushNotifications;
         this.isActivated = model.isActivated;
-        this.#photoID = model.photo;
-    }
+        this.photo = model.photo;
 
-    async setPhotoData() {
-        try {
-            const fileModel = await FileModel.findById(this.#photoID);
-
-            if(fileModel) {
-                this.photo = new FileDto(fileModel);
-            } else {
-                this.photo = null;
-            }
-
-        } catch (error) {
-            this.photo = null;
-            console.error("Помилка при отриманні фотографії:", error);
+        if(mongoose.isValidObjectId(model.photo)) {
+            this.photo = new FileDto(this.photo);
         }
     }
 };
