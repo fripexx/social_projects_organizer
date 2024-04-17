@@ -169,7 +169,7 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
 
                 <div className={classes.footer}>
 
-                    {(showPhoto && typeof note.author !== "string" && note.author.photo !== null) &&
+                    {(showPhoto && note.author !== null && typeof note.author === "object" && note.author.photo !== null && note.author.photo?.cropped) &&
                         <div className={classes.author}>
                             <img
                                 loading={'lazy'}
@@ -201,7 +201,7 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
 
                 <div className={classes.footer}>
 
-                    {(showPhoto && typeof note.author !== "string" && note.author.photo !== null) &&
+                    {(showPhoto && note.author !== null && typeof note.author === "object" && note.author.photo !== null && note.author.photo?.cropped) &&
                         <div className={classes.author}>
                             <img
                                 loading={'lazy'}

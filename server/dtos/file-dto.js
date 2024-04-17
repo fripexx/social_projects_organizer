@@ -12,10 +12,9 @@ module.exports = class FileDto {
         if(model?.cropped) this.addCropped(model.cropped)
     }
 
-    addCropped(obj) {
+    addCropped(cropped) {
         try {
-            if(obj) {
-                const cropped = obj.toObject();
+            if(cropped) {
                 const returnData = {};
 
                 for (const key in cropped) {

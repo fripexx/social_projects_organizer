@@ -10,7 +10,7 @@ module.exports = class UserDto {
         this.email = model.email;
         this.phone = model.phone;
         this.telegram = model.telegram;
-        this.photo = this.convertPhoto();
+        this.photo = this.convertPhoto(model.photo);
 
         if(type === "full") {
             this.typeUser = model.typeUser;

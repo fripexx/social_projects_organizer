@@ -49,10 +49,9 @@ class NoteService {
             find({'belongTo.id': id, 'belongTo.model': 'Project'}).
             populate({
                 path: 'author',
-                select: 'id name surname photo',
+                model: 'User',
                 populate: {
                     path: 'photo',
-                    select: '-_id path cropped',
                     model: 'File'
                 }
             }).
