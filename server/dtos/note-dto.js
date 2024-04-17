@@ -1,4 +1,7 @@
 const mongoose = require('mongoose');
+const FileDto = require("./file-dto");
+const UserDto = require("./user-dto");
+const {ObjectId} = require('mongoose');
 
 module.exports = class NoteDto {
     constructor(model) {
@@ -9,30 +12,16 @@ module.exports = class NoteDto {
             id: model.belongTo.id,
             model: model.belongTo.model
         }
-        if(model.author) {
-            if (mongoose.isValidObjectId(model.author)) this.author = model.author;
-            if(typeof model.author === 'object' && model.author?._id){
+        this.author = this.convertAuthor(model.author);
+    }
 
-                this.author = {
-                    id: model.author._id,
-                    name: model.author?.name,
-                    surname: model.author?.surname,
-                    photo: null,
-                }
+    convertAuthor(author) {
+        if(!author) return null
 
-                if(model.author.photo) {
-                    this.author.photo = {
-                        path: model.author.photo.path,
-                        cropped: {
-                            '300': model.author.photo.cropped['300'],
-                            '600': model.author.photo.cropped['600'],
-                            '1080': model.author.photo.cropped['1080'],
-                        }
-                    }
-                }
-            }
-        } else {
-            this.author = null;
-        }
+        if(author instanceof ObjectId) return author
+
+        if(author?._id instanceof ObjectId) return new UserDto(author)
+
+        return null;
     }
 };
