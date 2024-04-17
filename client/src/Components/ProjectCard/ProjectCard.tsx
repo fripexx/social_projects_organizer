@@ -8,13 +8,11 @@ interface ProjectCardProps {
 }
 
 const ProjectData: FC<ProjectCardProps> = ({project}) => {
-    const {name, logo, customerData} = project;
+    const {name, logo, customer} = project;
 
     return (
         <>
-            { typeof logo !== 'string' &&
-                <Logo photo={logo}/>
-            }
+            <Logo photo={typeof logo !== 'string' ? logo : null }/>
 
             <div className={classes.info}>
 
@@ -22,9 +20,9 @@ const ProjectData: FC<ProjectCardProps> = ({project}) => {
                     {name}
                 </span>
 
-                {customerData &&
+                {customer !== null && typeof customer === "object" &&
                     <span className={classes.customer}>
-                        {customerData.name} {customerData.surname}
+                        {customer.name} {customer.surname}
                     </span>
                 }
 

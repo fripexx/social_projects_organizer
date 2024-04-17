@@ -1,5 +1,6 @@
 import {FileType} from "./FileType";
 import {NoteType} from "./NoteType";
+import {BasicUserInfo} from "./UserType";
 
 export interface ProjectType {
     id: string,
@@ -7,6 +8,7 @@ export interface ProjectType {
     name: string,
     logo: FileType | string | null,
     administrator: string,
+    customer: BasicUserInfo | string | null,
     team: string[],
     color: string | null,
     instagram: string | null,
@@ -26,10 +28,4 @@ export interface ProjectType {
         strategy: string | null
     },
     notes: NoteType[],
-    customerData?: {
-        name: string,
-        surname: string
-        email: string,
-        phone: string
-    }
 }
