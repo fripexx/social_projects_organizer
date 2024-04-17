@@ -18,12 +18,12 @@ class ProjectService {
         return new ProjectDto(project);
     }
     async getProjects(user) {
-        const projects = await ProjectModal.find({ team: user.id }).populate({ path: 'logo', model: 'File'}).populate({ path: 'customer', model: 'User'});
+        const projects = await ProjectModal.find({ team: user.id }).populate({ path: 'logo', model: 'File'}).populate({ path: 'customer', model: 'User'}).lean();
 
         return projects.map(project => new ProjectDto(project));
     }
     async getProject(user, id) {
-        const findProject = await ProjectModal.findOne({ _id: id, team: user.id }).populate({ path: 'logo', model: 'File'});
+        const findProject = await ProjectModal.findOne({ _id: id, team: user.id }).populate({ path: 'logo', model: 'File'}).lean();
 
         if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.')
 
@@ -46,7 +46,7 @@ class ProjectService {
             findProject.save();
         }
 
-        await findProject.populate({ path: 'logo', model: 'File'});
+        await findProject.populate({ path: 'logo', model: 'File'}).lean();
 
         return new ProjectDto(findProject);
     }
