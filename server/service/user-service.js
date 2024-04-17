@@ -27,7 +27,7 @@ class UserService {
         })
         await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${activationLink}`);
 
-        const user = await UserModel.findById(createdUser._id).populate({path: 'photo', model: 'File'});
+        const user = await UserModel.findById(createdUser._id).populate({path: 'photo', model: 'File'}).lean();
         const userDto = new UserDto(user);
 
         const tokens = tokenService.generateTokens({...userDto});
@@ -43,7 +43,7 @@ class UserService {
     }
 
     async login(email, password) {
-        const user = await UserModel.findOne({email}).populate({path: 'photo', model: 'File'});
+        const user = await UserModel.findOne({email}).populate({path: 'photo', model: 'File'}).lean();
 
         if (!user) throw ApiError.BadRequest("Користувач з таким email не знайдений")
         if (user.isActivated === false) throw ApiError.UnconfirmedEmail();
@@ -83,7 +83,7 @@ class UserService {
 
         if (!userData || !tokenFromDB) throw ApiError.UnauthorizedError();
 
-        const user = await UserModel.findById(userData.id).populate({path: 'photo', model: 'File'});
+        const user = await UserModel.findById(userData.id).populate({path: 'photo', model: 'File'}).lean();
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto})
 
@@ -106,14 +106,14 @@ class UserService {
             await findUser.save();
         }
 
-        await findUser.populate({path: 'photo', model: 'File'});
+        await findUser.populate({path: 'photo', model: 'File'}).lean();
 
         return new UserDto(findUser);
     }
 
     async editSettingsUser(userData, editData) {
         const {darkMode, pushNotifications} = editData
-        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications}).populate({path: 'photo', model: 'File'});
+        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications}).populate({path: 'photo', model: 'File'}).lean();
 
         if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
