@@ -1,14 +1,8 @@
-const FileModel = require("../models/file-model");
-const UserModel = require("../models/user-model");
+const mongoose = require("mongoose")
 const FileDto = require("./file-dto");
+const UserDto = require("./user-dto");
+const { ObjectId } = mongoose.Types;
 module.exports = class ProjectDto {
-    #logoID;
-    logo = null;
-    #files = {
-        brif: null,
-        contract: null,
-        strategy: null,
-    };
     files = {
         brif: null,
         contract: null,
@@ -18,8 +12,9 @@ module.exports = class ProjectDto {
         this.id = model._id;
         this.isActive = model.isActive;
         this.name = model.name;
+        this.logo = this.convertLogo(model.logo)
         this.administrator = model.administrator;
-        this.customer = model.customer;
+        this.customer = this.convertCustomer(model.customer);
         this.team = model.team;
         this.color = model.color;
         this.instagram = model.instagram;
@@ -34,61 +29,25 @@ module.exports = class ProjectDto {
         };
         this.workingDays = model.workingDays;
         this.notes = model.notes;
-        this.#logoID = model.logo;
-        this.#files = {
-            brif: model.files.brif,
-            contract: model.files.contract,
-            strategy: model.files.strategy,
-        };
-    }
-    async setPhotoData() {
-        try {
-            const fileModel = await FileModel.findById(this.#logoID);
-
-            if(fileModel) this.logo = new FileDto(fileModel);
-        } catch (error) {
-            console.error("Помилка при отриманні фотографії:", error);
-        }
     }
 
-    async setCustomerData() {
-        try {
-            if(this.customer) {
-                const findUser = await UserModel.findById(this.customer);
+    convertLogo(logo) {
+        if(!logo) return null
 
-                if(findUser) {
-                    this.customerData = {
-                        name: findUser.name,
-                        surname: findUser.surname,
-                        email: findUser.email,
-                        phone: findUser.phone,
-                    };
-                }
-            }
+        if(logo instanceof ObjectId) return logo
 
-        } catch (error) {
-            console.error("Помилка при отриманні фотографії:", error);
-        }
+        if(logo?._id instanceof ObjectId) return new FileDto(logo)
+
+        return null;
     }
 
-    async setFilesData(){
-        try {
-            if(this.#files.brif) {
-                const brifModel = await FileModel.findById(this.#files.brif);
-                if(brifModel) this.files.brif = new FileDto(brifModel)
-            }
+    convertCustomer(user) {
+        if(!user) return null
 
-            if(this.#files.contract) {
-                const contractModel = await FileModel.findById(this.#files.contract);
-                if(contractModel) this.files.brif = new FileDto(contractModel)
-            }
+        if(user instanceof ObjectId) return user
 
-            if(this.#files.strategy) {
-                const strategyModel = await FileModel.findById(this.#files.strategy);
-                if(strategyModel) this.files.brif = new FileDto(strategyModel)
-            }
-        } catch (error) {
-            console.error("Помилка при отриманні файлів:", error);
-        }
+        if(user?._id instanceof ObjectId) return new UserDto(user, 'basic')
+
+        return null
     }
 };

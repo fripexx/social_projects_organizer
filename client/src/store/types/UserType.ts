@@ -1,14 +1,17 @@
 import {FileType} from "./FileType";
 
-export interface UserType {
+export interface BasicUserInfo {
     id: string,
-    typeUser: 'customer' | 'smm_manager' | 'targetologist' | 'designer',
     name: string,
     surname: string,
     email: string,
+    telegram: string,
     phone: string,
     photo: FileType | null,
-    telegram: string,
+}
+
+export interface UserType extends BasicUserInfo {
+    typeUser: 'customer' | 'smm_manager' | 'targetologist' | 'designer',
     darkMode: boolean,
     pushNotifications: boolean,
     isActivated: boolean,
