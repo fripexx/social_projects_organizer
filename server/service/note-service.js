@@ -1,4 +1,5 @@
 const NoteModel = require('../models/note-model');
+const ProjectModel = require('../models/project-model');
 const ApiError = require("../exceptions/api-error");
 const ProjectService = require("../service/project-service");
 const NoteDto = require("../dtos/note-dto");
@@ -18,6 +19,7 @@ class NoteService {
 
         return new NoteDto(note);
     }
+
     async deleteNoteUser(author, id) {
         const findNote = await NoteModel.findOneAndDelete({"_id": id, "author": author.id}).lean();
 
@@ -25,8 +27,9 @@ class NoteService {
 
         return new NoteDto(findNote);
     }
+
     async changeNoteUser(author, id, text) {
-        const findNote = await NoteModel.findOneAndUpdate({"_id": id, "author": author.id}, {text}).lean();
+        const findNote = await NoteModel.findOneAndUpdate({"_id": id, "author": author.id, "belongTo.id": author.id, "belongTo.model": "User"}, {text}).lean();
 
         if(!findNote) throw ApiError.BadRequest("Нотатку не знайдено.")
 
@@ -59,6 +62,64 @@ class NoteService {
             exec();
 
         return notes.map(note => new NoteDto(note));
+    }
+
+    async addNoteInProject(user, idProject, text) {
+        const findProject = await ProjectModel.findOne({_id: idProject, team: user.id}).lean().exec();
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
+
+        const data = {
+            text: text,
+            dateCreated: new Date(),
+            author: user.id,
+            belongTo: {
+                id: idProject,
+                model: "Project"
+            }
+        }
+        const createNote = await NoteModel.create(data);
+        const note = await NoteModel.findById(createNote._id).populate({
+            path: 'author',
+            model: 'User',
+            populate: {
+                path: 'photo',
+                model: 'File'
+            }
+        }).lean().exec();
+
+        return new NoteDto(note);
+    }
+
+    async deleteNoteInProject(user, idNote, idProject) {
+        const findProject = await ProjectModel.findOne({_id: idProject, team: user.id}).lean();
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
+
+        const findNote = await NoteModel.findOne({_id: idNote, 'belongTo.id': idProject, 'belongTo.model': "Project" });
+
+        if(!findNote) throw ApiError.BadRequest('Помилка: Нотатки з таким ID не знайдено або у вас немає прав доступу до неї')
+        if(findProject.administrator.toString() !== user.id && findNote.author.toString() !== user.id) throw ApiError.BadRequest('Помилка: Цей юзер не має право доступу змінювати або видаляти цю нотатку')
+
+        await findNote.deleteOne();
+
+        return new NoteDto(findNote);
+    }
+
+    async changeNoteInProject(user, idNote, idProject, text) {
+        const findProject = await ProjectModel.findOne({_id: idProject, team: user.id}).lean();
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
+
+        const findNote = await NoteModel.findOne({_id: idNote, 'belongTo.id': idProject, 'belongTo.model': "Project" });
+
+        if(!findNote) throw ApiError.BadRequest('Помилка: Нотатки з таким ID не знайдено або у вас немає прав доступу до неї')
+        if(findProject.administrator.toString() !== user.id && findNote.author.toString() !== user.id) throw ApiError.BadRequest('Помилка: Цей юзер не має право доступу змінювати або видаляти цю нотатку')
+
+        findNote.text = text;
+        await findNote.save();
+
+        return new NoteDto(findNote);
     }
 }
 

@@ -1,7 +1,13 @@
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ProjectType} from "../types/ProjectType";
-import {editSettingsProject, getProject, getNotesProject} from "../thunks/ProjectThunks";
+import {
+    editSettingsProject,
+    getProject,
+    getNotesProject,
+    addNoteInProject,
+    deleteNoteInProject, changeNoteInProject
+} from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
 
 interface ProjectState {
@@ -66,6 +72,39 @@ const projectSlice = createSlice({
             state.notes = action.payload;
         },
         [getNotesProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+            state.notes = [];
+        },
+        [addNoteInProject.pending.type]: (state) => {},
+        [addNoteInProject.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
+            state.error = null;
+            state.notes = [...state.notes, action.payload]
+        },
+        [addNoteInProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+            state.notes = [];
+        },
+        [deleteNoteInProject.pending.type]: (state) => {},
+        [deleteNoteInProject.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
+            state.error = null;
+            state.notes = [...state.notes].filter(note => note.id != action.payload.id);
+        },
+        [deleteNoteInProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+            state.notes = [];
+        },
+        [changeNoteInProject.pending.type]: (state) => {},
+        [changeNoteInProject.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
+            state.error = null;
+            state.notes = state.notes.map(note => {
+                if(note.id === action.payload.id) note.text = action.payload.text
+                return note;
+            });
+        },
+        [changeNoteInProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
             state.notes = [];

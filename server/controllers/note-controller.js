@@ -69,6 +69,40 @@ class NoteController {
             next(e);
         }
     }
+    async addNoteInProject(req, res, next) {
+        try {
+          const {text, idProject} = await req.body;
+          const user = await req.user;
+
+          const note = await NoteService.addNoteInProject(user, idProject, text);
+
+          return res.json(note);
+        } catch (e) {
+            next(e);
+        }
+    }
+    async deleteNoteInProject(req, res, next) {
+        try {
+          const {idNote, idProject} = await req.query;
+          const user = await req.user;
+          const note = await NoteService.deleteNoteInProject(user, idNote, idProject);
+
+          return res.json(note);
+        } catch (e) {
+            next(e);
+        }
+    }
+    async changeNoteInProject(req, res, next) {
+        try {
+          const {idNote, idProject, text} = await req.body;
+          const user = await req.user;
+          const note = await NoteService.changeNoteInProject(user, idNote, idProject, text);
+
+          return res.json(note);
+        } catch (e) {
+            next(e);
+        }
+    }
 }
 
 module.exports = new NoteController();

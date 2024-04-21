@@ -56,6 +56,9 @@ router.put('/edit-settings-project', [authMiddleware, uploadProjectLogoMiddlewar
  * Project notes routes
  */
 router.get('/get-notes-project', [authMiddleware], NoteController.getAllProject);
+router.post('/add-note-in-project', [authMiddleware], NoteController.addNoteInProject);
+router.delete('/delete-note-in-project', [authMiddleware], NoteController.deleteNoteInProject);
+router.patch('/change-note-in-project', [authMiddleware], NoteController.changeNoteInProject);
 
 
 module.exports = router;

@@ -58,6 +58,11 @@ export const editSettingsProject = createAsyncThunk(
         }
     }
 );
+
+/*
+* NOTES
+*/
+
 export const getNotesProject = createAsyncThunk(
     'project/getNotesProject',
     async (id: string, thunkAPI) => {
@@ -67,6 +72,90 @@ export const getNotesProject = createAsyncThunk(
                 {
                     params: {id}
                 },
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface AddNoteData {
+    text: string;
+    idProject: string;
+}
+
+export const addNoteInProject = createAsyncThunk(
+    'project/addNoteInProject',
+    async (data: AddNoteData, thunkAPI) => {
+        try {
+            const response = await instanceServer.post<NoteType>(
+                `/add-note-in-project`,
+                data,
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface deleteNoteData {
+    idNote: string;
+    idProject: string;
+}
+export const deleteNoteInProject = createAsyncThunk(
+    'project/deleteNoteInProject',
+    async (data: deleteNoteData, thunkAPI) => {
+        try {
+            const response = await instanceServer.delete<NoteType>(
+                `/delete-note-in-project`,
+                { params: data },
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface changeNoteData extends deleteNoteData{
+    text: string;
+}
+export const changeNoteInProject = createAsyncThunk(
+    'project/changeNoteInProject',
+    async (data: changeNoteData, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<NoteType>(
+                `/change-note-in-project`,
+                data
             );
             return response.data;
         } catch (e) {
