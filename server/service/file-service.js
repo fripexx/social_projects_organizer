@@ -26,7 +26,7 @@ class FileService {
 
     async deleteImage(id) {
         try {
-            const deletedFile = await FileModel.findById(id);
+            const deletedFile = await FileModel.findById(id).lean();
 
             if (!deletedFile) throw ApiError.NotFound('Файл з таким ідентифікатором не знайдено');
 

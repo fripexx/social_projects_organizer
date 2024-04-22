@@ -106,9 +106,9 @@ class UserService {
             await findUser.save();
         }
 
-        await findUser.populate({path: 'photo', model: 'File'}).lean();
+        const user = await UserModel.findById(userData.id).populate({path: 'photo', model: 'File'}).lean();
 
-        return new UserDto(findUser);
+        return new UserDto(user);
     }
 
     async editSettingsUser(userData, editData) {
