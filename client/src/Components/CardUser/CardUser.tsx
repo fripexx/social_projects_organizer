@@ -15,7 +15,7 @@ const CardUser:FC<CardUserProps> = ({user, ...cardUserProps}) => {
 
             <div className={classes.contaier_photo}>
 
-                {photo && photo?.cropped &&
+                {photo &&
                     <img
                         className={classes.photo_profile}
                         loading={"lazy"}

@@ -1,4 +1,4 @@
-import {FileType} from "./FileType";
+import {PhotoType} from "./FileType";
 
 export interface BasicUserInfo {
     id: string,
@@ -7,7 +7,7 @@ export interface BasicUserInfo {
     email: string,
     telegram: string,
     phone: string,
-    photo: FileType | null,
+    photo: PhotoType | null,
 }
 
 export interface UserType extends BasicUserInfo {

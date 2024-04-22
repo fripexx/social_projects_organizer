@@ -1,4 +1,4 @@
-import {FileType} from "./FileType";
+import {PhotoType} from "./FileType";
 import {NoteType} from "./NoteType";
 import {BasicUserInfo} from "./UserType";
 
@@ -6,7 +6,7 @@ export interface ProjectType {
     id: string,
     isActive: boolean,
     name: string,
-    logo: FileType | string | null,
+    logo: PhotoType | string | null,
     administrator: string,
     customer: BasicUserInfo | string | null,
     team: string[],

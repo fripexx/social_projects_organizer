@@ -2,6 +2,9 @@ import React, {FC, useEffect, useState, useRef, Ref} from 'react';
 import classes from "./Note.module.scss";
 import {NoteType} from "../../store/types/NoteType";
 import dumpIcon from "../../assets/images/dump_icon.svg";
+import {useAppSelector} from "../../store/hooks/redux";
+import {PhotoType} from "../../store/types/FileType";
+import Logo from "../Logo/Logo";
 
 export type ChangeCallback = (noteId: string, text: string) => void;
 export type DeleteCallback = (noteId: string) => void;
@@ -18,15 +21,21 @@ interface StylesType {
 }
 
 const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) => {
+    const user = useAppSelector(state => state.UserReducer.user);
+    const project = useAppSelector(state => state.ProjectReducer.project);
+    const {id, text, author} = note;
+
     // Refs
     const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const noteCardRef = useRef<HTMLDivElement>(null);
     const notePopupRef = useRef<HTMLDivElement>(null);
 
     // States
-    const [text, setText] = useState<string>(note.text);
+    const [textNote, setText] = useState<string>(text);
     const [changeHeight, setChangeHeight] = useState<boolean>(true)
     const [editState, setEditState] = useState<"show" | "hide" | null>(null)
+    const [showDelete, setShowDelete] = useState<boolean>(false)
+    const [authorPhoto, setAuthorPhoto] = useState<PhotoType | null>(null)
 
     const setPopupStyles = (elem:React.RefObject<HTMLDivElement>, styles: StylesType): void => {
         if(elem.current) Object.assign(elem.current.style, styles);
@@ -44,12 +53,12 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
         const value = e.currentTarget.value;
 
         setText(value);
-        if(changeCallback) changeCallback(note.id, value)
+        if(changeCallback) changeCallback(id, value)
         setChangeHeight(true);
     }
     const deleteHandler = (e: React.MouseEvent<HTMLDivElement>):void => {
         e.preventDefault();
-        if(deleteCallback) deleteCallback(note.id);
+        if(deleteCallback) deleteCallback(id);
     }
 
     useEffect(() => {
@@ -153,6 +162,16 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
             }
         }
     }, [editState]);
+    useEffect(() => {
+        if (user && author !== null) {
+            if ((typeof author === "object" && author.id === user.id) || (project && project.administrator === user.id)) {
+                setShowDelete(true);
+            }
+        }
+    }, [user, author]);
+    useEffect(() => {
+        if(showPhoto && author !== null && typeof author === "object" && author.photo !== null) setAuthorPhoto(author.photo)
+    }, [author]);
 
     return (
         <div className={classes.container}>
@@ -163,20 +182,14 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
                     onClick={showEdit}
                     ref={textAreaRef}
                     className={classes.text}
-                    value={text}
+                    value={textNote}
                     readOnly={true}
                 />
 
                 <div className={classes.footer}>
 
-                    {(showPhoto && note.author !== null && typeof note.author === "object" && note.author.photo !== null && note.author.photo?.cropped) &&
-                        <div className={classes.author}>
-                            <img
-                                loading={'lazy'}
-                                src={`${process.env.REACT_APP_API_URL}/${note.author.photo.cropped['300']}`}
-                                alt=""
-                            />
-                        </div>
+                    {authorPhoto &&
+                        <Logo photo={authorPhoto} size={31} showBorder={false}/>
                     }
 
                     <div className={classes.delete} onClick={deleteHandler}>
@@ -195,25 +208,21 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
 
                 <textarea
                     className={classes.text}
-                    value={text}
+                    value={textNote}
                     onChange={changeHandler}
                 />
 
                 <div className={classes.footer}>
 
-                    {(showPhoto && note.author !== null && typeof note.author === "object" && note.author.photo !== null && note.author.photo?.cropped) &&
-                        <div className={classes.author}>
-                            <img
-                                loading={'lazy'}
-                                src={`${process.env.REACT_APP_API_URL}/${note.author.photo.cropped['300']}`}
-                                alt=""
-                            />
-                        </div>
+                    {authorPhoto &&
+                        <Logo photo={authorPhoto} size={31} showBorder={false}/>
                     }
 
-                    <div className={classes.delete} onClick={deleteHandler}>
-                        <img src={dumpIcon} alt=""/>
-                    </div>
+                    {showDelete &&
+                        <div className={classes.delete} onClick={deleteHandler}>
+                            <img src={dumpIcon} alt=""/>
+                        </div>
+                    }
 
                 </div>
 

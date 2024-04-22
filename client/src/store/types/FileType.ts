@@ -3,9 +3,10 @@ export interface FileType {
     mimetype: String,
     dateCreated: Date,
     path: string,
-    cropped?: Cropped,
 }
 
-interface Cropped {
-    [key: string]: string,
+export interface PhotoType extends FileType {
+    cropped: {
+        [key: string]: string,
+    },
 }
