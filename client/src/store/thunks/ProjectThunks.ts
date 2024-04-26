@@ -4,6 +4,7 @@ import {ProjectType} from "../types/ProjectType";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {isAxiosError} from "axios";
 import {NoteType} from "../types/NoteType";
+import {BasicUserInfo} from "../types/UserType";
 
 export const getProject = createAsyncThunk(
     'project/getProject',
@@ -155,6 +156,114 @@ export const changeNoteInProject = createAsyncThunk(
         try {
             const response = await instanceServer.patch<NoteType>(
                 `/change-note-in-project`,
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+export const getProjectTeam = createAsyncThunk(
+    'project/getProjectTeam',
+    async (projectId: string, thunkAPI) => {
+        try {
+            const response = await instanceServer.get<BasicUserInfo[]>(
+                `/get-project-team`,
+                {params: {projectId}}
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface changeAdministratorType {
+    projectId: string;
+    newAdministrator: string;
+}
+export const changeProjectAdministrator = createAsyncThunk(
+    'project/changeProjectAdministrator',
+    async (data: changeAdministratorType, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<Response>(
+                `/change-project-administrator`,
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface removeUserFromTeamType {
+    projectId: string;
+    removeUserId: string;
+}
+export const removeUserFromTeam = createAsyncThunk(
+    'project/removeUserFromTeam',
+    async (data: removeUserFromTeamType, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<string[]>(
+                `/remove-user-from-team`,
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface addUserInTeamType {
+    projectId: string;
+    email: string;
+}
+export const addUserInTeam = createAsyncThunk(
+    'project/addUserInTeam',
+    async (data: addUserInTeamType, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<string[]>(
+                `/add-user-in-team`,
                 data
             );
             return response.data;

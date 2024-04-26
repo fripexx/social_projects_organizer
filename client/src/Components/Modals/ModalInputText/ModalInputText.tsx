@@ -5,6 +5,7 @@ import Button from "../../../Elements/Button/Button";
 
 interface ModalInputTextProps {
     text?: string,
+    type?: "email" | "password" | "text" | "tel" | "url" | "search",
     onChangeText: React.ChangeEventHandler<HTMLInputElement>,
     cancelText?: string,
     confirmText?: string,
@@ -14,7 +15,7 @@ interface ModalInputTextProps {
     className?: string
 }
 
-const ModalInputText:FC<ModalInputTextProps> = ({text, onChangeText, cancelText, confirmText, placeholderText, onCancel, onConfirm, className}) => {
+const ModalInputText:FC<ModalInputTextProps> = ({text, type, onChangeText, cancelText, confirmText, placeholderText, onCancel, onConfirm, className}) => {
     const [classesModal, setClassesModal] = useState<string[]>([classes.modal]);
 
     useEffect(() => {
@@ -25,7 +26,7 @@ const ModalInputText:FC<ModalInputTextProps> = ({text, onChangeText, cancelText,
         <Modal className={classesModal.join(" ")}>
 
             <input
-                type={"text"}
+                type={type ? type : "text"}
                 placeholder={placeholderText ? placeholderText : "Введіть текст"}
                 className={classes.inputText}
                 value={text}

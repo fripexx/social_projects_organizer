@@ -11,11 +11,13 @@ import calendarIcon from "../assets/images/calendar-icon.svg";
 import notesIcon from "../assets/images/notes-icon.svg";
 import picturesIcon from "../assets/images/pictures-icon.svg";
 import settingsIcon from "../assets/images/settings-icon.svg";
+import teamsIcon from "../assets/images/teams-icon.svg";
 import statisticsIcon from "../assets/images/statistics-icon.svg";
 import postsIcon from "../assets/images/posts-icon.svg";
 import paintIcon from "../assets/images/paint-icon.svg";
 import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
+import ProjectTeams from "../Pages/ProjectTeams/ProjectTeams";
 
 export interface Route {
     key: string;
@@ -139,6 +141,16 @@ export const routes: Route[] = [
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
         showOnlyAdmin: true
+    },
+    {
+        key: "teams",
+        name: "Команда",
+        path: "/project/:id/teams",
+        component: ProjectTeams,
+        icon: teamsIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInProjectMenu: true
     },
     {
         key: "information",

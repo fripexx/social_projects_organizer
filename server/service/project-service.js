@@ -1,9 +1,13 @@
 const ProjectModal = require('../models/project-model')
+const UserModel = require('../models/user-model')
 const ProjectDto = require('../dtos/project-dto');
 const ApiError= require('../exceptions/api-error');
 const FileService = require("./file-service");
 const mongoose = require("mongoose");
+const UserDto = require("../dtos/user-dto");
+const uuid = require('uuid')
 const { ObjectId } = mongoose.Types;
+const MailService = require("./mail-service");
 
 class ProjectService {
     async addProject(name, user) {
@@ -36,7 +40,7 @@ class ProjectService {
 
         const findProject = await ProjectModal.findOneAndUpdate({ _id: id, administrator: user.id }, newData, { new: true });
 
-        if(!findProject) throw new ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
         if(newLogo) {
             if(findProject.logo instanceof ObjectId) await FileService.deleteImage(findProject.logo);
@@ -47,6 +51,78 @@ class ProjectService {
         }
 
         await findProject.populate({ path: 'logo', model: 'File'}).lean();
+
+        return new ProjectDto(findProject);
+    }
+    async getProjectTeam(projectId, user) {
+        const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id }).populate({path: "team", model: "User", populate: {path: "photo", model: "File"}}).lean();
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        return findProject.team.map(teamUser => new UserDto(teamUser, "basic"));
+    }
+    async sendInviteNewAdmin(projectId, user, newAdmin) {
+        const findProject = await ProjectModal.findOne({ _id: projectId, administrator: user.id });
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        const adminCandidate = await UserModel.findById(newAdmin);
+        if(!adminCandidate) throw ApiError.BadRequest('Помилка: Юзера з таким ID не знайдено');
+
+        const activationLink = uuid.v4()
+
+        await findProject.set({
+            inviteNewAdmin: {
+                time: Date.now(),
+                key: activationLink,
+                candidate: newAdmin
+            }
+        });
+        await findProject.save();
+        await MailService.sendAdminRoleInvitation(adminCandidate.email, `${process.env.API_URL}api/confirm-new-administrator/${activationLink}`)
+    }
+    async confirmNewAdministrator(key) {
+        const findProject = await ProjectModal.findOne({ "inviteNewAdmin.key": key });
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт не знайдено');
+
+        const {time, candidate} = findProject.inviteNewAdmin;
+        const day =  24 * 60 * 60 * 1000;
+        const pastTime = Date.now() - time;
+
+        if(pastTime > day) throw ApiError.BadRequest('Помилка: Час підтвердження вичерпано. Спробуйте повторити спробу.');
+
+        findProject.administrator = candidate;
+        findProject.inviteNewAdmin = {
+            time: 0,
+            key: null,
+            candidate: null
+        }
+        await findProject.save();
+
+        return new ProjectDto(findProject);
+    }
+    async removeUserFromTeam(projectId, user, removeUserId) {
+        const findProject = await ProjectModal.findOneAndUpdate(
+            { _id: projectId, administrator: user.id },
+            { $pull: { team: removeUserId } },
+            { new: true }
+        );
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        return new ProjectDto(findProject);
+    }
+    async addUserInTeam(projectId, user, email) {
+        const findProject = await ProjectModal.findOne({ _id: projectId, administrator: user.id });
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        const candidate = await UserModel.findOne({email}).lean();
+
+        if(!candidate) throw ApiError.BadRequest('Помилка: Юзера з таким email не знайдено');
+
+        if(findProject.team.includes(candidate._id)) throw ApiError.BadRequest('Помилка: Юзер вже знаходится в команді');
+
+        findProject.team.push(candidate._id);
+        await findProject.save();
 
         return new ProjectDto(findProject);
     }

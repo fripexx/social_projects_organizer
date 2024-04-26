@@ -6,12 +6,13 @@ interface LogoProps extends HTMLAttributes<HTMLDivElement> {
     className?: string,
     photo: PhotoType | null,
     size?: number,
-    showBorder?: boolean
+    showBorder?: boolean,
+    colorBorder?: string,
 }
 
-const Logo:FC<LogoProps> = ({className, photo, size, showBorder = true, ...rest}) => {
+const Logo:FC<LogoProps> = ({className, photo, size, showBorder = true, colorBorder, ...rest}) => {
     const [classesContainer, setClassesContainer] = useState<string[]>([classes.container])
-    const [sizeObject, setSizeObject] = useState<CSSProperties>({
+    const [styleObject, setStyleObject] = useState<CSSProperties>({
         minWidth: `${size}px`,
         maxWidth: `${size}px`,
         width: `${size}px`,
@@ -21,11 +22,17 @@ const Logo:FC<LogoProps> = ({className, photo, size, showBorder = true, ...rest}
     });
 
     useEffect(() => {
+        if(colorBorder){
+            setStyleObject(prevState => ({...prevState, borderColor: colorBorder}))
+        }
+    }, []);
+
+    useEffect(() => {
         if(className) setClassesContainer(prevState => [...prevState, className])
     }, [className])
 
     return (
-        <div className={classesContainer.join(" ")} style={sizeObject} data-border={showBorder} {...rest}>
+        <div className={classesContainer.join(" ")} style={styleObject} data-border={showBorder} {...rest}>
 
             {photo &&
                 <img

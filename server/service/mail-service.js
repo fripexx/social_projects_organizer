@@ -32,6 +32,23 @@ class MailService {
                 `,
         })
     }
+    async sendAdminRoleInvitation(email, link) {
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to: [email],
+            subject: "Активація аккаунта на " + process.env.API_URL,
+            text: "",
+            html:
+                `
+                    <div>
+                        <h1>Social Project Organizer</h1>
+                        <p>Вам запропонували стати новим адміністратором проєкту</p>
+                        <p>Підтвердіть перейшовши за посиланням або видаліть лист якщо не бажаєте цього</p>
+                        <a href="${link}">${link}</a>
+                    </div>
+                `,
+        })
+    }
 }
 
 module.exports = new MailService()

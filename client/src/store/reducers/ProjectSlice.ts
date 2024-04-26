@@ -6,16 +6,18 @@ import {
     getProject,
     getNotesProject,
     addNoteInProject,
-    deleteNoteInProject, changeNoteInProject
+    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
+import {BasicUserInfo} from "../types/UserType";
 
 interface ProjectState {
     isLoading: boolean,
     error: ErrorResponseType | null;
     project: ProjectType | null;
     projectId: string | null,
-    notes: NoteType[]
+    notes: NoteType[],
+    team: BasicUserInfo[]
 }
 
 const initialState: ProjectState = {
@@ -24,6 +26,7 @@ const initialState: ProjectState = {
     project: null,
     projectId: null,
     notes: [],
+    team: []
 }
 
 const projectSlice = createSlice({
@@ -32,6 +35,9 @@ const projectSlice = createSlice({
     reducers: {
         setProject: (state, action: PayloadAction<ProjectType | null>) => {
             state.project = action.payload;
+        },
+        setError: (state, action: PayloadAction<ErrorResponseType | null>) => {
+            state.error = action.payload;
         },
     },
     extraReducers: {
@@ -109,8 +115,36 @@ const projectSlice = createSlice({
             state.error = action.payload;
             state.notes = [];
         },
+        [getProjectTeam.pending.type]: (state) => {},
+        [getProjectTeam.fulfilled.type]: (state, action: PayloadAction<BasicUserInfo[]>) => {
+            state.error = null;
+            state.team = action.payload
+        },
+        [getProjectTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+            state.team = [];
+        },
+        [removeUserFromTeam.pending.type]: (state) => {},
+        [removeUserFromTeam.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+            state.error = null;
+            if(state.project) state.project.team = action.payload
+        },
+        [removeUserFromTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        [addUserInTeam.pending.type]: (state) => {},
+        [addUserInTeam.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+            state.error = null;
+            if(state.project) state.project.team = action.payload
+        },
+        [addUserInTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
     }
 })
 
 export default projectSlice.reducer;
-export const { setProject } = projectSlice.actions;
+export const { setProject, setError } = projectSlice.actions;

@@ -51,6 +51,11 @@ router.post('/add-project', [authMiddleware], ProjectController.addProject);
 router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
 router.get('/get-project', [authMiddleware], ProjectController.getProject);
 router.put('/edit-settings-project', [authMiddleware, uploadProjectLogoMiddleware], ProjectController.editSettingsProject);
+router.get('/get-project-team', [authMiddleware], ProjectController.getProjectTeam);
+router.patch('/change-project-administrator', [authMiddleware], ProjectController.sendInviteNewAdmin);
+router.get('/confirm-new-administrator/:key', ProjectController.confirmNewAdministrator);
+router.patch('/remove-user-from-team', [authMiddleware], ProjectController.removeUserFromTeam);
+router.patch('/add-user-in-team', [authMiddleware], ProjectController.addUserInTeam);
 
 /**
  * Project notes routes
