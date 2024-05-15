@@ -6,10 +6,11 @@ import {
     getProject,
     getNotesProject,
     addNoteInProject,
-    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam
+    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam, getMedia, uploadMedia, deleteMedia
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
+import {FileType, PhotoType} from "../types/FileType";
 
 interface ProjectState {
     isLoading: boolean,
@@ -17,7 +18,8 @@ interface ProjectState {
     project: ProjectType | null;
     projectId: string | null,
     notes: NoteType[],
-    team: BasicUserInfo[]
+    team: BasicUserInfo[],
+    media: (FileType | PhotoType)[];
 }
 
 const initialState: ProjectState = {
@@ -26,7 +28,8 @@ const initialState: ProjectState = {
     project: null,
     projectId: null,
     notes: [],
-    team: []
+    team: [],
+    media: []
 }
 
 const projectSlice = createSlice({
@@ -140,6 +143,33 @@ const projectSlice = createSlice({
             if(state.project) state.project.team = action.payload
         },
         [addUserInTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        [getMedia.pending.type]: (state) => {},
+        [getMedia.fulfilled.type]: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
+            state.error = null;
+            state.media = action.payload
+        },
+        [getMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        [uploadMedia.pending.type]: (state) => {},
+        [uploadMedia.fulfilled.type]: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
+            state.error = null;
+            state.media = [...state.media, ...action.payload]
+        },
+        [uploadMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        [deleteMedia.pending.type]: (state) => {},
+        [deleteMedia.fulfilled.type]: (state, action: PayloadAction<FileType | PhotoType>) => {
+            state.error = null;
+            state.media = [...state.media].filter(item => item.id !== action.payload.id)
+        },
+        [deleteMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },

@@ -1,0 +1,91 @@
+.modal {
+    max-width: 710px;
+    max-height: 100%;
+}
+
+.title {
+    font-size: 22px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.content {
+    padding: 50px 0px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+    min-height: 320px;
+
+    @media (max-width: 900px) {
+        grid-template-columns: 1fr;
+        height: 100%;
+        overflow-y: scroll;
+    }
+}
+
+.input {
+    display: none;
+}
+
+.addFile {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+
+    &:hover .addFileButton {
+        background-color: var(--Color-Dark);
+    }
+}
+
+.addFileButton {
+    background-color: var(--Color-Light-Grey-Blue);
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s ease;
+}
+
+.addFileIcon {
+    width: 50px;
+    height: 50px;
+}
+
+.addFileName {
+    display: block;
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.maxFileCount {
+    display: block;
+    font-size: 18px;
+    font-weight: 400;
+    text-align: center;
+    margin: auto;
+}
+
+.errors {
+    grid-column: -1/1;
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+}
+
+.previews {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+}

@@ -1,0 +1,73 @@
+.container {
+    width: 100px;
+    min-width: 100px;
+    max-width: 100px;
+    height: 100px;
+    min-height: 100px;
+    max-height: 100px;
+    position: relative;
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+.item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--Color-Light-Grey-Blue);
+    border-radius: 5px;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+}
+
+.close {
+    border-radius: 50%;
+    overflow: hidden;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--Color-Dark);
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    cursor: pointer;
+    transition: 0.1s ease-in-out;
+    z-index: 2;
+
+    svg {
+        display: block;
+    }
+
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+.typeIcon {
+    position: absolute;
+    z-index: 2;
+    bottom: 2px;
+    left: 2px;
+}
+
+.video {
+    object-fit: cover;
+}
+
+.image {
+    object-fit: cover;
+}
+
+.nameFileExtension {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--Color-White);
+    display: block;
+    cursor: default;
+}
