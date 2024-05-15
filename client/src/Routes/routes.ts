@@ -18,6 +18,7 @@ import paintIcon from "../assets/images/paint-icon.svg";
 import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
 import ProjectTeams from "../Pages/ProjectTeams/ProjectTeams";
+import ProjectMedia from "../Pages/ProjectMedia/ProjectMedia";
 
 export interface Route {
     key: string;
@@ -122,10 +123,10 @@ export const routes: Route[] = [
         showInProjectMenu: true,
     },
     {
-        key: "media_files",
+        key: "media_library",
         name: "Медіафайли",
-        path: "/project/:id/media_files",
-        component: ProjectPosts,
+        path: "/project/:id/media_library",
+        component: ProjectMedia,
         icon: picturesIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
