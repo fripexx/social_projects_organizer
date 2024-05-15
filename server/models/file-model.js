@@ -4,8 +4,9 @@ const FileSchema = new Schema({
     type: {
         type: String,
         required: true,
-        enum: ['image', 'doc']
+        enum: ['image', 'application', 'video', 'text']
     },
+    extension: {type: String, required: true},
     mimetype: {type: String, required: true},
     dateCreated: {type: Date, default: Date.now()},
     path: { type: String, required: true },
@@ -25,7 +26,9 @@ const FileSchema = new Schema({
     belongTo: {
         id: { type: Schema.Types.ObjectId, required: true },
         model: { type: String, required: true, enum: ['Project', 'Chat', 'User'] }
-    }
+    },
+    author: {type: Schema.Types.ObjectId, ref: 'User', required: true},
+    name: { type: String, required: true },
 })
 
 module.exports = model('File', FileSchema);

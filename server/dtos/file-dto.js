@@ -1,6 +1,8 @@
 module.exports = class FileDto {
     constructor(model) {
         this.id = model._id;
+        this.type = model.type;
+        this.extension = model.extension;
         this.mimetype = model.mimetype;
         this.dateCreated = model.dateCreated;
         this.path = model.path;
@@ -8,6 +10,8 @@ module.exports = class FileDto {
             id: model.belongTo.id,
             model: model.belongTo.model
         }
+        this.author = model.author;
+        this.name = model.name;
 
         if(model?.cropped) this.addCropped(model.cropped)
     }

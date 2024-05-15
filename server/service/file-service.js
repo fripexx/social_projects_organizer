@@ -6,9 +6,10 @@ const mongoose = require('mongoose');
 const { ObjectId } = mongoose.Types;
 
 class FileService {
-    async uploadImage(file, id, model) {
-        const data = await FileModel.create({
-            type: "image",
+    async uploadImage(file, author, id, model) {
+        const createFile = await FileModel.create({
+            type: file.type,
+            extension: file.extension,
             mimetype: file.mimetype,
             dateCreated: Date.now(),
             path: file.path?.original,
@@ -16,12 +17,14 @@ class FileService {
             belongTo: {
                 id: id,
                 model: model
-            }
+            },
+            name: file.name,
+            author: author.id,
 
         })
+        const findFile = await FileModel.findById(createFile._id).lean();
 
-        const fileDto = new FileDto(data);
-        return fileDto;
+        return new FileDto(findFile);
     }
 
     async deleteImage(id) {
