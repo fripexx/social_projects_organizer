@@ -8,6 +8,8 @@ const UserDto = require("../dtos/user-dto");
 const uuid = require('uuid')
 const { ObjectId } = mongoose.Types;
 const MailService = require("./mail-service");
+const FileModel = require("../models/file-model");
+const FileDto = require("../dtos/file-dto");
 
 class ProjectService {
     async addProject(name, user) {
@@ -125,6 +127,41 @@ class ProjectService {
         await findProject.save();
 
         return new ProjectDto(findProject);
+    }
+    async uploadMedia(files, projectId, user) {
+        const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id });
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        const filesData = []
+
+        for (const file of files) {
+            const fileData = await FileService.uploadImage(file, user, projectId, "Project");
+            filesData.push(fileData);
+        }
+
+        return filesData;
+    }
+    async getMedia(query, user) {
+        const {projectId, skip, limit} = query
+        const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id });
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        const media = await FileModel
+            .find({ 'belongTo.id': projectId, 'belongTo.model': 'Project' })
+            .skip(skip ? skip : 0)
+            .limit(limit ? limit : 10)
+            .lean();
+
+        return media.map(item => new FileDto(item));
+    }
+    async deleteMedia(projectId, user, idMedia) {
+        const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id });
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        return await FileService.deleteImage(idMedia);
     }
 }
 

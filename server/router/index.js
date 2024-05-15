@@ -7,6 +7,7 @@ const {body} = require('express-validator')
 const ApiError = require("../exceptions/api-error");
 const uploadAccountMiddleware = require('../middlewares/upload-account-middleware');
 const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
+const uploadMediaLibraryMiddleware = require('../middlewares/upload-media-library-middleware');
 const authMiddleware = require('../middlewares/auth-middleware')
 
 /**
@@ -65,5 +66,12 @@ router.post('/add-note-in-project', [authMiddleware], NoteController.addNoteInPr
 router.delete('/delete-note-in-project', [authMiddleware], NoteController.deleteNoteInProject);
 router.patch('/change-note-in-project', [authMiddleware], NoteController.changeNoteInProject);
 
+
+/**
+ * Project media routes
+ */
+router.post('/upload-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.uploadMedia);
+router.get('/get-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.getMedia);
+router.delete('/delete-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.deleteMedia);
 
 module.exports = router;

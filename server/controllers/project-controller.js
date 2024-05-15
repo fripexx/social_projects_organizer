@@ -1,4 +1,5 @@
 const ProjectService = require('../service/project-service');
+const ApiError = require("../exceptions/api-error");
 
 class ProjectController {
     async addProject(req, res, next) {
@@ -98,6 +99,43 @@ class ProjectController {
             const project = await ProjectService.addUserInTeam(projectId, user, email);
 
             return res.json(project.team)
+        } catch (e) {
+            next(e);
+        }
+    }
+    async uploadMedia(req, res, next) {
+        try {
+            const {projectId} = req.body;
+            const files = req?.files;
+            const user = await req.user;
+            const media = await ProjectService.uploadMedia(files, projectId, user);
+
+            res.json(media);
+        } catch (e) {
+            next(e);
+        }
+    }
+    async getMedia(req, res, next) {
+        try {
+            const query = req.query;
+
+            if(!query?.projectId) throw ApiError.BadRequest("Помилка: Не вказано значення параметра 'projectId'. Будь ласка, вкажіть ідентифікатор проекту.");
+
+            const user = await req.user;
+            const media = await ProjectService.getMedia(query, user);
+
+            res.json(media);
+        } catch (e) {
+            next(e);
+        }
+    }
+    async deleteMedia(req, res, next) {
+        try {
+            const {idMedia, projectId} = req.query;
+            const user = await req.user;
+            const media = await ProjectService.deleteMedia(projectId, user, idMedia);
+
+            res.json(media);
         } catch (e) {
             next(e);
         }
