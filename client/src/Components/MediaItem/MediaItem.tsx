@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./MediaItem.module.scss";
-import mime from "mime";
 import {FileType, PhotoCroppedType, PhotoType} from "../../store/types/FileType";
 import TypeMedia from "../TypeMedia/TypeMedia";
 import deleteIcon from "../../assets/images/dump_icon.svg"
@@ -14,10 +13,8 @@ interface MediaItem {
 }
 
 const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback, clickCallback}) => {
-    const {id, path, mimetype, author} = file;
+    const {id, path, mimetype, author, type, extension, name} = file;
     const [cropped, setCropped] = useState<PhotoCroppedType>();
-    const [type, setType] = useState<string>()
-    const [extension, setExtension] = useState<string>()
 
     const onDelete = (e: React.MouseEvent<HTMLDivElement>) => {
         deleteCallback(id)
@@ -27,11 +24,6 @@ const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback,
         clickCallback(file);
     }
 
-    useEffect(() => {
-        setType(mimetype.split("/")[0])
-        const extension = mime.getExtension(mimetype)
-        if(extension) setExtension(extension)
-    }, [mimetype]);
     useEffect(() => {
         if (type === "image" && 'cropped' in file && file.cropped) setCropped(file.cropped);
     }, [file, type]);
@@ -45,7 +37,7 @@ const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback,
                 </div>
             }
 
-            <div className={classes.item} onClick={showMedia}>
+            <div className={classes.item} title={name} onClick={showMedia}>
 
                 {type === "image" && cropped &&
                     <img

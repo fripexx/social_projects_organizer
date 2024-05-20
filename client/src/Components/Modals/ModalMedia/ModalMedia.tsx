@@ -8,12 +8,7 @@ interface ModalMediaProps {
 }
 
 const ModalMedia:FC<ModalMediaProps> = ({media, closeCallback}) => {
-    const {id, path, name, mimetype} = media;
-    const [type, setType] = useState<string>();
-
-    useEffect(() => {
-        setType(mimetype.split("/")[0])
-    }, [mimetype])
+    const {id, path, name, mimetype, type} = media;
 
     const hideMedia = () => {
         closeCallback()

@@ -98,9 +98,9 @@ class UserService {
         if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
         if (photo) {
-            if (mongoose.isValidObjectId(findUser.photo)) await FileService.deleteImage(findUser.photo);
+            if (mongoose.isValidObjectId(findUser.photo)) await FileService.deleteFile(findUser.photo);
 
-            const photoData = await FileService.uploadImage(editData.photo, userData.id, "User");
+            const photoData = await FileService.uploadFile(editData.photo, userData, userData.id, "User");
             findUser.photo = photoData.id;
 
             await findUser.save();

@@ -45,16 +45,17 @@ class ProjectService {
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
         if(newLogo) {
-            if(findProject.logo instanceof ObjectId) await FileService.deleteImage(findProject.logo);
-            const photoData = await FileService.uploadImage(newLogo, user.id, "Project");
+            if(findProject.logo instanceof ObjectId) await FileService.deleteFile(findProject.logo);
+
+            const photoData = await FileService.uploadFile(newLogo, user, findProject.id, "Project");
             findProject.logo = photoData.id;
 
-            findProject.save();
+            await findProject.save();
         }
 
-        await findProject.populate({ path: 'logo', model: 'File'}).lean();
+        const returnProject = await ProjectModal.findById(findProject._id).populate({ path: 'logo', model: 'File'}).lean();
 
-        return new ProjectDto(findProject);
+        return new ProjectDto(returnProject);
     }
     async getProjectTeam(projectId, user) {
         const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id }).populate({path: "team", model: "User", populate: {path: "photo", model: "File"}}).lean();
@@ -136,7 +137,7 @@ class ProjectService {
         const filesData = []
 
         for (const file of files) {
-            const fileData = await FileService.uploadImage(file, user, projectId, "Project");
+            const fileData = await FileService.uploadFile(file, user, projectId, "Project");
             filesData.push(fileData);
         }
 
@@ -149,7 +150,7 @@ class ProjectService {
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
         const media = await FileModel
-            .find({ 'belongTo.id': projectId, 'belongTo.model': 'Project' })
+            .find({ 'belongTo.id': projectId, 'belongTo.model': 'Project'})
             .skip(skip ? skip : 0)
             .limit(limit ? limit : 10)
             .lean();
@@ -161,7 +162,7 @@ class ProjectService {
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
-        return await FileService.deleteImage(idMedia);
+        return await FileService.deleteFile(idMedia);
     }
 }
 

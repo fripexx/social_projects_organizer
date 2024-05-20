@@ -1,12 +1,10 @@
 const FileModel  = require('../models/file-model');
 const FileDto  = require('../dtos/file-dto');
 const ApiError = require('../exceptions/api-error')
-const fs = require('fs').promises; // Завантаження модуля fs для роботи з файлами (використовуємо версію з підтримкою обіцянок)
-const mongoose = require('mongoose');
-const { ObjectId } = mongoose.Types;
+const fs = require('fs').promises;
 
 class FileService {
-    async uploadImage(file, author, id, model) {
+    async uploadFile(file, author, id, model) {
         const createFile = await FileModel.create({
             type: file.type,
             extension: file.extension,
@@ -27,36 +25,39 @@ class FileService {
         return new FileDto(findFile);
     }
 
-    async deleteImage(id) {
+    async deleteFile(id) {
         try {
             const deletedFile = await FileModel.findById(id).lean();
 
-            if (!deletedFile) throw ApiError.NotFound('Файл з таким ідентифікатором не знайдено');
+            if(deletedFile) {
+                const fileDto = new FileDto(deletedFile);
 
-            const fileDto = new FileDto(deletedFile);
+                const path = fileDto?.path;
 
-            const path = fileDto?.path;
+                try {
+                    if (path) await fs.unlink(path);
+                } catch (error) {
+                    console.error('Помилка під час видалення файлу:', error);
+                }
 
-            try {
-                if (path) await fs.unlink(path);
-            } catch (error) {
-                console.error('Помилка під час видалення файлу:', error);
+                const cropped = fileDto?.cropped;
+                if (cropped) {
+                    await Promise.all(Object.values(cropped).map(async (croppedPath) => {
+                        try {
+                            if (croppedPath) await fs.unlink(croppedPath);
+                        } catch (error) {
+                            console.error('Помилка під час видалення файлу:', error);
+                        }
+                    }));
+                }
+
+                await FileModel.deleteOne({_id: fileDto.id})
+
+                return fileDto;
             }
 
-            const cropped = fileDto?.cropped;
-            if (cropped) {
-                await Promise.all(Object.values(cropped).map(async (croppedPath) => {
-                    try {
-                        if (croppedPath) await fs.unlink(croppedPath);
-                    } catch (error) {
-                        console.error('Помилка під час видалення файлу:', error);
-                    }
-                }));
-            }
+            console.error('Файл з таким ідентифікатором не знайдено');
 
-            await FileModel.deleteOne({_id: fileDto.id})
-
-            return fileDto;
         } catch (error) {
             console.error('Помилка під час видалення файлу:', error);
             throw ApiError.InternalServerError('Помилка під час видалення файлу');

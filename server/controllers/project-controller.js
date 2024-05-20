@@ -38,10 +38,10 @@ class ProjectController {
     async editSettingsProject(req, res, next) {
         try {
             const formData = req.body;
-            const photo = req?.photo;
+            const logo = req?.logo;
             const user = await req.user;
 
-            const project = await ProjectService.editSettingsProject(formData, photo, user);
+            const project = await ProjectService.editSettingsProject(formData, logo, user);
 
             return res.json(project);
         } catch (e) {
