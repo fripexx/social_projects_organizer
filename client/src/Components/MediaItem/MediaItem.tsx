@@ -37,42 +37,54 @@ const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback,
                 </div>
             }
 
-            <div className={classes.item} title={name} onClick={showMedia}>
+            <div className={classes.item} title={name}>
 
-                {type === "image" && cropped &&
-                    <img
-                        className={classes.img}
-                        loading={"lazy"}
-                        decoding={"async"}
-                        width={"200px"}
-                        height={"200px"}
-                        src={`${process.env.REACT_APP_API_URL}/${cropped['300']}`}
-                    />
-                }
+                {(type === "image" || type === "video") &&
+                    <div className={classes.itemMedia} onClick={showMedia}>
 
-                {type === "video" &&
-                    <video
-                        className={classes.video}
-                        src={`${process.env.REACT_APP_API_URL}/${path}`}
-                        width={"200px"}
-                        height={"200px"}
-                        preload={"metadata"}
-                    />
+                        {type === "image" && cropped &&
+                            <img
+                                className={classes.img}
+                                loading={"lazy"}
+                                decoding={"async"}
+                                width={"200px"}
+                                height={"200px"}
+                                src={`${process.env.REACT_APP_API_URL}/${cropped['300']}`}
+                            />
+                        }
+
+                        {type === "video" &&
+                            <video
+                                className={classes.video}
+                                src={`${process.env.REACT_APP_API_URL}/${path}`}
+                                width={"200px"}
+                                height={"200px"}
+                                preload={"metadata"}
+                            />
+                        }
+
+                    </div>
                 }
 
                 {type !== "video" && type !== "image" &&
                     <a className={classes.other} href={`${process.env.REACT_APP_API_URL}/${path}`} target={"_blank"}>
-                        {extension &&
-                            <span className={classes.extension}>.{extension}</span>
-                        }
+                        {name}
                     </a>
                 }
 
             </div>
 
-            {type &&
-                <TypeMedia className={classes.typeIcon} type={type}/>
-            }
+            <div className={classes.footer}>
+
+                {type &&
+                    <TypeMedia className={classes.typeIcon} type={type}/>
+                }
+
+                {type !== "video" && type !== "image" && extension &&
+                    <span className={classes.extension}>.{extension}</span>
+                }
+
+            </div>
 
         </div>
     );

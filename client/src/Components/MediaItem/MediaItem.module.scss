@@ -1,11 +1,12 @@
 .container {
-    max-width: 200px;
-    max-height: 200px;
-    width: 200px;
-    height: 200px;
+//    max-width: 200px;
+//    max-height: 200px;
+    width: 100%;
+    height: 100%;
     position: relative;
     overflow: hidden;
     border-radius: 10px;
+    aspect-ratio: 1/1;
 
     &:hover {
         .delete {
@@ -20,10 +21,15 @@
     position: relative;
     z-index: 1;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    align-items: stretch;
+    justify-content: stretch;
     overflow: hidden;
     cursor: pointer;
+}
+
+.itemMedia {
+    width: 100%;
+    height: 100%;
 }
 
 .img {
@@ -44,23 +50,41 @@
     width: 100%;
     height: 100%;
     background-color: var(--Color-Light-Grey-Blue);
-    color: var(--Color-White);
     display: flex;
     align-items: center;
     justify-content: center;
     text-decoration: none;
-}
-
-.extension {
-    font-size: 22px;
-    font-weight: 700;
+    text-align: center;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--Color-White);
 }
 
 .typeIcon {
-    z-index: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer {
     position: absolute;
-    bottom: 10px;
-    left: 10px;
+    bottom: 0px;
+    right: 0px;
+    left: 0px;
+    z-index: 2;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.extension {
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1;
+    color: var(--Color-White);
 }
 
 .delete {
