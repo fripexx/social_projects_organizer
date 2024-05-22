@@ -11,6 +11,7 @@ import {
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
 import {FileType, PhotoType} from "../types/FileType";
+import {GetMediaResponseType} from "../types/GetMediaResponseType";
 
 interface ProjectState {
     isLoading: boolean,
@@ -20,6 +21,7 @@ interface ProjectState {
     notes: NoteType[],
     team: BasicUserInfo[],
     media: (FileType | PhotoType)[];
+    mediaTotalCount: number
 }
 
 const initialState: ProjectState = {
@@ -29,7 +31,8 @@ const initialState: ProjectState = {
     projectId: null,
     notes: [],
     team: [],
-    media: []
+    media: [],
+    mediaTotalCount: 0
 }
 
 const projectSlice = createSlice({
@@ -41,6 +44,9 @@ const projectSlice = createSlice({
         },
         setError: (state, action: PayloadAction<ErrorResponseType | null>) => {
             state.error = action.payload;
+        },
+        setMedia: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
+            state.media = action.payload;
         },
     },
     extraReducers: {
@@ -147,9 +153,10 @@ const projectSlice = createSlice({
             state.error = action.payload;
         },
         [getMedia.pending.type]: (state) => {},
-        [getMedia.fulfilled.type]: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
+        [getMedia.fulfilled.type]: (state, action: PayloadAction<GetMediaResponseType>) => {
             state.error = null;
-            state.media = action.payload
+            state.mediaTotalCount = action.payload.total;
+            state.media = [...state.media, ...action.payload.media]
         },
         [getMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
@@ -177,4 +184,4 @@ const projectSlice = createSlice({
 })
 
 export default projectSlice.reducer;
-export const { setProject, setError } = projectSlice.actions;
+export const { setProject, setError, setMedia } = projectSlice.actions;

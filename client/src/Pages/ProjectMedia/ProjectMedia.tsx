@@ -1,22 +1,29 @@
-import React, {FC, useEffect} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
 import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
-import Title from "../../Elements/Title/Title";
 import Content from "../../Components/Content/Content";
 import MediaFileUpload from "../../Components/MediaFileUpload/MediaFileUpload";
 import Media from "../../Components/Media/Media";
 import {PreviewFileType} from "../../Components/PreviewFile/PreviewFile";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {deleteMedia, getMedia, uploadMedia} from "../../store/thunks/ProjectThunks";
+import {deleteMedia, getMedia, QueryMedia, uploadMedia} from "../../store/thunks/ProjectThunks";
+import Tabs from "./Components/Tabs/Tabs";
+import {useSearchParams} from "react-router-dom";
+import {setMedia} from "../../store/reducers/ProjectSlice";
+import LoadMore from "../../Components/LoadMore/LoadMore";
+import classes from "./ProjectMedia.module.scss";
 
 const ProjectMedia:FC = () => {
     const dispatch = useAppDispatch();
     const project = useAppSelector(state => state.ProjectReducer.project);
     const user = useAppSelector(state => state.UserReducer.user)
     const media = useAppSelector(state => state.ProjectReducer.media);
+    const totalMedia = useAppSelector(state => state.ProjectReducer.mediaTotalCount)
+    const [query, setQuery] = useState<QueryMedia>();
+    const [searchParams, setSearchParams] = useSearchParams();
 
     const uploadCallback = (files: PreviewFileType[]): void => {
         if(project) {
@@ -31,17 +38,36 @@ const ProjectMedia:FC = () => {
     const deleteCallback = (id: string) => {
         if(project) dispatch(deleteMedia({idMedia: id, projectId: project.id}))
     }
+    const loadMore = () => {
+        setQuery(prevState => {
+            if(prevState) {
+                return {
+                    ...prevState,
+                    skip: prevState.skip + prevState.limit
+                }
+            }
+            return prevState
+        })
+    }
 
     useEffect(() => {
         if(project) {
-            const query = {
+            const query: QueryMedia = {
                 projectId: project.id,
                 skip: 0,
-                limit: 10,
+                limit: 28
             }
-            dispatch(getMedia(query))
+
+            const type = searchParams.get('type');
+            if(type) query['type'] = [type]
+            dispatch(setMedia([]))
+            setQuery(query)
         }
-    }, [project]);
+    }, [project, searchParams]);
+
+    useEffect(() => {
+        if(query) dispatch(getMedia(query))
+    }, [query]);
 
     return (
         <ProjectPage>
@@ -52,11 +78,9 @@ const ProjectMedia:FC = () => {
 
                 <ContentPage>
 
-                    <HeaderPage>
+                    <HeaderPage className={classes.header}>
 
-                        <Title level={2}>
-                            Команда
-                        </Title>
+                        <Tabs/>
 
                         <MediaFileUpload
                             uploadCallback={uploadCallback}
@@ -89,6 +113,13 @@ const ProjectMedia:FC = () => {
                                 deleteCallback={deleteCallback}
                             />
                         }
+
+                        <LoadMore
+                            callback={loadMore}
+                            total={totalMedia}
+                            shown={media.length}
+                            load={false}
+                        />
 
                     </Content>
 

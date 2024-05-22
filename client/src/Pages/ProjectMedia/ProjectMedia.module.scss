@@ -1,0 +1,9 @@
+.header {
+    @media (max-width: 900px) {
+        flex-direction: column-reverse;
+        gap: 15px;
+        max-height: unset;
+        height: auto;
+        align-items: flex-start;
+    }
+}

@@ -144,18 +144,33 @@ class ProjectService {
         return filesData;
     }
     async getMedia(query, user) {
-        const {projectId, skip, limit} = query
+        const {projectId, skip, limit, type} = query
         const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
+        const filter = {
+            'belongTo.id': projectId,
+            'belongTo.model': 'Project'
+        }
+
+        if (type && Array.isArray(type)) {
+            filter['type'] = { $in: type };
+        } else if (type && typeof type === 'string') {
+            filter['type'] = type;
+        }
+
+        const totalMediaCount = await FileModel.countDocuments(filter);
         const media = await FileModel
-            .find({ 'belongTo.id': projectId, 'belongTo.model': 'Project'})
+            .find(filter)
             .skip(skip ? skip : 0)
             .limit(limit ? limit : 10)
             .lean();
 
-        return media.map(item => new FileDto(item));
+        return {
+            total: totalMediaCount,
+            media: media.map(item => new FileDto(item))
+        };
     }
     async deleteMedia(projectId, user, idMedia) {
         const findProject = await ProjectModal.findOne({ _id: projectId, team: user.id });

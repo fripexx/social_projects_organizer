@@ -6,6 +6,7 @@ import {isAxiosError} from "axios";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
 import {FileType, PhotoType} from "../types/FileType";
+import {GetMediaResponseType} from "../types/GetMediaResponseType";
 
 export const getProject = createAsyncThunk(
     'project/getProject',
@@ -307,17 +308,18 @@ export const uploadMedia = createAsyncThunk(
     }
 );
 
-interface QueryMedia {
+export interface QueryMedia {
     projectId: string,
-    limit?: number,
-    skip?: number,
+    limit: number,
+    skip: number,
+    type?: string | string[]
 }
 
 export const getMedia = createAsyncThunk(
     'project/getMedia',
     async (data: QueryMedia, thunkAPI) => {
         try {
-            const response = await instanceServer.get<(FileType | PhotoType)[]>(
+            const response = await instanceServer.get<GetMediaResponseType>(
                 `/get-media`,
                 {
                     params: data
