@@ -30,31 +30,45 @@ const projectMediaSlice = createSlice({
         },
     },
     extraReducers: {
-        [getMedia.pending.type]: (state) => {},
+        /* getMedia */
+        [getMedia.pending.type]: (state) => {
+            state.isLoading = true;
+        },
         [getMedia.fulfilled.type]: (state, action: PayloadAction<GetMediaResponseType>) => {
+            state.isLoading = false;
             state.error = null;
             state.totalCount = action.payload.total;
             state.media = [...state.media, ...action.payload.media]
         },
-        [getMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+        [getMedia.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
-        [uploadMedia.pending.type]: (state) => {},
+
+        /* uploadMedia */
+        [uploadMedia.pending.type]: (state) => {
+            state.isLoading = true;
+        },
         [uploadMedia.fulfilled.type]: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
+            state.isLoading = false;
             state.error = null;
             state.media = [...state.media, ...action.payload]
         },
-        [uploadMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+        [uploadMedia.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
-        [deleteMedia.pending.type]: (state) => {},
+
+        /* deleteMedia */
+        [deleteMedia.pending.type]: (state) => {
+            state.isLoading = true;
+        },
         [deleteMedia.fulfilled.type]: (state, action: PayloadAction<FileType | PhotoType>) => {
+            state.isLoading = false;
             state.error = null;
             state.media = [...state.media].filter(item => item.id !== action.payload.id)
         },
-        [deleteMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+        [deleteMedia.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },

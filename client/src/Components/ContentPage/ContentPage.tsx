@@ -1,4 +1,5 @@
 import React, {FC, HTMLAttributes, ReactNode} from 'react';
+import classes from "./ContentPage.module.scss";
 
 interface ContentPageProps extends HTMLAttributes<HTMLDivElement>{
     children: ReactNode;
@@ -7,7 +8,7 @@ interface ContentPageProps extends HTMLAttributes<HTMLDivElement>{
 
 const ContentPage:FC<ContentPageProps> = ({children, ...contentPageProps}) => {
     return (
-        <div {...contentPageProps}>
+        <div className={classes.container} {...contentPageProps}>
             {children}
         </div>
     );

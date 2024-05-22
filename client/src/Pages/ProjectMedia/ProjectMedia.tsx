@@ -15,11 +15,13 @@ import {useSearchParams} from "react-router-dom";
 import {setMedia} from "../../store/reducers/ProjectMediaSlice";
 import LoadMore from "../../Components/LoadMore/LoadMore";
 import classes from "./ProjectMedia.module.scss";
+import Loader from "../../Elements/Loader/Loader";
 
 const ProjectMedia:FC = () => {
     const dispatch = useAppDispatch();
     const project = useAppSelector(state => state.ProjectReducer.project);
     const user = useAppSelector(state => state.UserReducer.user)
+    const isLoading = useAppSelector(state => state.ProjectMediaReducer.isLoading);
     const media = useAppSelector(state => state.ProjectMediaReducer.media);
     const totalMedia = useAppSelector(state => state.ProjectMediaReducer.totalCount)
     const [query, setQuery] = useState<QueryMedia>();
@@ -68,7 +70,7 @@ const ProjectMedia:FC = () => {
     useEffect(() => {
         if(query) dispatch(getMedia(query))
     }, [query]);
-
+    console.log(isLoading)
     return (
         <ProjectPage>
 
@@ -105,21 +107,28 @@ const ProjectMedia:FC = () => {
 
                     <Content>
 
-                        {user && project &&
-                            <Media
-                                media={media}
-                                user={user}
-                                project={project}
-                                deleteCallback={deleteCallback}
-                            />
-                        }
+                        {isLoading ? (
+                            <Loader type={"relative"} />
+                        ) : (
+                            <>
+                                {user && project && (
+                                    <Media
+                                        media={media}
+                                        user={user}
+                                        project={project}
+                                        deleteCallback={deleteCallback}
+                                    />
+                                )}
 
-                        <LoadMore
-                            callback={loadMore}
-                            total={totalMedia}
-                            shown={media.length}
-                            load={false}
-                        />
+                                <LoadMore
+                                    callback={loadMore}
+                                    total={totalMedia}
+                                    shown={media.length}
+                                    load={false}
+                                />
+                            </>
+                        )}
+
 
                     </Content>
 
