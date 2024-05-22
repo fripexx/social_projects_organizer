@@ -6,12 +6,10 @@ import {
     getProject,
     getNotesProject,
     addNoteInProject,
-    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam, getMedia, uploadMedia, deleteMedia
+    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam,
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
-import {FileType, PhotoType} from "../types/FileType";
-import {GetMediaResponseType} from "../types/GetMediaResponseType";
 
 interface ProjectState {
     isLoading: boolean,
@@ -20,8 +18,6 @@ interface ProjectState {
     projectId: string | null,
     notes: NoteType[],
     team: BasicUserInfo[],
-    media: (FileType | PhotoType)[];
-    mediaTotalCount: number
 }
 
 const initialState: ProjectState = {
@@ -31,8 +27,6 @@ const initialState: ProjectState = {
     projectId: null,
     notes: [],
     team: [],
-    media: [],
-    mediaTotalCount: 0
 }
 
 const projectSlice = createSlice({
@@ -44,10 +38,7 @@ const projectSlice = createSlice({
         },
         setError: (state, action: PayloadAction<ErrorResponseType | null>) => {
             state.error = action.payload;
-        },
-        setMedia: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
-            state.media = action.payload;
-        },
+        }
     },
     extraReducers: {
         [getProject.pending.type]: (state) => {
@@ -151,37 +142,9 @@ const projectSlice = createSlice({
         [addUserInTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
-        },
-        [getMedia.pending.type]: (state) => {},
-        [getMedia.fulfilled.type]: (state, action: PayloadAction<GetMediaResponseType>) => {
-            state.error = null;
-            state.mediaTotalCount = action.payload.total;
-            state.media = [...state.media, ...action.payload.media]
-        },
-        [getMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
-        [uploadMedia.pending.type]: (state) => {},
-        [uploadMedia.fulfilled.type]: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
-            state.error = null;
-            state.media = [...state.media, ...action.payload]
-        },
-        [uploadMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
-        [deleteMedia.pending.type]: (state) => {},
-        [deleteMedia.fulfilled.type]: (state, action: PayloadAction<FileType | PhotoType>) => {
-            state.error = null;
-            state.media = [...state.media].filter(item => item.id !== action.payload.id)
-        },
-        [deleteMedia.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
-            state.isLoading = false;
-            state.error = action.payload;
-        },
+        }
     }
 })
 
 export default projectSlice.reducer;
-export const { setProject, setError, setMedia } = projectSlice.actions;
+export const { setProject, setError } = projectSlice.actions;

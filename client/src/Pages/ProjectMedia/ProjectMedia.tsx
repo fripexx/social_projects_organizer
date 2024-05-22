@@ -9,10 +9,10 @@ import MediaFileUpload from "../../Components/MediaFileUpload/MediaFileUpload";
 import Media from "../../Components/Media/Media";
 import {PreviewFileType} from "../../Components/PreviewFile/PreviewFile";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {deleteMedia, getMedia, QueryMedia, uploadMedia} from "../../store/thunks/ProjectThunks";
+import {deleteMedia, getMedia, QueryMedia, uploadMedia} from "../../store/thunks/ProjectMediaThunks";
 import Tabs from "./Components/Tabs/Tabs";
 import {useSearchParams} from "react-router-dom";
-import {setMedia} from "../../store/reducers/ProjectSlice";
+import {setMedia} from "../../store/reducers/ProjectMediaSlice";
 import LoadMore from "../../Components/LoadMore/LoadMore";
 import classes from "./ProjectMedia.module.scss";
 
@@ -20,8 +20,8 @@ const ProjectMedia:FC = () => {
     const dispatch = useAppDispatch();
     const project = useAppSelector(state => state.ProjectReducer.project);
     const user = useAppSelector(state => state.UserReducer.user)
-    const media = useAppSelector(state => state.ProjectReducer.media);
-    const totalMedia = useAppSelector(state => state.ProjectReducer.mediaTotalCount)
+    const media = useAppSelector(state => state.ProjectMediaReducer.media);
+    const totalMedia = useAppSelector(state => state.ProjectMediaReducer.totalCount)
     const [query, setQuery] = useState<QueryMedia>();
     const [searchParams, setSearchParams] = useSearchParams();
 
