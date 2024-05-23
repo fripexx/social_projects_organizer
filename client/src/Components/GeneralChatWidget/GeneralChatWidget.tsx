@@ -3,13 +3,17 @@ import classes from "./GeneralChatWidget.module.scss";
 
 interface GeneralChatLinkProps {
     text?: string;
-    link: string;
     countMessage?: number;
     callback: () => void;
 }
 
-const GeneralChatWidget: FC<GeneralChatLinkProps> = ({text = "Загальний чат", link = "/", countMessage, callback}) => {
+const GeneralChatWidget: FC<GeneralChatLinkProps> = ({text = "Загальний чат", countMessage, callback}) => {
     const [showMaxCount, setShowMaxCount] = useState<boolean>(false)
+
+    const onClick = (e:React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        callback();
+    }
 
     useEffect(() => {
         if(countMessage && countMessage > 99 ) {
@@ -20,7 +24,7 @@ const GeneralChatWidget: FC<GeneralChatLinkProps> = ({text = "Загальний
     }, [countMessage])
 
     return (
-        <button className={classes.button}>
+        <button className={classes.button} onClick={onClick}>
 
             <span className={classes.text}>{text}</span>
 
