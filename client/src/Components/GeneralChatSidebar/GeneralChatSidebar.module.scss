@@ -1,0 +1,48 @@
+.sidebar {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    bottom: 0px;
+    z-index: 11;
+    background: var(--Color-Grey);
+    width: 600px;
+    transition: all 0.5s;
+    transform: translateX(-100%);
+
+    &[data-show-sidebar="true"] {
+        transform: translateX(0%);
+    }
+
+    &[data-show-sidebar="false"] {
+        transform: translateX(-100%);
+    }
+}
+
+.header{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 10px;
+}
+
+.hide{
+    --size: 30px;
+
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size, 30px);
+    min-width: var(--size, 30px);
+    max-width: var(--size, 30px);
+    height: var(--size, 30px);
+    min-height: var(--size, 30px);
+    max-height: var(--size, 30px);
+    background: var(--Color-Dark);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.hideIcon{
+    fill: var(--Color-White);
+}
