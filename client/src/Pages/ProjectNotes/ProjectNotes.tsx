@@ -2,7 +2,6 @@ import React, {FC, useEffect, useState} from 'react';
 import plusIcon from "../../assets/images/plus_icon.svg";
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Button from "../../Elements/Button/Button";
@@ -17,6 +16,7 @@ import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {useParams} from "react-router-dom";
 import {getNotesProject} from "../../store/thunks/ProjectThunks";
 import {addNoteInProject, deleteNoteInProject, changeNoteInProject} from "../../store/thunks/ProjectThunks";
+import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 
 const ProjectNotes:FC = () => {
     const dispatch = useAppDispatch()
@@ -88,7 +88,7 @@ const ProjectNotes:FC = () => {
 
             <Page>
 
-                <Sidebar/>
+                <SidebarProject/>
 
                 <ContentPage>
 

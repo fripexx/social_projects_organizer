@@ -3,7 +3,6 @@ import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import saveIcon from "../../assets/images/save_icon.svg";
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Button from "../../Elements/Button/Button";
@@ -16,6 +15,7 @@ import {FormStateType} from "./types/FormStateType";
 import {ErrorFormStateType} from "./types/ErrorFormStateType";
 import {editSettingsProject} from "../../store/thunks/ProjectThunks";
 import {useNavigate} from "react-router-dom";
+import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 
 const ProjectSettings:FC = () => {
     const dispatch = useAppDispatch()
@@ -144,7 +144,7 @@ const ProjectSettings:FC = () => {
 
             <Page>
 
-                <Sidebar/>
+                <SidebarProject/>
 
                 <ContentPage>
 

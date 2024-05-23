@@ -5,8 +5,8 @@ import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Button from "../../Elements/Button/Button";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import Content from "../../Components/Content/Content";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
+import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 
 const ProjectPosts:FC = () => {
     return (
@@ -14,7 +14,7 @@ const ProjectPosts:FC = () => {
 
             <Page>
 
-                <Sidebar/>
+                <SidebarProject/>
 
                 <ContentPage>
 

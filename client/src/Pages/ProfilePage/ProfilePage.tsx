@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import saveIcon from "../../assets/images/save_icon.svg";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
+import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Button from "../../Elements/Button/Button";
@@ -110,7 +110,7 @@ const ProfilePage: FC = () => {
     return (
         <Page>
 
-            <Sidebar/>
+            <SidebarUser/>
 
             <ContentPage style={{position: "relative"}}>
 

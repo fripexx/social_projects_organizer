@@ -1,23 +1,18 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
 import classes from "./Sidebar.module.scss";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {routes} from "../../Routes/routes";
-import CardUser from "../CardUser/CardUser";
-import Menu from "../Menu/Menu";
 import {logout} from "../../store/thunks/UserThunks";
-import ProjectSummary from "../ProjectSummary/ProjectSummary";
 import {useLocation} from "react-router-dom";
 import {showSidebar} from "../../store/reducers/UISlice";
-import GeneralChatWidget from "../GeneralChatWidget/GeneralChatWidget";
 
-const Sidebar: FC = () => {
+interface SidebarProps {
+    children?: React.ReactNode;
+}
+
+const Sidebar: FC<SidebarProps> = ({children}) => {
     const dispatch = useAppDispatch();
     const location = useLocation()
-    const user = useAppSelector(state => state.UserReducer.user)
-    const project = useAppSelector(state => state.ProjectReducer.project)
     const showMobileSidebar = useAppSelector(state => state.UIReducer.showMobileSidebar)
-    const userRoutes = routes.filter(route => route.showInUserMenu);
-    const projectRoutes = routes.filter(route => route.showInProjectMenu);
 
     const onClickLogout = (e: React.MouseEvent<HTMLButtonElement>): void => {
         e.preventDefault();
@@ -25,32 +20,13 @@ const Sidebar: FC = () => {
     };
 
     useEffect(() => {
-        setTimeout(() => {
-            dispatch(showSidebar(false))
-        }, 1)
-
+        setTimeout(() => dispatch(showSidebar(false)), 1)
     }, [location]);
 
     return (
         <div className={classes.container} data-open-mobile={showMobileSidebar}>
 
-            {project && location.pathname.indexOf("/project/") === 0  &&
-                <ProjectSummary project={project}/>
-            }
-
-            {user && location.pathname.indexOf("/project/") === -1  &&
-                <CardUser user={user}/>
-            }
-
-            <Menu links={project && location.pathname.indexOf("/project/") === 0 ? projectRoutes : userRoutes}/>
-
-            {project && location.pathname.indexOf("/project/") === 0  &&
-                <GeneralChatWidget
-                    callback={() => {}}
-                    link={`/project/${project.id}/general-chat`}
-                    countMessage={1}
-                />
-            }
+            {children}
 
             <button className={classes.logout} onClick={onClickLogout}>
 

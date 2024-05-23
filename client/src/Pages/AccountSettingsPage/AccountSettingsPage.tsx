@@ -1,7 +1,6 @@
 import React, {FC, ReactEventHandler, useState} from 'react';
 import saveIcon from "../../assets/images/save_icon.svg";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Title from "../../Elements/Title/Title";
@@ -11,6 +10,7 @@ import AccountSettingsForm from "./Components/AccountSettingsForm/AccountSetting
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {FormStateType} from "./types/FormStateType";
 import {editSettingsUser} from "../../store/thunks/UserThunks";
+import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 
 const AccountSettingsPage: FC = () => {
     const dispatch = useAppDispatch();
@@ -39,7 +39,7 @@ const AccountSettingsPage: FC = () => {
     return (
         <Page>
 
-            <Sidebar/>
+            <SidebarUser/>
 
             <ContentPage>
 

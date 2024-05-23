@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Content from "../../Components/Content/Content";
@@ -16,6 +15,7 @@ import {setMedia} from "../../store/reducers/ProjectMediaSlice";
 import LoadMore from "../../Components/LoadMore/LoadMore";
 import classes from "./ProjectMedia.module.scss";
 import Loader from "../../Elements/Loader/Loader";
+import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 
 const ProjectMedia:FC = () => {
     const dispatch = useAppDispatch();
@@ -76,7 +76,7 @@ const ProjectMedia:FC = () => {
 
             <Page>
 
-                <Sidebar/>
+                <SidebarProject/>
 
                 <ContentPage>
 

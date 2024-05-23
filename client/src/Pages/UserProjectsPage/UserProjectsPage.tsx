@@ -4,7 +4,6 @@ import {addProject, getProjects} from "../../store/thunks/UserThunks";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Title from "../../Elements/Title/Title";
@@ -13,6 +12,7 @@ import Content from "../../Components/Content/Content";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
 import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
 import ModalInputText from "../../Components/Modals/ModalInputText/ModalInputText";
+import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 
 const UserProjectsPage:FC = () => {
     const dispatch = useAppDispatch();
@@ -50,7 +50,7 @@ const UserProjectsPage:FC = () => {
     return (
         <Page>
 
-            <Sidebar/>
+            <SidebarUser/>
 
             <ContentPage>
 

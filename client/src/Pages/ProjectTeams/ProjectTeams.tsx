@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import saveIcon from "../../assets/images/save_icon.svg";
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
-import Sidebar from "../../Components/Sidebar/Sidebar";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Title from "../../Elements/Title/Title";
@@ -13,6 +12,7 @@ import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {addUserInTeam} from "../../store/thunks/ProjectThunks";
 import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
 import ModalInputText from "../../Components/Modals/ModalInputText/ModalInputText";
+import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 
 const ProjectTeams = () => {
     const project = useAppSelector(state => state.ProjectReducer.project);
@@ -50,7 +50,7 @@ const ProjectTeams = () => {
 
             <Page>
 
-                <Sidebar/>
+                <SidebarProject/>
 
                 <ContentPage>
 
