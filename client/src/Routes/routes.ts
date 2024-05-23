@@ -182,15 +182,5 @@ export const routes: Route[] = [
         requiresAuth: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
-    },
-    {
-        key: "project_chat",
-        name: "Чат проєкту",
-        path: "/project/:id/project_chat",
-        component: ProjectPosts,
-        icon: userIcon,
-        requiresAuth: true,
-        redirectIfAuthenticated: false,
-        showInProjectMenu: false,
-    },
+    }
 ];

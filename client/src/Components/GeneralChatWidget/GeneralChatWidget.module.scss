@@ -1,0 +1,67 @@
+.button {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    text-decoration: none;
+    background: var(--Color-White);
+    border-radius: 10px;
+    transition: 0.2s ease;
+    cursor: pointer;
+    border: 0px;
+
+    &:hover {
+        background: var(--Color-Dark);
+
+        .text {
+            color: var(--Color-White);
+        }
+    }
+}
+
+.buttonActive {
+    background: var(--Color-Dark);
+
+    .text {
+        color: var(--Color-White);
+    }
+}
+
+.text {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 25px;
+    color: var(--Color-Dark);
+    transition: 0.2s ease;
+}
+
+.count {
+    --width-count: 25px;
+
+    width: var(--width-count, 25px);
+    min-width: var(--width-count, 25px);
+    max-width: var(--width-count, 25px);
+    height: var(--width-count, 25px);
+    min-height: var(--width-count, 25px);
+    max-height: var(--width-count, 25px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--Color-Blue);
+    font-size: 14px;
+    font-weight: 300;
+    color: var(--Color-White);
+    position: relative;
+}
+
+.plus {
+    position: absolute;
+    top: -8px;
+    right: -7px;
+    color: var(--Color-Dark);
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+}

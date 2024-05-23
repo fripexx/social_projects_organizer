@@ -8,6 +8,7 @@ import {logout} from "../../store/thunks/UserThunks";
 import ProjectSummary from "../ProjectSummary/ProjectSummary";
 import {useLocation} from "react-router-dom";
 import {showSidebar} from "../../store/reducers/UISlice";
+import GeneralChatWidget from "../GeneralChatWidget/GeneralChatWidget";
 
 const Sidebar: FC = () => {
     const dispatch = useAppDispatch();
@@ -42,6 +43,14 @@ const Sidebar: FC = () => {
             }
 
             <Menu links={project && location.pathname.indexOf("/project/") === 0 ? projectRoutes : userRoutes}/>
+
+            {project && location.pathname.indexOf("/project/") === 0  &&
+                <GeneralChatWidget
+                    callback={() => {}}
+                    link={`/project/${project.id}/general-chat`}
+                    countMessage={1}
+                />
+            }
 
             <button className={classes.logout} onClick={onClickLogout}>
 
