@@ -10,7 +10,7 @@ import Button from "../../Elements/Button/Button";
 import TeamList from "../../Components/TeamList/TeamList";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {addUserInTeam} from "../../store/thunks/ProjectThunks";
-import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
+import Backdrop from "../../Components/Backdrop/Backdrop";
 import ModalInputText from "../../Components/Modals/ModalInputText/ModalInputText";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 
@@ -80,7 +80,7 @@ const ProjectTeams = () => {
 
                 </ContentPage>
 
-                <ModalBackdrop isOpen={addModal}>
+                <Backdrop isOpen={addModal}>
                     <ModalInputText
                         type={"email"}
                         text={addEmail}
@@ -89,7 +89,7 @@ const ProjectTeams = () => {
                         onCancel={closeModal}
                         onConfirm={addUserCallback}
                     />
-                </ModalBackdrop>
+                </Backdrop>
 
             </Page>
 

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import classes from "./GeneralChatSidebar.module.scss";
-import ModalBackdrop from "../ModalBackdrop/ModalBackdrop";
+import Backdrop from "../Backdrop/Backdrop";
 
 interface GeneralChatSidebarProps {
     children: React.ReactNode;
@@ -15,7 +15,7 @@ const GeneralChatSidebar:FC<GeneralChatSidebarProps> = ({children, showSidebar, 
     }
 
     return (
-        <ModalBackdrop isOpen={showSidebar} clickCallback={hideCallback}>
+        <Backdrop isOpen={showSidebar} clickCallback={hideCallback}>
 
             <div className={classes.sidebar} data-show-sidebar={showSidebar}>
 
@@ -35,7 +35,7 @@ const GeneralChatSidebar:FC<GeneralChatSidebarProps> = ({children, showSidebar, 
 
             </div>
 
-        </ModalBackdrop>
+        </Backdrop>
 
     );
 };

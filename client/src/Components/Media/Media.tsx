@@ -4,7 +4,7 @@ import {FileType, PhotoType} from "../../store/types/FileType";
 import {UserType} from "../../store/types/UserType";
 import {ProjectType} from "../../store/types/ProjectType";
 import MediaItem from "../MediaItem/MediaItem";
-import ModalBackdrop from "../ModalBackdrop/ModalBackdrop";
+import Backdrop from "../Backdrop/Backdrop";
 import ModalConfirmAction from "../Modals/ModalConfirmAction/ModalConfirmAction";
 import ModalMedia from "../Modals/ModalMedia/ModalMedia";
 
@@ -57,21 +57,21 @@ const Media:FC<MediaProps> = ({media, user, project, deleteCallback}) => {
                 )
             })}
 
-            <ModalBackdrop isOpen={!!deleteId}>
+            <Backdrop isOpen={!!deleteId}>
                 <ModalConfirmAction
                     text={"Ви впевнені що хочете видалити медіафайл"}
                     onCancel={hideDeletePopup}
                     onConfirm={acceptDelete}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
             {openMedia &&
-                <ModalBackdrop isOpen={true}>
+                <Backdrop isOpen={true}>
                     <ModalMedia
                         media={openMedia}
                         closeCallback={closeMedia}
                     />
-                </ModalBackdrop>
+                </Backdrop>
             }
 
 

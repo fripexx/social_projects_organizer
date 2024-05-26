@@ -1,13 +1,13 @@
 import React, {FC, ReactNode, useEffect, useRef, useState} from 'react';
-import classes from "./ModalBackdrop.module.scss";
+import classes from "./Backdrop.module.scss";
 
-interface ModalBackdropProps {
+interface BackdropProps {
     children: ReactNode,
     isOpen: boolean,
     clickCallback?: () => void
 }
 
-const ModalBackdrop:FC<ModalBackdropProps> = ({children, isOpen, clickCallback}) => {
+const Backdrop:FC<BackdropProps> = ({children, isOpen, clickCallback}) => {
     const [containerClass, setContainerClass] = useState(classes.container);
     const ref = useRef<HTMLDivElement>(null);
 
@@ -30,4 +30,4 @@ const ModalBackdrop:FC<ModalBackdropProps> = ({children, isOpen, clickCallback})
     );
 };
 
-export default ModalBackdrop;
+export default Backdrop;

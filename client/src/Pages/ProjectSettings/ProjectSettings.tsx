@@ -9,7 +9,7 @@ import Button from "../../Elements/Button/Button";
 import Content from "../../Components/Content/Content";
 import Title from "../../Elements/Title/Title";
 import ProjectSettingsForm from "./Components/ProjectSettingsForm/ProjectSettingsForm";
-import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
+import Backdrop from "../../Components/Backdrop/Backdrop";
 import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/ModalConfirmAction";
 import {FormStateType} from "./types/FormStateType";
 import {ErrorFormStateType} from "./types/ErrorFormStateType";
@@ -178,13 +178,13 @@ const ProjectSettings:FC = () => {
 
                 </ContentPage>
 
-                <ModalBackdrop isOpen={activeModal}>
+                <Backdrop isOpen={activeModal}>
                     <ModalConfirmAction
                         text={"Ви впевнені що ви хочете змінити дані проєкту?"}
                         onCancel={closeModal}
                         onConfirm={saveRequest}
                     />
-                </ModalBackdrop>
+                </Backdrop>
 
             </Page>
 

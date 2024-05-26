@@ -3,7 +3,7 @@ import {v4 as uuid} from "uuid";
 import {PreviewFileType} from "../PreviewFile/PreviewFile";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import Button from "../../Elements/Button/Button";
-import ModalBackdrop from "../ModalBackdrop/ModalBackdrop";
+import Backdrop from "../Backdrop/Backdrop";
 import ModalUploadFile from "../Modals/ModalUploadFile/ModalUploadFile";
 import mime from "mime";
 
@@ -85,7 +85,7 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
                 onClick={showAddModal}
             />
 
-            <ModalBackdrop isOpen={addModal}>
+            <Backdrop isOpen={addModal}>
                 <ModalUploadFile
                     accept={accept}
                     maxSize={maxSize}
@@ -101,7 +101,7 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
                     closeCallback={closeCallback}
                     confirmCallback={confirmCallback}
                 />
-            </ModalBackdrop>
+            </Backdrop>
         </>
 
     );

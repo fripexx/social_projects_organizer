@@ -8,7 +8,7 @@ import Button from "../../Elements/Button/Button";
 import Content from "../../Components/Content/Content";
 import Title from "../../Elements/Title/Title";
 import Notes from "../../Components/Notes/Notes";
-import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
+import Backdrop from "../../Components/Backdrop/Backdrop";
 import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/ModalConfirmAction";
 import ModalTextArea from "../../Components/Modals/ModalTextArea/ModalTextArea";
 import {ChangeCallback, DeleteCallback} from "../../Components/Note/Note";
@@ -129,7 +129,7 @@ const ProjectNotes:FC = () => {
 
             </Page>
 
-            <ModalBackdrop isOpen={addModalSate}>
+            <Backdrop isOpen={addModalSate}>
                 <ModalTextArea
                     // className={classes.modal}
                     text={textModalNote}
@@ -137,15 +137,15 @@ const ProjectNotes:FC = () => {
                     onConfirm={onSubmitModal}
                     onCancel={closeModal}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
-            <ModalBackdrop isOpen={!!deleteModalSate}>
+            <Backdrop isOpen={!!deleteModalSate}>
                 <ModalConfirmAction
                     text={"Ви впевнені що хочете видалити нотатку?"}
                     onCancel={declineDelete}
                     onConfirm={acceptDelete}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
         </ProjectPage>
     );

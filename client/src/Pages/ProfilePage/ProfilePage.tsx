@@ -12,7 +12,7 @@ import {FormStateType} from "./types/FormStateType";
 import {ErrorFormStateType} from "./types/ErrorFormStateType";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {editUser} from "../../store/thunks/UserThunks";
-import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
+import Backdrop from "../../Components/Backdrop/Backdrop";
 import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/ModalConfirmAction";
 import Loader from "../../Elements/Loader/Loader";
 
@@ -148,13 +148,13 @@ const ProfilePage: FC = () => {
 
             </ContentPage>
 
-            <ModalBackdrop isOpen={activeModal}>
+            <Backdrop isOpen={activeModal}>
                 <ModalConfirmAction
                     text={"Ви впевнені що хочете змінити дані облікового запису?"}
                     onCancel={closeModal}
                     onConfirm={onSubmitForm}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
         </Page>
     );

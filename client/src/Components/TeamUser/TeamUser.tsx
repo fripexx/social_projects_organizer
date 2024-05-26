@@ -5,7 +5,7 @@ import deleteIcon from "../../assets/images/dump_icon.svg"
 import editIcon from "../../assets/images/edit-icon.svg"
 import Logo from "../Logo/Logo";
 import Button from "../../Elements/Button/Button";
-import ModalBackdrop from "../ModalBackdrop/ModalBackdrop";
+import Backdrop from "../Backdrop/Backdrop";
 import ModalConfirmAction from "../Modals/ModalConfirmAction/ModalConfirmAction";
 
 export type DeleteCallbackType = (id: string) => void;
@@ -118,21 +118,21 @@ const TeamUser:FC<TeamUserProps> = ({user, isAdmin, showDelete, deleteCallback, 
 
             </div>
 
-            <ModalBackdrop isOpen={deleteModal}>
+            <Backdrop isOpen={deleteModal}>
                 <ModalConfirmAction
                     text={"Ви впевнені що хочете видалити юзера з команди?"}
                     onCancel={closeDeleteModal}
                     onConfirm={confirmDelete}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
-            <ModalBackdrop isOpen={changeAdmin}>
+            <Backdrop isOpen={changeAdmin}>
                 <ModalConfirmAction
                     text={"Ви впевнені що хочете передати права адміністратора цьому юзеру?"}
                     onCancel={closeChangeAdmin}
                     onConfirm={confirmChangeAdmin}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
         </div>
     );

@@ -10,7 +10,7 @@ import Title from "../../Elements/Title/Title";
 import Button from "../../Elements/Button/Button";
 import Content from "../../Components/Content/Content";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
-import ModalBackdrop from "../../Components/ModalBackdrop/ModalBackdrop";
+import Backdrop from "../../Components/Backdrop/Backdrop";
 import ModalInputText from "../../Components/Modals/ModalInputText/ModalInputText";
 import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 
@@ -80,7 +80,7 @@ const UserProjectsPage:FC = () => {
 
             </ContentPage>
 
-            <ModalBackdrop isOpen={activeModal}>
+            <Backdrop isOpen={activeModal}>
                 <ModalInputText
                     text={addProjectName}
                     placeholderText={"Введіть назву проєкту"}
@@ -88,7 +88,7 @@ const UserProjectsPage:FC = () => {
                     onCancel={hideModal}
                     onConfirm={addProjectHandler}
                 />
-            </ModalBackdrop>
+            </Backdrop>
 
         </Page>
     );
