@@ -3,12 +3,14 @@ import UserReducer from "./reducers/UserSlice";
 import ProjectReducer from "./reducers/ProjectSlice";
 import ProjectMediaReducer from "./reducers/ProjectMediaSlice";
 import UIReducer from "./reducers/UISlice";
+import GeneralChatSlice from "./reducers/GeneralChatSlice";
 
 const rootReducer = combineReducers({
     UserReducer,
     ProjectReducer,
     ProjectMediaReducer,
-    UIReducer
+    UIReducer,
+    GeneralChatSlice,
 })
 
 

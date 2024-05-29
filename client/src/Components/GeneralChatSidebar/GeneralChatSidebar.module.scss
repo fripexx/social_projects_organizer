@@ -5,9 +5,13 @@
     bottom: 0px;
     z-index: 11;
     background: var(--Color-Grey);
-    width: 600px;
+    max-width: 700px;
+    width: 100%;
     transition: all 0.5s;
     transform: translateX(-100%);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 70px 1fr;
 
     &[data-show-sidebar="true"] {
         transform: translateX(0%);
@@ -16,33 +20,53 @@
     &[data-show-sidebar="false"] {
         transform: translateX(-100%);
     }
+    * {
+        box-sizing: border-box;
+    }
 }
 
-.header{
+.header {
     display: flex;
     flex-direction: row;
     align-items: center;
+    justify-content: space-between;
+    gap: 15px;
     padding: 10px;
+    border-bottom: 1px solid var(--Color-Light-Grey-Blue);
+    max-width: 100%;
 }
 
-.hide{
-    --size: 30px;
-
+.hide {
     all: unset;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--size, 30px);
-    min-width: var(--size, 30px);
-    max-width: var(--size, 30px);
-    height: var(--size, 30px);
-    min-height: var(--size, 30px);
-    max-height: var(--size, 30px);
     background: var(--Color-Dark);
-    border-radius: 50%;
+    border-radius: 10px;
     cursor: pointer;
+    padding: 8px 10px;
+    gap: 10px;
+    color: var(--Color-White);
 }
 
-.hideIcon{
+.hideIcon {
     fill: var(--Color-White);
+}
+
+.branding {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.brandName {
+    color: var(--Color-Dark);
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+    text-transform: uppercase;
+    text-align: left;
 }

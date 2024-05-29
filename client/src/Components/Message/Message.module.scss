@@ -1,0 +1,30 @@
+.container {
+    padding: 15px 0px;
+
+    &[data-is-current-user="true"] {
+        .message {
+            flex-direction: row-reverse;
+        }
+
+        .content {
+            background: var(--Color-Light-Grey-Blue);
+        }
+    }
+}
+
+.message {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.content {
+    padding: 8px 15px;
+    background: var(--Color-White);
+    border-radius: 15px;
+    white-space: pre-line;
+    font-size: 18px;
+    line-height: normal;
+    font-weight: 300;
+    max-width: 70%;
+}
