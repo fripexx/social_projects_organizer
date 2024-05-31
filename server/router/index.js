@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const UserController = require('../controllers/user-controller');
 const NoteController = require('../controllers/note-controller')
 const ProjectController = require('../controllers/project-controller')
+const ChatController = require('../controllers/chat-controller')
 const router = new Router();
 const {body} = require('express-validator')
 const ApiError = require("../exceptions/api-error");
@@ -73,5 +74,12 @@ router.patch('/change-note-in-project', [authMiddleware], NoteController.changeN
 router.post('/upload-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.uploadMedia);
 router.get('/get-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.getMedia);
 router.delete('/delete-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.deleteMedia);
+
+
+/**
+ * Project chat routes
+ */
+router.get('/get-messages', [authMiddleware], ChatController.getMessages);
+router.post('/send-message', [authMiddleware], ChatController.sendMessage);
 
 module.exports = router;
