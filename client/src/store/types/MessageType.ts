@@ -1,14 +1,7 @@
-export interface ChatType {
-    id: string;
-    belongToId: string,
-    belongToModel: string,
-    messages: MessageType[]
-}
-
 export interface MessageType {
     id: string,
-    sender: string,
     chat: string,
+    sender: string,
     content: string,
     isRead: boolean,
     timeSend: Date,

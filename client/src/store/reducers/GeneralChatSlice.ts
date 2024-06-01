@@ -1,9 +1,9 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ChatType, MessageType} from "../types/ChatTypes";
+import {MessageType} from "../types/MessageType";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 
 interface GeneralChatState {
-    chat: ChatType | null,
+    chat: string | null,
     messages: MessageType[],
     loading: boolean,
     error: ErrorResponseType | null,

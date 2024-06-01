@@ -52,7 +52,7 @@ const SidebarProject: FC = () => {
             {project && user &&
                 <GeneralChatSidebar showSidebar={showGeneralChat} hideCallback={hideSidebar} project={project}>
                     <Chat
-                        chatId={"ewefewf"}
+                        chat={"ewefewf"}
                         messages={messages}
                         geMessagesCallback={() => {}}
                         team={team}

@@ -1,6 +1,6 @@
 import React, {FC} from 'react';
 import classes from "./Message.module.scss";
-import {MessageType} from "../../store/types/ChatTypes";
+import {MessageType} from "../../store/types/MessageType";
 import {PhotoType} from "../../store/types/FileType";
 import Logo from "../Logo/Logo";
 

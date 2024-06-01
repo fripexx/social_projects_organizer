@@ -3,20 +3,20 @@ import classes from "./Chat.module.scss";
 import emojiIcon from "../../assets/images/emoji-icon.svg";
 import paperClipIcon from "../../assets/images/paper-clip-icon.svg";
 import {ReactSVG} from "react-svg";
-import {MessageType} from "../../store/types/ChatTypes";
+import {MessageType} from "../../store/types/MessageType";
 import {BasicUserInfo, UserType} from "../../store/types/UserType";
 import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 import Message from "../Message/Message";
 
 interface ChatProps {
-    chatId: string;
+    chat: string;
     messages: MessageType[],
     team: BasicUserInfo[],
     geMessagesCallback: () => void,
     currentUser: UserType
 }
 
-const Chat:FC<ChatProps> = ({messages, team, currentUser}) => {
+const Chat:FC<ChatProps> = ({chat, messages, team, currentUser}) => {
     const [sendMessage, setSendMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const mainRef = useRef<HTMLTextAreaElement>(null);
