@@ -8,10 +8,13 @@ const fileUploadMiddleware = require('./middlewares/upload-account-middleware')
 const errorMiddleware = require('./middlewares/error-middleware')
 const fileUpload = require('express-fileupload');
 const sharp = require("sharp");
-
+const http = require('http');
+const setupSocket = require('./sockets/SocketIO');
 
 const PORT = process.env.PORT || 5000;
 const app = express();
+const server = http.createServer(app);
+const io = setupSocket(server);
 
 app.use(express.json())
 app.use(cookieParser())
@@ -31,10 +34,10 @@ const start = async () => {
         await mongoose.connect(process.env.DB_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true,
-        })
-        app.listen(PORT, () => console.log(PORT))
+        });
+        server.listen(PORT, () => console.log(`Server started on port ${PORT}`));
     } catch (e) {
-        console.log(e)
+        console.log(e);
     }
 }
 

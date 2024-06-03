@@ -1,5 +1,6 @@
 .container {
     padding: 15px 0px;
+    position: relative;
 
     &[data-is-current-user="true"] {
         .message {
@@ -9,6 +10,21 @@
         .content {
             background: var(--Color-Light-Grey-Blue);
         }
+
+        .time {
+            color: var(--Color-Dark);
+            text-align: right;
+        }
+
+        @media (max-width: 600px) {
+            .logo {
+                display: none;
+            }
+        }
+    }
+
+    @media (max-width: 600px) {
+        padding: 8px 0px;
     }
 }
 
@@ -27,4 +43,15 @@
     line-height: normal;
     font-weight: 300;
     max-width: 70%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.time {
+    display: block;
+    color: var(--Color-Light-Grey-Blue);
+    font-size: 12px;
+    font-weight: 300;
+    text-align: left;
 }

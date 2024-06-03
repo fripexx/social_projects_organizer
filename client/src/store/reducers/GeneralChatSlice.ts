@@ -1,10 +1,8 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {MessageType} from "../types/MessageType";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 
 interface GeneralChatState {
     chat: string | null,
-    messages: MessageType[],
     loading: boolean,
     error: ErrorResponseType | null,
     showGeneralChat: boolean,
@@ -12,7 +10,6 @@ interface GeneralChatState {
 
 const initialState: GeneralChatState = {
     chat: null,
-    messages: [],
     loading: false,
     error: null,
     showGeneralChat: false

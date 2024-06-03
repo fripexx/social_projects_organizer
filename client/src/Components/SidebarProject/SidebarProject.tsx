@@ -1,4 +1,4 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {routes} from "../../Routes/routes";
 import {showChat} from "../../store/reducers/GeneralChatSlice";
@@ -13,11 +13,9 @@ import Chat from "../Chat/Chat";
 const SidebarProject: FC = () => {
     const location = useLocation()
     const dispatch = useAppDispatch()
+    const projectRoutes = routes.filter(route => route.showInProjectMenu);
     const project = useAppSelector(state => state.ProjectReducer.project)
     const showGeneralChat = useAppSelector(state => state.GeneralChatSlice.showGeneralChat)
-    const projectRoutes = routes.filter(route => route.showInProjectMenu);
-
-    const messages = useAppSelector(state => state.GeneralChatSlice.messages);
     const team = useAppSelector(state => state.ProjectReducer.team);
     const user = useAppSelector(state => state.UserReducer.user)
 
@@ -52,9 +50,8 @@ const SidebarProject: FC = () => {
             {project && user &&
                 <GeneralChatSidebar showSidebar={showGeneralChat} hideCallback={hideSidebar} project={project}>
                     <Chat
-                        chat={"ewefewf"}
-                        messages={messages}
-                        geMessagesCallback={() => {}}
+                        chat={project.id}
+                        model={'Project'}
                         team={team}
                         currentUser={user}
                     />
