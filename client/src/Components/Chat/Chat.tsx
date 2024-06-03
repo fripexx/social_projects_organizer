@@ -8,7 +8,7 @@ import {BasicUserInfo, UserType} from "../../store/types/UserType";
 import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 import Message from "../Message/Message";
 import {Socket} from 'socket.io-client';
-import ioServer from "../../axios/ioServer";
+import ioServer from "../../api/ioServer";
 
 interface ChatProps {
     chat: string;

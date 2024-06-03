@@ -1,5 +1,5 @@
 import {createAsyncThunk} from "@reduxjs/toolkit"
-import instanceServer from "../../axios/instanceServer";
+import instanceServer from "../../api/instanceServer";
 import {AuthRequestType} from "../types/AuthRequestType";
 import {AuthResponseType} from "../types/AuthResponseType";
 import {RegistrationRequestType} from "../types/RegistrationRequestType";
