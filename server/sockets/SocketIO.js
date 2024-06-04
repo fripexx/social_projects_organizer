@@ -49,6 +49,10 @@ const setupSocket = (server) => {
             ChatController.getMessages(socket, chat, model);
         });
 
+        socket.on('loadMessages', ({chat, model, skip}) => {
+            ChatController.loadMessages(socket, chat, model, skip);
+        });
+
         socket.on('sendMessage', (data) => {
             ChatController.sendMessage(socket, io, data);
         });

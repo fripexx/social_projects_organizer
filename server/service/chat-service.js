@@ -17,13 +17,12 @@ class ChatService {
 
         return new MessageDto(message);
     }
-    async getMessages(chat) {
-        const page = 0;
-        const pageSize = 20;
+    async getMessages(chat, skip = 0) {
+        const limit = 20;
         const messages = await Message.find({ chat })
             .sort({ timeSend: -1 })
-            .skip(Number(page) * Number(pageSize))
-            .limit(Number(pageSize));
+            .skip(skip)
+            .limit(Number(limit));
 
         return messages.map(message => new MessageDto(message))
     }

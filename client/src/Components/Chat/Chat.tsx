@@ -2,6 +2,7 @@ import React, {FC, useState, useRef, useEffect} from 'react';
 import classes from "./Chat.module.scss";
 import emojiIcon from "../../assets/images/emoji-icon.svg";
 import paperClipIcon from "../../assets/images/paper-clip-icon.svg";
+import dotsLoaderIcon from "../../assets/images/dots-loader.svg";
 import {ReactSVG} from "react-svg";
 import {MessageType} from "../../store/types/MessageType";
 import {BasicUserInfo, UserType} from "../../store/types/UserType";
@@ -22,7 +23,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const [sendMessage, setSendMessage] = useState('');
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
-    const [scrollToBottom, setScrollToBottom] = useState<boolean>(false)
+    const [loadMore, setLoadMore] = useState<boolean>(false)
 
     const mainRef = useRef<HTMLTextAreaElement>(null);
 
@@ -62,13 +63,17 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
             newSocket.emit('getMessages', {chat, model});
         });
 
-        newSocket.on('loadMessages', (messages: MessageType[]) => {
+        newSocket.on('getMessages', (messages: MessageType[]) => {
             setChatMessages(messages);
-            setScrollToBottom(true)
         });
+
+        newSocket.on('loadMessages', (messages: MessageType[]) => {
+            setChatMessages(prevState => [...prevState, ...messages]);
+            setLoadMore(false);
+        });
+
         newSocket.on('newMessage', (message: MessageType) => {
             setChatMessages((prevMessages) => [message, ...prevMessages, ]);
-            setScrollToBottom(true)
         });
 
         newSocket.on('disconnect', () => {});
@@ -78,27 +83,33 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
         };
     }, []);
     useEffect(() => {
-        if(mainRef.current && scrollToBottom) {
-            const scrollTop = mainRef.current.scrollTop;
-            const scrollHeight = mainRef.current.scrollHeight;
-            const clientHeight = mainRef.current.clientHeight;
-
-            if(scrollHeight - clientHeight != scrollTop) {
-                mainRef.current.scrollTop = scrollHeight - clientHeight;
-                setScrollToBottom(false);
+        const handleScroll = () => {
+            if (mainRef.current && mainRef.current.scrollTop) {
+                const invertScrollTop = mainRef.current.scrollHeight - mainRef.current.clientHeight + mainRef.current.scrollTop;
+                if(invertScrollTop === 0 && !loadMore) {
+                    setLoadMore(true);
+                }
             }
-        }
-    }, [scrollToBottom]);
+        };
+
+        if (mainRef.current)  mainRef.current.addEventListener('scroll', handleScroll);
+
+        return () => {
+            if (mainRef.current) mainRef.current.removeEventListener('scroll', handleScroll);
+        };
+    }, []);
+    useEffect(() => {
+        if(loadMore && socket) socket.emit('loadMessages', {chat, model, skip: chatMessages.length});
+    }, [loadMore]);
 
     return (
         <div className={classes.chat}>
 
             <main className={classes.main} ref={mainRef}>
 
-                <div className={classes.messages}>
-
-                    {chatMessages.length > 0 &&
-                        chatMessages.map((message) => {
+                {chatMessages.length > 0 ? (
+                    <>
+                        {chatMessages.map((message) => {
                             const teamUser = team.find(user => user.id === message.sender);
                             return (
                                 <Message
@@ -108,16 +119,18 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                                     isMessageCurrentUser={message.sender === currentUser.id}
                                 />
                             )
-                        })
-                    }
+                        })}
 
-                    {chatMessages.length === 0 &&
-                        <div className={classes.noMessage}>
-                            Тут ще немає повідомлень
+                        <div className={classes.loader} data-show={loadMore}>
+                            <ReactSVG src={dotsLoaderIcon}/>
                         </div>
-                    }
+                    </>
 
-                </div>
+                ) : (
+                    <div className={classes.noMessage}>
+                        Тут ще немає повідомлень
+                    </div>
+                )}
 
             </main>
 
