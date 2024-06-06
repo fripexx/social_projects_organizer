@@ -13,6 +13,7 @@
     display: flex;
     flex-direction: column-reverse;
     padding-bottom: 15px;
+
     &::-webkit-scrollbar-thumb {
         background: rgba(0, 0, 0, 0);
     }
@@ -124,6 +125,10 @@
     display: block;
     box-sizing: border-box;
     cursor: pointer;
+
+    &[data-active="true"] {
+        --Color-SVG: var(--Color-Dark);
+    }
 }
 
 .sendButton {
@@ -149,5 +154,12 @@
             color: var(--Color-White);
         }
     }
+}
 
+.modalFiles {
+    position: absolute;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+    left: 15px;
+    right: 15px;
+    width: auto;
 }

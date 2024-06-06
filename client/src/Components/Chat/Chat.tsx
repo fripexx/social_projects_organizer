@@ -10,6 +10,10 @@ import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 import Message from "../Message/Message";
 import {Socket} from 'socket.io-client';
 import ioServer from "../../api/ioServer";
+import ModalUploadFile from "../Modals/ModalUploadFile/ModalUploadFile";
+import {PreviewFileType} from "../PreviewFile/PreviewFile";
+import Backdrop from "../Backdrop/Backdrop";
+import ChatMediaUpload from "./Components/ChatMediaUpload/ChatMediaUpload";
 
 interface ChatProps {
     chat: string;
@@ -20,8 +24,9 @@ interface ChatProps {
 
 const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const [socket, setSocket] = useState<Socket | null>(null);
-    const [sendMessage, setSendMessage] = useState('');
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+    const [sendMessage, setSendMessage] = useState<string>('');
+    const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
+    const [showUploadModalState, setShowUploadModal] = useState<boolean>(false);
     const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
     const [loadMore, setLoadMore] = useState<boolean>(false)
 
@@ -51,6 +56,13 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
             setSendMessage('');
             setShowEmojiPicker(false);
         }
+    }
+    const showUploadModal = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault()
+        setShowUploadModal(true);
+    }
+    const hideUploadModal = (): void => {
+        setShowUploadModal(false);
     }
 
     useEffect(() => {
@@ -151,7 +163,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                             <ReactSVG src={emojiIcon}/>
                         </button>
 
-                        <button className={classes.addedButton}>
+                        <button className={classes.addedButton} onClick={showUploadModal} data-active={showUploadModalState}>
                             <ReactSVG src={paperClipIcon}/>
                         </button>
 
@@ -170,6 +182,11 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                 />
 
             </footer>
+
+            <ChatMediaUpload
+                show={showUploadModalState}
+                hideCallback={hideUploadModal}
+            />
 
         </div>
     );

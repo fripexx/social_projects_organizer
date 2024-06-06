@@ -21,9 +21,10 @@ interface ModalUploadFileProps {
     changeCallback: (inputFiles: FileList) => void,
     maxSize: number,
     maxCountFiles: number;
+    className?: string,
 }
 
-const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize, maxCountFiles, multiple = false, cancelText, confirmText, removeCallback, closeCallback, confirmCallback, changeCallback, errors}) => {
+const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize, maxCountFiles, multiple = false, cancelText, confirmText, removeCallback, closeCallback, confirmCallback, changeCallback, errors, className}) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImageMouseDown = () => {
@@ -43,7 +44,7 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
     }
 
     return (
-        <Modal className={classes.modal}>
+        <Modal className={className ? classes.modal + " " + className : classes.modal}>
 
             <span className={classes.title}>
                 Додайте медіафайл
