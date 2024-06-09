@@ -27,39 +27,7 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
         e.preventDefault();
         setAddModal(true);
     }
-    const changeCallback = (inputFiles: FileList) => {
-        const addFiles: PreviewFileType[] = []
-
-        for (let i = 0; i < inputFiles.length; i++) {
-            if (i > 8) {
-                setError(prevState => [...prevState, `Максимальна кількість файлів - ${maxCountFiles}`])
-                break;
-            }
-
-            const currentFile = inputFiles[i];
-            const type = currentFile.type.split("/")[0];
-            const fileExtension = mime.getExtension(currentFile.type);
-
-            // Перевірка чи є файл вже доданим
-            if (files.find(file => file.fileBlob.name === currentFile.name && file.fileBlob.size === currentFile.size && file.fileBlob.type === currentFile.type)) {
-                setError(prevState => [...prevState, `Файл "${currentFile.name}" вже доданий`])
-                continue;
-            }
-
-            if (currentFile.size > maxSize) {
-                setError(prevState => [...prevState, `Розмір файлу "${currentFile.name}" більший за ${maxSize / (1024 * 1024)}МБ`])
-                continue
-            }
-
-            addFiles.push({
-                id: uuid(),
-                typeMedia: type === "video" || type === "image" || type === "text" || type === "application" ? type : null,
-                urlSrc: URL.createObjectURL(currentFile),
-                fileExtension: fileExtension,
-                fileBlob: currentFile
-            })
-        }
-
+    const changeCallback = (addFiles: PreviewFileType[]) => {
         setFiles(prevState => [...prevState, ...addFiles]);
     }
     const removeCallback = (removeId: string): void => {
@@ -74,6 +42,9 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
         setAddModal(false);
         setFiles([]);
     }
+    const errorCallback = (error: string) => {
+        setError(prevState => [...prevState, error])
+    }
 
     return (
         <>
@@ -85,7 +56,7 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
                 onClick={showAddModal}
             />
 
-            <Backdrop isOpen={addModal}>
+            <Backdrop isOpen={addModal} clickCallback={closeCallback}>
                 <ModalUploadFile
                     accept={accept}
                     maxSize={maxSize}
@@ -100,10 +71,10 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
                     removeCallback={removeCallback}
                     closeCallback={closeCallback}
                     confirmCallback={confirmCallback}
+                    errorCallback={errorCallback}
                 />
             </Backdrop>
         </>
-
     );
 };
 

@@ -36,6 +36,7 @@ const ChatMediaUpload:FC<ChatMediaUploadProps> = ({show, hideCallback}) => {
                     closeCallback={hideCallback}
                     confirmCallback={() => {}}
                     changeCallback={() => {}}
+                    errorCallback={() => {}}
                     maxSize={5 * 1024 * 1024}
                     maxCountFiles={5}
                     multiple={true}

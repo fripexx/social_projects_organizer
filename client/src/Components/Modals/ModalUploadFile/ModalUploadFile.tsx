@@ -6,6 +6,7 @@ import Modal from "../Modal/Modal";
 import Button from "../../../Elements/Button/Button";
 import PreviewFile, {PreviewFileType} from "../../PreviewFile/PreviewFile";
 import Error from "../../../Elements/Error/Error";
+import mime from "mime";
 
 interface ModalUploadFileProps {
     accept: string[],
@@ -18,13 +19,14 @@ interface ModalUploadFileProps {
     removeCallback: (removeId: string) => void,
     closeCallback: () => void,
     confirmCallback: () => void,
-    changeCallback: (inputFiles: FileList) => void,
+    changeCallback: (addFiles: PreviewFileType[]) => void,
+    errorCallback: (error: string) => void,
     maxSize: number,
     maxCountFiles: number;
     className?: string,
 }
 
-const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize, maxCountFiles, multiple = false, cancelText, confirmText, removeCallback, closeCallback, confirmCallback, changeCallback, errors, className}) => {
+const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize, maxCountFiles, multiple = false, cancelText, confirmText, removeCallback, closeCallback, confirmCallback, changeCallback, errors, className, errorCallback}) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleImageMouseDown = () => {
@@ -32,7 +34,42 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
     };
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputFiles = e.currentTarget.files;
-        if (inputFiles) changeCallback(inputFiles);
+
+        if (inputFiles) {
+            const addFiles: PreviewFileType[] = []
+
+            for (let i = 0; i < inputFiles.length; i++) {
+                if (i > maxCountFiles) {
+                    errorCallback(`Максимальна кількість файлів - ${maxCountFiles}`)
+                    break;
+                }
+
+                const currentFile = inputFiles[i];
+                const type = currentFile.type.split("/")[0];
+                const fileExtension = mime.getExtension(currentFile.type);
+
+                // Перевірка чи є файл вже доданим
+                if (files.find(file => file.fileBlob.name === currentFile.name && file.fileBlob.size === currentFile.size && file.fileBlob.type === currentFile.type)) {
+                    errorCallback(`Файл "${currentFile.name}" вже доданий`)
+                    continue;
+                }
+
+                if (currentFile.size > maxSize) {
+                    errorCallback(`Розмір файлу "${currentFile.name}" більший за ${maxSize / (1024 * 1024)}МБ`)
+                    continue
+                }
+
+                addFiles.push({
+                    id: uuid(),
+                    typeMedia: type === "video" || type === "image" || type === "text" || type === "application" ? type : null,
+                    urlSrc: URL.createObjectURL(currentFile),
+                    fileExtension: fileExtension,
+                    fileBlob: currentFile
+                })
+            }
+
+            changeCallback(addFiles);
+        }
     }
     const onClose = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
@@ -76,15 +113,15 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
 
                     </div>
                 }
+                
                 {files.length >= maxCountFiles &&
                     <span className={classes.maxFileCount}>
                         Будь ласка, зверніть увагу: можна додати до 9 файлів одночасно.
                     </span>
                 }
 
-
                 <div className={classes.previews}>
-                {
+                    {
                         files.map(file => {
                             return (
                                 <PreviewFile
