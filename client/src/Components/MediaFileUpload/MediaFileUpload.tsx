@@ -17,11 +17,6 @@ interface ModalUploadFileProps {
 const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, maxCountFiles = 9, accept, uploadCallback}) => {
     const [addModal, setAddModal] = useState<boolean>(false);
     const [files, setFiles] = useState<PreviewFileType[]>([]);
-    const [errors, setError] = useState<string[]>([]);
-
-    useEffect(() => {
-        if (errors.length !== 0) setTimeout(() => setError([]), 3000)
-    }, [errors]);
 
     const showAddModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -42,9 +37,6 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
         setAddModal(false);
         setFiles([]);
     }
-    const errorCallback = (error: string) => {
-        setError(prevState => [...prevState, error])
-    }
 
     return (
         <>
@@ -61,7 +53,6 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
                     accept={accept}
                     maxSize={maxSize}
                     maxCountFiles={maxCountFiles}
-                    errors={errors}
                     files={files}
                     name={"files"}
                     multiple={true}
@@ -71,7 +62,6 @@ const MediaFileUpload: FC<ModalUploadFileProps> = ({maxSize = 5 * 1024 * 1024, m
                     removeCallback={removeCallback}
                     closeCallback={closeCallback}
                     confirmCallback={confirmCallback}
-                    errorCallback={errorCallback}
                 />
             </Backdrop>
         </>

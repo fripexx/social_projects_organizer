@@ -1,4 +1,4 @@
-import React, {FC, useRef} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import {v4 as uuid} from "uuid";
 import classes from "./ModalUploadFile.module.scss";
 import addIcon from "../../../assets/images/plus_icon.svg";
@@ -15,19 +15,18 @@ interface ModalUploadFileProps {
     multiple?: boolean,
     cancelText?: string,
     confirmText?: string,
-    errors?: string[],
     removeCallback: (removeId: string) => void,
     closeCallback: () => void,
     confirmCallback: () => void,
     changeCallback: (addFiles: PreviewFileType[]) => void,
-    errorCallback: (error: string) => void,
     maxSize: number,
     maxCountFiles: number;
     className?: string,
 }
 
-const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize, maxCountFiles, multiple = false, cancelText, confirmText, removeCallback, closeCallback, confirmCallback, changeCallback, errors, className, errorCallback}) => {
+const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize, maxCountFiles = 9, multiple = false, cancelText, confirmText, removeCallback, closeCallback, confirmCallback, changeCallback, className}) => {
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const [errors, setError] = useState<string[]>([]);
 
     const handleImageMouseDown = () => {
         if (fileInputRef.current) fileInputRef.current.click();
@@ -40,7 +39,7 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
 
             for (let i = 0; i < inputFiles.length; i++) {
                 if (i > maxCountFiles) {
-                    errorCallback(`Максимальна кількість файлів - ${maxCountFiles}`)
+                    setError(prevState => [...prevState, `Максимальна кількість файлів - ${maxCountFiles}`])
                     break;
                 }
 
@@ -50,12 +49,12 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
 
                 // Перевірка чи є файл вже доданим
                 if (files.find(file => file.fileBlob.name === currentFile.name && file.fileBlob.size === currentFile.size && file.fileBlob.type === currentFile.type)) {
-                    errorCallback(`Файл "${currentFile.name}" вже доданий`)
+                    setError(prevState => [...prevState, `Файл "${currentFile.name}" вже доданий`])
                     continue;
                 }
 
                 if (currentFile.size > maxSize) {
-                    errorCallback(`Розмір файлу "${currentFile.name}" більший за ${maxSize / (1024 * 1024)}МБ`)
+                    setError(prevState => [...prevState, `Розмір файлу "${currentFile.name}" більший за ${maxSize / (1024 * 1024)}МБ`])
                     continue
                 }
 
@@ -79,6 +78,10 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
         e.preventDefault()
         confirmCallback();
     }
+
+    useEffect(() => {
+        if (errors.length !== 0) setTimeout(() => setError([]), 3000)
+    }, [errors]);
 
     return (
         <Modal className={className ? classes.modal + " " + className : classes.modal}>
@@ -116,7 +119,7 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
                 
                 {files.length >= maxCountFiles &&
                     <span className={classes.maxFileCount}>
-                        Будь ласка, зверніть увагу: можна додати до 9 файлів одночасно.
+                        Будь ласка, зверніть увагу: можна додати до {maxCountFiles} файлів одночасно.
                     </span>
                 }
 
