@@ -162,13 +162,19 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
 
                     <div className={classes.sendMessageFieldButtons}>
 
-                        <button className={classes.emojiButton} onClick={toggleEmojiPicker} data-active={showEmojiPicker}>
-                            <ReactSVG src={emojiIcon}/>
-                        </button>
+                        <div className={classes.iconButtons}>
 
-                        <button className={classes.addedButton} onClick={showUploadModal} data-active={showUploadModalState}>
-                            <ReactSVG src={paperClipIcon}/>
-                        </button>
+                            <button className={classes.emojiButton} onClick={toggleEmojiPicker}
+                                    data-active={showEmojiPicker}>
+                                <ReactSVG src={emojiIcon}/>
+                            </button>
+
+                            <button className={classes.addedButton} onClick={showUploadModal}
+                                    data-active={showUploadModalState}>
+                                <ReactSVG src={paperClipIcon}/>
+                            </button>
+
+                        </div>
 
                         <button className={classes.sendButton} onClick={handleSendMessage}>
                             Надіслати
