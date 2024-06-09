@@ -64,6 +64,9 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const hideUploadModal = (): void => {
         setShowUploadModal(false);
     }
+    const addUploadCallback = (addFiles: PreviewFileType[]): void => {
+        setShowUploadModal(false);
+    }
 
     useEffect(() => {
         const newSocket = ioServer();
@@ -186,6 +189,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
             <ChatMediaUpload
                 show={showUploadModalState}
                 hideCallback={hideUploadModal}
+                uploadCallback={addUploadCallback}
             />
 
         </div>
