@@ -18,6 +18,7 @@ const SidebarProject: FC = () => {
     const showGeneralChat = useAppSelector(state => state.GeneralChatSlice.showGeneralChat)
     const team = useAppSelector(state => state.ProjectReducer.team);
     const user = useAppSelector(state => state.UserReducer.user)
+    const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 900);
 
     const showSidebar = () => {
         dispatch(showChat(true))
@@ -25,6 +26,14 @@ const SidebarProject: FC = () => {
     const hideSidebar = () => {
         dispatch(showChat(false))
     }
+    const handleResize = () => {
+        setIsDesktop(window.innerWidth >= 900);
+    };
+
+    useEffect(() => {
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     return (
         <>
@@ -37,10 +46,12 @@ const SidebarProject: FC = () => {
 
                         <Menu links={projectRoutes}/>
 
-                        <GeneralChatWidget
-                            callback={showSidebar}
-                            countMessage={1}
-                        />
+                        {isDesktop &&
+                            <GeneralChatWidget
+                                callback={showSidebar}
+                                countMessage={1}
+                            />
+                        }
 
                     </>
                 }

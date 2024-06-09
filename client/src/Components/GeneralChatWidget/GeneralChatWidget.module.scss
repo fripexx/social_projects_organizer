@@ -10,12 +10,22 @@
     transition: 0.2s ease;
     cursor: pointer;
     border: 0px;
+    position: relative;
 
     &:hover {
         background: var(--Color-Dark);
 
         .text {
             color: var(--Color-White);
+        }
+    }
+
+    @media (max-width: 900px) {
+        padding: 0px;
+        background: none;
+        border-radius: 0px;
+        &:hover {
+            background: none;
         }
     }
 }
@@ -34,6 +44,20 @@
     line-height: 25px;
     color: var(--Color-Dark);
     transition: 0.2s ease;
+    display: block;
+
+    @media (max-width: 900px) {
+        display: none;
+    }
+}
+
+.icon {
+    --Color-SVG: var(--Color-Light-Grey-Blue);
+    display: none;
+
+    @media (max-width: 900px) {
+        display: block;
+    }
 }
 
 .count {
@@ -54,6 +78,14 @@
     font-weight: 300;
     color: var(--Color-White);
     position: relative;
+
+    @media (max-width: 900px) {
+        --width-count: 20px;
+        font-size: 11px;
+        position: absolute;
+        bottom: calc(100% - 10px);
+        left: calc(100% - 10px);
+    }
 }
 
 .plus {
