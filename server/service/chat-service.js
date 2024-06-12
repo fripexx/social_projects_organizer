@@ -15,14 +15,25 @@ class ChatService {
         });
         await message.save();
 
-        return new MessageDto(message);
+        const findMessage = await Message.findById(message._id)
+            .populate({
+                path: 'files',
+                model: 'File'
+            })
+            .lean();
+
+        return new MessageDto(findMessage);
     }
     async getMessages(chat, skip = 0) {
         const limit = 20;
         const messages = await Message.find({ chat })
             .sort({ timeSend: -1 })
             .skip(skip)
-            .limit(Number(limit));
+            .limit(Number(limit))
+            .populate({
+                path: 'files',
+                model: 'File'
+            })
 
         return messages.map(message => new MessageDto(message))
     }

@@ -43,6 +43,24 @@ const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false
                        {content}
                     </span>
 
+                    {files.length !== 0 &&
+                        files.map(file => {
+                            if('cropped' in file && file.cropped) {
+                                return (
+                                    <img
+                                        key={file.id}
+                                        className={classes.file}
+                                        loading={"lazy"}
+                                        src={`${process.env.REACT_APP_API_URL}/${file.cropped["300"]}`}
+                                        alt=""
+                                    />
+                                )
+                            } else {
+
+                            }
+                        })
+                    }
+
                     <time className={classes.time}>
                         {time ? time : "00:00"}
                     </time>

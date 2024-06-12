@@ -9,6 +9,7 @@ const ApiError = require("../exceptions/api-error");
 const uploadAccountMiddleware = require('../middlewares/upload-account-middleware');
 const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
 const uploadMediaLibraryMiddleware = require('../middlewares/upload-media-library-middleware');
+const uploadChatMiddleware = require('../middlewares/upload-chat-middleware');
 const authMiddleware = require('../middlewares/auth-middleware')
 
 /**
@@ -79,7 +80,6 @@ router.delete('/delete-media', [authMiddleware, uploadMediaLibraryMiddleware], P
 /**
  * Project chat routes
  */
-router.get('/get-messages', [authMiddleware], ChatController.getMessages);
-router.post('/send-message', [authMiddleware], ChatController.sendMessage);
+router.post('/send-message', [authMiddleware, uploadChatMiddleware], ChatController.sendMessageThunk);
 
 module.exports = router;

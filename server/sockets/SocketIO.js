@@ -36,26 +36,39 @@ const setupSocket = (server) => {
     });
 
     io.on('connection', (socket) => {
+        //joinChat
+        const joinChat = async ({chat, model}) => {
+            await ChatController.joinChat(socket, chat, model);
+        }
+        socket.on('joinChat', joinChat);
 
-        socket.on('joinChat', ({chat, model}) => {
-            ChatController.joinChat(socket, chat, model);
-        });
 
-        socket.on('disconnect', () => {
-            ChatController.disconnect(socket);
-        });
+        //disconnect
+        const disconnect = async() => {
+            await ChatController.disconnect(socket);
+        }
+        socket.on('disconnect', disconnect);
 
-        socket.on('getMessages', ({chat, model}) => {
-            ChatController.getMessages(socket, chat, model);
-        });
 
-        socket.on('loadMessages', ({chat, model, skip}) => {
-            ChatController.loadMessages(socket, chat, model, skip);
-        });
+        //getMessages
+        const getMessages = async({chat, model}) => {
+            await ChatController.getMessages(socket, chat, model);
+        }
+        socket.on('getMessages', getMessages);
 
-        socket.on('sendMessage', (data) => {
-            ChatController.sendMessage(socket, io, data);
-        });
+
+        //loadMessages
+        const loadMessages = async({chat, model, skip}) => {
+            await ChatController.loadMessages(socket, chat, model, skip);
+        }
+        socket.on('loadMessages', loadMessages);
+
+
+        //sendMessage
+        const sendMessage = async(data) => {
+            await ChatController.sendMessage(socket, io, data);
+        }
+        socket.on('sendMessage',sendMessage) ;
 
     });
 

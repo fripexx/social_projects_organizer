@@ -10,25 +10,27 @@ import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 import Message from "../Message/Message";
 import {Socket} from 'socket.io-client';
 import ioServer from "../../api/ioServer";
-import ModalUploadFile from "../Modals/ModalUploadFile/ModalUploadFile";
-import {PreviewFileType} from "../PreviewFile/PreviewFile";
-import Backdrop from "../Backdrop/Backdrop";
+import PreviewFile, {PreviewFileType} from "../PreviewFile/PreviewFile";
 import ChatMediaUpload from "./Components/ChatMediaUpload/ChatMediaUpload";
+import {useAppDispatch} from "../../store/hooks/redux";
+import {sendMessage as sendMessageThunk} from "../../store/thunks/ChatThunks";
 
 interface ChatProps {
     chat: string;
-    model: string;
+    model: "Project" | "Post";
     team: BasicUserInfo[],
     currentUser: UserType
 }
 
 const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
+    const dispatch = useAppDispatch()
     const [socket, setSocket] = useState<Socket | null>(null);
     const [sendMessage, setSendMessage] = useState<string>('');
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [showUploadModalState, setShowUploadModal] = useState<boolean>(false);
     const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
     const [loadMore, setLoadMore] = useState<boolean>(false)
+    const [files, setFiles] = useState<PreviewFileType[]>([]);
 
     const mainRef = useRef<HTMLTextAreaElement>(null);
 
@@ -46,11 +48,21 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const handleSendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (socket) {
+            // const formData = new FormData();
+            //
+            // formData.append("chat", chat);
+            // formData.append("model", model);
+            // formData.append("content", sendMessage);
+            //
+            // for (const file of files) formData.append("chatFiles", file.fileBlob);
+            //
+            // dispatch(sendMessageThunk(formData))
+
             socket.emit('sendMessage', {
                 chat,
                 model,
                 content: sendMessage,
-                files: []
+                files: files
             });
 
             setSendMessage('');
@@ -65,7 +77,11 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
         setShowUploadModal(false);
     }
     const addUploadCallback = (addFiles: PreviewFileType[]): void => {
+        setFiles(addFiles);
         setShowUploadModal(false);
+    }
+    const removeFileCallback = (removeId: string) => {
+        setFiles(prevState => [...prevState].filter(file => file.id !== removeId));
     }
 
     useEffect(() => {
@@ -101,9 +117,8 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
         const handleScroll = () => {
             if (mainRef.current && mainRef.current.scrollTop) {
                 const invertScrollTop = mainRef.current.scrollHeight - mainRef.current.clientHeight + mainRef.current.scrollTop;
-                if(invertScrollTop === 0 && !loadMore) {
-                    setLoadMore(true);
-                }
+
+                if(invertScrollTop < 30 && !loadMore) setLoadMore(true);
             }
         };
 
@@ -150,6 +165,21 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
             </main>
 
             <footer className={classes.footer}>
+
+                {files.length !== 0 &&
+                    <div className={classes.previewFiles}>
+                        {files.map(file => {
+                            return (
+                                <PreviewFile
+                                    key={file.id}
+                                    removeCallback={removeFileCallback}
+                                    file={file}
+                                />
+                            )
+                        })}
+
+                    </div>
+                }
 
                 <div className={classes.footerContainer}>
 

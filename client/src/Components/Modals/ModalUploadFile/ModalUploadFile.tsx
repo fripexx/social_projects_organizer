@@ -31,6 +31,9 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
     const handleImageMouseDown = () => {
         if (fileInputRef.current) fileInputRef.current.click();
     };
+    const clearFileInput = () => {
+        if(fileInputRef.current) fileInputRef.current.value = "";
+    }
     const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputFiles = e.currentTarget.files;
 
@@ -72,10 +75,13 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
     }
     const onClose = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
+        clearFileInput();
         closeCallback();
+
     }
     const onConfrim = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
+        clearFileInput();
         confirmCallback();
     }
 

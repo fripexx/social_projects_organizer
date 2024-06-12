@@ -95,12 +95,15 @@ class UploadMedia {
         try {
             if (!fs.existsSync(this.dirPath.full)) fs.mkdirSync(this.dirPath.full, {recursive: true});
 
-            await this.file.mv(this.filePath.full);
+            //await this.file.mv(this.filePath.full);
+            await fs.writeFile(this.filePath.full, this.file.data, () => {})
 
             if (this.typeMedia === "image" && this.cropped) {
                 for (const crop of this.cropped) {
                     await sharp(this.filePath.full)
-                        .resize(crop.size.width, crop.size.height)
+                        .resize(crop.size.width, crop.size.height, {
+                            fit: 'inside',
+                        })
                         .toFile(crop.path.full);
                 }
             }

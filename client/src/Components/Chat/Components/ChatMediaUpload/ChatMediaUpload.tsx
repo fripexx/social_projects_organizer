@@ -21,6 +21,11 @@ const ChatMediaUpload:FC<ChatMediaUploadProps> = ({show, hideCallback, uploadCal
     }
     const confirmCallback = () => {
         uploadCallback(files);
+        setFiles([])
+    }
+    const closeCallback = () => {
+        hideCallback();
+        setFiles([])
     }
 
     return (
@@ -42,7 +47,7 @@ const ChatMediaUpload:FC<ChatMediaUploadProps> = ({show, hideCallback, uploadCal
                 ]}
                 files={files}
                 removeCallback={removeCallback}
-                closeCallback={hideCallback}
+                closeCallback={closeCallback}
                 confirmCallback={confirmCallback}
                 changeCallback={changeCallback}
                 maxSize={5 * 1024 * 1024}

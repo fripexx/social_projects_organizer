@@ -1,3 +1,5 @@
+import {FileType, PhotoType} from "./FileType";
+
 export interface MessageType {
     id: string,
     chat: string,
@@ -5,10 +7,5 @@ export interface MessageType {
     content: string,
     isRead: boolean,
     timeSend: Date,
-    files: MessageFile[]
-}
-
-interface MessageFile {
-    url: string,
-    type: 'image' | 'application' | 'video' | 'text',
+    files: (FileType | PhotoType)[]
 }
