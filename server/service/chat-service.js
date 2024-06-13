@@ -34,6 +34,7 @@ class ChatService {
                 path: 'files',
                 model: 'File'
             })
+            .lean();
 
         return messages.map(message => new MessageDto(message))
     }

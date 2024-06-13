@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const FileDto = require("./file-dto");
 
 module.exports = class MessageDto {
     constructor(model) {
@@ -8,6 +9,16 @@ module.exports = class MessageDto {
         this.content = model.content;
         this.isRead = model.isRead;
         this.timeSend = model.timeSend;
-        this.files = model.files;
+        this.files = this.convertFiles(model.files);
+    }
+
+    convertFiles(files) {
+        if(files && Array.isArray(files) && files.length !== 0) {
+            const convertFilesArr = []
+            for (const file of files) convertFilesArr.push(new FileDto(file));
+            return convertFilesArr;
+        }
+
+        return [];
     }
 };

@@ -135,7 +135,6 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                     <>
                         {chatMessages.map((message) => {
                             const teamUser = team.find(user => user.id === message.sender);
-                            // console.log(message.id)
                             return (
                                 <Message
                                     key={message.id}
