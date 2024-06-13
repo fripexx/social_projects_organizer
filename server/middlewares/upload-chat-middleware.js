@@ -2,7 +2,10 @@ const UploadMedia = require("../utils/UploadMedia");
 
 // Middleware для обробки файлів чату
 const uploadChatMiddleware = async (req, res, next) => {
-    if (!req.files?.chatFiles) return next();
+    if (!req.files?.chatFiles) {
+        req.files = []
+        return next();
+    }
 
     const files = Array.isArray(req.files.chatFiles) ? req.files.chatFiles : [req.files.chatFiles];
     const currentDate = new Date();
