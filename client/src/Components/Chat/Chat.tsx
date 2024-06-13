@@ -48,25 +48,19 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const handleSendMessage = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if (socket) {
-            // const formData = new FormData();
-            //
-            // formData.append("chat", chat);
-            // formData.append("model", model);
-            // formData.append("content", sendMessage);
-            //
-            // for (const file of files) formData.append("chatFiles", file.fileBlob);
-            //
-            // dispatch(sendMessageThunk(formData))
+            const formData = new FormData();
 
-            socket.emit('sendMessage', {
-                chat,
-                model,
-                content: sendMessage,
-                files: files
-            });
+            formData.append("chat", chat);
+            formData.append("model", model);
+            formData.append("content", sendMessage);
+
+            for (const file of files) formData.append("chatFiles", file.fileBlob);
+
+            dispatch(sendMessageThunk(formData))
 
             setSendMessage('');
             setShowEmojiPicker(false);
+            setFiles([])
         }
     }
     const showUploadModal = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -141,6 +135,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                     <>
                         {chatMessages.map((message) => {
                             const teamUser = team.find(user => user.id === message.sender);
+                            // console.log(message.id)
                             return (
                                 <Message
                                     key={message.id}

@@ -41,10 +41,6 @@ const setupSocket = (server) => {
 
         const loadMessages = async({chat, model, skip}) => await SocketIOController.loadMessages(socket, chat, model, skip);
         socket.on('loadMessages', loadMessages);
-
-        const sendMessage = async(data) => await SocketIOController.sendMessage(socket, io, data);
-        socket.on('sendMessage',sendMessage) ;
-
     });
     return io;
 };

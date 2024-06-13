@@ -80,31 +80,6 @@ class SocketIOController {
             console.error(e);
         }
     }
-    async sendMessage(socket, io, data) {
-        try {
-            const user = socket.user;
-            const { chat, model, content, files } = data;
-
-            if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
-
-            if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
-
-                if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
-
-                const message = await ChatService.addMessage(chat, user.id, content, files);
-
-                io.to(chat).emit('newMessage', message);
-            }
-
-            if(model === "Post") {
-
-            }
-
-        } catch (e) {
-            console.error(e);
-        }
-    }
 }
 
 module.exports = new SocketIOController()
