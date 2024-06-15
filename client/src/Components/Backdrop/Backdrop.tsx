@@ -1,4 +1,4 @@
-import React, {FC, ReactNode, useEffect, useRef, useState} from 'react';
+import React, {FC, ReactNode, useRef} from 'react';
 import classes from "./Backdrop.module.scss";
 
 interface BackdropProps {
@@ -8,23 +8,14 @@ interface BackdropProps {
 }
 
 const Backdrop:FC<BackdropProps> = ({children, isOpen, clickCallback}) => {
-    const [containerClass, setContainerClass] = useState(classes.container);
     const ref = useRef<HTMLDivElement>(null);
 
     const onClick = (e:React.MouseEvent<HTMLDivElement>) => {
         if(clickCallback && e.target === ref.current) clickCallback();
     }
 
-    useEffect(() => {
-        if (isOpen) {
-            setContainerClass(classes.container + ' ' + classes.containerActive);
-        } else {
-            setContainerClass(classes.container);
-        }
-    }, [isOpen]);
-
     return (
-        <div className={containerClass} onClick={onClick} ref={ref}>
+        <div className={classes.container} onClick={onClick} ref={ref} data-open={isOpen}>
             {children}
         </div>
     );

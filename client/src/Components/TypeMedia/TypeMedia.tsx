@@ -2,6 +2,7 @@ import React, {FC, useEffect} from 'react';
 import iconPhoto from "../../assets/images/icon_photo.svg";
 import iconVideo from "../../assets/images/icon_video.svg";
 import iconDocument from "../../assets/images/icon_document.svg";
+import {ReactSVG} from "react-svg";
 
 interface TypeMediaProps extends React.HTMLProps<HTMLDivElement> {
     type: string,
@@ -29,11 +30,7 @@ const TypeMedia:FC<TypeMediaProps> = ({type, ...rest}) => {
     return (
         <div {...rest}>
             {icon &&
-                <img
-                    loading={"lazy"}
-                    decoding={"async"}
-                    src={icon}
-                />
+                <ReactSVG src={icon}/>
             }
         </div>
     );

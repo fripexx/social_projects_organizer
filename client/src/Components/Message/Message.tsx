@@ -3,6 +3,9 @@ import classes from "./Message.module.scss";
 import {MessageType} from "../../store/types/MessageType";
 import {PhotoType} from "../../store/types/FileType";
 import Logo from "../Logo/Logo";
+import MessageFile from "./Components/MessageFile/MessageFile";
+import {setFilesInSlider, setActiveIndexSlider} from "../../store/reducers/UISlice";
+import {useAppDispatch} from "../../store/hooks/redux";
 
 interface MessageProps {
     message: MessageType;
@@ -11,6 +14,7 @@ interface MessageProps {
 }
 
 const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false}) => {
+    const dispatch = useAppDispatch()
     const {id, sender, content, files, isRead, timeSend, chat} = message;
     const [time, setTime] = useState<string | null>(null);
 
@@ -28,6 +32,16 @@ const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false
         setTime(formattedTime);
     }, [time])
 
+    const openFile = (fileId: string) => {
+        const filterFiles = files.filter(file => file.type === "image" || file.type === "video")
+        let activeIndex = 0
+
+        filterFiles.find((file, index) => file.id === fileId ? activeIndex = index : activeIndex = 0)
+
+        dispatch(setActiveIndexSlider(activeIndex))
+        dispatch(setFilesInSlider(filterFiles))
+    }
+
     return (
         <div className={classes.container} data-is-current-user={isMessageCurrentUser}>
 
@@ -39,26 +53,24 @@ const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false
 
                 <div className={classes.content}>
 
-                    <span>
-                       {content}
-                    </span>
+                <span>
+                   {content}
+                </span>
 
                     {files.length !== 0 &&
-                        files.map(file => {
-                            if('cropped' in file && file.cropped) {
+                        <div className={classes.files}>
+
+                            {files.map(file => {
                                 return (
-                                    <img
+                                    <MessageFile
                                         key={file.id}
-                                        className={classes.file}
-                                        loading={"lazy"}
-                                        src={`${process.env.REACT_APP_API_URL}/${file.cropped["300"]}`}
-                                        alt=""
+                                        file={file}
+                                        openHandler={openFile}
                                     />
                                 )
-                            } else {
+                            })}
 
-                            }
-                        })
+                        </div>
                     }
 
                     <time className={classes.time}>
