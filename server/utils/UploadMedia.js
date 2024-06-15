@@ -95,8 +95,8 @@ class UploadMedia {
         try {
             if (!fs.existsSync(this.dirPath.full)) fs.mkdirSync(this.dirPath.full, {recursive: true});
 
-            //await this.file.mv(this.filePath.full);
-            await fs.writeFile(this.filePath.full, this.file.data, () => {})
+            await this.file.mv(this.filePath.full);
+            //await fs.writeFile(this.filePath.full, this.file.data, () => {})
 
             if (this.typeMedia === "image" && this.cropped) {
                 for (const crop of this.cropped) {
@@ -108,7 +108,7 @@ class UploadMedia {
                 }
             }
         } catch (error) {
-            console.error("Помилка збереження файлу:", error);
+            console.error("Помилка збереження файлу:", this.file, error);
             throw error;
         }
     }

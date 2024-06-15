@@ -41,7 +41,7 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
             const addFiles: PreviewFileType[] = []
 
             for (let i = 0; i < inputFiles.length; i++) {
-                if (i > maxCountFiles) {
+                if (i + 1 > maxCountFiles) {
                     setError(prevState => [...prevState, `Максимальна кількість файлів - ${maxCountFiles}`])
                     break;
                 }
@@ -98,7 +98,7 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
 
             <div className={classes.content}>
 
-                {files.length < 9 &&
+                {files.length < maxCountFiles &&
                     <div className={classes.addFile} onClick={handleImageMouseDown}>
 
                         <input
