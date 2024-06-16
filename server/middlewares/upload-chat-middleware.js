@@ -1,4 +1,5 @@
 const UploadMedia = require("../utils/UploadMedia");
+const ApiError = require("../exceptions/api-error");
 
 // Middleware для обробки файлів чату
 const uploadChatMiddleware = async (req, res, next) => {
@@ -7,11 +8,14 @@ const uploadChatMiddleware = async (req, res, next) => {
         return next();
     }
 
-    const files = Array.isArray(req.files.chatFiles) ? req.files.chatFiles : [req.files.chatFiles];
-    const currentDate = new Date();
-    const uploadDir = `uploads/chat_files/${currentDate.getFullYear()}/${currentDate.getMonth() + 1}`;
-
     try {
+        const { chat } = req.body;
+
+        if(!chat) throw ApiError.BadRequest('Відсутній ідентифікатор чату');
+
+        const files = Array.isArray(req.files.chatFiles) ? req.files.chatFiles : [req.files.chatFiles];
+        const currentDate = new Date();
+        const uploadDir = `uploads/private/chats/${chat}/${currentDate.getFullYear()}/${currentDate.getMonth() + 1}`;
         const filesData = []
 
         for (const file of files) {

@@ -1,13 +1,14 @@
 const UploadMedia = require("../utils/UploadMedia");
 
 // Middleware для обробки фотографій
-const uploadAccountMiddleware = async (req, res, next) => {
+const uploadUserMiddleware = async (req, res, next) => {
     if (!req.files?.photo) return next();
 
-    const file = req.files.photo;
-    const uploadDir = `uploads/profile_photos`;
-
     try {
+        const file = req.files.photo;
+        const currentDate = new Date();
+        const uploadDir = `uploads/public/profile_photos/${currentDate.getFullYear()}/${currentDate.getMonth() + 1}`
+
         const fileObj = await new UploadMedia(file, uploadDir);
         await fileObj.saveFile();
         const data = fileObj.getData()
@@ -21,4 +22,4 @@ const uploadAccountMiddleware = async (req, res, next) => {
     }
 };
 
-module.exports = uploadAccountMiddleware;
+module.exports = uploadUserMiddleware;

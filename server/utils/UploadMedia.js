@@ -3,6 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const mime = require('mime-types');
 const iconv = require('iconv-lite');
+const uuid = require('uuid');
 
 class UploadMedia {
     sizes = [
@@ -16,6 +17,7 @@ class UploadMedia {
         this.typeMedia = this.getTypeMedia();
         this.extension = this.getExtension();
         this.dateNow = Date.now();
+        this.uuidName = uuid.v4();
         this.fileName = this.getFileName();
         this.dirPath = this.getDirPath(uploadDir);
         this.filePath = this.getFilePath();
@@ -33,7 +35,7 @@ class UploadMedia {
 
     getFileName() {
         if(this.file.mimetype.includes("image") || this.file.mimetype.includes("video")) {
-            return `${this.dateNow}.${this.extension}`
+            return `${this.uuidName}.${this.extension}`
         }
 
         return iconv.decode(Buffer.from(this.file.name, 'binary'), 'utf-8');
@@ -43,7 +45,7 @@ class UploadMedia {
         const cropped = [];
 
         for (const size of this.sizes) {
-            const croppedFileName = `${this.dateNow}-${size.width}x${size.height}.${this.extension}`;
+            const croppedFileName = `${this.uuidName}-${size.width}x${size.height}.${this.extension}`;
 
             cropped.push({
                 size, path: {

@@ -4,10 +4,11 @@ const UploadMedia = require("../utils/UploadMedia");
 const uploadProjectLogoMiddleware = async (req, res, next) => {
     if (!req.files?.logo) return next();
 
-    const file = req.files.logo;
-    const uploadDir = `uploads/project_logos`;
-
     try {
+        const file = req.files.logo;
+        const currentDate = new Date();
+        const uploadDir = `uploads/public/project_logos/${currentDate.getFullYear()}/${currentDate.getMonth() + 1}`;
+
         const fileObj = await new UploadMedia(file, uploadDir);
         await fileObj.saveFile();
         const data = fileObj.getData()

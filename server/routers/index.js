@@ -4,7 +4,7 @@ const NoteController = require('../controllers/note-controller')
 const ProjectController = require('../controllers/project-controller')
 const ChatController = require('../controllers/chat-controller')
 const ApiError = require("../exceptions/api-error");
-const uploadAccountMiddleware = require('../middlewares/upload-account-middleware');
+const uploadUserMiddleware = require('../middlewares/upload-user-middleware');
 const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
 const uploadMediaLibraryMiddleware = require('../middlewares/upload-media-library-middleware');
 const uploadChatMiddleware = require('../middlewares/upload-chat-middleware');
@@ -38,7 +38,7 @@ const setupRouter = ({io}) => {
     router.post('/logout', UserController.logout);
     router.get('/activate/:link', UserController.activate);
     router.get('/refresh', UserController.refresh);
-    router.post('/edit-user', [authMiddleware, uploadAccountMiddleware], UserController.editUser);
+    router.post('/edit-user', [authMiddleware, uploadUserMiddleware], UserController.editUser);
     router.post('/edit-settings-user', [authMiddleware], UserController.editSettingsUser);
 
     /**

@@ -3,7 +3,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const sharp = require("sharp");
-const setupRouter = require("./router/index");
+const setupRouter = require("./routers/index");
+const uploadRouter = require("./routers/upload-router");
 const errorMiddleware = require("./middlewares/error-middleware");
 const http = require("http");
 const setupSocketIO = require("./SocketIO/SocketIO");
@@ -18,7 +19,7 @@ const setupExpressServer = () => {
     app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
     app.use(fileUpload());
     app.use('/api', setupRouter({io}));
-    app.use('/uploads', express.static('uploads'));
+    app.use('/uploads', uploadRouter);
     app.use(errorMiddleware);
 
     sharp.cache(false);
