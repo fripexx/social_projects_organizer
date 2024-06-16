@@ -14,6 +14,7 @@ import PreviewFile, {PreviewFileType} from "../PreviewFile/PreviewFile";
 import ChatMediaUpload from "./Components/ChatMediaUpload/ChatMediaUpload";
 import {useAppDispatch} from "../../store/hooks/redux";
 import {sendMessage as sendMessageThunk} from "../../store/thunks/ChatThunks";
+import {v4 as uuid} from "uuid";
 
 interface ChatProps {
     chat: string;
@@ -31,6 +32,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const [chatMessages, setChatMessages] = useState<MessageType[]>([]);
     const [loadMore, setLoadMore] = useState<boolean>(false)
     const [files, setFiles] = useState<PreviewFileType[]>([]);
+    const [pendingMessage, setPendingMessage] = useState<MessageType | null>(null);
 
     const mainRef = useRef<HTMLTextAreaElement>(null);
 
@@ -56,8 +58,17 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
 
             for (const file of files) formData.append("chatFiles", file.fileBlob);
 
-            dispatch(sendMessageThunk(formData))
-
+            const previewMessage = {
+                id: uuid(),
+                chat,
+                sender: currentUser.id,
+                content: sendMessage,
+                isRead: false,
+                timeSend: new Date(),
+                files: [],
+            }
+            setPendingMessage(previewMessage);
+            dispatch(sendMessageThunk(formData));
             setSendMessage('');
             setShowEmojiPicker(false);
             setFiles([])
@@ -94,11 +105,11 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
 
         newSocket.on('loadMessages', (messages: MessageType[]) => {
             setChatMessages(prevState => [...prevState, ...messages]);
-            setLoadMore(false);
         });
 
         newSocket.on('newMessage', (message: MessageType) => {
-            setChatMessages((prevMessages) => [message, ...prevMessages, ]);
+            setPendingMessage(null)
+            setChatMessages((prevMessages) => [message, ...prevMessages]);
         });
 
         newSocket.on('disconnect', () => {});
@@ -133,6 +144,16 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
 
                 {chatMessages.length > 0 ? (
                     <>
+                        {pendingMessage &&
+                            <Message
+                                key={pendingMessage.id}
+                                message={pendingMessage}
+                                photo={currentUser.photo}
+                                isMessageCurrentUser={true}
+                                isPending={true}
+                            />
+                        }
+
                         {chatMessages.map((message) => {
                             const teamUser = team.find(user => user.id === message.sender);
                             return (

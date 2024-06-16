@@ -6,14 +6,17 @@ import Logo from "../Logo/Logo";
 import MessageFile from "./Components/MessageFile/MessageFile";
 import {setFilesInSlider, setActiveIndexSlider} from "../../store/reducers/UISlice";
 import {useAppDispatch} from "../../store/hooks/redux";
+import {ReactSVG} from "react-svg";
+import dotsLoaderIcon from "../../assets/images/dots-loader.svg";
 
 interface MessageProps {
     message: MessageType;
     photo: PhotoType | null,
-    isMessageCurrentUser?: boolean
+    isMessageCurrentUser?: boolean,
+    isPending?: boolean,
 }
 
-const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false}) => {
+const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false, isPending = false}) => {
     const dispatch = useAppDispatch()
     const {id, sender, content, files, isRead, timeSend, chat} = message;
     const [time, setTime] = useState<string | null>(null);
@@ -73,9 +76,15 @@ const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false
                         </div>
                     }
 
-                    <time className={classes.time}>
-                        {time ? time : "00:00"}
-                    </time>
+                    {isPending ? (
+                        <div className={classes.loader}>
+                            <ReactSVG src={dotsLoaderIcon}/>
+                        </div>
+                    ) : (
+                        <time className={classes.time}>
+                            {time || "00:00"}
+                        </time>
+                    )}
 
                 </div>
 
