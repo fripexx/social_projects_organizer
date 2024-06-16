@@ -58,9 +58,19 @@
 
 .files {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
     width: 100%;
     gap: 5px;
+
+    &[data-grid-column="1"] {
+        grid-template-columns: repeat(1, 1fr);
+    }
+    &[data-grid-column="2"] {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    &[data-grid-column="3"] {
+        grid-template-columns: repeat(3, 1fr);
+    }
 }
 
 .loader {

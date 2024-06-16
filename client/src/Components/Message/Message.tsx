@@ -61,7 +61,7 @@ const Message: FC<MessageProps> = ({message, photo, isMessageCurrentUser = false
                 </span>
 
                     {files.length !== 0 &&
-                        <div className={classes.files}>
+                        <div className={classes.files} data-grid-column={files.length < 3 ? files.length : 3}>
 
                             {files.map(file => {
                                 return (
