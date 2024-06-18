@@ -115,6 +115,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) =>
 
         newSocket.on('loadMessages', (messages: MessageType[]) => {
             setChatMessages(prevState => [...prevState, ...messages]);
+            setLoadMore(false)
         });
 
         newSocket.on('messageIsRead', (readMessage: MessageType) => {
