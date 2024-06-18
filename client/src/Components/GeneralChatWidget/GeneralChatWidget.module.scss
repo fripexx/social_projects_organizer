@@ -86,6 +86,10 @@
         bottom: calc(100% - 10px);
         left: calc(100% - 10px);
     }
+
+    &[data-show-effect="true"] {
+        animation: wiggle 2s linear infinite;
+    }
 }
 
 .plus {
@@ -96,4 +100,28 @@
     font-size: 18px;
     font-weight: 600;
     line-height: 1;
+}
+
+@keyframes wiggle {
+    0%, 7% {
+        transform: rotateZ(0);
+    }
+    15% {
+        transform: rotateZ(-15deg) translateX(-8px);
+    }
+    20% {
+        transform: rotateZ(10deg) translateX(5px);
+    }
+    25% {
+        transform: rotateZ(-10deg) translateX(-5px);
+    }
+    30% {
+        transform: rotateZ(6deg) translateX(3px);
+    }
+    35% {
+        transform: rotateZ(-4deg) translateX(-2px);
+    }
+    40%, 100% {
+        transform: rotateZ(0);
+    }
 }

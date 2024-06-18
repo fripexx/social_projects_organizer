@@ -9,6 +9,7 @@ interface GeneralChatLinkProps {
 
 const GeneralChatWidget: FC<GeneralChatLinkProps> = ({text = "Загальний чат", countMessage, callback}) => {
     const [showMaxCount, setShowMaxCount] = useState<boolean>(false)
+    const [showEffect, setShowEffect] = useState<boolean>(false)
 
     const onClick = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
@@ -21,7 +22,14 @@ const GeneralChatWidget: FC<GeneralChatLinkProps> = ({text = "Загальний
         } else {
             setShowMaxCount(false)
         }
+        setShowEffect(true)
     }, [countMessage])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setShowEffect(false)
+        }, 1000)
+    }, [showEffect])
 
     return (
         <button className={classes.button} onClick={onClick}>
@@ -40,7 +48,7 @@ const GeneralChatWidget: FC<GeneralChatLinkProps> = ({text = "Загальний
             </span>
 
             {!!countMessage &&
-                <span className={classes.count}>
+                <span className={classes.count} data-show-effect={showEffect}>
                     {showMaxCount ? 99 : countMessage}
                     {showMaxCount &&
                         <span className={classes.plus}>+</span>

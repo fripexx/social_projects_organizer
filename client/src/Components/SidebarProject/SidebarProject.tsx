@@ -9,6 +9,7 @@ import GeneralChatWidget from "../GeneralChatWidget/GeneralChatWidget";
 import Sidebar from "../Sidebar/Sidebar";
 import GeneralChatSidebar from "../GeneralChatSidebar/GeneralChatSidebar";
 import Chat from "../Chat/Chat";
+import {setUnreadCount} from "../../store/reducers/GeneralChatSlice";
 
 const SidebarProject: FC = () => {
     const location = useLocation()
@@ -19,6 +20,7 @@ const SidebarProject: FC = () => {
     const team = useAppSelector(state => state.ProjectReducer.team);
     const user = useAppSelector(state => state.UserReducer.user)
     const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 900);
+    const countUnreadMessages = useAppSelector(state => state.GeneralChatSlice.countUnreadMessages)
 
     const showSidebar = () => {
         dispatch(showChat(true))
@@ -29,6 +31,9 @@ const SidebarProject: FC = () => {
     const handleResize = () => {
         setIsDesktop(window.innerWidth >= 900);
     };
+    const setUnreadCallback = (count: number):void => {
+        dispatch(setUnreadCount(count))
+    }
 
     useEffect(() => {
         window.addEventListener('resize', handleResize);
@@ -49,7 +54,7 @@ const SidebarProject: FC = () => {
                         {isDesktop &&
                             <GeneralChatWidget
                                 callback={showSidebar}
-                                countMessage={1}
+                                countMessage={countUnreadMessages}
                             />
                         }
 
@@ -65,6 +70,7 @@ const SidebarProject: FC = () => {
                         model={'Project'}
                         team={team}
                         currentUser={user}
+                        unreadCallback={setUnreadCallback}
                     />
                 </GeneralChatSidebar>
             }

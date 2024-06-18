@@ -56,6 +56,30 @@ class SocketIOController {
             console.error(e);
         }
     }
+    async getUnreadMessages(socket, chat, model) {
+        try {
+            const user = socket.user;
+
+            if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
+
+            if(model === "Project") {
+                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
+
+                if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
+
+                const unreadCount = await ChatService.getUnreadMessages(chat, user);
+
+                socket.emit('setUnreadMessages', unreadCount)
+            }
+
+            if(model === "Post") {
+
+            }
+
+        } catch (e) {
+            console.error(e);
+        }
+    }
     async loadMessages(socket, chat, model, skip) {
         try {
             const user = socket.user;

@@ -38,6 +38,15 @@ class ChatService {
 
         return messages.map(message => new MessageDto(message))
     }
+    async getUnreadMessages(chat, user) {
+        const unreadMessagesCount = await Message.countDocuments({
+            chat,
+            sender: { $ne: user.id },
+            readBy: { $ne: user.id }
+        }).lean();
+
+        return unreadMessagesCount;
+    }
     async readMessage(messageId, user) {
         const message = await Message.findByIdAndUpdate(
             messageId,

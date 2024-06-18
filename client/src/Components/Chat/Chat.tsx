@@ -17,13 +17,14 @@ import {sendMessage as sendMessageThunk} from "../../store/thunks/ChatThunks";
 import {v4 as uuid} from "uuid";
 
 interface ChatProps {
-    chat: string;
-    model: "Project" | "Post";
+    chat: string,
+    model: "Project" | "Post",
     team: BasicUserInfo[],
-    currentUser: UserType
+    currentUser: UserType,
+    unreadCallback?: (count: number) => void
 }
 
-const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
+const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) => {
     const dispatch = useAppDispatch()
     const [socket, setSocket] = useState<Socket | null>(null);
     const [sendMessage, setSendMessage] = useState<string>('');
@@ -53,7 +54,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
 
             formData.append("chat", chat);
             formData.append("model", model);
-            formData.append("content", sendMessage);
+            formData.append("content", sendMessage.trim());
 
             for (const file of files) formData.append("chatFiles", file.fileBlob);
 
@@ -99,10 +100,17 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
         newSocket.on('connect', () => {
             newSocket.emit('joinChat', {chat, model});
             newSocket.emit('getMessages', {chat, model});
+            newSocket.emit('getUnreadMessages', {chat, model});
         });
 
         newSocket.on('getMessages', (messages: MessageType[]) => {
             setChatMessages(messages);
+        });
+
+        newSocket.on('setUnreadMessages', (unreadCount: number) => {
+            if(unreadCallback) unreadCallback(unreadCount);
+            newSocket.emit('getUnreadMessages', {chat, model});
+
         });
 
         newSocket.on('loadMessages', (messages: MessageType[]) => {
@@ -119,12 +127,14 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                         return message
                     });
                 });
+                newSocket.emit('getUnreadMessages', {chat, model});
             }, 1000)
         });
 
         newSocket.on('newMessage', (message: MessageType) => {
             setPendingMessage(null)
             setChatMessages((prevMessages) => [message, ...prevMessages]);
+            newSocket.emit('getUnreadMessages', {chat, model});
         });
 
         newSocket.on('disconnect', () => {});

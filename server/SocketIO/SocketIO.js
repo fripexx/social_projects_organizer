@@ -39,11 +39,14 @@ const setupSocket = (server) => {
         const getMessages = async({chat, model}) => await SocketIOController.getMessages(socket, chat, model);
         socket.on('getMessages', getMessages);
 
+        const getUnreadMessages = async({chat, model}) => await SocketIOController.getUnreadMessages(socket, chat, model);
+        socket.on('getUnreadMessages', getUnreadMessages);
+
         const loadMessages = async({chat, model, skip}) => await SocketIOController.loadMessages(socket, chat, model, skip);
         socket.on('loadMessages', loadMessages);
 
-        const readMesssage = async ({ messageId, chat, model }) => await SocketIOController.readMessage(socket, messageId, chat, model);
-        socket.on('readMessage', readMesssage);
+        const readMessage = async ({ messageId, chat, model }) => await SocketIOController.readMessage(socket, messageId, chat, model);
+        socket.on('readMessage', readMessage);
     });
     return io;
 };

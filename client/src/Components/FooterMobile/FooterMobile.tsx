@@ -9,6 +9,7 @@ import GeneralChatWidget from "../GeneralChatWidget/GeneralChatWidget";
 const FooterMobile:FC = () => {
     const dispatch = useAppDispatch()
     const showMobileSidebar = useAppSelector(state => state.UIReducer.showMobileSidebar)
+    const countUnreadMessages = useAppSelector(state => state.GeneralChatSlice.countUnreadMessages)
 
     const onClickMenu = (e:React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
@@ -31,7 +32,7 @@ const FooterMobile:FC = () => {
 
                 <GeneralChatWidget
                     callback={showGeneralChatCallback}
-                    countMessage={99}
+                    countMessage={countUnreadMessages}
                 />
 
                 <NavLink className={classes.link} to={'/projects'}>

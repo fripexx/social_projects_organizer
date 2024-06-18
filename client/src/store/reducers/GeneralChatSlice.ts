@@ -6,13 +6,15 @@ interface GeneralChatState {
     loading: boolean,
     error: ErrorResponseType | null,
     showGeneralChat: boolean,
+    countUnreadMessages: number,
 }
 
 const initialState: GeneralChatState = {
     chat: null,
     loading: false,
     error: null,
-    showGeneralChat: false
+    showGeneralChat: false,
+    countUnreadMessages: 0,
 }
 
 const GeneralChatSlice = createSlice({
@@ -22,9 +24,12 @@ const GeneralChatSlice = createSlice({
         showChat: (state, action: PayloadAction<boolean>) => {
             state.showGeneralChat = action.payload;
         },
+        setUnreadCount: (state, action: PayloadAction<number>) => {
+            state.countUnreadMessages = action.payload;
+        },
     },
     extraReducers: {}
 })
 
 export default GeneralChatSlice.reducer;
-export const { showChat } = GeneralChatSlice.actions;
+export const { showChat, setUnreadCount } = GeneralChatSlice.actions;
