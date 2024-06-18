@@ -1,4 +1,4 @@
-import React, {FC, useState, useRef, useEffect} from 'react';
+import React, {FC, useEffect, useRef, useState} from 'react';
 import classes from "./Chat.module.scss";
 import emojiIcon from "../../assets/images/emoji-icon.svg";
 import paperClipIcon from "../../assets/images/paper-clip-icon.svg";
@@ -33,7 +33,6 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const [loadMore, setLoadMore] = useState<boolean>(false)
     const [files, setFiles] = useState<PreviewFileType[]>([]);
     const [pendingMessage, setPendingMessage] = useState<MessageType | null>(null);
-
     const mainRef = useRef<HTMLTextAreaElement>(null);
 
     const changeSendMessage = (e:React.ChangeEvent<HTMLTextAreaElement>) => {
@@ -63,7 +62,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                 chat,
                 sender: currentUser.id,
                 content: sendMessage,
-                isRead: false,
+                readBy: [],
                 timeSend: new Date(),
                 files: [],
             }
@@ -88,6 +87,9 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
     const removeFileCallback = (removeId: string) => {
         setFiles(prevState => [...prevState].filter(file => file.id !== removeId));
     }
+    const readCallback = (messageId: string) => {
+        if (socket) socket.emit('readMessage', {messageId, chat, model});
+    }
 
     useEffect(() => {
         const newSocket = ioServer();
@@ -105,6 +107,19 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
 
         newSocket.on('loadMessages', (messages: MessageType[]) => {
             setChatMessages(prevState => [...prevState, ...messages]);
+        });
+
+        newSocket.on('messageIsRead', (readMessage: MessageType) => {
+            setTimeout(() => {
+                setChatMessages(prevState => {
+                    return [...prevState].map(message => {
+                        if(message.id === readMessage.id){
+                            return {...message, readBy: readMessage.readBy}
+                        }
+                        return message
+                    });
+                });
+            }, 1000)
         });
 
         newSocket.on('newMessage', (message: MessageType) => {
@@ -151,6 +166,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                                 photo={currentUser.photo}
                                 isMessageCurrentUser={true}
                                 isPending={true}
+                                currentUser={currentUser}
                             />
                         }
 
@@ -161,7 +177,10 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser}) => {
                                     key={message.id}
                                     message={message}
                                     photo={teamUser ? teamUser.photo : null}
+                                    senderName={teamUser ? `${teamUser.name} ${teamUser.surname}` : ""}
                                     isMessageCurrentUser={message.sender === currentUser.id}
+                                    readCallback={readCallback}
+                                    currentUser={currentUser}
                                 />
                             )
                         })}

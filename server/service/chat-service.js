@@ -9,7 +9,7 @@ class ChatService {
             chat: chat,
             sender: sender,
             content,
-            isRead: false,
+            readBy: [],
             timeSend: Date.now(),
             files
         });
@@ -37,6 +37,17 @@ class ChatService {
             .lean();
 
         return messages.map(message => new MessageDto(message))
+    }
+    async readMessage(messageId, user) {
+        const message = await Message.findByIdAndUpdate(
+            messageId,
+            { $addToSet: { readBy: user.id } },
+            { new: true }
+        ).lean();
+
+        if(!message) throw ApiError.BadRequest('Не знайдено повідомлення з таким ідентифікатором');
+
+        return new MessageDto(message);
     }
 }
 

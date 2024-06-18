@@ -7,7 +7,7 @@ module.exports = class MessageDto {
         this.chat = model.chat;
         this.sender = model.sender;
         this.content = model.content;
-        this.isRead = model.isRead;
+        this.readBy = model.readBy;
         this.timeSend = model.timeSend;
         this.files = this.convertFiles(model.files);
     }

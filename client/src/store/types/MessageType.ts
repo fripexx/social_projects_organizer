@@ -5,7 +5,7 @@ export interface MessageType {
     chat: string,
     sender: string,
     content: string,
-    isRead: boolean,
+    readBy: string[],
     timeSend: Date,
     files: (FileType | PhotoType)[]
 }
