@@ -5,6 +5,8 @@ const Message = require("../models/message-model");
 
 class ChatService {
     async addMessage(chat, sender, content, files) {
+        if (!content && files.length === 0) throw ApiError.BadRequest("Запит обов'язвково має мати текстове повідомлення або файл.");
+
         const message = new MessageModel({
             chat: chat,
             sender: sender,

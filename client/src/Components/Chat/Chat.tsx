@@ -52,6 +52,8 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) =>
         if (socket) {
             const formData = new FormData();
 
+            if(!sendMessage.trim() && files.length === 0) return false;
+
             formData.append("chat", chat);
             formData.append("model", model);
             formData.append("content", sendMessage.trim());
@@ -62,7 +64,7 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) =>
                 id: uuid(),
                 chat,
                 sender: currentUser.id,
-                content: sendMessage,
+                content: sendMessage.trim(),
                 readBy: [],
                 timeSend: new Date(),
                 files: [],
