@@ -52,9 +52,12 @@ class ChatService {
     async readMessage(messageId, user) {
         const message = await Message.findByIdAndUpdate(
             messageId,
-            { $addToSet: { readBy: user.id } },
-            { new: true }
-        ).lean();
+            {$addToSet: {readBy: user.id}},
+            {new: true}
+        ).populate({
+            path: 'files',
+            model: 'File'
+        }).lean();
 
         if(!message) throw ApiError.BadRequest('Не знайдено повідомлення з таким ідентифікатором');
 
