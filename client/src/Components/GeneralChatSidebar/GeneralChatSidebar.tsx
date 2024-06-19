@@ -21,7 +21,7 @@ const GeneralChatSidebar:FC<GeneralChatSidebarProps> = ({children, showSidebar, 
     }
 
     return (
-        <Backdrop isOpen={showSidebar} clickCallback={hideCallback}>
+        <Backdrop isOpen={showSidebar} clickCallback={hideCallback} className={classes.backdrop}>
 
             <div className={classes.sidebar} data-show-sidebar={showSidebar}>
 

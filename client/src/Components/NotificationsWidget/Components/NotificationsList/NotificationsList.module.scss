@@ -1,0 +1,37 @@
+.container {
+    --MarginBottom: 80px;
+
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    bottom: var(--MarginBottom);
+    right: 20px;
+    background: var(--Color-White);
+    padding: 20px;
+    border-radius: 30px;
+    gap: 15px;
+    max-width: 400px;
+    width: 100%;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: 0.3s ease-in-out;
+    max-height: calc(100% - var(--MarginBottom) - 15px);
+
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+
+    &[data-is-open="true"] {
+        opacity: 1;
+        transform: translateX(0%);
+    }
+
+    @media (max-width: 900px) {
+        --MarginBottom: 150px;
+
+        max-width: calc(100% - 20px);
+        right: 10px;
+        left: 10px;
+    }
+}

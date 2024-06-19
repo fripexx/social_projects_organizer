@@ -1,0 +1,27 @@
+.container {
+    background: var(--Color-Grey);
+    border-radius: 15px;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.message {
+    width: 100%;
+    line-height: 25px;
+}
+
+.button {
+    background: var(--Color-Light-Grey-Blue);
+    color: var(--Color-Dark);
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 10px;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+        background: var(--Color-Dark);
+        color: var(--Color-White);
+    }
+}

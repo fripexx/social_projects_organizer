@@ -1,0 +1,46 @@
+.button {
+    cursor: pointer;
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: var(--Color-Light-Grey-Blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 11;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.1);
+    transform: scale(0);
+    transition: 0.2s ease-in-out;
+
+    &[data-is-open="true"] {
+        background: var(--Color-Dark);
+    }
+
+    @media (max-width: 600px) {
+        &:active {
+            background: var(--Color-Dark);
+        }
+    }
+
+    @media (min-width: 600px) {
+        &:hover {
+            background: var(--Color-Dark);
+        }
+    }
+
+    &[data-show="true"] {
+        transform: scale(1);
+    }
+
+    svg {
+        display: block;
+    }
+
+    @media (max-width: 900px) {
+        bottom: 85px;
+    }
+}

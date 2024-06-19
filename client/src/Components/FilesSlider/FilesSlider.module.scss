@@ -1,3 +1,9 @@
+.backdrop {
+    &[data-open="true"] {
+        z-index: 13 !important;
+    }
+}
+
 .container {
     width: 100%;
     height: 100%;

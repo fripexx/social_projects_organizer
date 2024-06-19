@@ -1,3 +1,9 @@
+.backdrop {
+    &[data-open="true"] {
+        z-index: 12;
+    }
+}
+
 .sidebar {
     position: fixed;
     top: 0px;
@@ -20,6 +26,7 @@
     &[data-show-sidebar="false"] {
         transform: translateX(-100%);
     }
+
     * {
         box-sizing: border-box;
     }

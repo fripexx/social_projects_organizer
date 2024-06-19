@@ -4,6 +4,7 @@ import FooterMobile from "../FooterMobile/FooterMobile";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import FilesSlider from "../FilesSlider/FilesSlider";
 import {setFilesInSlider} from "../../store/reducers/UISlice";
+import NotificationsWidget from "../NotificationsWidget/NotificationsWidget";
 
 interface PageProps {
     children: ReactNode;
@@ -13,6 +14,7 @@ interface PageProps {
 const Page: FC<PageProps> = ({children, ...pageProps}) => {
     const dispatch = useAppDispatch()
     const filesSlider = useAppSelector(state => state.UIReducer.filesSlider)
+    const notifications = useAppSelector(state => state.UIReducer.notifications)
 
     const closeFilesSliderCallback = () => {
         dispatch(setFilesInSlider([]))
@@ -31,6 +33,8 @@ const Page: FC<PageProps> = ({children, ...pageProps}) => {
                 activeSlide={filesSlider.activeIndex}
                 closeCallback={closeFilesSliderCallback}
             />
+
+            <NotificationsWidget notifications={notifications}/>
 
         </div>
     );

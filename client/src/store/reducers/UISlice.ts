@@ -1,12 +1,14 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {FileType, PhotoType} from "../types/FileType";
+import {NotificationType} from "../../Components/NotificationsWidget/types/NotificationType";
 
 interface UIState {
     showMobileSidebar: boolean,
     filesSlider: {
         files: (FileType | PhotoType)[],
         activeIndex: number,
-    }
+    },
+    notifications: NotificationType[]
 }
 
 const initialState: UIState = {
@@ -14,7 +16,8 @@ const initialState: UIState = {
     filesSlider: {
         files: [],
         activeIndex: 0,
-    }
+    },
+    notifications: [],
 }
 
 const UISlice = createSlice({
@@ -29,10 +32,13 @@ const UISlice = createSlice({
         },
         setActiveIndexSlider: (state, action: PayloadAction<number>) => {
             state.filesSlider.activeIndex = action.payload;
-        }
+        },
+        setNotification: (state, action: PayloadAction<NotificationType>) => {
+            state.notifications = [...state.notifications, action.payload];
+        },
     },
     extraReducers: {}
 })
 
 export default UISlice.reducer;
-export const {showSidebar, setFilesInSlider, setActiveIndexSlider} = UISlice.actions;
+export const {showSidebar, setFilesInSlider, setActiveIndexSlider, setNotification} = UISlice.actions;

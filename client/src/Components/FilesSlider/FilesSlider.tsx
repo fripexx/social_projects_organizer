@@ -33,7 +33,7 @@ const FilesSlider:FC<FilesSliderProps> = ({files, show, activeSlide = 0, closeCa
     }, [activeSlide]);
 
     return (
-        <Backdrop isOpen={show} clickCallback={closeCallback}>
+        <Backdrop isOpen={show} clickCallback={closeCallback} className={classes.backdrop}>
 
             <div onClick={handleClickContainer} className={classes.container} data-show={show}>
 
