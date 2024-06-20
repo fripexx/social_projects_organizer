@@ -7,6 +7,7 @@ import plusIcon from "../../assets/images/plus_icon.svg";
 import Content from "../../Components/Content/Content";
 import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
+import StatusTabs from "./Components/StatusTabs/StatusTabs";
 
 const ProjectPosts:FC = () => {
     return (
@@ -19,6 +20,8 @@ const ProjectPosts:FC = () => {
                 <ContentPage>
 
                     <HeaderPage>
+
+                        <StatusTabs/>
 
                         <Button
                             text={"Додати"}

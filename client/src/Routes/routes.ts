@@ -94,7 +94,7 @@ export const routes: Route[] = [
     },
     {
         key: "posts",
-        name: "Планер",
+        name: "Пости",
         path: "/project/:id/posts",
         component: ProjectPosts,
         icon: postsIcon,
