@@ -1,10 +1,11 @@
 .field {
     border-bottom: 1px solid var(--Color-Light-Grey-Blue);
-    height: 45px;
+    min-height: 45px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 10px;
+    padding: 10px 0px;
 }
 
 .text{
