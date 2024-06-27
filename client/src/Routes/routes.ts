@@ -19,6 +19,7 @@ import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
 import ProjectTeams from "../Pages/ProjectTeams/ProjectTeams";
 import ProjectMedia from "../Pages/ProjectMedia/ProjectMedia";
+import EditPostInstagram from "../Pages/EditPostInstagram/EditPostInstagram";
 
 export interface Route {
     key: string;
@@ -182,5 +183,15 @@ export const routes: Route[] = [
         requiresAuth: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
+    },
+    {
+        key: "edit_post",
+        name: "Редагування посту",
+        path: "/project/:id/edit-post-instagram",
+        component: EditPostInstagram,
+        icon: notesIcon,
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInProjectMenu: false,
     }
 ];

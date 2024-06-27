@@ -1,0 +1,58 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 15px;
+    position: relative;
+    border-bottom: 1px solid var(--Color-Light-Grey-Blue);
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 20px;
+    color: var(--Color-Dark);
+}
+
+.textarea {
+    display: block;
+    resize: none;
+    border: unset;
+    background: 0 0;
+    outline: none;
+    font-family: var(--font-family);
+    font-size: 18px;
+    line-height: normal;
+    font-weight: 300;
+}
+
+.emojiButton {
+    all: unset;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+    cursor: pointer;
+
+    --Color-SVG: var(--Color-Light-Grey-Blue);
+
+    &[data-active="true"] {
+        --Color-SVG: var(--Color-Dark);
+    }
+
+    svg {
+        transition: 0.2s ease-in-out;
+    }
+}
+
+.emojiPicker {
+    position: absolute !important;
+    top: 100%;
+    right: 0px;
+    left: 0px;
+    z-index: 2;
+    width: 100% !important;
+    border-radius: 0px !important;
+}

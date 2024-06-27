@@ -1,0 +1,14 @@
+.header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    border-bottom: 1px solid var(--Color-Light-Grey-Blue);
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: auto auto 1fr;
+    gap: 25px;
+}
