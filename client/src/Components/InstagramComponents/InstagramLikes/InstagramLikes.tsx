@@ -1,18 +1,20 @@
-import React, {FC} from 'react';
+import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramLikes.module.scss";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import firstIcon from "./Images/first-person.png";
 import secondIcon from "./Images/second-person.png";
 import thirdIcon from "./Images/third-person.png";
+import classNames from "classnames";
 
 interface InstagramLikesProps {
-    profileName: string;
-
+    profileName: string,
+    style?: CSSProperties,
+    className?: string,
 }
 
-const InstagramLikes:FC<InstagramLikesProps> = ({profileName}) => {
+const InstagramLikes:FC<InstagramLikesProps> = ({profileName, className, style}) => {
     return (
-        <div className={classes.container}>
+        <div className={classNames(classes.container, className)} style={style}>
 
             <div className={classes.profiles}>
 

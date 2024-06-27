@@ -1,0 +1,36 @@
+.header {
+    position: absolute;
+    top: 6.5%;
+}
+
+.info {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    max-width: calc(var(--width) * 0.82);
+    bottom: 10%;
+    padding: 3% 4%;
+    gap: calc(var(--width) / 50);
+}
+
+.buttons {
+    position: absolute;
+    right: 4.5%;
+    bottom: 18%;
+}
+
+.description {
+    display: block;
+    color: var(--elements-color);
+    font-weight: 300;
+    font-size: calc(var(--width) / 23);
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.footer {
+    height: 10% !important;
+    padding-bottom: 7% !important;
+    overflow: hidden;
+}

@@ -8,15 +8,18 @@ import InstagramPictureSlider from "../InstagramPictureSlider/InstagramPictureSl
 import InstagramPublicationButtons from "../InstagramPublicationButtons/InstagramPublicationButtons";
 import InstagramLikes from "../InstagramLikes/InstagramLikes";
 import InstagramComments from "../InstagramComments/InstagramComments";
+import classes from "./InstagramPublicationPreview.module.scss";
 
 interface InstagramPublicationPreviewProps {
     media: (FileType | PhotoType)[],
     profileName: string,
     profilePicture: string | null,
+    colabProfileName?: string,
+    colabProfilePicture?: string | null,
     location?: string,
 }
 
-const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profileName, profilePicture, location}) => {
+const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profileName, profilePicture, location, colabProfileName, colabProfilePicture}) => {
     const paginationRef = useRef<HTMLDivElement>(null);
 
     return (
@@ -27,6 +30,8 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
             <InstagramPublicationHeader
                 profileName={profileName}
                 profilePicture={profilePicture}
+                colabProfileName={profileName}
+                colabProfilePicture={colabProfilePicture}
                 location={location}
             />
 
@@ -35,13 +40,17 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
                 paginationRef={paginationRef}
             />
 
-            <InstagramPublicationButtons
-                paginationRef={paginationRef}
-            />
+            <div className={classes.info}>
 
-            <InstagramLikes profileName={profileName}/>
+                <InstagramPublicationButtons
+                    paginationRef={paginationRef}
+                />
 
-            <InstagramComments/>
+                <InstagramLikes profileName={profileName}/>
+
+                <InstagramComments/>
+
+            </div>
 
             <InstagramFooter profilePicture={profilePicture}/>
 

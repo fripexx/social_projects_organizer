@@ -1,0 +1,53 @@
+.profileInfo {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: calc(var(--width) / 100);
+
+    &[data-colab="true"] {
+        gap: calc(var(--width) / 20);
+
+        .profilePicture {
+            --size: calc(var(--width) / 16) !important;
+        }
+    }
+}
+
+.profilePicture {
+    --size: calc(var(--width) / 12) !important;
+    z-index: 2;
+    position: relative;
+}
+
+.textInfo {
+    display: flex;
+    flex-direction: column;
+}
+
+.profileName {
+    --font-size: calc(var(--width) / 26);
+
+    font-size: var(--font-size);
+    font-weight: 500;
+    color: var(--elements-color);
+}
+
+.location {
+    --font-size: calc(var(--width) / 31);
+
+    font-size: var(--font-size);
+    font-weight: 400;
+    color: var(--elements-color);
+}
+
+.colabPictures {
+    position: relative;
+
+}
+
+.colabProfilePicture {
+    position: absolute;
+    z-index: 1;
+    top: -30%;
+    right: -30%;
+}

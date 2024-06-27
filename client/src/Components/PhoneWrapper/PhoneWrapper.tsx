@@ -3,12 +3,14 @@ import classes from "./PhoneWrapper.module.scss";
 import phoneBorder from "../../assets/images/phone-border.svg";
 
 interface IPhoneWrapperProps {
-    children: React.ReactNode;
+    children: React.ReactNode,
+    isHeaderOverlay?: boolean,
+    themeMode?: 'light' | 'dark'
 }
 
-const PhoneWrapper:FC<IPhoneWrapperProps> = ({children}) => {
+const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false, themeMode = 'dark'}) => {
     return (
-        <div className={classes.phone}>
+        <div className={classes.phone} data-header-overlay={isHeaderOverlay} data-theme={themeMode}>
 
             <img
                 decoding={"async"}
@@ -18,7 +20,7 @@ const PhoneWrapper:FC<IPhoneWrapperProps> = ({children}) => {
                 alt={""}
             />
 
-            <div className={classes.header} data-theme={"dark"}>
+            <div className={classes.header} >
 
                 <svg width="307" height="23" viewBox="0 0 307 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path

@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    padding: 0% 4%;
     gap: 2%;
+    width: 100%;
 }
 
 .profiles {
@@ -34,6 +34,7 @@
 .text {
     font-weight: 400;
     font-size: calc(var(--width) / 30);
+    color: var(--elements-color);
 
     strong {
         letter-spacing: unset;
