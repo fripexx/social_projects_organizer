@@ -43,24 +43,3 @@
     background: var(--Color-Dark);
     color: var(--Color-White);
 }
-
-.icon {
-    --size: 25px;
-
-    width: var(--size);
-    min-width: var(--size);
-    max-width: var(--size);
-    height: var(--size);
-    min-height: var(--size);
-    max-height: var(--size);
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--Color-Dark);
-    border-radius: 50%;
-
-    img{
-        display: block;
-    }
-}

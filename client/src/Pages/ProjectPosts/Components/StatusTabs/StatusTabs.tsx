@@ -6,6 +6,7 @@ import editIcon from "../../../../assets/images/icon-edit.svg";
 import rejectIcon from "../../../../assets/images/icon-reject.svg";
 import pendingIcon from "../../../../assets/images/icon-pending.svg";
 import confirmedIcon from "../../../../assets/images/icon-confirmed.svg";
+import RoundIcon from "../../../../Components/RoundIcon/RoundIcon";
 
 interface TabType {
     text: string,
@@ -66,10 +67,8 @@ const StatusTabs: FC = () => {
                         data-active={status === activeStatus}
                     >
 
-                        {icon &&
-                            <div  className={classes.icon} style={{background: color}}>
-                                <img src={icon} alt={""}/>
-                            </div>
+                        {icon && color &&
+                            <RoundIcon icon={icon} color={color}/>
                         }
 
                         <span>{text}</span>

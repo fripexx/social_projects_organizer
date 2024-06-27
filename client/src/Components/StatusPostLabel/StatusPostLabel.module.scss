@@ -1,0 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 15px;
+    border-radius: 10px;
+    background: var(--Color-Dark);
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: normal;
+    color: var(--Color-White);
+    white-space: nowrap;
+    transition: 0.2s ease-in-out;
+    border: unset;
+    outline: none;
+}
