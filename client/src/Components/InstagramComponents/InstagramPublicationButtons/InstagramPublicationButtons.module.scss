@@ -1,0 +1,24 @@
+.container {
+    --size-button: calc(var(--width) / 17);
+
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    padding: 3% 4.2%;
+}
+
+.buttons {
+    height: var(--size-button);
+    width: auto;
+    margin-right: auto;
+}
+
+.saveButton {
+    height: var(--size-button);
+    width: auto;
+    margin-left: auto;
+}
+
+.pagination {
+    margin: auto;
+}

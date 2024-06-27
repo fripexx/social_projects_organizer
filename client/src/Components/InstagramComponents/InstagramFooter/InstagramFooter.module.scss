@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+    background: #FFF;
+    border-top: 1px solid #DBDBDB;
+    width: 100%;
+    position: absolute;
+    right: 0px;
+    left: 0px;
+    bottom: 0px;
+    height: 8%;
+    padding-bottom: 5%;
+
+    svg {
+        --icon-size: calc(var(--width) / 17);
+
+        display: block;
+        width: var(--icon-size);
+        height: var(--icon-size);
+    }
+}
+

@@ -1,0 +1,46 @@
+.container {
+    --width-button: calc(var(--width) / 25);
+
+    height: 6.5%;
+    display: grid;
+    grid-template-columns: var(--width-button) 1fr var(--width-button);
+    align-items: center;
+    padding: 0 2%;
+    position: relative;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.button {
+    --icon-size: calc(var(--width) / 25);
+
+    width: var(--icon-size);
+    height: var(--icon-size)
+}
+
+.centerField {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.profileName {
+    --font-size: calc(var(--width) / 37);
+
+    text-transform: uppercase;
+    font-weight: 500;
+    color: #666666;
+    letter-spacing: calc(var(--width) / 300);
+    font-size: var(--font-size);
+    line-height: var(--font-size);
+}
+
+.label {
+    --font-size: calc(var(--width) / 26);
+
+    font-weight: 700;
+    color: #000;
+    font-size: var(--font-size);
+    line-height: var(--font-size);
+}
