@@ -9,29 +9,27 @@ import InstagramPublicationButtons from "../InstagramPublicationButtons/Instagra
 import InstagramLikes from "../InstagramLikes/InstagramLikes";
 import InstagramComments from "../InstagramComments/InstagramComments";
 import classes from "./InstagramPublicationPreview.module.scss";
+import {ProfileType} from "../types/ProfileType";
 
 interface InstagramPublicationPreviewProps {
     media: (FileType | PhotoType)[],
-    profileName: string,
-    profilePicture: string | null,
-    colabProfileName?: string,
-    colabProfilePicture?: string | null,
+    profile: ProfileType,
+    colabProfile?: ProfileType,
     location?: string,
 }
 
-const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profileName, profilePicture, location, colabProfileName, colabProfilePicture}) => {
+const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location}) => {
+    const {name, picture} = profile;
     const paginationRef = useRef<HTMLDivElement>(null);
 
     return (
         <PhoneWrapper>
 
-            <InstagramHeader profileName={profileName}/>
+            <InstagramHeader name={name}/>
 
             <InstagramPublicationHeader
-                profileName={profileName}
-                profilePicture={profilePicture}
-                colabProfileName={profileName}
-                colabProfilePicture={colabProfilePicture}
+                profile={profile}
+                colabProfile={colabProfile}
                 location={location}
             />
 
@@ -46,13 +44,13 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
                     paginationRef={paginationRef}
                 />
 
-                <InstagramLikes profileName={profileName}/>
+                <InstagramLikes name={name}/>
 
                 <InstagramComments/>
 
             </div>
 
-            <InstagramFooter profilePicture={profilePicture}/>
+            <InstagramFooter picture={picture}/>
 
         </PhoneWrapper>
     );

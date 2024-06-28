@@ -4,13 +4,13 @@ import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import classNames from "classnames";
 
 interface InstagramFooterProps {
-    profilePicture: string | null,
+    picture: string | null,
     isFooterOverlay?: boolean,
     style?: CSSProperties,
     className?: string,
 }
 
-const InstagramFooter: FC<InstagramFooterProps> = ({profilePicture, isFooterOverlay = false, style, className}) => {
+const InstagramFooter: FC<InstagramFooterProps> = ({picture, isFooterOverlay = false, style, className}) => {
     return (
         <div className={classNames(classes.container, className)} data-footer-overlay={isFooterOverlay} style={style}>
 
@@ -104,7 +104,7 @@ const InstagramFooter: FC<InstagramFooterProps> = ({profilePicture, isFooterOver
 
             <ProfilePicture
                 className={classes.profilePicture}
-                src={profilePicture}
+                src={picture}
                 size={"calc(var(--width) / 15)"}
             />
 

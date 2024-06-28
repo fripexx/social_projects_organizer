@@ -14,17 +14,3 @@
     height: var(--height);
     border-radius: var(--height);
 }
-
-.currentItem {
-    height: var(--height);
-    background: rgba(190, 190, 195, 0.5);
-    border-radius: var(--height);
-    overflow: hidden;
-}
-
-.loader {
-    width: 0%;
-    height: 100%;
-    background: #bfbebe;
-    transition: 0.2s all ease;
-}

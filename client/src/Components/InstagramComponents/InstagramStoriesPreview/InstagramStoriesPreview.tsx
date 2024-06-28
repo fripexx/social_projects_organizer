@@ -2,20 +2,19 @@ import React, {FC, useState} from 'react';
 import classes from "./InstagramStoriesPreview.module.scss";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import {FileType, PhotoType} from "../../../store/types/FileType";
+import {VideoProgressType} from "../types/VideoProgressType";
+import {ProfileType} from "../types/ProfileType";
 import InstagramStoriesHeader from "../InstagramStoriesHeader/InstagramStoriesHeader";
 import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
 import InstagramStoriesFooter from "../InstagramStoriesFooter/InstagramStoriesFooter";
-import {VideoProgressType} from "../types/VideoProgressType";
 
 interface InstagramStoriesPreviewProps {
     media: PhotoType | FileType,
-    profileName: string,
-    profilePicture: string | null,
-    colabProfileName?: string,
-    colabProfilePicture?: string | null,
+    profile: ProfileType,
+    colabProfile?: ProfileType,
 }
 
-const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profileName, profilePicture, colabProfileName, colabProfilePicture}) => {
+const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profile, colabProfile}) => {
     const [progress, setProgress] = useState<number>(0);
 
     const progressCallback  = (data: VideoProgressType) => {
@@ -28,10 +27,8 @@ const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profil
 
             <InstagramStoriesHeader
                 className={classes.header}
-                profileName={profileName}
-                profilePicture={profilePicture}
-                colabProfileName={colabProfileName}
-                colabProfilePicture={colabProfilePicture}
+                profile={profile}
+                colabProfile={colabProfile}
                 progress={progress}
             />
 

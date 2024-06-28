@@ -2,10 +2,10 @@ import React, {FC} from 'react';
 import classes from "./InstagramHeader.module.scss";
 
 interface InstagramHeaderProps {
-    profileName: string;
+    name: string;
 }
 
-const InstagramHeader:FC<InstagramHeaderProps> = ({profileName}) => {
+const InstagramHeader:FC<InstagramHeaderProps> = ({name}) => {
     return (
         <div className={classes.container}>
 
@@ -19,7 +19,7 @@ const InstagramHeader:FC<InstagramHeaderProps> = ({profileName}) => {
             <div className={classes.centerField}>
 
                 <span className={classes.profileName}>
-                    {profileName}
+                    {name}
                 </span>
 
                 <span className={classes.label}>

@@ -3,18 +3,17 @@ import classes from "./InstagramStoriesHeader.module.scss";
 import classNames from "classnames";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
 import InstagramStoriesPagination from "../InstagramStoriesPagination/InstagramStoriesPagination";
+import {ProfileType} from "../types/ProfileType";
 
 interface InstagramStoriesHeaderProps {
+    profile: ProfileType,
+    colabProfile?: ProfileType,
     className?: string,
     style?: CSSProperties,
-    profileName: string,
-    profilePicture: string | null,
-    colabProfileName?: string,
-    colabProfilePicture?: string | null,
     progress?: number
 }
 
-const InstagramStoriesHeader:FC<InstagramStoriesHeaderProps> = ({className, style, profileName, profilePicture, colabProfileName, colabProfilePicture, progress}) => {
+const InstagramStoriesHeader:FC<InstagramStoriesHeaderProps> = ({profile, colabProfile, className, style, progress}) => {
     return (
         <div className={classNames(classes.container, className)} style={style}>
 
@@ -25,10 +24,8 @@ const InstagramStoriesHeader:FC<InstagramStoriesHeaderProps> = ({className, styl
                 <div className={classes.userInfo}>
 
                     <ProfileLabel
-                        profileName={profileName}
-                        profilePicture={profilePicture}
-                        colabProfileName={colabProfileName}
-                        colabProfilePicture={colabProfilePicture}
+                        profile={profile}
+                        colabProfile={colabProfile}
                     />
 
                     <span className={classes.time}>6 год</span>

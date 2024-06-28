@@ -2,31 +2,32 @@ import React, {CSSProperties, FC} from 'react';
 import classes from "./ProfileLabel.module.scss";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import classNames from "classnames";
+import {ProfileType} from "../types/ProfileType";
 
 interface ProfileLabelProps {
-    profileName: string,
-    profilePicture: string | null,
-    colabProfileName?: string,
-    colabProfilePicture?: string | null,
+    profile: ProfileType,
+    colabProfile?: ProfileType,
     location?: string,
     className?: string,
     style?: CSSProperties,
 }
 
-const ProfileLabel:FC<ProfileLabelProps> = ({profileName, profilePicture, location, className, style, colabProfileName, colabProfilePicture}) => {
-    return (
-        <div className={classNames(classes.profileInfo, className)} style={style} data-colab={!!colabProfileName}>
+const ProfileLabel:FC<ProfileLabelProps> = ({profile, colabProfile, location, className, style}) => {
+    const {name, picture} = profile;
 
-            {!colabProfileName &&
+    return (
+        <div className={classNames(classes.profileInfo, className)} style={style} data-colab={!!colabProfile}>
+
+            {!colabProfile &&
                 <>
                     <ProfilePicture
                         className={classes.profilePicture}
-                        src={profilePicture}
+                        src={picture}
                     />
 
                     <div className={classes.textInfo}>
 
-                        <span className={classes.profileName}>{profileName}</span>
+                        <span className={classes.profileName}>{name}</span>
 
                         {location &&
                             <span className={classes.location}>{location}</span>
@@ -36,23 +37,23 @@ const ProfileLabel:FC<ProfileLabelProps> = ({profileName, profilePicture, locati
                 </>
             }
 
-            {colabProfileName &&
+            {colabProfile &&
                 <>
                     <div className={classes.colabPictures}>
 
                         <ProfilePicture
                             className={classes.profilePicture}
-                            src={profilePicture}
+                            src={picture}
                         />
 
                         <ProfilePicture
                             className={classNames(classes.profilePicture, classes.colabProfilePicture)}
-                            src={colabProfilePicture}
+                            src={colabProfile.picture}
                         />
 
                     </div>
 
-                    <span className={classes.profileName}>{profileName} та<br/> {colabProfileName}</span>
+                    <span className={classes.profileName}>{name} та<br/> {colabProfile.name}</span>
 
                 </>
             }

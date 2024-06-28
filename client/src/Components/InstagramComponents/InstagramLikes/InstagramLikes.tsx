@@ -1,18 +1,18 @@
 import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramLikes.module.scss";
+import classNames from "classnames";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import firstIcon from "./Images/first-person.png";
 import secondIcon from "./Images/second-person.png";
 import thirdIcon from "./Images/third-person.png";
-import classNames from "classnames";
 
 interface InstagramLikesProps {
-    profileName: string,
+    name: string,
     style?: CSSProperties,
     className?: string,
 }
 
-const InstagramLikes:FC<InstagramLikesProps> = ({profileName, className, style}) => {
+const InstagramLikes:FC<InstagramLikesProps> = ({name, className, style}) => {
     return (
         <div className={classNames(classes.container, className)} style={style}>
 
@@ -39,7 +39,7 @@ const InstagramLikes:FC<InstagramLikesProps> = ({profileName, className, style})
             </div>
 
             <div className={classes.text}>
-                Уподобали <strong>{profileName}</strong> і <strong>ще 1256</strong>
+                Уподобали <strong>{name}</strong> і <strong>ще 1256</strong>
             </div>
 
         </div>

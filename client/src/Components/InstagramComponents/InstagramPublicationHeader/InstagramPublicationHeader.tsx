@@ -1,24 +1,21 @@
 import React, {FC} from 'react';
 import classes from "./InstagramPublicationHeader.module.scss";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
+import {ProfileType} from "../types/ProfileType";
 
 interface InstagramPublicationHeaderProps {
-    profileName: string,
-    profilePicture: string | null,
+    profile: ProfileType,
+    colabProfile?: ProfileType,
     location?: string,
-    colabProfileName?: string,
-    colabProfilePicture?: string | null,
 }
 
-const InstagramPublicationHeader: FC<InstagramPublicationHeaderProps> = ({profileName, location, profilePicture, colabProfileName, colabProfilePicture}) => {
+const InstagramPublicationHeader: FC<InstagramPublicationHeaderProps> = ({profile, colabProfile, location}) => {
     return (
         <div className={classes.container}>
 
             <ProfileLabel
-                profileName={profileName}
-                profilePicture={profilePicture}
-                colabProfileName={colabProfileName}
-                colabProfilePicture={colabProfilePicture}
+                profile={profile}
+                colabProfile={colabProfile}
                 location={location}
             />
 

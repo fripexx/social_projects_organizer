@@ -1,7 +1,6 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import classes from "./InstagramReelsPreview.module.scss";
 import {FileType} from "../../../store/types/FileType";
-import pp from "../../../assets/photo_5_2024-06-27_09-33-55.jpg";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
 import InstagramFooter from "../InstagramFooter/InstagramFooter";
@@ -9,23 +8,35 @@ import ReelsHeader from "../ReelsHeader/ReelsHeader";
 import ReelsButtons from "../ReelsButtons/ReelsButtons";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
 import InstagramLikes from "../InstagramLikes/InstagramLikes";
+import {ProfileType} from "../types/ProfileType";
+import InstagramProgressBar from "../InstagramProgressBar/InstagramProgressBar";
+import {VideoProgressType} from "../types/VideoProgressType";
 
 interface InstagramReelsPreviewProps {
     video: string | FileType,
-    profileName: string,
-    profilePicture: string | null,
-    colabProfileName?: string,
-    colabProfilePicture?: string | null,
+    profile: ProfileType,
+    colabProfile?: ProfileType,
     description?: string,
 }
 
-const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profileName, profilePicture, description, colabProfileName, colabProfilePicture}) => {
+const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, colabProfile, description}) => {
+    const {name, picture} = profile;
+    const [progress, setProgress] = useState<number>(0);
+
+    const progressCallback  = (data: VideoProgressType) => {
+        const percentage = Number(((data.currentTime / data.duration) * 100).toFixed(2));
+        setProgress(percentage)
+    }
+
     return (
         <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"}>
 
             <ReelsHeader className={classes.header}/>
 
-            <InstagramFullscreenVideo video={video}/>
+            <InstagramFullscreenVideo
+                video={video}
+                progressCallback={progressCallback}
+            />
 
             <ReelsButtons className={classes.buttons}/>
 
@@ -33,10 +44,8 @@ const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profileNa
 
                 <ProfileLabel
                     className={classes.profileLabel}
-                    profileName={profileName}
-                    profilePicture={profilePicture}
-                    colabProfileName={colabProfileName}
-                    colabProfilePicture={colabProfilePicture}
+                    profile={profile}
+                    colabProfile={colabProfile}
                 />
 
                 {description &&
@@ -47,15 +56,20 @@ const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profileNa
 
                 <InstagramLikes
                     className={classes.likes}
-                    profileName={profileName}
+                    name={name}
                 />
 
             </div>
 
             <InstagramFooter
                 className={classes.footer}
-                profilePicture={profilePicture}
+                picture={picture}
                 isFooterOverlay={true}
+            />
+
+            <InstagramProgressBar
+                className={classes.progressBar}
+                progress={progress}
             />
 
         </PhoneWrapper>

@@ -1,6 +1,7 @@
 import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramStoriesPagination.module.scss";
 import classNames from "classnames";
+import InstagramProgressBar from "../InstagramProgressBar/InstagramProgressBar";
 
 interface InstagramStoriesPaginationProps {
     className?: string;
@@ -15,9 +16,7 @@ const InstagramStoriesPagination:FC<InstagramStoriesPaginationProps> = ({classNa
             <span className={classes.item}/>
             <span className={classes.item}/>
 
-            <div className={classes.currentItem}>
-                <div className={classes.loader} style={{width: `${progress}%`}} />
-            </div>
+            <InstagramProgressBar progress={progress}/>
 
         </div>
     );
