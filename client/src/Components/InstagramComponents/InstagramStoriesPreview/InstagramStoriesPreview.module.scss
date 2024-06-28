@@ -1,0 +1,23 @@
+.header {
+    position: absolute;
+    top: 6.5%;
+}
+
+.content {
+    height: 100%;
+    width: 100%;
+    padding-top: 12%;
+    padding-bottom: 26%;
+}
+
+.video {
+    border-radius: calc(var(--width) / 50);
+    overflow: hidden;
+}
+
+.footer {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 3%;
+}

@@ -34,6 +34,11 @@
     }
 
     &[data-theme="light"] {
+        --elements-color: #000;
+        --background-color: #FFF;
+    }
+
+    &[data-theme="dark"] {
         --elements-color: #FFF;
         --background-color: #000;
     }

@@ -3,7 +3,7 @@ import classes from "./InstagramReelsPreview.module.scss";
 import {FileType} from "../../../store/types/FileType";
 import pp from "../../../assets/photo_5_2024-06-27_09-33-55.jpg";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
-import ReelsVideo from "../ReelsVideo/ReelsVideo";
+import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
 import InstagramFooter from "../InstagramFooter/InstagramFooter";
 import ReelsHeader from "../ReelsHeader/ReelsHeader";
 import ReelsButtons from "../ReelsButtons/ReelsButtons";
@@ -21,11 +21,11 @@ interface InstagramReelsPreviewProps {
 
 const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profileName, profilePicture, description, colabProfileName, colabProfilePicture}) => {
     return (
-        <PhoneWrapper isHeaderOverlay={true} themeMode={"light"}>
+        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"}>
 
             <ReelsHeader className={classes.header}/>
 
-            <ReelsVideo video={video}/>
+            <InstagramFullscreenVideo video={video}/>
 
             <ReelsButtons className={classes.buttons}/>
 

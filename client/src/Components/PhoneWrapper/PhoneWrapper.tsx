@@ -8,7 +8,7 @@ interface IPhoneWrapperProps {
     themeMode?: 'light' | 'dark'
 }
 
-const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false, themeMode = 'dark'}) => {
+const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false, themeMode = 'light'}) => {
     return (
         <div className={classes.phone} data-header-overlay={isHeaderOverlay} data-theme={themeMode}>
 
