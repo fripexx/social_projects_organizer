@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import classes from "./InstagramHeader.module.scss";
 import {ReactSVG} from "react-svg";
-import backIcon from "../images/back-icon.svg"
+import backIcon from "../../images/back-icon.svg"
 
 interface InstagramHeaderProps {
     name: string;

@@ -4,9 +4,9 @@ import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import {FileType, PhotoType} from "../../../store/types/FileType";
 import {VideoProgressType} from "../types/VideoProgressType";
 import {ProfileType} from "../types/ProfileType";
-import InstagramStoriesHeader from "../InstagramStoriesHeader/InstagramStoriesHeader";
-import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
-import InstagramStoriesFooter from "../InstagramStoriesFooter/InstagramStoriesFooter";
+import InstagramStoriesHeader from "../Modules/InstagramStoriesHeader/InstagramStoriesHeader";
+import InstagramFullscreenVideo from "../Modules/InstagramFullscreenVideo/InstagramFullscreenVideo";
+import InstagramStoriesFooter from "../Modules/InstagramStoriesFooter/InstagramStoriesFooter";
 import {InstagramPreviewType} from "../types/InstagramPreviewType";
 
 interface InstagramStoriesPreviewProps extends InstagramPreviewType{

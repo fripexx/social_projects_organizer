@@ -1,7 +1,7 @@
 import React, {FC} from 'react';
 import classes from "./InstagramComments.module.scss";
 import {ReactSVG} from "react-svg";
-import heartIcon from "../images/heart-icon.svg";
+import heartIcon from "../../images/heart-icon.svg";
 
 interface Comments {
     user: string,

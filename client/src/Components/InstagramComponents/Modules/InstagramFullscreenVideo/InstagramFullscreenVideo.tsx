@@ -1,8 +1,8 @@
 import React, {FC, useEffect, useRef} from 'react';
 import classes from "./InstagramFullscreenVideo.module.scss";
-import {FileType} from "../../../store/types/FileType";
+import {FileType} from "../../../../store/types/FileType";
 import classNames from "classnames";
-import {VideoProgressType} from "../types/VideoProgressType";
+import {VideoProgressType} from "../../types/VideoProgressType";
 
 interface ReelsVideoProps {
     className?: string;

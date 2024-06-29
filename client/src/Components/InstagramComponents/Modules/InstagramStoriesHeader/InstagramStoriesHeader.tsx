@@ -3,10 +3,10 @@ import classes from "./InstagramStoriesHeader.module.scss";
 import classNames from "classnames";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
 import InstagramStoriesPagination from "../InstagramStoriesPagination/InstagramStoriesPagination";
-import {ProfileType} from "../types/ProfileType";
+import {ProfileType} from "../../types/ProfileType";
 import {ReactSVG} from "react-svg";
-import crossIcon from "../images/cross-icon.svg";
-import dotsIcon from "../images/dots-icon.svg";
+import crossIcon from "../../images/cross-icon.svg";
+import dotsIcon from "../../images/dots-icon.svg";
 
 interface InstagramStoriesHeaderProps {
     profile: ProfileType,

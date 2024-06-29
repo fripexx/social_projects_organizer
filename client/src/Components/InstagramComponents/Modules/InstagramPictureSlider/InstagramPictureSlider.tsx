@@ -1,7 +1,7 @@
 import React, {FC, useRef} from 'react';
 import classes from "./InstagramPictureSlider.module.scss";
-import pictureNotImage from "../../../assets/images/picture-not-image.svg"
-import {FileType, PhotoType} from "../../../store/types/FileType";
+import pictureNotImage from "../../../../assets/images/picture-not-image.svg"
+import {FileType, PhotoType} from "../../../../store/types/FileType";
 import {Swiper, SwiperRef, SwiperSlide} from "swiper/react";
 import {Pagination} from 'swiper/modules';
 import 'swiper/css';

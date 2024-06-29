@@ -2,7 +2,7 @@ import React, {CSSProperties, FC} from 'react';
 import classes from "./ProfileLabel.module.scss";
 import ProfilePicture from "../ProfilePicture/ProfilePicture";
 import classNames from "classnames";
-import {ProfileType} from "../types/ProfileType";
+import {ProfileType} from "../../types/ProfileType";
 
 interface ProfileLabelProps {
     profile: ProfileType,

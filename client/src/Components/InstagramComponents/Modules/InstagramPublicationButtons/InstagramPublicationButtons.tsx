@@ -1,11 +1,11 @@
 import React, {Dispatch, FC, RefObject, SetStateAction, useEffect, useRef} from 'react';
 import classes from "./InstagramPublicationButtons.module.scss";
-import SwiperPagination from "../../SwiperPagination/SwiperPagination";
+import SwiperPagination from "../../../SwiperPagination/SwiperPagination";
 import {ReactSVG} from "react-svg";
-import heartIcon from "../images/heart-icon.svg";
-import commentIcon from "../images/comment-icon.svg";
-import sendIcon from "../images/send-icon.svg";
-import saveIcon from "../images/save-icon.svg";
+import heartIcon from "../../images/heart-icon.svg";
+import commentIcon from "../../images/comment-icon.svg";
+import sendIcon from "../../images/send-icon.svg";
+import saveIcon from "../../images/save-icon.svg";
 
 interface InstagramPublicationButtons {
     setRef: Dispatch<SetStateAction<RefObject<HTMLDivElement> | undefined>>

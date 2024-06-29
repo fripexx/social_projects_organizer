@@ -2,8 +2,8 @@ import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramStoriesFooter.module.scss";
 import classNames from "classnames";
 import {ReactSVG} from "react-svg";
-import heartIcon from "../images/heart-icon.svg";
-import sendIcon from "../images/send-icon.svg";
+import heartIcon from "../../images/heart-icon.svg";
+import sendIcon from "../../images/send-icon.svg";
 
 interface InstagramStoriesFooterProps {
     className?: string;

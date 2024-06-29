@@ -1,13 +1,13 @@
-import React, {FC, RefObject, useRef, useState} from 'react';
+import React, {FC, RefObject, useState} from 'react';
 import {FileType, PhotoType} from "../../../store/types/FileType";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
-import InstagramFooter from "../InstagramFooter/InstagramFooter";
-import InstagramHeader from "../InstagramHeader/InstagramHeader";
-import InstagramPublicationHeader from "../InstagramPublicationHeader/InstagramPublicationHeader";
-import InstagramPictureSlider from "../InstagramPictureSlider/InstagramPictureSlider";
-import InstagramPublicationButtons from "../InstagramPublicationButtons/InstagramPublicationButtons";
-import InstagramLikes from "../InstagramLikes/InstagramLikes";
-import InstagramComments from "../InstagramComments/InstagramComments";
+import InstagramFooter from "../Modules/InstagramFooter/InstagramFooter";
+import InstagramHeader from "../Modules/InstagramHeader/InstagramHeader";
+import InstagramPublicationHeader from "../Modules/InstagramPublicationHeader/InstagramPublicationHeader";
+import InstagramPictureSlider from "../Modules/InstagramPictureSlider/InstagramPictureSlider";
+import InstagramPublicationButtons from "../Modules/InstagramPublicationButtons/InstagramPublicationButtons";
+import InstagramLikes from "../Modules/InstagramLikes/InstagramLikes";
+import InstagramComments from "../Modules/InstagramComments/InstagramComments";
 import classes from "./InstagramPublicationPreview.module.scss";
 import {InstagramPreviewType} from "../types/InstagramPreviewType";
 

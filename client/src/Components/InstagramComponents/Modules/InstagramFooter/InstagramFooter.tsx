@@ -1,12 +1,12 @@
 import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramFooter.module.scss";
-import ProfilePicture from "../Modules/ProfilePicture/ProfilePicture";
+import ProfilePicture from "../../Modules/ProfilePicture/ProfilePicture";
 import classNames from "classnames";
 import {ReactSVG} from "react-svg";
-import homeIcon from "../images/home-icon.svg";
-import searchIcon from "../images/search-icon.svg";
-import addIcon from "../images/add-icon.svg";
-import reelsIcon from "../images/reels-icon.svg";
+import homeIcon from "../../images/home-icon.svg";
+import searchIcon from "../../images/search-icon.svg";
+import addIcon from "../../images/add-icon.svg";
+import reelsIcon from "../../images/reels-icon.svg";
 
 interface InstagramFooterProps {
     picture: string | null,

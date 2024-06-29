@@ -1,9 +1,9 @@
 import React, {FC} from 'react';
 import classes from "./InstagramPublicationHeader.module.scss";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
-import {ProfileType} from "../types/ProfileType";
+import {ProfileType} from "../../types/ProfileType";
 import {ReactSVG} from "react-svg";
-import dotsIcon from "../images/dots-icon.svg"
+import dotsIcon from "../../images/dots-icon.svg"
 
 interface InstagramPublicationHeaderProps {
     profile: ProfileType,

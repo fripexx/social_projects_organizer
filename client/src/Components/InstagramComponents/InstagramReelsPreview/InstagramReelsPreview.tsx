@@ -4,13 +4,13 @@ import {FileType} from "../../../store/types/FileType";
 import {VideoProgressType} from "../types/VideoProgressType";
 import {ProfileType} from "../types/ProfileType";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
-import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
-import InstagramFooter from "../InstagramFooter/InstagramFooter";
+import InstagramFullscreenVideo from "../Modules/InstagramFullscreenVideo/InstagramFullscreenVideo";
+import InstagramFooter from "../Modules/InstagramFooter/InstagramFooter";
 import ReelsHeader from "../Modules/ReelsHeader/ReelsHeader";
 import ReelsButtons from "../Modules/ReelsButtons/ReelsButtons";
-import ProfileLabel from "../ProfileLabel/ProfileLabel";
-import InstagramLikes from "../InstagramLikes/InstagramLikes";
-import InstagramProgressBar from "../InstagramProgressBar/InstagramProgressBar";
+import ProfileLabel from "../Modules/ProfileLabel/ProfileLabel";
+import InstagramLikes from "../Modules/InstagramLikes/InstagramLikes";
+import InstagramProgressBar from "../Modules/InstagramProgressBar/InstagramProgressBar";
 import {InstagramPreviewType} from "../types/InstagramPreviewType";
 
 interface InstagramReelsPreviewProps extends InstagramPreviewType{
