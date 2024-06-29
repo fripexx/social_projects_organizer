@@ -11,12 +11,21 @@
     height: var(--size-button);
     width: auto;
     margin-right: auto;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--size-button) / 2);
+
+    svg {
+        width: var(--size-button);
+    }
 }
 
 .saveButton {
-    height: var(--size-button);
-    width: auto;
     margin-left: auto;
+
+    svg {
+        width: var(--size-button);
+    }
 }
 
 .pagination {

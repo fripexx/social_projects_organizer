@@ -8,20 +8,27 @@
 }
 
 .back {
-    --sizeIcon: calc(var(--width) / 25);
+    --sizeIcon: calc(var(--width) / 20);
     --Color-SVG: var(--elements-color);
 
-    width: var(--sizeIcon);
-    height: var(--sizeIcon);
+    svg {
+        display: block;
+        width: var(--sizeIcon);
+        height: var(--sizeIcon);
+    }
 }
 
 .camera {
     --sizeIcon: calc(var(--width) / 15);
     --Color-SVG: var(--elements-color);
 
-    width: var(--sizeIcon);
-    height: var(--sizeIcon);
     margin-left: auto;
+
+    svg {
+        display: block;
+        width: var(--sizeIcon);
+        height: var(--sizeIcon);
+    }
 }
 
 .text {

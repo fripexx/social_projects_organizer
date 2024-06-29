@@ -13,6 +13,8 @@
 .dots {
     --size: calc(var(--width) / 25);
 
-    width: var(--size);
-    height: var(--size);
+    svg {
+        width: var(--size);
+        height: var(--size);
+    }
 }

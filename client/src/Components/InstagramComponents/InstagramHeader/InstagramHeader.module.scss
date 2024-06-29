@@ -13,8 +13,10 @@
 .button {
     --icon-size: calc(var(--width) / 25);
 
-    width: var(--icon-size);
-    height: var(--icon-size)
+    svg {
+        width: var(--icon-size);
+        height: var(--icon-size)
+    }
 }
 
 .centerField {

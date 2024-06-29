@@ -1,6 +1,8 @@
 import React, {FC, useState} from 'react';
 import classes from "./InstagramReelsPreview.module.scss";
 import {FileType} from "../../../store/types/FileType";
+import {VideoProgressType} from "../types/VideoProgressType";
+import {ProfileType} from "../types/ProfileType";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
 import InstagramFooter from "../InstagramFooter/InstagramFooter";
@@ -8,12 +10,10 @@ import ReelsHeader from "../ReelsHeader/ReelsHeader";
 import ReelsButtons from "../ReelsButtons/ReelsButtons";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
 import InstagramLikes from "../InstagramLikes/InstagramLikes";
-import {ProfileType} from "../types/ProfileType";
 import InstagramProgressBar from "../InstagramProgressBar/InstagramProgressBar";
-import {VideoProgressType} from "../types/VideoProgressType";
 
 interface InstagramReelsPreviewProps {
-    video: string | FileType,
+    video: FileType,
     profile: ProfileType,
     colabProfile?: ProfileType,
     description?: string,
@@ -34,7 +34,7 @@ const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, 
             <ReelsHeader className={classes.header}/>
 
             <InstagramFullscreenVideo
-                video={video}
+                video={video.path}
                 progressCallback={progressCallback}
             />
 

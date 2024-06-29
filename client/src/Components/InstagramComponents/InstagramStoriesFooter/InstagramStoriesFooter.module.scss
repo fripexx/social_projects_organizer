@@ -30,7 +30,18 @@
     gap: calc(var(--width) / 30);
 }
 
+.likeIcon {
+    svg {
+        display: block;
+        width: calc(var(--width) / 15);
+    }
+}
+
 .sendIcon {
     --Color-SVG: var(--elements-color);
 
+    svg {
+        display: block;
+        width: calc(var(--width) / 15);
+    }
 }

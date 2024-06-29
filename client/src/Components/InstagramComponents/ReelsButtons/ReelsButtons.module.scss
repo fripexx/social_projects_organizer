@@ -17,26 +17,36 @@
 }
 
 .likeIcon {
-    width: var(--icon-size);
-    height: var(--icon-size);
+    svg {
+        width: var(--icon-size);
+        height: var(--icon-size);
+    }
 }
 
 .commentIcon {
     --Color-SVG: var(--elements-color);
-    width: var(--icon-size);
-    height: var(--icon-size);
+
+    svg {
+        width: var(--icon-size);
+        height: var(--icon-size);
+    }
 }
 
 .sendIcon {
     --Color-SVG: var(--elements-color);
-    width: var(--icon-size);
-    height: var(--icon-size);
 
+    svg {
+        width: var(--icon-size);
+        height: var(--icon-size);
+    }
 }
-.dotsIcon{
+
+.dotsIcon {
     --size-button: calc(var(--width) / 25);
     --Color-SVG: var(--elements-color);
 
-    width: var(--size-button);
-    height: var(--size-button);
+    svg {
+        width: var(--size-button);
+        height: var(--size-button);
+    }
 }

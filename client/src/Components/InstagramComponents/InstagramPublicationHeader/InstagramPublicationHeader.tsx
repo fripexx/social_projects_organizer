@@ -2,6 +2,8 @@ import React, {FC} from 'react';
 import classes from "./InstagramPublicationHeader.module.scss";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
 import {ProfileType} from "../types/ProfileType";
+import {ReactSVG} from "react-svg";
+import dotsIcon from "../images/dots-icon.svg"
 
 interface InstagramPublicationHeaderProps {
     profile: ProfileType,
@@ -19,11 +21,7 @@ const InstagramPublicationHeader: FC<InstagramPublicationHeaderProps> = ({profil
                 location={location}
             />
 
-            <svg className={classes.dots} width="15" height="4" viewBox="0 0 15 4" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect width="3" height="3" y="0.5" rx="1.5" fill={"var(--Color-SVG, #000)"}/>
-                <rect width="3" height="3" x="6" y="0.5" rx="1.5" fill={"var(--Color-SVG, #000)"}/>
-                <rect width="3" height="3" x="12" y="0.5" rx="1.5" fill={"var(--Color-SVG, #000)"}/>
-            </svg>
+            <ReactSVG className={classes.dots} src={dotsIcon}/>
 
         </div>
     );

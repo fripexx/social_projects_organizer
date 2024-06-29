@@ -38,10 +38,15 @@
 }
 
 .dots {
-    width: calc(var(--width) / 27);
+    svg {
+        display: block;
+        width: calc(var(--width) / 27);
+    }
 }
 
 .cross {
-    width: calc(var(--width) / 17);
-
+    svg {
+        display: block;
+        width: calc(var(--width) / 17);
+    }
 }
