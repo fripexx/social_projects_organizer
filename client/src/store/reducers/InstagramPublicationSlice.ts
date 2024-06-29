@@ -3,19 +3,19 @@ import {ErrorResponseType} from "../types/ErrorResponseType";
 import {InstagramPostType} from "../types/InstagramPostType";
 import {addInstagramPost} from "../thunks/InstagramPostsThunks";
 
-interface InstagramPostsState {
+interface InstagramPublicationState {
     isLoading: boolean,
     posts: InstagramPostType[],
     error: ErrorResponseType | null;
 }
 
-const initialState: InstagramPostsState = {
+const initialState: InstagramPublicationState = {
     isLoading: false,
     posts: [],
     error: null
 }
 
-const InstagramPostsSlice = createSlice({
+const InstagramPublicationSlice = createSlice({
     name: "instagramPosts",
     initialState,
     reducers: {},
@@ -36,4 +36,4 @@ const InstagramPostsSlice = createSlice({
     }
 })
 
-export default InstagramPostsSlice.reducer;
+export default InstagramPublicationSlice.reducer;

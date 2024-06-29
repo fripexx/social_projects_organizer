@@ -19,7 +19,9 @@ import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
 import ProjectTeams from "../Pages/ProjectTeams/ProjectTeams";
 import ProjectMedia from "../Pages/ProjectMedia/ProjectMedia";
-import EditPostInstagram from "../Pages/EditPostInstagram/EditPostInstagram";
+import EditInstagramPublication from "../Pages/EditInstagramPages/EditInstagramPublication/EditInstagramPublication";
+import EditInstagramStories from "../Pages/EditInstagramPages/EditInstagramStories/EditInstagramStories";
+import EditInstagramReels from "../Pages/EditInstagramPages/EditInstagramReels/EditInstagramReels";
 
 export interface Route {
     key: string;
@@ -185,11 +187,31 @@ export const routes: Route[] = [
         showInProjectMenu: true,
     },
     {
-        key: "edit_post",
-        name: "Редагування посту",
-        path: "/project/:id/edit-post-instagram",
-        component: EditPostInstagram,
-        icon: notesIcon,
+        key: "edit_instagram_publication",
+        name: "Редагування Instagram публікації",
+        path: "/project/:id/edit-instagram-publication",
+        component: EditInstagramPublication,
+        icon: "",
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInProjectMenu: false,
+    },
+    {
+        key: "edit_instagram_stories",
+        name: "Редагування Instagram Stories",
+        path: "/project/:id/edit-instagram-stories",
+        component: EditInstagramStories,
+        icon: "",
+        requiresAuth: true,
+        redirectIfAuthenticated: false,
+        showInProjectMenu: false,
+    },
+    {
+        key: "edit_instagram_reels",
+        name: "Редагування Instagram Reels",
+        path: "/project/:id/edit-instagram-reels",
+        component: EditInstagramReels,
+        icon: "",
         requiresAuth: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: false,

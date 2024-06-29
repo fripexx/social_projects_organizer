@@ -3,7 +3,6 @@ import classes from "./InstagramStoriesPreview.module.scss";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import {FileType, PhotoType} from "../../../store/types/FileType";
 import {VideoProgressType} from "../types/VideoProgressType";
-import {ProfileType} from "../types/ProfileType";
 import InstagramStoriesHeader from "../Modules/InstagramStoriesHeader/InstagramStoriesHeader";
 import InstagramFullscreenVideo from "../Modules/InstagramFullscreenVideo/InstagramFullscreenVideo";
 import InstagramStoriesFooter from "../Modules/InstagramStoriesFooter/InstagramStoriesFooter";
