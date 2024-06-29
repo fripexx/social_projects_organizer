@@ -9,21 +9,19 @@ import InstagramPublicationButtons from "../InstagramPublicationButtons/Instagra
 import InstagramLikes from "../InstagramLikes/InstagramLikes";
 import InstagramComments from "../InstagramComments/InstagramComments";
 import classes from "./InstagramPublicationPreview.module.scss";
-import {ProfileType} from "../types/ProfileType";
+import {InstagramPreviewType} from "../types/InstagramPreviewType";
 
-interface InstagramPublicationPreviewProps {
+interface InstagramPublicationPreviewProps extends InstagramPreviewType{
     media: (FileType | PhotoType)[],
-    profile: ProfileType,
-    colabProfile?: ProfileType,
     location?: string,
 }
 
-const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location}) => {
+const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width}) => {
     const {name, picture} = profile
     const [paginationRef, setPaginationRef] = useState<RefObject<HTMLDivElement>>()
 
     return (
-        <PhoneWrapper>
+        <PhoneWrapper width={width}>
 
             <InstagramHeader name={name}/>
 

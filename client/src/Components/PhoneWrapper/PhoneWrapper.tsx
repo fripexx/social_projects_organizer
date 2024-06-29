@@ -1,16 +1,17 @@
-import React, {FC} from 'react';
+import React, {CSSProperties, FC} from 'react';
 import classes from "./PhoneWrapper.module.scss";
 import phoneBorder from "../../assets/images/phone-border.svg";
 
 interface IPhoneWrapperProps {
     children: React.ReactNode,
     isHeaderOverlay?: boolean,
-    themeMode?: 'light' | 'dark'
+    themeMode?: 'light' | 'dark',
+    width?: number
 }
 
-const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false, themeMode = 'light'}) => {
+const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false, themeMode = 'light', width = 320}) => {
     return (
-        <div className={classes.phone} data-header-overlay={isHeaderOverlay} data-theme={themeMode}>
+        <div className={classes.phone} data-header-overlay={isHeaderOverlay} data-theme={themeMode} style={{"--width": `${width}px`} as CSSProperties}>
 
             <img
                 decoding={"async"}
@@ -20,8 +21,7 @@ const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false,
                 alt={""}
             />
 
-            <div className={classes.header} >
-
+            <div className={classes.header}>
                 <svg width="307" height="23" viewBox="0 0 307 23" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path
                         d="M15.4956 5.44531C13.0503 5.44531 11.3081 7.11719 11.3081 9.40625V9.42188C11.3081 11.5625 12.8237 13.1406 14.9878 13.1406C16.5347 13.1406 17.5191 12.3516 17.9331 11.4609H18.0894C18.0894 11.5469 18.0816 11.6328 18.0816 11.7188C17.9956 13.875 17.2378 15.625 15.4487 15.625C14.4566 15.625 13.7612 15.1094 13.4644 14.3203L13.4409 14.2422H11.4566L11.4722 14.3281C11.8316 16.0547 13.3784 17.2812 15.4487 17.2812C18.2847 17.2812 19.9956 15.0312 19.9956 11.2344V11.2188C19.9956 7.15625 17.9019 5.44531 15.4956 5.44531ZM15.4878 11.5938C14.2066 11.5938 13.2769 10.6562 13.2769 9.35156V9.33594C13.2769 8.07812 14.2691 7.08594 15.5112 7.08594C16.7612 7.08594 17.7378 8.09375 17.7378 9.38281V9.39844C17.7378 10.6719 16.7612 11.5938 15.4878 11.5938ZM23.2225 9.69531C23.9412 9.69531 24.4647 9.14844 24.4647 8.46094C24.4647 7.76562 23.9412 7.22656 23.2225 7.22656C22.5116 7.22656 21.9803 7.76562 21.9803 8.46094C21.9803 9.14844 22.5116 9.69531 23.2225 9.69531ZM23.2225 15.4922C23.9412 15.4922 24.4647 14.9531 24.4647 14.2578C24.4647 13.5625 23.9412 13.0234 23.2225 13.0234C22.5116 13.0234 21.9803 13.5625 21.9803 14.2578C21.9803 14.9531 22.5116 15.4922 23.2225 15.4922ZM31.9181 17H33.8478V14.8359H35.3634V13.1719H33.8478V5.72656H30.9963C29.465 8.05469 27.8634 10.6484 26.4025 13.1875V14.8359H31.9181V17ZM28.2775 13.2188V13.1016C29.3713 11.1875 30.6759 9.10156 31.8322 7.33594H31.9494V13.2188H28.2775ZM39.7153 17H41.7309V5.72656H39.7231L36.7778 7.79688V9.69531L39.5825 7.71094H39.7153V17Z"
@@ -60,8 +60,6 @@ const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false,
                         fill={"var(--Color-SVG, #000)"}
                     />
                 </svg>
-
-
             </div>
 
             <div className={classes.content}>

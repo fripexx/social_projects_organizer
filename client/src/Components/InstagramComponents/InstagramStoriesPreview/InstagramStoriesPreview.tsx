@@ -7,14 +7,13 @@ import {ProfileType} from "../types/ProfileType";
 import InstagramStoriesHeader from "../InstagramStoriesHeader/InstagramStoriesHeader";
 import InstagramFullscreenVideo from "../InstagramFullscreenVideo/InstagramFullscreenVideo";
 import InstagramStoriesFooter from "../InstagramStoriesFooter/InstagramStoriesFooter";
+import {InstagramPreviewType} from "../types/InstagramPreviewType";
 
-interface InstagramStoriesPreviewProps {
+interface InstagramStoriesPreviewProps extends InstagramPreviewType{
     media: PhotoType | FileType,
-    profile: ProfileType,
-    colabProfile?: ProfileType,
 }
 
-const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profile, colabProfile}) => {
+const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profile, colabProfile, width}) => {
     const [progress, setProgress] = useState<number>(0);
 
     const progressCallback  = (data: VideoProgressType) => {
@@ -23,7 +22,7 @@ const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profil
     }
 
     return (
-        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"}>
+        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"} width={width}>
 
             <InstagramStoriesHeader
                 className={classes.header}

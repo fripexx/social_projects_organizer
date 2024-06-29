@@ -11,15 +11,14 @@ import ReelsButtons from "../ReelsButtons/ReelsButtons";
 import ProfileLabel from "../ProfileLabel/ProfileLabel";
 import InstagramLikes from "../InstagramLikes/InstagramLikes";
 import InstagramProgressBar from "../InstagramProgressBar/InstagramProgressBar";
+import {InstagramPreviewType} from "../types/InstagramPreviewType";
 
-interface InstagramReelsPreviewProps {
+interface InstagramReelsPreviewProps extends InstagramPreviewType{
     video: FileType,
-    profile: ProfileType,
-    colabProfile?: ProfileType,
     description?: string,
 }
 
-const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, colabProfile, description}) => {
+const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, colabProfile, description, width}) => {
     const {name, picture} = profile;
     const [progress, setProgress] = useState<number>(0);
 
@@ -29,7 +28,7 @@ const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, 
     }
 
     return (
-        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"}>
+        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"} width={width}>
 
             <ReelsHeader className={classes.header}/>
 
