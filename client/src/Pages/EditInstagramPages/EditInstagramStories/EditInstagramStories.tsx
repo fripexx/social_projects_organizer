@@ -43,23 +43,7 @@ const EditInstagramStories:FC = () => {
                                 name: "",
                                 picture: ""
                             }}
-                            media={
-                                {
-                                    "id": "666f0093467b86022dfea878",
-                                    "type": "image",
-                                    "extension": "png",
-                                    "mimetype": "image/png",
-                                    "dateCreated": new Date(),
-                                    "path": "http://localhost:5000/uploads/public/IMG_2851.mov",
-                                    "author": "65d4efadc63707946f3ae65b",
-                                    "name": "47afe88b-75d1-4821-a4ca-a1a52910cb8e.png",
-                                    "cropped": {
-                                        "300": "http://localhost:5000/uploads/private/media_library/660a8a7eb570836b2bffdc68/2024/6/47afe88b-75d1-4821-a4ca-a1a52910cb8e-300x300.png",
-                                        "600": "http://localhost:5000/uploads/private/media_library/660a8a7eb570836b2bffdc68/2024/6/47afe88b-75d1-4821-a4ca-a1a52910cb8e-600x600.png",
-                                        "1080": "http://localhost:5000/uploads/private/media_library/660a8a7eb570836b2bffdc68/2024/6/47afe88b-75d1-4821-a4ca-a1a52910cb8e-1080x1080.png"
-                                    },
-                                }
-                            }
+                            media={undefined}
                             width={300}
                         />
 

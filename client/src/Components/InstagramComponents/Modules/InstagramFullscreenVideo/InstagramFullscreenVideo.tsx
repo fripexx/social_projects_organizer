@@ -1,12 +1,14 @@
 import React, {FC, useEffect, useRef} from 'react';
 import classes from "./InstagramFullscreenVideo.module.scss";
-import {FileType} from "../../../../store/types/FileType";
 import classNames from "classnames";
+import {FileType} from "../../../../store/types/FileType";
 import {VideoProgressType} from "../../types/VideoProgressType";
+import notFoundVideo from "../../images/not-found-video.svg"
+import {ReactSVG} from "react-svg";
 
 interface ReelsVideoProps {
     className?: string;
-    video: string | FileType;
+    video: string | FileType | null;
     progressCallback?: (data: VideoProgressType) => void
 }
 
@@ -36,15 +38,26 @@ const InstagramFullscreenVideo: FC<ReelsVideoProps> = ({video, className, progre
 
     return (
         <div className={classNames(classes.container, className)}>
-            <video
-                ref={videoRef}
-                className={classes.video}
-                src={typeof video === "string" ? video : ""}
-                autoPlay={false}
-                loop={true}
-                muted={false}
-                onClick={onClick}
-            />
+
+            {video &&
+                <video
+                    ref={videoRef}
+                    className={classes.video}
+                    src={typeof video === "string" ? video : ""}
+                    autoPlay={false}
+                    loop={true}
+                    muted={false}
+                    onClick={onClick}
+                />
+            }
+
+            {video === null &&
+                <ReactSVG
+                    className={classes.notFoundVideo}
+                    src={notFoundVideo}
+                />
+            }
+
         </div>
     );
 };

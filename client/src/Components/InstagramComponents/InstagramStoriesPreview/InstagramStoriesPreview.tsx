@@ -9,7 +9,7 @@ import InstagramStoriesFooter from "../Modules/InstagramStoriesFooter/InstagramS
 import {InstagramPreviewType} from "../types/InstagramPreviewType";
 
 interface InstagramStoriesPreviewProps extends InstagramPreviewType{
-    media: PhotoType | FileType,
+    media?: PhotoType | FileType,
 }
 
 const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profile, colabProfile, width}) => {
@@ -33,7 +33,7 @@ const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profil
             <div className={classes.content}>
                 <InstagramFullscreenVideo
                     className={classes.video}
-                    video={media.path}
+                    video={media ? media.path : null}
                     progressCallback={progressCallback}
                 />
             </div>

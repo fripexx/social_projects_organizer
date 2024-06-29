@@ -38,16 +38,7 @@ const EditInstagramReels:FC = () => {
                     <Content className={classes.columns}>
 
                         <InstagramReelsPreview
-                            video={{
-                                "id": "666f0093467b86022dfea878",
-                                "type": "image",
-                                "extension": "png",
-                                "mimetype": "image/png",
-                                "dateCreated": new Date(),
-                                "path": "http://localhost:5000/uploads/public/IMG_2851.mov",
-                                "author": "65d4efadc63707946f3ae65b",
-                                "name": "47afe88b-75d1-4821-a4ca-a1a52910cb8e.png",
-                            }}
+                            video={undefined}
                             profile={{
                                 name: "shirshonkova_a",
                                 picture: "http://localhost:5000/uploads/public/project_logos/2024/6/11909a4d-b652-471b-a9b9-52bbba5c461a-300x300.png"

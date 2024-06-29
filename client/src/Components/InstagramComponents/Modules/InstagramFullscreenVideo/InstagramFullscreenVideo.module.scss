@@ -9,3 +9,15 @@
     object-fit: cover;
     cursor: pointer;
 }
+
+.notFoundVideo {
+    --Background-SVG: #333;
+    --Color-SVG: var(--elements-color);
+    width: 100%;
+    height: 100%;
+
+    * {
+        width: 100%;
+        height: 100%;
+    }
+}
