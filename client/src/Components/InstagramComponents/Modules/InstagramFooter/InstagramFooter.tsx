@@ -1,6 +1,6 @@
 import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramFooter.module.scss";
-import ProfilePicture from "../ProfilePicture/ProfilePicture";
+import ProfilePicture from "../Modules/ProfilePicture/ProfilePicture";
 import classNames from "classnames";
 import {ReactSVG} from "react-svg";
 import homeIcon from "../images/home-icon.svg";

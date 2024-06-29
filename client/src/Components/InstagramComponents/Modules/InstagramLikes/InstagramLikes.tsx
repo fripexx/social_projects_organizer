@@ -1,7 +1,7 @@
 import React, {CSSProperties, FC} from 'react';
 import classes from "./InstagramLikes.module.scss";
 import classNames from "classnames";
-import ProfilePicture from "../ProfilePicture/ProfilePicture";
+import ProfilePicture from "../Modules/ProfilePicture/ProfilePicture";
 import firstIcon from "./Images/first-person.png";
 import secondIcon from "./Images/second-person.png";
 import thirdIcon from "./Images/third-person.png";

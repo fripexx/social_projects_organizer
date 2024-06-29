@@ -2,8 +2,8 @@ import React, {CSSProperties, FC} from 'react';
 import classes from "./ReelsHeader.module.scss";
 import classNames from "classnames";
 import {ReactSVG} from "react-svg";
-import backIcon from "../images/back-icon.svg";
-import cameraIcon from "../images/camera-icon.svg";
+import backIcon from "../../images/back-icon.svg";
+import cameraIcon from "../../images/camera-icon.svg";
 
 interface ReelsHeaderProps {
     className?: string;

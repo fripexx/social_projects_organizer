@@ -2,10 +2,10 @@ import React, {CSSProperties, FC} from 'react';
 import classes from "./ReelsButtons.module.scss";
 import classNames from "classnames";
 import {ReactSVG} from "react-svg";
-import heartIcon from "../images/heart-icon.svg";
-import commentIcon from "../images/comment-icon.svg";
-import sendIcon from "../images/send-icon.svg";
-import dotsIcon from "../images/dots-icon.svg"
+import heartIcon from "../../images/heart-icon.svg";
+import commentIcon from "../../images/comment-icon.svg";
+import sendIcon from "../../images/send-icon.svg";
+import dotsIcon from "../../images/dots-icon.svg"
 
 interface ReelsHeaderProps {
     className?: string;
