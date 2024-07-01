@@ -184,6 +184,21 @@ class ProjectService {
 
         return new ProjectDto(findProject);
     }
+    async leaveProject(projectId, leaveUserId, user) {
+        if(leaveUserId !== user.id) throw ApiError.BadRequest('Ідентифікатор юзера повинен співпадати з ідентифікатором юзера який надсилає запит.');
+
+        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': leaveUserId });
+
+        if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+        if(findProject.administrator.toString() === leaveUserId) throw ApiError.BadRequest('Помилка: Адміністратор не може покинути проєкт.');
+
+        findProject.team = findProject.team.filter(teamMember => teamMember.user.toString() !== leaveUserId);
+
+        await findProject.save();
+
+        return new ProjectDto(findProject);
+    }
     async uploadMedia(files, projectId, user) {
         const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
 

@@ -5,8 +5,7 @@ import {ErrorResponseType} from "../types/ErrorResponseType";
 import {isAxiosError} from "axios";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
-import {FileType, PhotoType} from "../types/FileType";
-import {GetMediaResponseType} from "../types/GetMediaResponseType";
+import {TeamMemberType} from "../types/TeamMemberType";
 
 export const getProject = createAsyncThunk(
     'project/getProject',
@@ -237,8 +236,36 @@ export const changeRoleUser = createAsyncThunk(
     'project/changeRoleUser',
     async (data: changeRoleType, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<Response>(
+            const response = await instanceServer.patch<TeamMemberType>(
                 `/change-role-user`,
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
+interface leaveProjectType {
+    projectId: string;
+    leaveUserId: string;
+}
+export const leaveProject = createAsyncThunk(
+    'project/leaveProject',
+    async (data: leaveProjectType, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<TeamMemberType>(
+                `/leave-project`,
                 data
             );
             return response.data;
@@ -265,7 +292,7 @@ export const removeUserFromTeam = createAsyncThunk(
     'project/removeUserFromTeam',
     async (data: removeUserFromTeamType, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<string[]>(
+            const response = await instanceServer.patch<TeamMemberType[]>(
                 `/remove-user-from-team`,
                 data
             );
@@ -294,7 +321,7 @@ export const addUserInTeam = createAsyncThunk(
     'project/addUserInTeam',
     async (data: addUserInTeamType, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<string[]>(
+            const response = await instanceServer.patch<TeamMemberType[]>(
                 `/add-user-in-team`,
                 data
             );

@@ -114,6 +114,17 @@ class ProjectController {
             next(e);
         }
     }
+    async leaveProject(req, res, next) {
+        try{
+            const user = await req.user;
+            const {projectId, leaveUserId} = req.body;
+            const project = await ProjectService.leaveProject(projectId, leaveUserId, user);
+
+            return res.json(project.team)
+        } catch (e) {
+            next(e);
+        }
+    }
     async uploadMedia(req, res, next) {
         try {
             const {projectId} = req.body;

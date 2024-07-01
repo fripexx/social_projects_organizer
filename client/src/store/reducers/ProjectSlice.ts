@@ -6,7 +6,13 @@ import {
     getProject,
     getNotesProject,
     addNoteInProject,
-    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam, changeRoleUser,
+    deleteNoteInProject,
+    changeNoteInProject,
+    getProjectTeam,
+    removeUserFromTeam,
+    addUserInTeam,
+    changeRoleUser,
+    leaveProject,
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
 import {TeamMemberType} from "../types/TeamMemberType";
@@ -95,7 +101,7 @@ const projectSlice = createSlice({
         [deleteNoteInProject.pending.type]: (state) => {},
         [deleteNoteInProject.fulfilled.type]: (state, action: PayloadAction<NoteType>) => {
             state.error = null;
-            state.notes = [...state.notes].filter(note => note.id != action.payload.id);
+            state.notes = [...state.notes].filter(note => note.id !== action.payload.id);
         },
         [deleteNoteInProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
@@ -115,6 +121,12 @@ const projectSlice = createSlice({
             state.error = action.payload;
             state.notes = [];
         },
+
+        /*
+         * Project Team
+         *
+         *
+         */
         [getProjectTeam.pending.type]: (state) => {},
         [getProjectTeam.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
             state.error = null;
@@ -126,29 +138,38 @@ const projectSlice = createSlice({
             state.team = [];
         },
         [removeUserFromTeam.pending.type]: (state) => {},
-        [removeUserFromTeam.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+        [removeUserFromTeam.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
             state.error = null;
-            if(state.project) state.project.team = action.payload
+            if (state.project) state.project.team = action.payload;
         },
         [removeUserFromTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
         [addUserInTeam.pending.type]: (state) => {},
-        [addUserInTeam.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+        [addUserInTeam.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
             state.error = null;
-            if(state.project) state.project.team = action.payload
+            if(state.project) state.project.team = [...action.payload]
         },
         [addUserInTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
         [changeRoleUser.pending.type]: (state) => {},
-        [changeRoleUser.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+        [changeRoleUser.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
             state.error = null;
             if(state.project) state.project.team = action.payload
         },
         [changeRoleUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        [leaveProject.pending.type]: (state) => {},
+        [leaveProject.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
+            state.error = null;
+            if(state.project) state.project.team = action.payload
+        },
+        [leaveProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         }

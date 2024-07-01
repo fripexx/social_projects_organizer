@@ -63,6 +63,7 @@ const setupRouter = ({io}) => {
     router.patch('/remove-user-from-team', [authMiddleware], ProjectController.removeUserFromTeam);
     router.patch('/add-user-in-team', [authMiddleware], ProjectController.addUserInTeam);
     router.patch('/change-role-user', [authMiddleware], ProjectController.changeRoleUser);
+    router.patch('/leave-project', [authMiddleware], ProjectController.leaveProject);
 
     /**
      * Project notes routes

@@ -1,8 +1,18 @@
 import React, {FC} from 'react';
 import classes from "./TeamList.module.scss";
-import TeamUser, {ChangeAdminCallbackType, ChangeRoleCallbackType, DeleteCallbackType} from "../TeamUser/TeamUser";
+import TeamUser, {
+    ChangeAdminCallbackType,
+    ChangeRoleCallbackType,
+    DeleteCallbackType,
+    LeaveCallbackType
+} from "../TeamUser/TeamUser";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {changeProjectAdministrator, changeRoleUser, removeUserFromTeam} from "../../store/thunks/ProjectThunks";
+import {
+    changeProjectAdministrator,
+    changeRoleUser,
+    leaveProject,
+    removeUserFromTeam
+} from "../../store/thunks/ProjectThunks";
 import {TeamMemberType} from "../../store/types/TeamMemberType";
 
 interface TeamListProps extends React.HTMLProps<HTMLDivElement> {
@@ -20,9 +30,13 @@ const TeamList:FC<TeamListProps> = ({team, ...rest}) => {
     const changeAdminCallback: ChangeAdminCallbackType = (id: string): void => {
         if(project) dispatch(changeProjectAdministrator({projectId: project.id, newAdministrator: id}))
     }
-    const changeRoleCallback:ChangeRoleCallbackType = (id: string, role: string):void => {
+    const changeRoleCallback:ChangeRoleCallbackType = (id: string, role: string): void => {
         if(project) dispatch(changeRoleUser({ projectId: project.id, teamMember: id, role}))
     }
+    const leaveCallback:LeaveCallbackType = (id: string): void => {
+        if(project) dispatch(leaveProject({ projectId: project.id, leaveUserId: id}))
+    }
+
     return (
         <div className={classes.container} {...rest}>
 
@@ -32,12 +46,14 @@ const TeamList:FC<TeamListProps> = ({team, ...rest}) => {
                         <TeamUser
                             key={teamUser.user.id}
                             user={teamUser.user}
+                            currentUser={user}
                             role={teamUser.role}
                             isAdmin={project.administrator === teamUser.user.id}
                             showButtons={project.administrator === user.id}
                             deleteCallback={deleteCallback}
                             changeAdminCallback={changeAdminCallback}
                             changeRoleCallback={changeRoleCallback}
+                            leaveCallback={leaveCallback}
                         />
                     )
                 })
