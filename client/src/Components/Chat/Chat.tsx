@@ -111,8 +111,6 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) =>
 
         newSocket.on('setUnreadMessages', (unreadCount: number) => {
             if(unreadCallback) unreadCallback(unreadCount);
-            newSocket.emit('getUnreadMessages', {chat, model});
-
         });
 
         newSocket.on('loadMessages', (messages: MessageType[]) => {
