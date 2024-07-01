@@ -1,11 +1,6 @@
 const {Schema, model} = require('mongoose');
 
 const UserSchema = new Schema({
-    typeUser: {
-        type: String,
-        enum: ['customer', 'smm_manager', 'targetologist', 'designer'],
-        required: true
-    },
     email: {type: String, unique: true, required: true},
     password: {type: String, required: true},
     name: {type: String, required: true},

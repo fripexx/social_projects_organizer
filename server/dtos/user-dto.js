@@ -5,7 +5,6 @@ const { ObjectId } = mongoose.Types;
 module.exports = class UserDto {
     constructor(model, type = 'full') {
         this.id = model._id;
-        this.typeUser = model.typeUser;
         this.name = model.name;
         this.surname = model.surname;
         this.email = model.email;

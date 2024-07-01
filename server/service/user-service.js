@@ -9,7 +9,7 @@ const UserDto = require("../dtos/user-dto")
 const ApiError = require('../exceptions/api-error')
 
 class UserService {
-    async registration(typeUser, email, password, name, surname, phone) {
+    async registration(email, password, name, surname, phone) {
         const candidate = await UserModel.findOne({email, phone});
 
         if (candidate) throw ApiError.BadRequest(`Користувач з таким email ${email} або номером телефону ${phone} вже існує`)
@@ -17,7 +17,6 @@ class UserService {
         const hashPassword = await bcrypt.hash(password, 3)
         const activationLink = uuid.v4()
         const createdUser = await UserModel.create({
-            typeUser,
             email,
             password: hashPassword,
             name,

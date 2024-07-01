@@ -38,7 +38,6 @@ const Registration: FC = () => {
         repeatPassword: false,
     })
     const [formState, setFormState] = useState<RegistrationState>({
-        typeUser: 'smm_manager',
         name: "",
         surname: "",
         email: "",
@@ -109,45 +108,6 @@ const Registration: FC = () => {
 
             {!shouldRedirectToLoginPage &&
                 <>
-                    <div className={classes.radios}>
-
-                        <Title level={3} className={classes.radios_title}>
-                            Тип аккаунту
-                        </Title>
-
-                        <Radio
-                            label={"SMM-менеджер"}
-                            name={"typeUser"}
-                            value={"smm_manager"}
-                            checked={formState.typeUser === "smm_manager"}
-                            onChange={onChangeInput}
-                        />
-
-                        <Radio
-                            label={"Замовник"}
-                            name={"typeUser"}
-                            value={"customer"}
-                            checked={formState.typeUser === "customer"}
-                            onChange={onChangeInput}
-                        />
-
-                        <Radio
-                            label={"Таргетолог"}
-                            name={"typeUser"}
-                            value={"targetologist"}
-                            checked={formState.typeUser === "targetologist"}
-                            onChange={onChangeInput}
-                        />
-
-                        <Radio
-                            label={"Дизайнер"}
-                            name={"typeUser"}
-                            value={"designer"}
-                            checked={formState.typeUser === "designer"}
-                            onChange={onChangeInput}
-                        />
-
-                    </div>
 
                     <Input
                         type={"name"}

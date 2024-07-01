@@ -27,7 +27,7 @@ interface TeamUserProps {
 }
 
 const TeamUser:FC<TeamUserProps> = ({user, isAdmin, role, showButtons, deleteCallback, changeAdminCallback, changeRoleCallback}) => {
-    const {id, typeUser,  name, surname, email, phone, telegram, photo} = user;
+    const {id,  name, surname, email, phone, telegram, photo} = user;
     const [deleteModal, setDeleteModal] = useState<boolean>(false)
     const [changeAdmin, setChangeAdmin] = useState<boolean>(false)
     const [roleModal, setRoleModal] = useState<boolean>(false)
@@ -90,7 +90,7 @@ const TeamUser:FC<TeamUserProps> = ({user, isAdmin, role, showButtons, deleteCal
 
             <div className={classes.userInfo}>
 
-                <span className={classes.typeUser}>
+                <span className={classes.roleUser}>
                     {roleLabel} {isAdmin ? "(Адміністратор)" : ""}
                 </span>
 
