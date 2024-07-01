@@ -1,35 +1,38 @@
-import React, {FC, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import classes from "./TeamUser.module.scss";
 import {BasicUserInfo} from "../../store/types/UserType";
 import deleteIcon from "../../assets/images/dump_icon.svg"
 import editIcon from "../../assets/images/edit-icon.svg"
+import changeRoleIcon from "../../assets/images/icon-change-user.svg"
 import Logo from "../Logo/Logo";
 import Button from "../../Elements/Button/Button";
 import Backdrop from "../Backdrop/Backdrop";
 import ModalConfirmAction from "../Modals/ModalConfirmAction/ModalConfirmAction";
+import {RoleType} from "../../store/types/RoleType";
+import {rolesList} from "../../constants/rolesList";
+import ModalSelect from "../Modals/ModalSelect/ModalSelect";
 
 export type DeleteCallbackType = (id: string) => void;
 export type ChangeAdminCallbackType = (id: string) => void;
+export type ChangeRoleCallbackType = (id: string, role: string) => void;
 
 interface TeamUserProps {
     user: BasicUserInfo;
+    role: RoleType;
     isAdmin?: boolean;
-    showDelete?: boolean;
+    showButtons?: boolean;
     deleteCallback: DeleteCallbackType;
     changeAdminCallback: ChangeAdminCallbackType;
+    changeRoleCallback: ChangeRoleCallbackType;
 }
 
-export const typeUserName = {
-    "customer": "Замовник",
-    "smm_manager": "SMM-Менеджер",
-    "targetologist": "Таргетолог",
-    "designer": "Дизайнер",
-}
-
-const TeamUser:FC<TeamUserProps> = ({user, isAdmin, showDelete, deleteCallback, changeAdminCallback}) => {
+const TeamUser:FC<TeamUserProps> = ({user, isAdmin, role, showButtons, deleteCallback, changeAdminCallback, changeRoleCallback}) => {
     const {id, typeUser,  name, surname, email, phone, telegram, photo} = user;
     const [deleteModal, setDeleteModal] = useState<boolean>(false)
     const [changeAdmin, setChangeAdmin] = useState<boolean>(false)
+    const [roleModal, setRoleModal] = useState<boolean>(false)
+    const [changeRole, setChangeRole] = useState<string>(role)
+    const [roleLabel, setRoleLabel] = useState<string>("")
 
     /* Delete Modal Func */
     const showDeleteModal = (e: React.MouseEvent<HTMLButtonElement>): void => {
@@ -60,13 +63,35 @@ const TeamUser:FC<TeamUserProps> = ({user, isAdmin, showDelete, deleteCallback, 
         setChangeAdmin(false)
         changeAdminCallback(id);
     }
+
+    /* Change Role Func */
+    const showChangeRole = (e: React.MouseEvent<HTMLButtonElement>): void => {
+        e.preventDefault();
+        setRoleModal(true);
+    }
+    const hideChangeRoleCallback = (): void => {
+        setRoleModal(false)
+    }
+    const changeRoleHandler = (value: string): void => {
+        setChangeRole(value)
+    }
+    const confirmChangeRole = (): void => {
+        setRoleModal(false)
+        changeRoleCallback(id, changeRole);
+    }
+
+    useEffect(() => {
+        const currentRole = rolesList.find(item => item.value === role);
+        if(currentRole) setRoleLabel(currentRole.label)
+    }, [role]);
+
     return (
         <div className={classes.container}>
 
             <div className={classes.userInfo}>
 
                 <span className={classes.typeUser}>
-                    {typeUserName[typeUser]} {isAdmin ? "(Адміністратор)" : ""}
+                    {roleLabel} {isAdmin ? "(Адміністратор)" : ""}
                 </span>
 
                 <Logo photo={photo} colorBorder={"var(--Color-Dark)"}/>
@@ -95,45 +120,78 @@ const TeamUser:FC<TeamUserProps> = ({user, isAdmin, showDelete, deleteCallback, 
 
             <div className={classes.buttons}>
 
-                {(!isAdmin && showDelete) &&
+                {showButtons &&
                     <>
                         <Button
-                            text={"Видалити"}
-                            onClick={showDeleteModal}
-                            icon={deleteIcon}
+                            text={"Змінити роль юзера"}
+                            onClick={showChangeRole}
+                            icon={changeRoleIcon}
                             buttonColor={"var(--Color-Grey)"}
-                            iconColor={"var(--Color-Red)"}
+                            iconColor={"var(--Color-Yellow)"}
                             textColor={"var(--Color-Dark)"}
                         />
-                        <Button
-                            text={"Зробити адміністратором"}
-                            onClick={showChangeAdmin}
-                            icon={editIcon}
-                            buttonColor={"var(--Color-Grey)"}
-                            iconColor={"var(--Color-Blue)"}
-                            textColor={"var(--Color-Dark)"}
-                        />
+
+                        {!isAdmin &&
+                            <>
+                                <Button
+                                    text={"Видалити"}
+                                    onClick={showDeleteModal}
+                                    icon={deleteIcon}
+                                    buttonColor={"var(--Color-Grey)"}
+                                    iconColor={"var(--Color-Red)"}
+                                    textColor={"var(--Color-Dark)"}
+                                />
+
+                                <Button
+                                    text={"Зробити адміністратором"}
+                                    onClick={showChangeAdmin}
+                                    icon={editIcon}
+                                    buttonColor={"var(--Color-Grey)"}
+                                    iconColor={"var(--Color-Blue)"}
+                                    textColor={"var(--Color-Dark)"}
+                                />
+                            </>
+                        }
                     </>
                 }
 
             </div>
 
-            <Backdrop isOpen={deleteModal}>
-                <ModalConfirmAction
-                    text={"Ви впевнені що хочете видалити юзера з команди?"}
-                    onCancel={closeDeleteModal}
-                    onConfirm={confirmDelete}
-                />
-            </Backdrop>
+            {showButtons &&
+                <>
+                    <Backdrop isOpen={roleModal}>
+                        <ModalSelect
+                            text={"Ви впевнені що хочете змінити роль цьому юзеру?"}
+                            options={rolesList}
+                            value={changeRole}
+                            changeCallback={changeRoleHandler}
+                            hideCallback={hideChangeRoleCallback}
+                            confirmCallback={confirmChangeRole}
+                            confirmText={"Змінити"}
+                        />
+                    </Backdrop>
 
-            <Backdrop isOpen={changeAdmin}>
-                <ModalConfirmAction
-                    text={"Ви впевнені що хочете передати права адміністратора цьому юзеру?"}
-                    onCancel={closeChangeAdmin}
-                    onConfirm={confirmChangeAdmin}
-                />
-            </Backdrop>
+                    {!isAdmin &&
+                        <>
+                            <Backdrop isOpen={deleteModal}>
+                                <ModalConfirmAction
+                                    text={"Ви впевнені що хочете видалити юзера з команди?"}
+                                    onCancel={closeDeleteModal}
+                                    onConfirm={confirmDelete}
+                                />
+                            </Backdrop>
 
+                            <Backdrop isOpen={changeAdmin}>
+                                <ModalConfirmAction
+                                    text={"Ви впевнені що хочете передати права адміністратора цьому юзеру?"}
+                                    onCancel={closeChangeAdmin}
+                                    onConfirm={confirmChangeAdmin}
+                                />
+                            </Backdrop>
+                        </>
+                    }
+                </>
+            }
         </div>
     );
 };

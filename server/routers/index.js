@@ -62,6 +62,7 @@ const setupRouter = ({io}) => {
     router.get('/confirm-new-administrator/:key', ProjectController.confirmNewAdministrator);
     router.patch('/remove-user-from-team', [authMiddleware], ProjectController.removeUserFromTeam);
     router.patch('/add-user-in-team', [authMiddleware], ProjectController.addUserInTeam);
+    router.patch('/change-role-user', [authMiddleware], ProjectController.changeRoleUser);
 
     /**
      * Project notes routes

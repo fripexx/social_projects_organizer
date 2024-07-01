@@ -17,7 +17,8 @@ const SidebarProject: FC = () => {
     const projectRoutes = routes.filter(route => route.showInProjectMenu);
     const project = useAppSelector(state => state.ProjectReducer.project)
     const showGeneralChat = useAppSelector(state => state.GeneralChatSlice.showGeneralChat)
-    const team = useAppSelector(state => state.ProjectReducer.team);
+    const team = useAppSelector(state => state.ProjectReducer.team)
+    const teamUser = team.map(teamMember => teamMember.user);
     const user = useAppSelector(state => state.UserReducer.user)
     const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 900);
     const countUnreadMessages = useAppSelector(state => state.GeneralChatSlice.countUnreadMessages)
@@ -68,7 +69,7 @@ const SidebarProject: FC = () => {
                     <Chat
                         chat={project.id}
                         model={'Project'}
-                        team={team}
+                        team={teamUser}
                         currentUser={user}
                         unreadCallback={setUnreadCallback}
                     />

@@ -228,6 +228,35 @@ export const changeProjectAdministrator = createAsyncThunk(
     }
 );
 
+interface changeRoleType {
+    projectId: string;
+    teamMember: string;
+    role: string;
+}
+export const changeRoleUser = createAsyncThunk(
+    'project/changeRoleUser',
+    async (data: changeRoleType, thunkAPI) => {
+        try {
+            const response = await instanceServer.patch<Response>(
+                `/change-role-user`,
+                data
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);
+
 interface removeUserFromTeamType {
     projectId: string;
     removeUserId: string;
@@ -259,6 +288,7 @@ export const removeUserFromTeam = createAsyncThunk(
 interface addUserInTeamType {
     projectId: string;
     email: string;
+    role: string;
 }
 export const addUserInTeam = createAsyncThunk(
     'project/addUserInTeam',

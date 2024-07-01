@@ -267,13 +267,18 @@ export const changeNoteUser = createAsyncThunk(
     }
 );
 
+interface addProjectRequestType {
+    name: string;
+    role: string;
+}
+
 export const addProject = createAsyncThunk(
     'user/addProject',
-    async (name: string, thunkAPI) => {
+    async (data: addProjectRequestType, thunkAPI) => {
         try {
             const response = await instanceServer.post<ProjectType>(
                 '/add-project',
-                {name}
+                data
             );
             return response.data;
         } catch (e) {

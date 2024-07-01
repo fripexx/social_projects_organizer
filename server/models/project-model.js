@@ -6,7 +6,10 @@ const ProjectSchema = new Schema({
     logo: {type: Schema.Types.ObjectId, ref: "File", default: null},
     administrator: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     customer: {type: Schema.Types.ObjectId, ref: 'User', default: null},
-    team: {type: [{ type: Schema.Types.ObjectId, ref: 'User' }], required: true},
+    team: [{
+        user: { type: Schema.Types.ObjectId, ref: 'User' },
+        role: { type: String, enum:['customer', 'smm_manager', 'target_manager', 'designer'], required: true }
+    }],
     color: {type: String, default: null},
     instagram: {type: String, default: null},
     instagramTokenAPI: {type: String, default: null},

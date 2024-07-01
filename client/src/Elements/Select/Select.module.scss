@@ -1,0 +1,116 @@
+.container {
+    position: relative;
+    width: 100%;
+
+    &[data-active="true"] {
+        .options {
+            height: calc(40px * 4);
+        }
+
+        .arrow {
+            transform: rotate(0deg);
+        }
+    }
+
+    &[data-dropdown-type="absolute"] {
+        .options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 5px;
+        }
+    }
+
+    &[data-dropdown-type="relative"] {
+        .options {
+            position: relative;
+            transform: translateY(5px);
+        }
+    }
+}
+
+.label {
+    display: block;
+    color: var(--Color-Dark, #212121);
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 1;
+    margin-bottom: 10px;
+}
+
+@mixin option {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: 0.2s all ease;
+    user-select: none;
+
+    &:hover {
+        background: var(--Color-Dark);
+        color: var(--Color-White);
+
+        .arrow {
+            --ColorSVG: var(--Color-White);
+        }
+    }
+}
+
+.current {
+    @include option;
+    background: var(--Color-Light-Grey-Blue);
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+}
+
+.currentLabel {
+    display: block;
+    text-align: center;
+    width: 100%;
+    transform: translateX(13px);
+}
+
+.arrow {
+    --ColorSVG: var(--Color-Dark);
+
+    transform: rotate(180deg);
+    width: 13px;
+    height: auto;
+    transition: 0.2s all ease;
+}
+
+.options {
+    background: var(--Color-Grey);
+    border-radius: 10px;
+    width: 100%;
+    height: 0px;
+    transition: 0.2s all ease;
+    overflow: hidden;
+}
+
+.list {
+    height: 100%;
+    overflow-y: scroll;
+}
+
+.option {
+    @include option;
+    line-height: 20px;
+
+    &[data-current="true"] {
+        background: var(--Color-Light-Grey-Blue);
+        color: var(--Color-Dark);
+    }
+
+    &:last-child {
+        border-bottom: none;
+    }
+}

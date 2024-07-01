@@ -11,8 +11,11 @@ import Button from "../../Elements/Button/Button";
 import Content from "../../Components/Content/Content";
 import ProjectCard from "../../Components/ProjectCard/ProjectCard";
 import Backdrop from "../../Components/Backdrop/Backdrop";
-import ModalInputText from "../../Components/Modals/ModalInputText/ModalInputText";
 import SidebarUser from "../../Components/SidebarUser/SidebarUser";
+import Modal from "../../Components/Modals/Modal/Modal";
+import Select from "../../Elements/Select/Select";
+import Input from "../../Elements/Input/Input";
+import {rolesList} from "../../constants/rolesList";
 
 const UserProjectsPage:FC = () => {
     const dispatch = useAppDispatch();
@@ -20,6 +23,7 @@ const UserProjectsPage:FC = () => {
 
     const [activeModal, setActiveModal] = useState<boolean>(false);
     const [addProjectName, setAddProjectName] = useState<string>("")
+    const [addProjectUserRole, setAddProjectUserRole] = useState<string>(rolesList[0] ? rolesList[0].value : "")
 
     useEffect(() => {
         dispatch(getProjects());
@@ -37,16 +41,19 @@ const UserProjectsPage:FC = () => {
     const addProjectHandler = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         if(addProjectName){
-            dispatch(addProject(addProjectName));
+            dispatch(addProject({name: addProjectName, role: addProjectUserRole}));
             setActiveModal(false);
             setAddProjectName("");
         }
-
     }
-    const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
         e.preventDefault();
         setAddProjectName(e.currentTarget.value);
     }
+    const handleChangeRole = (value: string) => {
+        setAddProjectUserRole(value)
+    }
+
     return (
         <Page>
 
@@ -81,13 +88,41 @@ const UserProjectsPage:FC = () => {
             </ContentPage>
 
             <Backdrop isOpen={activeModal}>
-                <ModalInputText
-                    text={addProjectName}
-                    placeholderText={"Введіть назву проєкту"}
-                    onChangeText={onChangeName}
-                    onCancel={hideModal}
-                    onConfirm={addProjectHandler}
-                />
+                <Modal className={classes.modal}>
+
+                    <Select
+                        value={addProjectUserRole}
+                        options={rolesList}
+                        onChange={handleChangeRole}
+                        label={"Оберіть вашу роль в проєкті"}
+                        dropdownType={"relative"}
+                    />
+
+                    <Input
+                        type={"text"}
+                        label={"Введіть назву проєкту"}
+                        placeholder={"..."}
+                        value={addProjectName}
+                        onChange={handleChangeName}
+                    />
+
+                    <footer className={classes.footer}>
+
+                        <Button
+                            text={"Закрити"}
+                            onClick={hideModal}
+                            buttonColor={"var(--Color-Light-Grey-Blue)"}
+                            textColor={"var(--Color-Dark)"}
+                        />
+
+                        <Button
+                            text={"Додати"}
+                            onClick={addProjectHandler}
+                        />
+
+                    </footer>
+
+                </Modal>
             </Backdrop>
 
         </Page>

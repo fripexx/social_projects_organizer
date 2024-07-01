@@ -18,7 +18,7 @@ uploadRouter.get('/private/chats*', async (req, res) => {
         const userData = await tokenService.validateRefreshToken(refreshToken);
         if(!userData) throw ApiError.UnauthorizedError();
 
-        const findProject = await ProjectModal.findOne({ _id: chat, team: userData.id }).lean();
+        const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': userData.id }).lean();
         if(!findProject) throw ApiError.BadRequest('Кориистувач немає доступу до файлів цього проєкту')
 
         res.sendFile(path.join(__dirname, '../uploads/private/chats', req.params[0]));
@@ -36,7 +36,7 @@ uploadRouter.get('/private/media_library*', async (req, res) => {
         const userData = await tokenService.validateRefreshToken(refreshToken);
         if(!userData) throw ApiError.UnauthorizedError();
 
-        const findProject = await ProjectModal.findOne({ _id: chat, team: userData.id }).lean();
+        const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': userData.id }).lean();
         if(!findProject) throw ApiError.BadRequest('Кориистувач немає доступу до файлів цього проєкту')
 
         res.sendFile(path.join(__dirname, '../uploads/private/media_library', req.params[0]));

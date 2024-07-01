@@ -4,10 +4,10 @@ const ApiError = require("../exceptions/api-error");
 class ProjectController {
     async addProject(req, res, next) {
         try {
-            const {name} = req.body;
+            const {name, role} = req.body;
             const user = await req.user;
 
-            const project = await ProjectService.addProject(name, user);
+            const project = await ProjectService.addProject(name, role, user);
 
             return res.json(project);
         } catch (e) {
@@ -95,8 +95,19 @@ class ProjectController {
     async addUserInTeam(req, res, next) {
         try{
             const user = await req.user;
-            const {projectId, email} = req.body;
-            const project = await ProjectService.addUserInTeam(projectId, user, email);
+            const {projectId, email, role} = req.body;
+            const project = await ProjectService.addUserInTeam(projectId, user, email, role);
+
+            return res.json(project.team)
+        } catch (e) {
+            next(e);
+        }
+    }
+    async changeRoleUser(req, res, next) {
+        try{
+            const user = await req.user;
+            const {projectId, teamMember, role} = req.body;
+            const project = await ProjectService.changeRoleUser(projectId, user, teamMember, role);
 
             return res.json(project.team)
         } catch (e) {

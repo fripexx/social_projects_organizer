@@ -15,7 +15,7 @@ module.exports = class ProjectDto {
         this.logo = this.convertLogo(model.logo)
         this.administrator = model.administrator;
         this.customer = this.convertCustomer(model.customer);
-        this.team = model.team;
+        this.team = this.convertTeam(model.team);
         this.color = model.color;
         this.instagram = model.instagram;
         this.instagramTokenAPI = model.instagramTokenAPI;
@@ -49,5 +49,9 @@ module.exports = class ProjectDto {
         if(user?._id instanceof ObjectId) return new UserDto(user, 'basic')
 
         return null
+    }
+
+    convertTeam(team) {
+        return team.map(teamMember => ({user: teamMember.user, role: teamMember.role}))
     }
 };

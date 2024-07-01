@@ -65,7 +65,7 @@ class NoteService {
     }
 
     async addNoteInProject(user, idProject, text) {
-        const findProject = await ProjectModel.findOne({_id: idProject, team: user.id}).lean().exec();
+        const findProject = await ProjectModel.findOne({_id: idProject, 'team.user': user.id}).lean().exec();
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
 
@@ -92,7 +92,7 @@ class NoteService {
     }
 
     async deleteNoteInProject(user, idNote, idProject) {
-        const findProject = await ProjectModel.findOne({_id: idProject, team: user.id}).lean();
+        const findProject = await ProjectModel.findOne({_id: idProject, 'team.user': user.id}).lean();
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
 
@@ -107,7 +107,7 @@ class NoteService {
     }
 
     async changeNoteInProject(user, idNote, idProject, text) {
-        const findProject = await ProjectModel.findOne({_id: idProject, team: user.id}).lean();
+        const findProject = await ProjectModel.findOne({_id: idProject, 'team.user': user.id}).lean();
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього')
 

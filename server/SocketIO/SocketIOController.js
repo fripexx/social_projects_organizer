@@ -10,7 +10,7 @@ class SocketIOController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
+                const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': user.id }).lean();
 
                 if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
 
@@ -39,7 +39,7 @@ class SocketIOController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
+                const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': user.id }).lean();
 
                 if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
 
@@ -63,7 +63,7 @@ class SocketIOController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
+                const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': user.id }).lean();
 
                 if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
 
@@ -87,7 +87,7 @@ class SocketIOController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
+                const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': user.id }).lean();
 
                 if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
 
@@ -111,7 +111,7 @@ class SocketIOController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, team: user.id }).lean();
+                const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': user.id }).lean();
 
                 if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
 

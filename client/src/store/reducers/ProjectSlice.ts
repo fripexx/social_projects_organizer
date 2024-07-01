@@ -6,10 +6,10 @@ import {
     getProject,
     getNotesProject,
     addNoteInProject,
-    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam,
+    deleteNoteInProject, changeNoteInProject, getProjectTeam, removeUserFromTeam, addUserInTeam, changeRoleUser,
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
-import {BasicUserInfo} from "../types/UserType";
+import {TeamMemberType} from "../types/TeamMemberType";
 
 interface ProjectState {
     isLoading: boolean,
@@ -17,7 +17,7 @@ interface ProjectState {
     project: ProjectType | null;
     projectId: string | null,
     notes: NoteType[],
-    team: BasicUserInfo[],
+    team: TeamMemberType[],
 }
 
 const initialState: ProjectState = {
@@ -116,7 +116,7 @@ const projectSlice = createSlice({
             state.notes = [];
         },
         [getProjectTeam.pending.type]: (state) => {},
-        [getProjectTeam.fulfilled.type]: (state, action: PayloadAction<BasicUserInfo[]>) => {
+        [getProjectTeam.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
             state.error = null;
             state.team = action.payload
         },
@@ -140,6 +140,15 @@ const projectSlice = createSlice({
             if(state.project) state.project.team = action.payload
         },
         [addUserInTeam.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
+        [changeRoleUser.pending.type]: (state) => {},
+        [changeRoleUser.fulfilled.type]: (state, action: PayloadAction<string[]>) => {
+            state.error = null;
+            if(state.project) state.project.team = action.payload
+        },
+        [changeRoleUser.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         }

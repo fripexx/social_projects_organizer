@@ -10,9 +10,9 @@ import Button from "../../Elements/Button/Button";
 import TeamList from "../../Components/TeamList/TeamList";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {addUserInTeam} from "../../store/thunks/ProjectThunks";
-import Backdrop from "../../Components/Backdrop/Backdrop";
-import ModalInputText from "../../Components/Modals/ModalInputText/ModalInputText";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
+import ModalAddUser from "./Components/ModalAddUser/ModalAddUser";
+import {rolesList} from "../../constants/rolesList";
 
 const ProjectTeams = () => {
     const project = useAppSelector(state => state.ProjectReducer.project);
@@ -21,25 +21,30 @@ const ProjectTeams = () => {
 
     const [addModal, setAddModal] = useState<boolean>(false)
     const [addEmail, setAddEmail] = useState<string>("")
+    const [addRole, setAddRole] = useState<string>(rolesList[0].value)
 
     const showModal = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         setAddModal(true)
         setAddEmail("")
     }
-    const closeModal = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const hideModalCallback = () => {
         setAddModal(false)
         setAddEmail("")
     }
-    const changeEmailHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        e.preventDefault();
-        setAddEmail(e.target.value);
+    const changeEmailHandler = (email: string) => {
+        setAddEmail(email);
     }
-    const addUserCallback = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault();
+    const changeRoleHandler = (role: string) => {
+        setAddRole(role);
+    }
+    const addUserCallback = () => {
         if(project) {
-            dispatch(addUserInTeam({projectId: project.id, email: addEmail}));
+            dispatch(addUserInTeam({
+                projectId: project.id,
+                email: addEmail,
+                role: addRole
+            }));
             setAddModal(false)
             setAddEmail("")
         }
@@ -80,16 +85,15 @@ const ProjectTeams = () => {
 
                 </ContentPage>
 
-                <Backdrop isOpen={addModal}>
-                    <ModalInputText
-                        type={"email"}
-                        text={addEmail}
-                        placeholderText={"Введіть пошту юзера"}
-                        onChangeText={changeEmailHandler}
-                        onCancel={closeModal}
-                        onConfirm={addUserCallback}
-                    />
-                </Backdrop>
+                <ModalAddUser
+                    isOpen={addModal}
+                    email={addEmail}
+                    setEmailCallback={changeEmailHandler}
+                    role={addRole}
+                    setRoleCallback={changeRoleHandler}
+                    addUserCallback={addUserCallback}
+                    hideCallback={hideModalCallback}
+                />
 
             </Page>
 
