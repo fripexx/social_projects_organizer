@@ -28,41 +28,45 @@ const App = () => {
     }
 
     return (
-        <SocketProvider>
-            <BrowserRouter>
-                <Routes>
-                    {routes.map(route => {
-                        const RouteElement = (
-                            route.requiresAuth && !isAuth ? (
-                                <Navigate to="/login" />
+        <BrowserRouter>
+            <Routes>
+                {routes.map(route => {
+                    const RouteElement = (
+                        route.requiresAuth && !isAuth ? (
+                            <Navigate to="/login" />
+                        ) : (
+                            route.redirectIfAuthenticated && isAuth ? (
+                                <Navigate to="/projects" />
                             ) : (
-                                route.redirectIfAuthenticated && isAuth ? (
-                                    <Navigate to="/projects" />
-                                ) : (
-                                    <route.component />
-                                )
+                                <route.component />
                             )
-                        );
+                        )
+                    );
 
-                        return (
-                            <Route
-                                key={route.key}
-                                path={route.path}
-                                element={
-                                    route.isProjectPath ? (
-                                        <ProjectPage>
-                                            {RouteElement}
-                                        </ProjectPage>
-                                    ) : (
-                                        RouteElement
-                                    )
-                                }
-                            />
-                        );
-                    })}
-                </Routes>
-            </BrowserRouter>
-        </SocketProvider>
+                    return (
+                        <Route
+                            key={route.key}
+                            path={route.path}
+                            element={
+                                route.requiresAuth && isAuth ? (
+                                    <SocketProvider>
+                                        {route.isProjectPath ? (
+                                            <ProjectPage>
+                                                {RouteElement}
+                                            </ProjectPage>
+                                        ) : (
+                                            RouteElement
+                                        )}
+                                    </SocketProvider>
+                                ) : (
+                                    RouteElement
+                                )
+                            }
+                        />
+                    );
+                })}
+            </Routes>
+        </BrowserRouter>
     );
 };
 
