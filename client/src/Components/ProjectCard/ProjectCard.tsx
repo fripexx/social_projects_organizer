@@ -2,6 +2,7 @@ import React, {FC} from 'react';
 import classes from "./ProjectCard.module.scss";
 import {ProjectType} from "../../store/types/ProjectType";
 import Logo from "../Logo/Logo";
+import {NavLink} from "react-router-dom";
 
 interface ProjectCardProps {
     project: ProjectType,
@@ -37,9 +38,9 @@ const ProjectCard:FC<ProjectCardProps> = ({project}) => {
     return (
         <>
             {isActive ? (
-                <a href={`/project/${id}/posts`} className={classes.activeProject} style={color ? {backgroundColor: color} : {}}>
+                <NavLink to={`/project/${id}/posts`} className={classes.activeProject} style={color ? {backgroundColor: color} : {}}>
                     <ProjectData project={project}/>
-                </a>
+                </NavLink>
             ) : (
                 <div className={classes.noActiveProject}>
                     <ProjectData project={project}/>

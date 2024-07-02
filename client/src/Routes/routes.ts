@@ -1,10 +1,4 @@
 import React from "react";
-import AuthPage from "../Pages/AuthPage/AuthPage";
-import AccountSettingsPage from "../Pages/AccountSettingsPage/AccountSettingsPage";
-import UserProjectsPage from "../Pages/UserProjectsPage/UserProjectsPage";
-import ProfilePage from "../Pages/ProfilePage/ProfilePage";
-import UserNotePage from "../Pages/UserNotePage/UserNotePage";
-import ProjectPosts from "../Pages/ProjectPosts/ProjectPosts";
 import userIcon from "../assets/images/user.svg";
 import infoIcon from "../assets/images/info-icon.svg";
 import calendarIcon from "../assets/images/calendar-icon.svg";
@@ -15,6 +9,12 @@ import teamsIcon from "../assets/images/teams-icon.svg";
 import statisticsIcon from "../assets/images/statistics-icon.svg";
 import postsIcon from "../assets/images/posts-icon.svg";
 import paintIcon from "../assets/images/paint-icon.svg";
+import AuthPage from "../Pages/AuthPage/AuthPage";
+import AccountSettingsPage from "../Pages/AccountSettingsPage/AccountSettingsPage";
+import UserProjectsPage from "../Pages/UserProjectsPage/UserProjectsPage";
+import ProfilePage from "../Pages/ProfilePage/ProfilePage";
+import UserNotePage from "../Pages/UserNotePage/UserNotePage";
+import ProjectPosts from "../Pages/ProjectPosts/ProjectPosts";
 import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
 import ProjectTeams from "../Pages/ProjectTeams/ProjectTeams";
@@ -34,6 +34,7 @@ export interface Route {
     showInUserMenu?: boolean;
     showInProjectMenu?: boolean;
     showOnlyAdmin?: boolean;
+    isProjectPath?: boolean;
 }
 
 export const routes: Route[] = [
@@ -102,6 +103,7 @@ export const routes: Route[] = [
         component: ProjectPosts,
         icon: postsIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -112,6 +114,7 @@ export const routes: Route[] = [
         component: ProjectPosts,
         icon: paintIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -122,6 +125,7 @@ export const routes: Route[] = [
         component: ProjectPosts,
         icon: calendarIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -132,6 +136,7 @@ export const routes: Route[] = [
         component: ProjectMedia,
         icon: picturesIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -142,6 +147,7 @@ export const routes: Route[] = [
         component: ProjectSettings,
         icon: settingsIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
         showOnlyAdmin: true
@@ -153,6 +159,7 @@ export const routes: Route[] = [
         component: ProjectTeams,
         icon: teamsIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true
     },
@@ -163,6 +170,7 @@ export const routes: Route[] = [
         component: ProjectPosts,
         icon: infoIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -173,6 +181,7 @@ export const routes: Route[] = [
         component: ProjectPosts,
         icon: statisticsIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -183,6 +192,7 @@ export const routes: Route[] = [
         component: ProjectNotes,
         icon: notesIcon,
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: true,
     },
@@ -193,6 +203,7 @@ export const routes: Route[] = [
         component: EditInstagramPublication,
         icon: "",
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: false,
     },
@@ -203,6 +214,7 @@ export const routes: Route[] = [
         component: EditInstagramStories,
         icon: "",
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: false,
     },
@@ -213,6 +225,7 @@ export const routes: Route[] = [
         component: EditInstagramReels,
         icon: "",
         requiresAuth: true,
+        isProjectPath: true,
         redirectIfAuthenticated: false,
         showInProjectMenu: false,
     }

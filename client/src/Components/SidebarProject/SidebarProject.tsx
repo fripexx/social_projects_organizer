@@ -10,6 +10,7 @@ import Sidebar from "../Sidebar/Sidebar";
 import GeneralChatSidebar from "../GeneralChatSidebar/GeneralChatSidebar";
 import Chat from "../Chat/Chat";
 import {setUnreadCount} from "../../store/reducers/GeneralChatSlice";
+import {useSocket} from "../../context/Socket-Context";
 
 const SidebarProject: FC = () => {
     const location = useLocation()
@@ -22,6 +23,7 @@ const SidebarProject: FC = () => {
     const user = useAppSelector(state => state.UserReducer.user)
     const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 900);
     const countUnreadMessages = useAppSelector(state => state.GeneralChatSlice.countUnreadMessages)
+    const socket = useSocket();
 
     const showSidebar = () => {
         dispatch(showChat(true))
@@ -64,10 +66,11 @@ const SidebarProject: FC = () => {
 
             </Sidebar>
 
-            {project && user &&
+            {project && user && socket &&
                 <GeneralChatSidebar showSidebar={showGeneralChat} hideCallback={hideSidebar} project={project}>
                     <Chat
                         chat={project.id}
+                        socket={socket}
                         model={'Project'}
                         team={teamUser}
                         currentUser={user}

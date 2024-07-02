@@ -9,7 +9,6 @@ import {BasicUserInfo, UserType} from "../../store/types/UserType";
 import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 import Message from "../Message/Message";
 import {Socket} from 'socket.io-client';
-import ioServer from "../../api/ioServer";
 import PreviewFile, {PreviewFileType} from "../PreviewFile/PreviewFile";
 import ChatMediaUpload from "./Components/ChatMediaUpload/ChatMediaUpload";
 import {useAppDispatch} from "../../store/hooks/redux";
@@ -21,12 +20,12 @@ interface ChatProps {
     model: "Project" | "Post",
     team: BasicUserInfo[],
     currentUser: UserType,
-    unreadCallback?: (count: number) => void
+    unreadCallback?: (count: number) => void,
+    socket: Socket;
 }
 
-const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) => {
+const Chat:FC<ChatProps> = ({chat, socket, model, team, currentUser, unreadCallback}) => {
     const dispatch = useAppDispatch()
-    const [socket, setSocket] = useState<Socket | null>(null);
     const [sendMessage, setSendMessage] = useState<string>('');
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
     const [showUploadModalState, setShowUploadModal] = useState<boolean>(false);
@@ -95,30 +94,24 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) =>
     }
 
     useEffect(() => {
-        const newSocket = ioServer();
+        socket.emit('joinChat', {chat, model});
+        socket.emit('getMessages', {chat, model});
+        socket.emit('getUnreadMessages', {chat, model});
 
-        setSocket(newSocket);
-
-        newSocket.on('connect', () => {
-            newSocket.emit('joinChat', {chat, model});
-            newSocket.emit('getMessages', {chat, model});
-            newSocket.emit('getUnreadMessages', {chat, model});
-        });
-
-        newSocket.on('getMessages', (messages: MessageType[]) => {
+        socket.on('getMessages', (messages: MessageType[]) => {
             setChatMessages(messages);
         });
 
-        newSocket.on('setUnreadMessages', (unreadCount: number) => {
+        socket.on('setUnreadMessages', (unreadCount: number) => {
             if(unreadCallback) unreadCallback(unreadCount);
         });
 
-        newSocket.on('loadMessages', (messages: MessageType[]) => {
+        socket.on('loadMessages', (messages: MessageType[]) => {
             setChatMessages(prevState => [...prevState, ...messages]);
             setLoadMore(false)
         });
 
-        newSocket.on('messageIsRead', (readMessage: MessageType) => {
+        socket.on('messageIsRead', (readMessage: MessageType) => {
             setTimeout(() => {
                 setChatMessages(prevState => {
                     return [...prevState].map(message => {
@@ -128,21 +121,16 @@ const Chat:FC<ChatProps> = ({chat, model, team, currentUser, unreadCallback}) =>
                         return message
                     });
                 });
-                newSocket.emit('getUnreadMessages', {chat, model});
+                socket.emit('getUnreadMessages', {chat, model});
             }, 1000)
         });
 
-        newSocket.on('newMessage', (message: MessageType) => {
+        socket.on('newMessage', (message: MessageType) => {
             setPendingMessage(null)
             setChatMessages((prevMessages) => [message, ...prevMessages]);
-            newSocket.emit('getUnreadMessages', {chat, model});
+            socket.emit('getUnreadMessages', {chat, model});
         });
 
-        newSocket.on('disconnect', () => {});
-
-        return () => {
-            newSocket.disconnect();
-        };
     }, []);
     useEffect(() => {
         const handleScroll = () => {

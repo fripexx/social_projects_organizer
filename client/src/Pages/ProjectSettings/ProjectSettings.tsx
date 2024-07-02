@@ -1,7 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import saveIcon from "../../assets/images/save_icon.svg";
-import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
@@ -140,55 +139,51 @@ const ProjectSettings:FC = () => {
     }, [project, user])
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage>
 
-                    <HeaderPage>
+                    <Title level={2}>
+                        Налаштування проєкту
+                    </Title>
 
-                        <Title level={2}>
-                            Налаштування проєкту
-                        </Title>
-
-                        {saveState &&
-                            <Button
-                                text={"Зберегти"}
-                                icon={saveIcon}
-                                iconColor={"var(--Color-Green)"}
-                                style={{marginLeft: "auto"}}
-                                onClick={showModal}
-                            />
-                        }
-
-                    </HeaderPage>
-
-                    <Content>
-
-                        <ProjectSettingsForm
-                            formState={formState}
-                            errorState={errorState}
-                            onChange={onChangeInput}
+                    {saveState &&
+                        <Button
+                            text={"Зберегти"}
+                            icon={saveIcon}
+                            iconColor={"var(--Color-Green)"}
+                            style={{marginLeft: "auto"}}
+                            onClick={showModal}
                         />
+                    }
 
-                    </Content>
+                </HeaderPage>
 
-                </ContentPage>
+                <Content>
 
-                <Backdrop isOpen={activeModal}>
-                    <ModalConfirmAction
-                        text={"Ви впевнені що ви хочете змінити дані проєкту?"}
-                        onCancel={closeModal}
-                        onConfirm={saveRequest}
+                    <ProjectSettingsForm
+                        formState={formState}
+                        errorState={errorState}
+                        onChange={onChangeInput}
                     />
-                </Backdrop>
 
-            </Page>
+                </Content>
 
-        </ProjectPage>
+            </ContentPage>
+
+            <Backdrop isOpen={activeModal}>
+                <ModalConfirmAction
+                    text={"Ви впевнені що ви хочете змінити дані проєкту?"}
+                    onCancel={closeModal}
+                    onConfirm={saveRequest}
+                />
+            </Backdrop>
+
+        </Page>
     );
 };
 

@@ -75,16 +75,12 @@ const projectSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
-        [getNotesProject.pending.type]: (state) => {
-            state.isLoading = true;
-        },
+        [getNotesProject.pending.type]: (state) => {},
         [getNotesProject.fulfilled.type]: (state, action: PayloadAction<NoteType[]>) => {
-            state.isLoading = false;
             state.error = null;
             state.notes = action.payload;
         },
         [getNotesProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
-            state.isLoading = false;
             state.error = action.payload;
             state.notes = [];
         },

@@ -1,5 +1,4 @@
 import React, {FC, useEffect, useState} from 'react';
-import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
@@ -70,73 +69,68 @@ const ProjectMedia:FC = () => {
     useEffect(() => {
         if(query) dispatch(getMedia(query))
     }, [query]);
-    console.log(isLoading)
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage className={classes.header}>
 
-                    <HeaderPage className={classes.header}>
+                    <Tabs/>
 
-                        <Tabs/>
+                    <MediaFileUpload
+                        uploadCallback={uploadCallback}
+                        accept={[
+                            "image/png",
+                            "image/jpeg",
+                            "image/webp",
+                            "image/svg+xml",
+                            "video/mp4",
+                            "video/quicktime",
+                            "video/webm",
+                            "text/plain",
+                            "application/pdf",
+                            "application/xml",
+                            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                        ]}
+                        maxSize={5 * 1024 * 1024}
+                        maxCountFiles={9}
+                    />
 
-                        <MediaFileUpload
-                            uploadCallback={uploadCallback}
-                            accept={[
-                                "image/png",
-                                "image/jpeg",
-                                "image/webp",
-                                "image/svg+xml",
-                                "video/mp4",
-                                "video/quicktime",
-                                "video/webm",
-                                "text/plain",
-                                "application/pdf",
-                                "application/xml",
-                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-                            ]}
-                            maxSize={5 * 1024 * 1024}
-                            maxCountFiles={9}
-                        />
+                </HeaderPage>
 
-                    </HeaderPage>
+                <Content>
 
-                    <Content>
-
-                        {isLoading ? (
-                            <Loader type={"relative"} />
-                        ) : (
-                            <>
-                                {user && project && (
-                                    <Media
-                                        media={media}
-                                        user={user}
-                                        project={project}
-                                        deleteCallback={deleteCallback}
-                                    />
-                                )}
-
-                                <LoadMore
-                                    callback={loadMore}
-                                    total={totalMedia}
-                                    shown={media.length}
-                                    load={false}
+                    {isLoading ? (
+                        <Loader type={"relative"} />
+                    ) : (
+                        <>
+                            {user && project && (
+                                <Media
+                                    media={media}
+                                    user={user}
+                                    project={project}
+                                    deleteCallback={deleteCallback}
                                 />
-                            </>
-                        )}
+                            )}
+
+                            <LoadMore
+                                callback={loadMore}
+                                total={totalMedia}
+                                shown={media.length}
+                                load={false}
+                            />
+                        </>
+                    )}
 
 
-                    </Content>
+                </Content>
 
-                </ContentPage>
+            </ContentPage>
 
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 

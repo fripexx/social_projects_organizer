@@ -4,6 +4,7 @@ import {routes} from "./Routes/routes";
 import {useAppDispatch, useAppSelector} from "./store/hooks/redux";
 import {checkAuth} from "./store/thunks/UserThunks";
 import Loader from "./Elements/Loader/Loader";
+import ProjectPage from "./HOC/ProjectPage/ProjectPage";
 
 const App = () => {
     const dispatch = useAppDispatch();
@@ -29,23 +30,33 @@ const App = () => {
         <BrowserRouter>
             <Routes>
                 {routes.map(route => {
+                    const RouteElement = (
+                        route.requiresAuth && !isAuth ? (
+                            <Navigate to="/login" />
+                        ) : (
+                            route.redirectIfAuthenticated && isAuth ? (
+                                <Navigate to="/projects" />
+                            ) : (
+                                <route.component />
+                            )
+                        )
+                    );
+
                     return (
                         <Route
                             key={route.key}
                             path={route.path}
                             element={
-                                route.requiresAuth && !isAuth ? (
-                                    <Navigate to="/login" />
+                                route.isProjectPath ? (
+                                    <ProjectPage>
+                                        {RouteElement}
+                                    </ProjectPage>
                                 ) : (
-                                    route.redirectIfAuthenticated && isAuth ? (
-                                        <Navigate to="/projects" />
-                                    ) : (
-                                        <route.component />
-                                    )
+                                    RouteElement
                                 )
                             }
                         />
-                    )
+                    );
                 })}
             </Routes>
         </BrowserRouter>

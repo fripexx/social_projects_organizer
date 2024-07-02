@@ -1,6 +1,5 @@
 import React, {useState} from 'react';
 import saveIcon from "../../assets/images/save_icon.svg";
-import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
@@ -51,53 +50,49 @@ const ProjectTeams = () => {
     }
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage>
 
-                    <HeaderPage>
+                    <Title level={2}>
+                        Команда
+                    </Title>
 
-                        <Title level={2}>
-                            Команда
-                        </Title>
+                    <Button
+                        text={"Додати юзера"}
+                        icon={saveIcon}
+                        iconColor={"var(--Color-Green)"}
+                        style={{marginLeft: "auto"}}
+                        onClick={showModal}
+                    />
 
-                        <Button
-                            text={"Додати юзера"}
-                            icon={saveIcon}
-                            iconColor={"var(--Color-Green)"}
-                            style={{marginLeft: "auto"}}
-                            onClick={showModal}
-                        />
+                </HeaderPage>
 
-                    </HeaderPage>
+                <Content>
 
-                    <Content>
+                    {team &&
+                        <TeamList team={team} />
+                    }
 
-                        {team &&
-                            <TeamList team={team} />
-                        }
+                </Content>
 
-                    </Content>
+            </ContentPage>
 
-                </ContentPage>
+            <ModalAddUser
+                isOpen={addModal}
+                email={addEmail}
+                setEmailCallback={changeEmailHandler}
+                role={addRole}
+                setRoleCallback={changeRoleHandler}
+                addUserCallback={addUserCallback}
+                hideCallback={hideModalCallback}
+            />
 
-                <ModalAddUser
-                    isOpen={addModal}
-                    email={addEmail}
-                    setEmailCallback={changeEmailHandler}
-                    role={addRole}
-                    setRoleCallback={changeRoleHandler}
-                    addUserCallback={addUserCallback}
-                    hideCallback={hideModalCallback}
-                />
-
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 

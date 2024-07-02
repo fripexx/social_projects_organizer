@@ -3,8 +3,8 @@ import {getProject, getProjectTeam} from "../../store/thunks/ProjectThunks";
 import {useLocation, useParams} from "react-router-dom";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import Loader from "../../Elements/Loader/Loader";
-import {setProject} from "../../store/reducers/ProjectSlice";
 import ErrorMessagePopup from "../../Components/ErrorMessagePopup/ErrorMessagePopup";
+import {SocketProvider} from "../../context/Socket-Context";
 
 interface ProjectPageProps {
     children: ReactNode
@@ -27,16 +27,19 @@ const ProjectPage: FC<ProjectPageProps> = ({children}) => {
         if(project && project.id) dispatch(getProjectTeam(project.id))
     }, [project]);
 
-    if (project && loading === false) {
-        return (
-            <>
-                {children}
-                <ErrorMessagePopup message={error ? error.message : null} />
-            </>
-        );
-    } else {
-        return <Loader/>
-    }
+    return (
+        <SocketProvider>
+            {(project && !loading) ? (
+                <>
+                    {children}
+                    <ErrorMessagePopup message={error ? error.message : null} />
+                </>
+            ) : (
+                <Loader/>
+            )}
+
+        </SocketProvider>
+    );
 };
 
 export default ProjectPage;

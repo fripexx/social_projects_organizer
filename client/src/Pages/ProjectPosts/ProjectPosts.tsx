@@ -5,43 +5,38 @@ import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Button from "../../Elements/Button/Button";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import Content from "../../Components/Content/Content";
-import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 import StatusTabs from "./Components/StatusTabs/StatusTabs";
 
 const ProjectPosts:FC = () => {
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage>
 
-                    <HeaderPage>
+                    <StatusTabs/>
 
-                        <StatusTabs/>
+                    <Button
+                        text={"Додати"}
+                        icon={plusIcon}
+                        iconColor={"var(--Color-Green)"}
+                        style={{marginLeft: "auto"}}
+                        onClick={() => {}}
+                    />
 
-                        <Button
-                            text={"Додати"}
-                            icon={plusIcon}
-                            iconColor={"var(--Color-Green)"}
-                            style={{marginLeft: "auto"}}
-                            onClick={() => {}}
-                        />
+                </HeaderPage>
 
-                    </HeaderPage>
+                <Content>
+                    Пости
+                </Content>
 
-                    <Content>
-                        Пости
-                    </Content>
+            </ContentPage>
 
-                </ContentPage>
-
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 
