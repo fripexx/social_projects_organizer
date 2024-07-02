@@ -5,6 +5,7 @@ import {useAppDispatch, useAppSelector} from "./store/hooks/redux";
 import {checkAuth} from "./store/thunks/UserThunks";
 import Loader from "./Elements/Loader/Loader";
 import ProjectPage from "./HOC/ProjectPage/ProjectPage";
+import {SocketProvider} from "./context/Socket-Context";
 
 const App = () => {
     const dispatch = useAppDispatch();
@@ -27,39 +28,41 @@ const App = () => {
     }
 
     return (
-        <BrowserRouter>
-            <Routes>
-                {routes.map(route => {
-                    const RouteElement = (
-                        route.requiresAuth && !isAuth ? (
-                            <Navigate to="/login" />
-                        ) : (
-                            route.redirectIfAuthenticated && isAuth ? (
-                                <Navigate to="/projects" />
+        <SocketProvider>
+            <BrowserRouter>
+                <Routes>
+                    {routes.map(route => {
+                        const RouteElement = (
+                            route.requiresAuth && !isAuth ? (
+                                <Navigate to="/login" />
                             ) : (
-                                <route.component />
-                            )
-                        )
-                    );
-
-                    return (
-                        <Route
-                            key={route.key}
-                            path={route.path}
-                            element={
-                                route.isProjectPath ? (
-                                    <ProjectPage>
-                                        {RouteElement}
-                                    </ProjectPage>
+                                route.redirectIfAuthenticated && isAuth ? (
+                                    <Navigate to="/projects" />
                                 ) : (
-                                    RouteElement
+                                    <route.component />
                                 )
-                            }
-                        />
-                    );
-                })}
-            </Routes>
-        </BrowserRouter>
+                            )
+                        );
+
+                        return (
+                            <Route
+                                key={route.key}
+                                path={route.path}
+                                element={
+                                    route.isProjectPath ? (
+                                        <ProjectPage>
+                                            {RouteElement}
+                                        </ProjectPage>
+                                    ) : (
+                                        RouteElement
+                                    )
+                                }
+                            />
+                        );
+                    })}
+                </Routes>
+            </BrowserRouter>
+        </SocketProvider>
     );
 };
 

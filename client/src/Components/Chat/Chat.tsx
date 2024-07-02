@@ -94,7 +94,6 @@ const Chat:FC<ChatProps> = ({chat, socket, model, team, currentUser, unreadCallb
     }
 
     useEffect(() => {
-        socket.emit('joinChat', {chat, model});
         socket.emit('getMessages', {chat, model});
         socket.emit('getUnreadMessages', {chat, model});
 

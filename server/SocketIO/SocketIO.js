@@ -30,8 +30,8 @@ const setupSocket = (server) => {
     });
 
     io.on('connection', (socket) => {
-        const joinChat = async ({chat, model}) => await SocketIOController.joinChat(socket, chat, model);
-        socket.on('joinChat', joinChat);
+        const joinProject = async ({projectId, model}) => await SocketIOController.joinProject(socket, projectId, model);
+        socket.on('joinProject', joinProject);
 
         const disconnect = async() => await SocketIOController.disconnect(socket)
         socket.on('disconnect', disconnect);
@@ -45,7 +45,7 @@ const setupSocket = (server) => {
         const loadMessages = async({chat, model, skip}) => await SocketIOController.loadMessages(socket, chat, model, skip);
         socket.on('loadMessages', loadMessages);
 
-        const readMessage = async ({ messageId, chat, model }) => await SocketIOController.readMessage(socket, messageId, chat, model);
+        const readMessage = async ({ messageId, chat, model }) => await SocketIOController.readMessage(socket, messageId, chat, model, io);
         socket.on('readMessage', readMessage);
     });
     return io;
