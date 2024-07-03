@@ -34,11 +34,19 @@ const UISlice = createSlice({
             state.filesSlider.activeIndex = action.payload;
         },
         setNotification: (state, action: PayloadAction<NotificationType>) => {
-            state.notifications = [...state.notifications, action.payload];
+            state.notifications = [action.payload, ...state.notifications];
+            localStorage.setItem("SPONotifications", JSON.stringify(state.notifications));
+        },
+        setNotifications: (state, action: PayloadAction<NotificationType[]>) => {
+            state.notifications = action.payload
+        },
+        readNotification: (state, action: PayloadAction<string>) => {
+            state.notifications = [...state.notifications].map(notification =>  notification.id === action.payload ? {...notification, isRead: true} : notification)
+            localStorage.setItem("SPONotifications", JSON.stringify(state.notifications));
         },
     },
     extraReducers: {}
 })
 
 export default UISlice.reducer;
-export const {showSidebar, setFilesInSlider, setActiveIndexSlider, setNotification} = UISlice.actions;
+export const {showSidebar, setFilesInSlider, setActiveIndexSlider, setNotification, setNotifications, readNotification} = UISlice.actions;

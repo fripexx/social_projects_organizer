@@ -6,6 +6,8 @@ import Loader from "../../Elements/Loader/Loader";
 import ErrorMessagePopup from "../../Components/ErrorMessagePopup/ErrorMessagePopup";
 import {useSocket} from "../../context/Socket-Context";
 import {Socket} from "socket.io-client";
+import {setNotifications} from "../../store/reducers/UISlice";
+import {NotificationType} from "../../Components/NotificationsWidget/types/NotificationType";
 
 interface ProjectPageProps {
     children: ReactNode
@@ -32,6 +34,15 @@ const ProjectPage: FC<ProjectPageProps> = ({children}) => {
             setProjectConnected(socketRoom.connected)
         }
     }, [project]);
+
+    useEffect(() => {
+        const localStorageNotifications = localStorage.getItem('SPONotifications');
+
+        if(localStorageNotifications) {
+            const localNotifications:NotificationType[] = JSON.parse(localStorageNotifications);
+            dispatch(setNotifications( localNotifications.sort((a, b) => (b.timestamp ?? 0) - (a.timestamp ?? 0))))
+        }
+    }, []);
 
     return (
         <>

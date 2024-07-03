@@ -1,15 +1,17 @@
 import React, {FC} from 'react';
 import classes from "./NotificationsList.module.scss";
 import {NotificationType} from "../../types/NotificationType";
+import {readNotificationCallback} from "../../NotificationsWidget";
 import NotificationItem from "../NotificationItem/NotificationItem";
 
 interface NotificationsListProps {
     isOpen: boolean;
     notifications: NotificationType[],
-    hideCallback: () => void
+    hideCallback: () => void,
+    readCallback?: readNotificationCallback;
 }
 
-const NotificationsList: FC<NotificationsListProps> = ({isOpen, notifications, hideCallback}) => {
+const NotificationsList: FC<NotificationsListProps> = ({isOpen, notifications, hideCallback, readCallback}) => {
     return (
         <div className={classes.container} data-is-open={isOpen}>
 
@@ -19,6 +21,7 @@ const NotificationsList: FC<NotificationsListProps> = ({isOpen, notifications, h
                         key={notification.id}
                         notification={notification}
                         hideCallback={hideCallback}
+                        readCallback={readCallback}
                     />
                 )
             })}

@@ -1,6 +1,7 @@
 export interface NotificationType {
     id: string,
     message: string,
-    timestamp?: number,
+    timestamp: number,
     link?: string,
+    isRead: boolean
 }

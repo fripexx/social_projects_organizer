@@ -57,13 +57,27 @@ const setupRouter = ({io}) => {
     router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
     router.get('/get-project', [authMiddleware], ProjectController.getProject);
     router.put('/edit-settings-project', [authMiddleware, uploadProjectLogoMiddleware], ProjectController.editSettingsProject);
+
+    /**
+     * Project team routes
+     */
     router.get('/get-project-team', [authMiddleware], ProjectController.getProjectTeam);
     router.patch('/change-project-administrator', [authMiddleware], ProjectController.sendInviteNewAdmin);
-    router.get('/confirm-new-administrator/:key', ProjectController.confirmNewAdministrator);
-    router.patch('/remove-user-from-team', [authMiddleware], ProjectController.removeUserFromTeam);
-    router.patch('/add-user-in-team', [authMiddleware], ProjectController.addUserInTeam);
-    router.patch('/change-role-user', [authMiddleware], ProjectController.changeRoleUser);
-    router.patch('/leave-project', [authMiddleware], ProjectController.leaveProject);
+    router.get('/confirm-new-administrator/:key', async (req, res, next) => {
+        await ProjectController.confirmNewAdministrator(req, res, next, io);
+    });
+    router.patch('/remove-user-from-team', [authMiddleware], async (req, res, next) => {
+        await ProjectController.removeUserFromTeam(req, res, next, io);
+    });
+    router.patch('/add-user-in-team', [authMiddleware], async (req, res, next) => {
+        await ProjectController.addUserInTeam(req, res, next, io);
+    });
+    router.patch('/change-role-user', [authMiddleware], async (req, res, next) => {
+        await ProjectController.changeRoleUser(req, res, next, io);
+    });
+    router.patch('/leave-project', [authMiddleware], async (req, res, next) => {
+        await ProjectController.leaveProject(req, res, next, io);
+    });
 
     /**
      * Project notes routes
@@ -85,8 +99,8 @@ const setupRouter = ({io}) => {
     /**
      * Project chat routes
      */
-    router.post('/send-message', [authMiddleware, uploadChatMiddleware], (req, res, next) => {
-        ChatController.sendMessage(req, res, next, io);
+    router.post('/send-message', [authMiddleware, uploadChatMiddleware], async (req, res, next) => {
+        await ChatController.sendMessage(req, res, next, io);
     });
 
 

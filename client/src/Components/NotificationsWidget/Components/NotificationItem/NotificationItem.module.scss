@@ -1,15 +1,37 @@
 .container {
     background: var(--Color-Grey);
+    border: 1px solid var(--Color-Grey);
     border-radius: 15px;
     padding: 10px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+    gap: 15px;
+
+    &[data-is-read="false"] {
+        border-color: var(--Color-Dark);
+    }
 }
 
 .message {
     width: 100%;
     line-height: 25px;
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.time {
+    display: block;
+    color: var(--Color-Dark);
+    font-size: 14px;
+    line-height: 1;
+    font-weight: 300;
 }
 
 .button {

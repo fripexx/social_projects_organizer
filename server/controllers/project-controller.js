@@ -14,6 +14,7 @@ class ProjectController {
             next(e);
         }
     }
+
     async getProjects(req, res, next) {
         try {
             const user = await req.user;
@@ -24,6 +25,7 @@ class ProjectController {
             next(e);
         }
     }
+
     async getProject(req, res, next) {
         try {
             const {id} = req.query;
@@ -35,6 +37,7 @@ class ProjectController {
             next(e);
         }
     }
+
     async editSettingsProject(req, res, next) {
         try {
             const formData = req.body;
@@ -48,6 +51,10 @@ class ProjectController {
             next(e);
         }
     }
+
+    /**
+     * Team handlers
+     */
     async getProjectTeam(req, res, next) {
         try {
             const user = await req.user;
@@ -59,6 +66,7 @@ class ProjectController {
             next(e);
         }
     }
+
     async sendInviteNewAdmin(req, res, next) {
         try {
             const user = await req.user;
@@ -71,60 +79,79 @@ class ProjectController {
             next(e);
         }
     }
-    async confirmNewAdministrator(req, res, next) {
+
+    async confirmNewAdministrator(req, res, next, io) {
         try {
             const {key} = req.params;
-            const project = await ProjectService.confirmNewAdministrator(key);
+            const {candidate, project} = await ProjectService.confirmNewAdministrator(key);
+
+            io.to(project.id).emit('teamNotification', `${candidate.name} новий адміністратор проєкту.`);
 
             return res.redirect(`${process.env.CLIENT_URL}/project/${project.id}/teams`);
         } catch (e) {
             next(e);
         }
     }
-    async removeUserFromTeam(req, res, next) {
+
+    async removeUserFromTeam(req, res, next, io) {
         try {
             const user = await req.user;
             const {projectId, removeUserId} = req.body;
-            const project = await ProjectService.removeUserFromTeam(projectId, user, removeUserId);
+            const {candidate, project} = await ProjectService.removeUserFromTeam(projectId, user, removeUserId);
+
+            io.to(projectId).emit('teamNotification', `${candidate.name} більше не є частиною нашої команди.`);
 
             return res.json(project.team);
         } catch (e) {
             next(e);
         }
     }
-    async addUserInTeam(req, res, next) {
+
+    async addUserInTeam(req, res, next, io) {
         try{
             const user = await req.user;
             const {projectId, email, role} = req.body;
-            const project = await ProjectService.addUserInTeam(projectId, user, email, role);
+            const {candidate, project} = await ProjectService.addUserInTeam(projectId, user, email, role);
+
+            io.to(projectId).emit('teamNotification', `${candidate.name} тепер частина нашої команди. Вітаємо!`);
 
             return res.json(project.team)
         } catch (e) {
             next(e);
         }
     }
-    async changeRoleUser(req, res, next) {
+
+    async changeRoleUser(req, res, next, io) {
         try{
             const user = await req.user;
             const {projectId, teamMember, role} = req.body;
-            const project = await ProjectService.changeRoleUser(projectId, user, teamMember, role);
+            const {candidate, project} = await ProjectService.changeRoleUser(projectId, user, teamMember, role);
+
+            io.to(projectId).emit('teamNotification', `${candidate.name} тепер має нову роль у команді.`);
 
             return res.json(project.team)
         } catch (e) {
             next(e);
         }
     }
-    async leaveProject(req, res, next) {
+
+    async leaveProject(req, res, next, io) {
         try{
             const user = await req.user;
             const {projectId, leaveUserId} = req.body;
             const project = await ProjectService.leaveProject(projectId, leaveUserId, user);
 
+            io.to(projectId).emit('teamNotification', `${candidate.name} покинув нашу команду.`);
+
             return res.json(project.team)
         } catch (e) {
             next(e);
         }
     }
+
+    /**
+     * Media handlers
+     */
     async uploadMedia(req, res, next) {
         try {
             const {projectId} = req.body;
@@ -137,6 +164,7 @@ class ProjectController {
             next(e);
         }
     }
+
     async getMedia(req, res, next) {
         try {
             const query = req.query;
@@ -151,6 +179,7 @@ class ProjectController {
             next(e);
         }
     }
+
     async deleteMedia(req, res, next) {
         try {
             const {idMedia, projectId} = req.query;

@@ -3,7 +3,7 @@ import classes from "./Page.module.scss";
 import FooterMobile from "../FooterMobile/FooterMobile";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import FilesSlider from "../FilesSlider/FilesSlider";
-import {setFilesInSlider} from "../../store/reducers/UISlice";
+import {readNotification, setFilesInSlider} from "../../store/reducers/UISlice";
 import NotificationsWidget from "../NotificationsWidget/NotificationsWidget";
 
 interface PageProps {
@@ -18,6 +18,9 @@ const Page: FC<PageProps> = ({children, ...pageProps}) => {
 
     const closeFilesSliderCallback = () => {
         dispatch(setFilesInSlider([]))
+    }
+    const readNotificationCallback = (id: string): void => {
+        dispatch(readNotification(id))
     }
 
     return (
@@ -34,7 +37,7 @@ const Page: FC<PageProps> = ({children, ...pageProps}) => {
                 closeCallback={closeFilesSliderCallback}
             />
 
-            <NotificationsWidget notifications={notifications}/>
+            <NotificationsWidget notifications={notifications} readCallback={readNotificationCallback}/>
 
         </div>
     );
