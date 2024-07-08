@@ -1,4 +1,4 @@
-import React, {FC} from 'react';
+import React, {FC, useState} from 'react';
 import classes from "./EditInstagramPublication.module.scss";
 import {editButtons} from "../constants/editButtons";
 import Page from "../../../Components/Page/Page";
@@ -10,11 +10,17 @@ import ProjectPage from "../../../HOC/ProjectPage/ProjectPage";
 import EditPostButtons from "../../../Components/EditPostComponents/EditPostButtons/EditPostButtons";
 import Button from "../../../Elements/Button/Button";
 import StatusPostLabel from "../../../Components/StatusPostLabel/StatusPostLabel";
-import InstagramPublicationPreview
-    from "../../../Components/InstagramComponents/InstagramPublicationPreview/InstagramPublicationPreview";
+import InstagramPublicationPreview from "../../../Components/InstagramComponents/InstagramPublicationPreview/InstagramPublicationPreview";
+import PublicationParams from "./Componets/PublicationParams/PublicationParams";
+import {FileType, PhotoType} from "../../../store/types/FileType";
 
 const EditInstagramPublication: FC = () => {
-    const buttonsCallback = (key: string) => {}
+    const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([])
+
+    const buttonsHandler = (key: string) => {}
+    const selectMediaHandler = (media: (PhotoType | FileType)[]): void => {
+        setSelectMedia(media);
+    }
 
     return (
         <ProjectPage>
@@ -29,7 +35,7 @@ const EditInstagramPublication: FC = () => {
 
                         <Button text={"Назад"} onClick={() => {}}/>
 
-                        <EditPostButtons buttons={editButtons} callback={buttonsCallback}/>
+                        <EditPostButtons buttons={editButtons} callback={buttonsHandler}/>
 
                         <StatusPostLabel status={'edit'}/>
 
@@ -38,14 +44,16 @@ const EditInstagramPublication: FC = () => {
                     <Content className={classes.columns}>
 
                         <InstagramPublicationPreview
-                            media={[]}
+                            className={classes.preview}
+                            media={selectMedia}
                             profile={{
                                 name: "",
                                 picture: ""
                             }}
-                            width={300}
-
                         />
+
+                        <PublicationParams selectCallback={selectMediaHandler}/>
+
                     </Content>
 
                 </ContentPage>

@@ -16,12 +16,12 @@ interface InstagramPublicationPreviewProps extends InstagramPreviewType{
     location?: string,
 }
 
-const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width}) => {
+const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width, className}) => {
     const {name, picture} = profile
     const [paginationRef, setPaginationRef] = useState<RefObject<HTMLDivElement>>()
 
     return (
-        <PhoneWrapper width={width}>
+        <PhoneWrapper width={width} className={className}>
 
             <InstagramHeader name={name}/>
 

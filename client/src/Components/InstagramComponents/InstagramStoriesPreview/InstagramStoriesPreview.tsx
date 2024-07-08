@@ -12,7 +12,7 @@ interface InstagramStoriesPreviewProps extends InstagramPreviewType{
     media?: PhotoType | FileType,
 }
 
-const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profile, colabProfile, width}) => {
+const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profile, colabProfile, width, className}) => {
     const [progress, setProgress] = useState<number>(0);
 
     const progressCallback  = (data: VideoProgressType) => {
@@ -21,7 +21,7 @@ const InstagramStoriesPreview:FC<InstagramStoriesPreviewProps> = ({media, profil
     }
 
     return (
-        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"} width={width}>
+        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"} width={width} className={className}>
 
             <InstagramStoriesHeader
                 className={classes.header}

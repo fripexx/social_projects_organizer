@@ -1,0 +1,50 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 10px;
+}
+
+.label {
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 20px;
+    color: var(--Color-Dark);
+    margin-bottom: 15px;
+}
+
+.textarea {
+    resize: none;
+    width: 100%;
+    border: none;
+    background-color: transparent;
+    outline: none;
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 300;
+    line-height: normal;
+    padding: 0px;
+    margin: 0px;
+    min-height: 60px;
+    height: auto;
+}
+
+.footer {
+    padding: 10px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    border-bottom: 1px solid var(--Color-Light-Grey-Blue);
+}
+
+.emojiButton {
+    all: unset;
+    display: flex;
+    cursor: pointer;
+}
+
+.emojiPicker {
+    border-radius: 0px !important;
+    width: 100% !important;
+}

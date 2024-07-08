@@ -34,7 +34,7 @@ const InstagramPictureSlider: FC<InstagramPictureSliderProps> = ({media, paginat
                         decoding={"async"}
                         loading={"lazy"}
                         className={classes.media}
-                        src={mediaItem.path}
+                        src={`${process.env.REACT_APP_API_URL}/${mediaItem.path}`}
                         alt={""}
                     />
                 </SwiperSlide>

@@ -17,7 +17,7 @@ interface InstagramReelsPreviewProps extends InstagramPreviewType{
     description?: string,
 }
 
-const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, colabProfile, description, width}) => {
+const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, colabProfile, description, width, className}) => {
     const {name, picture} = profile;
     const [progress, setProgress] = useState<number>(0);
 
@@ -27,7 +27,7 @@ const InstagramReelsPreview: FC<InstagramReelsPreviewProps> = ({video, profile, 
     }
 
     return (
-        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"} width={width}>
+        <PhoneWrapper isHeaderOverlay={true} themeMode={"dark"} className={className} width={width}>
 
             <ReelsHeader className={classes.header}/>
 

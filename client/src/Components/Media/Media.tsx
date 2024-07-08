@@ -49,9 +49,7 @@ const Media:FC<MediaProps> = ({media, user, project, deleteCallback}) => {
                     <MediaItem
                         key={file.id}
                         file={file}
-                        userId={user.id}
-                        administratorId={project.administrator}
-                        deleteCallback={showDeletePopup}
+                        deleteCallback={file.author === user.id || user.id === project.administrator ? showDeletePopup : undefined}
                         clickCallback={showMedia}
                     />
                 )

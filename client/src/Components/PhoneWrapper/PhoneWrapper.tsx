@@ -1,17 +1,19 @@
 import React, {CSSProperties, FC} from 'react';
 import classes from "./PhoneWrapper.module.scss";
 import phoneBorder from "../../assets/images/phone-border.svg";
+import classNames from "classnames";
 
 interface IPhoneWrapperProps {
     children: React.ReactNode,
     isHeaderOverlay?: boolean,
     themeMode?: 'light' | 'dark',
-    width?: number
+    width?: number,
+    className?: string;
 }
 
-const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, isHeaderOverlay = false, themeMode = 'light', width = 320}) => {
+const PhoneWrapper:FC<IPhoneWrapperProps> = ({children, className, isHeaderOverlay = false, themeMode = 'light', width}) => {
     return (
-        <div className={classes.phone} data-header-overlay={isHeaderOverlay} data-theme={themeMode} style={{"--width": `${width}px`} as CSSProperties}>
+        <div className={classNames(classes.phone, className)} data-header-overlay={isHeaderOverlay} data-theme={themeMode} style={width ? {"--width": `${width}px`} as CSSProperties : {}}>
 
             <img
                 decoding={"async"}

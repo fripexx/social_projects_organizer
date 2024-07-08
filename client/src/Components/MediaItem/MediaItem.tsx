@@ -3,23 +3,24 @@ import classes from "./MediaItem.module.scss";
 import {FileType, PhotoCroppedType, PhotoType} from "../../store/types/FileType";
 import TypeMedia from "../TypeMedia/TypeMedia";
 import deleteIcon from "../../assets/images/dump_icon.svg"
+import {ReactSVG} from "react-svg";
+import checkIcon from "../../assets/images/check-icon.svg";
 
 interface MediaItem {
     file: FileType | PhotoType,
-    userId: string,
-    administratorId: string,
-    deleteCallback: (id: string) => void,
+    deleteCallback?: (id: string) => void,
     clickCallback: (media: FileType | PhotoType) => void,
+    select?: boolean,
 }
 
-const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback, clickCallback}) => {
+const MediaItem:FC<MediaItem> = ({file, deleteCallback, clickCallback, select = false}) => {
     const {id, path, mimetype, author, type, extension, name} = file;
     const [cropped, setCropped] = useState<PhotoCroppedType>();
 
-    const onDelete = (e: React.MouseEvent<HTMLDivElement>) => {
-        deleteCallback(id)
+    const deleteHandler = (e: React.MouseEvent<HTMLDivElement>) => {
+        if(deleteCallback) deleteCallback(id)
     }
-    const showMedia = (e:React.MouseEvent<HTMLDivElement>) => {
+    const clickHandler = (e:React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
         clickCallback(file);
     }
@@ -29,10 +30,16 @@ const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback,
     }, [file, type]);
 
     return (
-        <div className={classes.container}>
+        <div className={classes.container} data-select={select}>
 
-            {(author === userId || userId === administratorId) &&
-                <div className={classes.delete} onClick={onDelete}>
+            {select &&
+                <div className={classes.check}>
+                    <ReactSVG src={checkIcon}/>
+                </div>
+            }
+
+            {deleteCallback &&
+                <div className={classes.delete} onClick={deleteHandler}>
                     <img src={deleteIcon}/>
                 </div>
             }
@@ -40,7 +47,7 @@ const MediaItem:FC<MediaItem> = ({file, userId, administratorId, deleteCallback,
             <div className={classes.item} title={name}>
 
                 {(type === "image" || type === "video") &&
-                    <div className={classes.itemMedia} onClick={showMedia}>
+                    <div className={classes.itemMedia} onClick={clickHandler}>
 
                         {type === "image" && cropped &&
                             <img
