@@ -10,12 +10,16 @@ import {useAppSelector} from "../../../../../store/hooks/redux";
 import {QueryMedia} from "../../../../../store/thunks/ProjectMediaThunks";
 import instanceServer from "../../../../../api/instanceServer";
 import {GetMediaResponseType} from "../../../../../store/types/GetMediaResponseType";
+import {AspectRatio} from "../../../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
+import Select, {SelectOption} from "../../../../../Elements/Select/Select";
 
 interface PublicationParamsProps {
     selectCallback: (selectMedia: (PhotoType | FileType)[]) => void;
+    aspectRatio: AspectRatio;
+    changeRatioCallback: (value: string) => void
 }
 
-const PublicationParams: FC<PublicationParamsProps> = ({selectCallback}) => {
+const PublicationParams: FC<PublicationParamsProps> = ({selectCallback, aspectRatio, changeRatioCallback}) => {
     const project = useAppSelector(state => state.ProjectReducer.project);
     const [commentValue, setCommentValue] = useState<string>("");
     const [date, setDate] = useState<Date>(new Date());
@@ -23,6 +27,20 @@ const PublicationParams: FC<PublicationParamsProps> = ({selectCallback}) => {
     const [total, setTotal] = useState<number>(0)
     const [query, setQuery] = useState<QueryMedia>();
     const [loadMore, setLoadMore] = useState<boolean>(false);
+    const [aspectRatioOptions, setAspectRatioOptions] = useState<SelectOption[]>([
+        {
+            value: '1/1',
+            label: '1/1'
+        },
+        {
+            value: '1.91/1',
+            label: '1.91/1'
+        },
+        {
+            value: '4/5',
+            label: '4/5'
+        },
+    ])
 
     const commentChangeHandler = (value: string): void => {
         setCommentValue(value);
@@ -44,6 +62,9 @@ const PublicationParams: FC<PublicationParamsProps> = ({selectCallback}) => {
     }
     const loadMoreCallback = () => {
         if(!loadMore) setLoadMore(true)
+    }
+    const changeAspectRatioHandler = (value: string) => {
+        changeRatioCallback(value)
     }
 
     useEffect(() => {
@@ -107,6 +128,15 @@ const PublicationParams: FC<PublicationParamsProps> = ({selectCallback}) => {
             <Field text={'Дата публікації'}>
                 <InputDate changeCallback={changeDateHandler} value={date}/>
             </Field>
+
+            <Select
+                className={classes.select}
+                label={'Співвідношення'}
+                value={aspectRatio}
+                options={aspectRatioOptions}
+                onChange={changeAspectRatioHandler}
+                dropdownType={"relative"}
+            />
 
         </div>
     );

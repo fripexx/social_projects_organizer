@@ -7,12 +7,15 @@ import {Pagination} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 
+export type AspectRatio = '1.91/1' | '1/1' | '4/5';
+
 interface InstagramPictureSliderProps {
     media: (FileType | PhotoType)[],
-    paginationRef: React.RefObject<HTMLDivElement>
+    paginationRef: React.RefObject<HTMLDivElement>,
+    aspectRatio?: AspectRatio
 }
 
-const InstagramPictureSlider: FC<InstagramPictureSliderProps> = ({media, paginationRef}) => {
+const InstagramPictureSlider: FC<InstagramPictureSliderProps> = ({media, paginationRef, aspectRatio = '1/1'}) => {
     const swiperRef = useRef<SwiperRef>(null);
 
     return (
@@ -36,6 +39,7 @@ const InstagramPictureSlider: FC<InstagramPictureSliderProps> = ({media, paginat
                         className={classes.media}
                         src={`${process.env.REACT_APP_API_URL}/${mediaItem.path}`}
                         alt={""}
+                        style={{aspectRatio}}
                     />
                 </SwiperSlide>
             ))}

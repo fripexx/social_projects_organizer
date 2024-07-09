@@ -4,7 +4,7 @@ import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import InstagramFooter from "../Modules/InstagramFooter/InstagramFooter";
 import InstagramHeader from "../Modules/InstagramHeader/InstagramHeader";
 import InstagramPublicationHeader from "../Modules/InstagramPublicationHeader/InstagramPublicationHeader";
-import InstagramPictureSlider from "../Modules/InstagramPictureSlider/InstagramPictureSlider";
+import InstagramPictureSlider, {AspectRatio} from "../Modules/InstagramPictureSlider/InstagramPictureSlider";
 import InstagramPublicationButtons from "../Modules/InstagramPublicationButtons/InstagramPublicationButtons";
 import InstagramLikes from "../Modules/InstagramLikes/InstagramLikes";
 import InstagramComments from "../Modules/InstagramComments/InstagramComments";
@@ -14,9 +14,10 @@ import {InstagramPreviewType} from "../types/InstagramPreviewType";
 interface InstagramPublicationPreviewProps extends InstagramPreviewType{
     media: (FileType | PhotoType)[],
     location?: string,
+    aspectRatio?: AspectRatio
 }
 
-const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width, className}) => {
+const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width, className, aspectRatio}) => {
     const {name, picture} = profile
     const [paginationRef, setPaginationRef] = useState<RefObject<HTMLDivElement>>()
 
@@ -35,6 +36,7 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
                 <InstagramPictureSlider
                     media={media}
                     paginationRef={paginationRef}
+                    aspectRatio={aspectRatio}
                 />
             }
 
