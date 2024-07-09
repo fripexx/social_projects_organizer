@@ -14,14 +14,15 @@ import {AspectRatio} from "../../../../../Components/InstagramComponents/Modules
 import Select, {SelectOption} from "../../../../../Elements/Select/Select";
 
 interface PublicationParamsProps {
-    selectCallback: (selectMedia: (PhotoType | FileType)[]) => void;
+    description: string;
+    changeDescription: (value: string) => void;
+    selectMedіaCallback: (selectMedia: (PhotoType | FileType)[]) => void;
     aspectRatio: AspectRatio;
     changeRatioCallback: (value: string) => void
 }
 
-const PublicationParams: FC<PublicationParamsProps> = ({selectCallback, aspectRatio, changeRatioCallback}) => {
+const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, selectMedіaCallback, aspectRatio, changeRatioCallback}) => {
     const project = useAppSelector(state => state.ProjectReducer.project);
-    const [commentValue, setCommentValue] = useState<string>("");
     const [date, setDate] = useState<Date>(new Date());
     const [media, setMedia] = useState<(PhotoType | FileType)[]>([])
     const [total, setTotal] = useState<number>(0)
@@ -42,9 +43,6 @@ const PublicationParams: FC<PublicationParamsProps> = ({selectCallback, aspectRa
         },
     ])
 
-    const commentChangeHandler = (value: string): void => {
-        setCommentValue(value);
-    }
     const changeTimeHandler = (date: Date): void => {
         setDate(date)
     }
@@ -112,12 +110,12 @@ const PublicationParams: FC<PublicationParamsProps> = ({selectCallback, aspectRa
                 title={"Оберіть медіа"}
                 loadMoreCallback={loadMoreCallback}
                 maxSelectCount={10}
-                selectCallback={selectCallback}
+                selectCallback={selectMedіaCallback}
             />
 
             <Description
-                changeCallback={commentChangeHandler}
-                value={commentValue}
+                value={description}
+                changeCallback={changeDescription}
                 label={"Опис публікацї"}
             />
 

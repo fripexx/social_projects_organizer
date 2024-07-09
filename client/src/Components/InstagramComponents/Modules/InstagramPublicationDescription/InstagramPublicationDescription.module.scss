@@ -1,0 +1,9 @@
+.container {
+    font-size: calc(var(--width) / 27);
+    margin-top: calc(var(--width) / 100);
+    margin-bottom: calc(var(--width) / 100);
+}
+
+.profileName {
+    margin-right: calc(var(--width) / 100);
+}

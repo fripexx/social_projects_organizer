@@ -10,14 +10,17 @@ import InstagramLikes from "../Modules/InstagramLikes/InstagramLikes";
 import InstagramComments from "../Modules/InstagramComments/InstagramComments";
 import classes from "./InstagramPublicationPreview.module.scss";
 import {InstagramPreviewType} from "../types/InstagramPreviewType";
+import InstagramPublicationDescription
+    from "../Modules/InstagramPublicationDescription/InstagramPublicationDescription";
 
 interface InstagramPublicationPreviewProps extends InstagramPreviewType{
-    media: (FileType | PhotoType)[],
-    location?: string,
-    aspectRatio?: AspectRatio
+    media: (FileType | PhotoType)[];
+    location?: string;
+    aspectRatio?: AspectRatio;
+    description?: string;
 }
 
-const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width, className, aspectRatio}) => {
+const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width, className, aspectRatio, description}) => {
     const {name, picture} = profile
     const [paginationRef, setPaginationRef] = useState<RefObject<HTMLDivElement>>()
 
@@ -45,6 +48,13 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
                 <InstagramPublicationButtons setRef={setPaginationRef}/>
 
                 <InstagramLikes name={name}/>
+
+                {description &&
+                    <InstagramPublicationDescription
+                        profile={profile}
+                        description={description}
+                    />
+                }
 
                 <InstagramComments/>
 

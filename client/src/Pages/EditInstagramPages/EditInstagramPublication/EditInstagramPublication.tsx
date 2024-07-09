@@ -20,6 +20,7 @@ import {
 const EditInstagramPublication: FC = () => {
     const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([])
     const [aspectRatio, setAspectRatio] = useState<AspectRatio>('4/5')
+    const [description, setDescription] = useState<string>('');
 
     const buttonsHandler = (key: string) => {}
     const selectMediaHandler = (media: (PhotoType | FileType)[]): void => {
@@ -27,6 +28,9 @@ const EditInstagramPublication: FC = () => {
     }
     const changeRatioHandler = (value: string) => {
         setAspectRatio(value as AspectRatio);
+    }
+    const changeDescriptionHandler = (value: string) => {
+        setDescription(value)
     }
 
     return (
@@ -54,14 +58,17 @@ const EditInstagramPublication: FC = () => {
                             className={classes.preview}
                             media={selectMedia}
                             profile={{
-                                name: "",
+                                name: "shirshonkova_a",
                                 picture: ""
                             }}
                             aspectRatio={aspectRatio}
+                            description={description}
                         />
 
                         <PublicationParams
-                            selectCallback={selectMediaHandler}
+                            description={description}
+                            changeDescription={changeDescriptionHandler}
+                            selectMedіaCallback={selectMediaHandler}
                             aspectRatio={aspectRatio}
                             changeRatioCallback={changeRatioHandler}
 
