@@ -5,9 +5,10 @@ import rejectIcon from "../../assets/images/icon-reject.svg";
 import pendingIcon from "../../assets/images/icon-pending.svg";
 import confirmedIcon from "../../assets/images/icon-confirmed.svg";
 import RoundIcon from "../RoundIcon/RoundIcon";
+import {PostStatus} from "../../store/reducers/PostStatus";
 
 interface StatusPostLabelProps {
-    status: 'edit' | 'rejected' | 'pending' | 'confirmed';
+    status: PostStatus | undefined;
 }
 interface CurrentStatus {
     name: string,
@@ -41,7 +42,15 @@ const StatusPostLabel:FC<StatusPostLabelProps> = ({status}) => {
     }
 
     useEffect(() => {
-        if(data[status]) setCurrentStatus(data[status])
+        if(status && data[status]) {
+            setCurrentStatus(data[status])
+        } else {
+            setCurrentStatus({
+                name: 'Не опубліковано',
+                icon: "",
+                iconColor: ""
+            })
+        }
     }, [status])
 
     return (

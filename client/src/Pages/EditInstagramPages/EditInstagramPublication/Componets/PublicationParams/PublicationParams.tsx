@@ -12,16 +12,18 @@ import instanceServer from "../../../../../api/instanceServer";
 import {GetMediaResponseType} from "../../../../../store/types/GetMediaResponseType";
 import {AspectRatio} from "../../../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 import Select, {SelectOption} from "../../../../../Elements/Select/Select";
+import classNames from "classnames";
 
 interface PublicationParamsProps {
     description: string;
     changeDescription: (value: string) => void;
     selectMedіaCallback: (selectMedia: (PhotoType | FileType)[]) => void;
     aspectRatio: AspectRatio;
-    changeRatioCallback: (value: string) => void
+    changeRatioCallback: (value: string) => void;
+    className?: string;
 }
 
-const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, selectMedіaCallback, aspectRatio, changeRatioCallback}) => {
+const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, selectMedіaCallback, aspectRatio, changeRatioCallback, className}) => {
     const project = useAppSelector(state => state.ProjectReducer.project);
     const [date, setDate] = useState<Date>(new Date());
     const [media, setMedia] = useState<(PhotoType | FileType)[]>([])
@@ -102,7 +104,7 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
     }, [query]);
 
     return (
-        <div className={classes.container}>
+        <div className={classNames(classes.container, className)}>
 
             <SetMedia
                 media={media}
@@ -111,6 +113,15 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
                 loadMoreCallback={loadMoreCallback}
                 maxSelectCount={10}
                 selectCallback={selectMedіaCallback}
+            />
+
+            <Select
+                className={classes.select}
+                label={'Співвідношення'}
+                value={aspectRatio}
+                options={aspectRatioOptions}
+                onChange={changeAspectRatioHandler}
+                dropdownType={"relative"}
             />
 
             <Description
@@ -126,15 +137,6 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
             <Field text={'Дата публікації'}>
                 <InputDate changeCallback={changeDateHandler} value={date}/>
             </Field>
-
-            <Select
-                className={classes.select}
-                label={'Співвідношення'}
-                value={aspectRatio}
-                options={aspectRatioOptions}
-                onChange={changeAspectRatioHandler}
-                dropdownType={"relative"}
-            />
 
         </div>
     );

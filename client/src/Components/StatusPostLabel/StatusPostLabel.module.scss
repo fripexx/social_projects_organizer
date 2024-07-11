@@ -15,4 +15,16 @@
     transition: 0.2s ease-in-out;
     border: unset;
     outline: none;
+
+    @media (max-width: 900px) {
+        min-height: unset;
+        padding: 10px 10px;
+        font-size: 16px;
+        line-height: 1;
+        gap: 5px;
+
+        .icon {
+            --size: 16px !important;
+        }
+    }
 }

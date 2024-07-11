@@ -4,7 +4,7 @@ import ProjectReducer from "./reducers/ProjectSlice";
 import ProjectMediaReducer from "./reducers/ProjectMediaSlice";
 import UIReducer from "./reducers/UISlice";
 import GeneralChatSlice from "./reducers/GeneralChatSlice";
-import InstagramPostsSlice from "./reducers/InstagramPublicationSlice";
+import InstagramPublicationSlice from "./reducers/InstagramPublicationSlice";
 
 const rootReducer = combineReducers({
     UserReducer,
@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     ProjectMediaReducer,
     UIReducer,
     GeneralChatSlice,
-    InstagramPostsSlice,
+    InstagramPublicationSlice,
 })
 
 

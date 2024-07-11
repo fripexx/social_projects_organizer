@@ -50,7 +50,11 @@ const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unse
                     onDrop={(e) => handleDrop(e, index)}
                     onDragEnd={handleDragEnd}
                 >
-                    <PreviewMedia file={file} removeCallback={unselectMediaItemHandler} />
+                    <PreviewMedia
+                        className={classes.previewItem}
+                        file={file}
+                        removeCallback={unselectMediaItemHandler}
+                    />
                 </div>
             ))}
         </div>

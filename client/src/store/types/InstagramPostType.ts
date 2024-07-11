@@ -1,10 +1,11 @@
 import {BasicUserInfo} from "./UserType";
 import {FileType, PhotoType} from "./FileType";
+import {PostStatus} from "../reducers/PostStatus";
 
 export interface InstagramPostType {
     id: string,
     project: string,
-    status: 'publish' | 'rejected' | 'edit' | 'confirmed',
+    status: PostStatus,
     author: BasicUserInfo,
     dateCreated: Date,
     datePublish: Date,

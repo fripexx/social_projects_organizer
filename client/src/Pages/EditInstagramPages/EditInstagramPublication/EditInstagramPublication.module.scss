@@ -11,9 +11,39 @@
     display: grid;
     grid-template-columns: auto 1fr 1fr;
     gap: 25px;
+    padding: 0px;
+
+    @media (max-width: 900px) {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+
+.column {
+    height: 100%;
+
+    @media (max-width: 900px) {
+        display: none !important;
+    }
+
+    &[data-active="true"] {
+        display: flex !important;
+    }
+}
+
+.previewContainer {
+    padding: 15px;
+
+    @media (max-width: 900px) {
+        display: flex;
+        justify-content: center;
+    }
 }
 
 div.preview {
+    margin: 0 auto;
+
     @media (max-width: 600px) {
         --width: 300px;
     }
@@ -26,4 +56,26 @@ div.preview {
     @media (min-width: 2560px) {
         --width: 450px;
     }
+}
+
+.paramsContainer {
+    padding: 15px;
+}
+
+.params {
+    max-width: 700px !important;
+    width: 100%;
+}
+
+.chatContainer {
+    background: var(--Color-Light-Grey-Blue);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.withoutChat {
+    display: block;
+    text-align: center;
 }

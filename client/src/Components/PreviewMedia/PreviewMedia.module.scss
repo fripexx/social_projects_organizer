@@ -1,14 +1,17 @@
 .container {
-    width: 100px;
-    min-width: 100px;
-    max-width: 100px;
-    height: 100px;
-    min-height: 100px;
-    max-height: 100px;
+    --size-preview: 100px;
+
+    width: var(--size-preview);
+    min-width: var(--size-preview);
+    max-width: var(--size-preview);
+    height: var(--size-preview);
+    min-height: var(--size-preview);
+    max-height: var(--size-preview);
     position: relative;
     display: flex;
     align-items: stretch;
     justify-content: stretch;
+    aspect-ratio: 1/1;
 }
 
 .item {
@@ -61,6 +64,8 @@
 }
 
 .image {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
 }
 

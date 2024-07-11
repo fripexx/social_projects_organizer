@@ -5,13 +5,13 @@ import {addInstagramPost} from "../thunks/InstagramPostsThunks";
 
 interface InstagramPublicationState {
     isLoading: boolean,
-    posts: InstagramPostType[],
+    publication: InstagramPostType | null,
     error: ErrorResponseType | null;
 }
 
 const initialState: InstagramPublicationState = {
     isLoading: false,
-    posts: [],
+    publication: null,
     error: null
 }
 
@@ -20,7 +20,7 @@ const InstagramPublicationSlice = createSlice({
     initialState,
     reducers: {},
     extraReducers: {
-        /* addInstagramPost */
+        /* addInstagramPublication */
         [addInstagramPost.pending.type]: (state) => {
             state.isLoading = true;
         },
