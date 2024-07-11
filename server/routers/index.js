@@ -3,7 +3,7 @@ const UserController = require('../controllers/user-controller');
 const NoteController = require('../controllers/note-controller')
 const ProjectController = require('../controllers/project-controller')
 const ChatController = require('../controllers/chat-controller')
-const InstagramPostsController = require('../controllers/instagram-posts-controller')
+const InstagramPostsController = require('../controllers/instagram-post-controller')
 const ApiError = require("../exceptions/api-error");
 const uploadUserMiddleware = require('../middlewares/upload-user-middleware');
 const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
@@ -107,7 +107,7 @@ const setupRouter = ({io}) => {
     /**
      * InstagramPosts
      */
-    router.post('/add-instagram-post', [authMiddleware], InstagramPostsController.addInstagramPosts);
+    router.post('/create-instagram-publication', [authMiddleware], InstagramPostsController.createInstagramPublication);
 
     return router;
 };

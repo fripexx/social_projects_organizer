@@ -95,7 +95,7 @@ class ProjectService {
 
         return findProject.team.map(item => {
             return {
-                ...item,
+                role: item.role,
                 user: new UserDto(item.user, "basic")
             }
         });

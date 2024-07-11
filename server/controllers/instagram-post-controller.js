@@ -1,7 +1,7 @@
 const ApiError = require("../exceptions/api-error");
 
-class InstagramPostsController {
-    async addInstagramPosts(req, res, next) {
+class InstagramPostController {
+    async createInstagramPublication(req, res, next) {
         try {
             const user = await req.user;
             console.log(req.body)
@@ -11,4 +11,4 @@ class InstagramPostsController {
         }
     }
 }
-module.exports = new InstagramPostsController();
+module.exports = new InstagramPostController();
