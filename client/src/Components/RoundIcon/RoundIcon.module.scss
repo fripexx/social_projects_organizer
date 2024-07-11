@@ -14,7 +14,15 @@
     background: var(--Color-Dark);
     border-radius: 50%;
 
-    img{
+    svg {
+        --size-icon: calc(var(--size) * 0.6);
+
         display: block;
+        width: var(--size-icon);
+        min-width: var(--size-icon);
+        max-width: var(--size-icon);
+        height: var(--size-icon);
+        min-height: var(--size-icon);
+        max-height: var(--size-icon);
     }
 }

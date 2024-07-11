@@ -7,6 +7,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     text: string,
     icon?: string,
     iconColor?: string,
+    iconSize?: number;
     buttonColor?: string,
     textColor?: string,
     style?: React.CSSProperties,
@@ -15,7 +16,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     [key: string]: any
 }
 
-const Button: FC<ButtonProps> = ({text, icon, iconColor, buttonColor, textColor, style, onClick, className, rest}) => {
+const Button: FC<ButtonProps> = ({text, icon, iconColor, iconSize = 25, buttonColor, textColor, style, onClick, className, rest}) => {
     return (
         <button
             onClick={onClick}
@@ -25,7 +26,12 @@ const Button: FC<ButtonProps> = ({text, icon, iconColor, buttonColor, textColor,
         >
 
             {icon &&
-                <RoundIcon icon={icon} color={iconColor || ""} />
+                <RoundIcon
+                    className={classes.icon}
+                    icon={icon}
+                    color={iconColor || ""}
+                    size={iconSize}
+                />
             }
 
             <span className={classes.text} style={{color: textColor ? textColor : ""}}>

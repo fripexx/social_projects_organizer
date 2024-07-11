@@ -1,6 +1,7 @@
 import React, {FC} from 'react';
 import classes from "./EditPostButtons.module.scss";
-import RoundIcon from "../../RoundIcon/RoundIcon";
+import classNames from "classnames";
+import Button from "../../../Elements/Button/Button";
 
 export interface EditPostButton{
     key: string,
@@ -12,30 +13,28 @@ export interface EditPostButton{
 interface EditPostButtonsProps {
     buttons: EditPostButton[],
     callback: (key: string) => void,
+    className?: string;
 }
 
-const EditPostButtons:FC<EditPostButtonsProps> = ({buttons, callback}) => {
+const EditPostButtons:FC<EditPostButtonsProps> = ({buttons, callback, className}) => {
     return (
-        <div className={classes.container}>
+        <div className={classNames(classes.container, className)}>
 
             {buttons.map((button) => {
                 const {key, text, icon, iconColor} = button;
 
                 return (
-                    <button
+                    <Button
                         key={key}
                         className={classes.button}
+                        text={text}
+                        icon={icon}
+                        iconColor={iconColor}
                         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
                             e.preventDefault();
                             callback(key)
                         }}
-                    >
-
-                        <RoundIcon icon={icon} color={iconColor}/>
-
-                        <span>{text}</span>
-
-                    </button>
+                    />
                 )
             })}
 
