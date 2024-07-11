@@ -1,42 +1,74 @@
-const {Schema, model} = require('mongoose');
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const fileReferenceSchema = { type: Schema.Types.ObjectId, ref: "File" };
+const InstagramPublicationSchema = new Schema({
+    media: [{type: Schema.Types.ObjectId, ref: 'File', required: true}],
+    description: {type: String, default: ""},
+    aspectRatio: {
+        type: String,
+        enum: ['1.91/1', '1/1', '4/5'],
+        required: true
+    },
+});
 
-const InstagramSchema = new Schema({
+const InstagramStoriesSchema = new Schema({
+    media: {type: Schema.Types.ObjectId, ref: 'File', required: true},
+    description: {type: String, default: ""},
+});
+
+const InstagramReelsSchema = new Schema({
+    media: {type: Schema.Types.ObjectId, ref: 'File', required: true},
+    musicTrack: {type: String, default: ""},
+});
+
+const InstagramModelSchema = new Schema({
     project: {type: Schema.Types.ObjectId, ref: 'Project', required: true},
     status: {
         type: String,
-        enum: ['publish', 'rejected', 'edit', 'confirmed'],
+        enum: ['edit', 'pending', 'rejected', 'confirmed'],
         required: true,
     },
     author: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     dateCreated: {type: Date, default: Date.now},
     datePublish: {type: Date, default: Date.now},
-    description: {type: String, default: ""},
     typePost: {
         type: String,
-        enum: ['post', 'stories', 'reels'],
-        required: true,
+        enum: ['publication', 'stories', 'reels'],
+        required: true
     },
-    uploads: {
-        type: [fileReferenceSchema],
+    params: {
+        type: Schema.Types.Mixed,
+        required: true,
         validate: {
-            validator: function(v) {
-                return this.typePost === 'post' ? Array.isArray(v) : !Array.isArray(v)
+            validator: function (value) {
+                switch (this.typePost) {
+                    case 'publication':
+                        return validateAgainstSchema(value, InstagramPublicationSchema);
+                    case 'stories':
+                        return validateAgainstSchema(value, InstagramStoriesSchema);
+                    case 'reels':
+                        return validateAgainstSchema(value, InstagramReelsSchema);
+                    default:
+                        return false;
+                }
             },
-            message: props => `${props.value} не є валідним!`
+            message: props => `${props.value} is not a valid params object for typePost ${this.typePost}`
         }
     }
 });
 
-InstagramSchema.pre('validate', function(next) {
-    if (this.typePost !== 'post' && Array.isArray(this.uploads)) {
-        this.invalidate('uploads', 'Uploads мають бути посиланням на один файл для типів, які не дорівнюють "post".');
+function validateAgainstSchema(value, schema) {
+    try {
+        const model = mongoose.model('TempModel', schema); // Create a temporary model
+        const doc = new model(value);
+        doc.validateSync();
+        return true;
+    } catch (error) {
+        return false;
     }
-    if (this.typePost === 'post' && !Array.isArray(this.uploads)) {
-        this.invalidate('uploads', 'Uploads мають бути масивом для типу "post".');
-    }
-    next();
-});
+}
 
-module.exports = model('Post', InstagramSchema);
+
+const InstagramModel = mongoose.model('InstagramModel', InstagramModelSchema);
+
+module.exports = InstagramModel;

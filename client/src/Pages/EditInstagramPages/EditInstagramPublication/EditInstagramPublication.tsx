@@ -5,7 +5,6 @@ import SidebarProject from "../../../Components/SidebarProject/SidebarProject";
 import ContentPage from "../../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../../Components/HeaderPage/HeaderPage";
 import Content from "../../../Components/Content/Content";
-import ProjectPage from "../../../HOC/ProjectPage/ProjectPage";
 import Button from "../../../Elements/Button/Button";
 import StatusPostLabel from "../../../Components/StatusPostLabel/StatusPostLabel";
 import InstagramPublicationPreview from "../../../Components/InstagramComponents/InstagramPublicationPreview/InstagramPublicationPreview";
@@ -15,7 +14,7 @@ import {
     AspectRatio
 } from "../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 import Chat from "../../../Components/Chat/Chat";
-import {useAppSelector} from "../../../store/hooks/redux";
+import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 import {TeamMemberType} from "../../../store/types/TeamMemberType";
 import {PostStatus} from "../../../store/reducers/PostStatus";
 import EditButtons from "./Componets/EditButtons/EditButtons";
@@ -23,9 +22,11 @@ import {useSocket} from "../../../context/Socket-Context";
 import {BasicUserInfo} from "../../../store/types/UserType";
 import Tabs from "./Componets/Tabs/Tabs";
 import classNames from "classnames";
-import icon from "../../../assets/images/plus_icon.svg"
+import {setError} from "../../../store/reducers/ProjectSlice";
+import {addInstagramPublication} from "../../../store/thunks/InstagramPostsThunks";
 
 const EditInstagramPublication: FC = () => {
+    const dispatch = useAppDispatch()
     const user = useAppSelector(state => state.UserReducer.user);
     const project = useAppSelector(state => state.ProjectReducer.project);
     const teamProject = useAppSelector(state => state.ProjectReducer.team);
@@ -39,8 +40,33 @@ const EditInstagramPublication: FC = () => {
     const [aspectRatio, setAspectRatio] = useState<AspectRatio>('1/1')
     const [description, setDescription] = useState<string>('');
     const [currentTab, setCurrentTab] = useState<string>("preview")
+    const [date, setDate] = useState<Date>(new Date());
 
-    const buttonsHandler = (key: string) => {}
+    const buttonsHandler = (key: string) => {
+        switch (key) {
+            case "save":
+                saveCallback();
+                break;
+        }
+    }
+    const saveCallback = () => {
+        if(project && user) {
+            if(selectMedia.length !== 0 ) {
+                dispatch(addInstagramPublication({
+                    project: project.id,
+                    description: description,
+                    aspectRatio: aspectRatio,
+                    datePublish: date,
+                    media: selectMedia.map(media => media.id),
+                }))
+            } else {
+                dispatch(setError({ message: "Додайте хоча б один медіафайл" }))
+            }
+        }
+    }
+    const changeDateCallback = (date: Date) => {
+        setDate(date)
+    }
     const selectMediaHandler = (media: (PhotoType | FileType)[]): void => {
         setSelectMedia(media);
     }
@@ -72,85 +98,82 @@ const EditInstagramPublication: FC = () => {
     }, [publication]);
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage className={classes.header}>
 
-                    <HeaderPage className={classes.header}>
+                    <Button text={"Назад"} onClick={() => {}}/>
 
-                        <Button text={"Назад"} onClick={() => {}}/>
+                    <EditButtons
+                        status={status}
+                        callback={buttonsHandler}
+                        isAdmin={false}
+                    />
 
-                        <EditButtons
-                            status={status}
-                            callback={buttonsHandler}
-                            isAdmin={false}
+                    <StatusPostLabel status={status}/>
+
+                </HeaderPage>
+
+                <Content className={classes.columns}>
+
+                    <Tabs
+                        callback={changeTab}
+                        activeTab={currentTab}
+                    />
+
+                    <div className={classNames(classes.column, classes.previewContainer)} data-active={currentTab === "preview"}>
+                        <InstagramPublicationPreview
+                            className={classes.preview}
+                            media={selectMedia}
+                            profile={{
+                                name: "shirshonkova_a",
+                                picture: ""
+                            }}
+                            aspectRatio={aspectRatio}
+                            description={description}
                         />
+                    </div>
 
-                        <StatusPostLabel status={status}/>
-
-                    </HeaderPage>
-
-                    <Content className={classes.columns}>
-
-                        <Tabs
-                            callback={changeTab}
-                            activeTab={currentTab}
+                    <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
+                        <PublicationParams
+                            className={classes.params}
+                            description={description}
+                            changeDescription={changeDescriptionHandler}
+                            selectMediaCallback={selectMediaHandler}
+                            aspectRatio={aspectRatio}
+                            changeRatioCallback={changeRatioHandler}
+                            date={date}
+                            changeDateCallback={changeDateCallback}
                         />
+                    </div>
 
-                        <div className={classNames(classes.column, classes.previewContainer)} data-active={currentTab === "preview"}>
-                            <InstagramPublicationPreview
-                                className={classes.preview}
-                                media={selectMedia}
-                                profile={{
-                                    name: "shirshonkova_a",
-                                    picture: ""
-                                }}
-                                aspectRatio={aspectRatio}
-                                description={description}
-                            />
-                        </div>
+                    <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
+                        {status && publication && user ? (
+                            <>
+                                <Chat
+                                    chat={publication.id}
+                                    socket={socket}
+                                    model={'Post'}
+                                    currentUser={user}
+                                    team={teamChat}
+                                    unreadCallback={() => {}}
+                                />
+                            </>
+                        ) : (
+                            <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>
+                        )}
 
-                        <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
-                            <PublicationParams
-                                className={classes.params}
-                                description={description}
-                                changeDescription={changeDescriptionHandler}
-                                selectMedіaCallback={selectMediaHandler}
-                                aspectRatio={aspectRatio}
-                                changeRatioCallback={changeRatioHandler}
+                    </div>
 
-                            />
-                        </div>
+                </Content>
 
-                        <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
-                            {status && publication && user ? (
-                                <>
-                                    <Chat
-                                        chat={publication.id}
-                                        socket={socket}
-                                        model={'Post'}
-                                        currentUser={user}
-                                        team={teamChat}
-                                        unreadCallback={() => {}}
-                                    />
-                                </>
-                            ) : (
-                                <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>
-                            )}
+            </ContentPage>
 
-                        </div>
-
-                    </Content>
-
-                </ContentPage>
-
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 

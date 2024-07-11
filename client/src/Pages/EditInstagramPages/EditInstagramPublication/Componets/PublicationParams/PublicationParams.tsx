@@ -17,20 +17,21 @@ import classNames from "classnames";
 interface PublicationParamsProps {
     description: string;
     changeDescription: (value: string) => void;
-    selectMedіaCallback: (selectMedia: (PhotoType | FileType)[]) => void;
+    selectMediaCallback: (selectMedia: (PhotoType | FileType)[]) => void;
     aspectRatio: AspectRatio;
     changeRatioCallback: (value: string) => void;
+    date: Date;
+    changeDateCallback: (date: Date) => void;
     className?: string;
 }
 
-const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, selectMedіaCallback, aspectRatio, changeRatioCallback, className}) => {
+const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, selectMediaCallback, aspectRatio, changeRatioCallback, date, changeDateCallback, className}) => {
     const project = useAppSelector(state => state.ProjectReducer.project);
-    const [date, setDate] = useState<Date>(new Date());
     const [media, setMedia] = useState<(PhotoType | FileType)[]>([])
     const [total, setTotal] = useState<number>(0)
     const [query, setQuery] = useState<QueryMedia>();
     const [loadMore, setLoadMore] = useState<boolean>(false);
-    const [aspectRatioOptions, setAspectRatioOptions] = useState<SelectOption[]>([
+    const aspectRatioOptions: SelectOption[] = [
         {
             value: '1/1',
             label: '1/1'
@@ -43,13 +44,13 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
             value: '4/5',
             label: '4/5'
         },
-    ])
+    ]
 
     const changeTimeHandler = (date: Date): void => {
-        setDate(date)
+        changeDateCallback(date)
     }
     const changeDateHandler = (date: Date): void => {
-        setDate(date)
+        changeDateCallback(date)
     }
     const getMediaRequest = async () => {
         if (query) {
@@ -112,7 +113,7 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
                 title={"Оберіть медіа"}
                 loadMoreCallback={loadMoreCallback}
                 maxSelectCount={10}
-                selectCallback={selectMedіaCallback}
+                selectCallback={selectMediaCallback}
             />
 
             <Select

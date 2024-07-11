@@ -2,14 +2,22 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import instanceServer from "../../api/instanceServer";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {isAxiosError} from "axios";
-import {InstagramPostType} from "../types/InstagramPostType";
+import {InstagramPublicationType} from "../types/InstagramPostType";
 
-export const addInstagramPost = createAsyncThunk(
-    'instagramPosts/addInstagramPost',
-    async (data: FormData, thunkAPI) => {
+export interface addInstagramPublicationType {
+    project: string;
+    description: string;
+    aspectRatio: string;
+    datePublish: Date;
+    media: string[]
+}
+
+export const addInstagramPublication = createAsyncThunk(
+    'instagramPosts/addInstagramPublication',
+    async (data: addInstagramPublicationType, thunkAPI) => {
         try {
-            const response = await instanceServer.post<InstagramPostType>(
-                `/add-instagram-post`,
+            const response = await instanceServer.post<InstagramPublicationType>(
+                `/create-instagram-publication`,
                 data
             );
             return response.data;

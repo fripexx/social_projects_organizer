@@ -1,0 +1,57 @@
+const InstagramModel = require('../models/instagram-model');
+const ProjectModel = require('../models/project-model');
+const FileModel = require('../models/file-model');
+const InstagramPostDto = require('../dtos/instagram-post-dto');
+const ApiError = require("../exceptions/api-error");
+
+class InstagramPostService {
+    async createInstagramPublication(user, data) {
+        const {project, description, aspectRatio, datePublish, media} = data;
+
+
+        /**
+         * Перевірка існувння проєкту
+         */
+        const findProject = await ProjectModel.findOne({_id: project, 'team.user': user.id}).lean();
+
+        if (!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+
+        /**
+         * Перевірка ролі юзера
+         */
+        const teamMember = findProject.team.find(member => member.user.toString() === user.id);
+
+        if (teamMember.role !== 'smm_manager') throw new Error("Помилка: Вашій ролі обмежено доступ до цього запиту.");
+
+
+        /**
+         * Перевірка існування медіафайлів
+         */
+        const foundMedia = await FileModel.find({_id: {$in: media}}).lean();
+        const foundMediaIds = foundMedia.map(project => project._id.toString());
+
+        if (foundMediaIds.length === 0) throw ApiError.BadRequest('Помилка: Не вдалося знайти жодного медіа в базі даних.');
+
+
+        /**
+         * Створення запису в БД
+         */
+        const createInstagramPublication = await InstagramModel.create({
+            project: project,
+            status: "edit",
+            datePublish: datePublish,
+            author: user.id,
+            typePost: "publication",
+            params: {
+                media: media,
+                description: description,
+                aspectRatio: aspectRatio,
+            }
+        })
+
+        return new InstagramPostDto(createInstagramPublication);
+    }
+}
+
+module.exports = new InstagramPostService();
