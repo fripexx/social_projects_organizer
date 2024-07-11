@@ -28,6 +28,7 @@ const EditPostButtons:FC<EditPostButtonsProps> = ({buttons, callback, className}
                         key={key}
                         className={classes.button}
                         text={text}
+                        styleType={"grey"}
                         icon={icon}
                         iconColor={iconColor}
                         onClick={(e: React.MouseEvent<HTMLButtonElement>) => {
