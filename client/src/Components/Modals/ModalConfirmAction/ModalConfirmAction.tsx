@@ -24,9 +24,7 @@ const ModalConfirmAction:FC<ModalConfirmActionProps> = ({text, onCancel, onConfi
                 <Button
                     text={cancelText ? cancelText : "Ні"}
                     onClick={onCancel}
-                    buttonColor={"var(--Color-Light-Grey-Blue)"}
-                    textColor={"var(--Color-Dark)"}
-
+                    styleType={"grey-blue"}
                 />
 
                 <Button

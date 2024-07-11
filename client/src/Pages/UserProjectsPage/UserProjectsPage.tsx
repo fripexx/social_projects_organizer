@@ -111,8 +111,7 @@ const UserProjectsPage:FC = () => {
                         <Button
                             text={"Закрити"}
                             onClick={hideModal}
-                            buttonColor={"var(--Color-Light-Grey-Blue)"}
-                            textColor={"var(--Color-Dark)"}
+                            styleType={"grey-blue"}
                         />
 
                         <Button

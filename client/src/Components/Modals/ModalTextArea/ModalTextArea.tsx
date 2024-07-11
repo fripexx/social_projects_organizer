@@ -35,9 +35,7 @@ const ModalTextArea:FC<ModalTextAreaProps> = ({text, onChangeText, cancelText, c
                 <Button
                     text={cancelText ? cancelText : "Закрити"}
                     onClick={onCancel}
-                    buttonColor={"var(--Color-Light-Grey-Blue)"}
-                    textColor={"var(--Color-Dark)"}
-
+                    styleType={"grey-blue"}
                 />
 
                 <Button

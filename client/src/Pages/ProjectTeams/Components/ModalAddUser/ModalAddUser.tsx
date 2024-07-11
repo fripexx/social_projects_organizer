@@ -43,9 +43,7 @@ const ModalAddUser: FC<ModalAddUserProps> = ({isOpen, email, setEmailCallback, r
                     <Button
                         text={"Закрити"}
                         onClick={hideCallback}
-                        buttonColor={"var(--Color-Light-Grey-Blue)"}
-                        textColor={"var(--Color-Dark)"}
-
+                        styleType={"grey-blue"}
                     />
 
                     <Button

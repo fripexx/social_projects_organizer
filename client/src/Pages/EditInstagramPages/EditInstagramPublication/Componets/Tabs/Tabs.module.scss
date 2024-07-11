@@ -5,7 +5,7 @@
     justify-content: space-between;
     gap: 10px;
     padding: 10px;
-    
+
     @media (min-width: 900px) {
         display: none;
     }
@@ -16,15 +16,15 @@
     color: var(--Color-Dark);
 
     svg {
-        --Color-SVG: var(--Color-Dark)
+        --Color-SVG: var(--Color-Dark);
     }
 }
 
 .activeTab {
-    background: var(--Color-Dark);
-    color: var(--Color-White);
+    background: var(--Color-Dark) !important;
+    color: var(--Color-White) !important;
 
     svg {
-        --Color-SVG: var(--Color-White)
+        --Color-SVG: var(--Color-White) !important;
     }
 }

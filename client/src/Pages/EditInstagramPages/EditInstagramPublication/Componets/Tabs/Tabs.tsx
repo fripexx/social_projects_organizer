@@ -42,6 +42,7 @@ const Tabs:FC<TabsProps> = ({activeTab, callback, className}) => {
             {tabs.map(tab => (
                 <Button
                     className={classNames(classes.tab, activeTab === tab.key ? classes.activeTab : "")}
+                    styleType={"grey"}
                     text={tab.text}
                     icon={tab.icon}
                     iconColor={"rgba(0,0,0,0.0)"}

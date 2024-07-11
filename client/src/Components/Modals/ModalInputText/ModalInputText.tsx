@@ -38,9 +38,7 @@ const ModalInputText:FC<ModalInputTextProps> = ({text, type, onChangeText, cance
                 <Button
                     text={cancelText ? cancelText : "Закрити"}
                     onClick={onCancel}
-                    buttonColor={"var(--Color-Light-Grey-Blue)"}
-                    textColor={"var(--Color-Dark)"}
-
+                    styleType={"grey-blue"}
                 />
 
                 <Button

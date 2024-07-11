@@ -23,6 +23,7 @@ import {useSocket} from "../../../context/Socket-Context";
 import {BasicUserInfo} from "../../../store/types/UserType";
 import Tabs from "./Componets/Tabs/Tabs";
 import classNames from "classnames";
+import icon from "../../../assets/images/plus_icon.svg"
 
 const EditInstagramPublication: FC = () => {
     const user = useAppSelector(state => state.UserReducer.user);

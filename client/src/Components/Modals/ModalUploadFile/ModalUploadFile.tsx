@@ -156,9 +156,7 @@ const ModalUploadFile: FC<ModalUploadFileProps> = ({accept, files, name, maxSize
                 <Button
                     text={cancelText ? cancelText : "Ні"}
                     onClick={onClose}
-                    buttonColor={"var(--Color-Light-Grey-Blue)"}
-                    textColor={"var(--Color-Dark)"}
-
+                    styleType={"grey-blue"}
                 />
 
                 <Button

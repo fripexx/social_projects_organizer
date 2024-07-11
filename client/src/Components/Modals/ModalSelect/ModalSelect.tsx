@@ -36,9 +36,7 @@ const ModalSelect: FC<ModalSelectProps> = ({text, options, value, changeCallback
                 <Button
                     text={cancelText ? cancelText : "Ні"}
                     onClick={() => hideCallback()}
-                    buttonColor={"var(--Color-Light-Grey-Blue)"}
-                    textColor={"var(--Color-Dark)"}
-
+                    styleType={"grey-blue"}
                 />
 
                 <Button

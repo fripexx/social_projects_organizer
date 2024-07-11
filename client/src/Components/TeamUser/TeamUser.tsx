@@ -139,9 +139,8 @@ const TeamUser:FC<TeamUserProps> = ({user, currentUser, isAdmin, role, showButto
                             text={"Змінити роль юзера"}
                             onClick={showChangeRole}
                             icon={changeRoleIcon}
-                            buttonColor={"var(--Color-Grey)"}
+                            styleType={"grey"}
                             iconColor={"var(--Color-Yellow)"}
-                            textColor={"var(--Color-Dark)"}
                         />
 
                         {!isAdmin &&
@@ -150,18 +149,16 @@ const TeamUser:FC<TeamUserProps> = ({user, currentUser, isAdmin, role, showButto
                                     text={"Зробити адміністратором"}
                                     onClick={showChangeAdmin}
                                     icon={editIcon}
-                                    buttonColor={"var(--Color-Grey)"}
+                                    styleType={"grey"}
                                     iconColor={"var(--Color-Blue)"}
-                                    textColor={"var(--Color-Dark)"}
                                 />
 
                                 <Button
                                     text={"Видалити"}
                                     onClick={showDeleteModal}
                                     icon={deleteIcon}
-                                    buttonColor={"var(--Color-Grey)"}
+                                    styleType={"grey"}
                                     iconColor={"var(--Color-Red)"}
-                                    textColor={"var(--Color-Dark)"}
                                 />
 
                             </>
@@ -175,9 +172,8 @@ const TeamUser:FC<TeamUserProps> = ({user, currentUser, isAdmin, role, showButto
                         text={"Покинути проєкт"}
                         onClick={showLeaveModal}
                         icon={exitIcon}
-                        buttonColor={"var(--Color-Grey)"}
+                        styleType={"grey"}
                         iconColor={"var(--Color-Light-Grey-Blue)"}
-                        textColor={"var(--Color-Dark)"}
                     />
                 }
 

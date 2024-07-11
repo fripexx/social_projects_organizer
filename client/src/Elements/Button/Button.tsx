@@ -13,15 +13,17 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     style?: React.CSSProperties,
     onClick: React.MouseEventHandler<HTMLButtonElement>,
     className?: string;
+    styleType?: "grey" | "grey-blue" | "dark" | "white";
     [key: string]: any
 }
 
-const Button: FC<ButtonProps> = ({text, icon, iconColor, iconSize = 25, buttonColor, textColor, style, onClick, className, rest}) => {
+const Button: FC<ButtonProps> = ({text, icon, iconColor, iconSize = 25, buttonColor, textColor, style, onClick, className, styleType, rest}) => {
     return (
         <button
             onClick={onClick}
             className={classNames(classes.button, className)}
             style={{background: buttonColor ? buttonColor : "", ...style}}
+            data-style={styleType}
             {...rest}
         >
 
