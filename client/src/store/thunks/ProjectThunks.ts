@@ -1,6 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import ProjectService from "../../api/services/ProjectService";
 import {ProjectType} from "../types/ProjectType";
+import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
@@ -16,7 +17,7 @@ import {
     RemoveUserFromTeamRequestType
 } from "../../api/types/ProjectServiceTypes";
 
-export const getProject = createAsyncThunk<ProjectType, string, { rejectValue: ErrorResponseType }>(
+export const getProject = createAsyncThunk<ProjectType, string, AsyncThunkConfig>(
     'project/getProject',
     async (id, thunkAPI) => {
         try {
@@ -27,7 +28,7 @@ export const getProject = createAsyncThunk<ProjectType, string, { rejectValue: E
     }
 );
 
-export const editSettingsProject = createAsyncThunk<ProjectType, FormData, { rejectValue: ErrorResponseType }>(
+export const editSettingsProject = createAsyncThunk<ProjectType, FormData, AsyncThunkConfig>(
     'project/editSettingsProject',
     async (data, thunkAPI) => {
         try {
@@ -43,7 +44,7 @@ export const editSettingsProject = createAsyncThunk<ProjectType, FormData, { rej
  * NOTES THUNKS
  */
 
-export const getNotesProject = createAsyncThunk<NoteType[], string, { rejectValue: ErrorResponseType }>(
+export const getNotesProject = createAsyncThunk<NoteType[], string, AsyncThunkConfig>(
     'project/getNotesProject',
     async (id, thunkAPI) => {
         try {
@@ -54,7 +55,7 @@ export const getNotesProject = createAsyncThunk<NoteType[], string, { rejectValu
     }
 );
 
-export const addNoteInProject = createAsyncThunk<NoteType, AddNoteInProjectRequestType, { rejectValue: ErrorResponseType }>(
+export const addNoteInProject = createAsyncThunk<NoteType, AddNoteInProjectRequestType, AsyncThunkConfig>(
     'project/addNoteInProject',
     async (data, thunkAPI) => {
         try {
@@ -65,7 +66,7 @@ export const addNoteInProject = createAsyncThunk<NoteType, AddNoteInProjectReque
     }
 );
 
-export const deleteNoteInProject = createAsyncThunk<NoteType, DeleteNoteInProjectRequestType, { rejectValue: ErrorResponseType }>(
+export const deleteNoteInProject = createAsyncThunk<NoteType, DeleteNoteInProjectRequestType, AsyncThunkConfig>(
     'project/deleteNoteInProject',
     async (data, thunkAPI) => {
         try {
@@ -76,7 +77,7 @@ export const deleteNoteInProject = createAsyncThunk<NoteType, DeleteNoteInProjec
     }
 );
 
-export const changeNoteInProject = createAsyncThunk<NoteType, ChangeNoteDataRequestType, { rejectValue: ErrorResponseType }>(
+export const changeNoteInProject = createAsyncThunk<NoteType, ChangeNoteDataRequestType, AsyncThunkConfig>(
     'project/changeNoteInProject',
     async (data, thunkAPI) => {
         try {
@@ -92,7 +93,7 @@ export const changeNoteInProject = createAsyncThunk<NoteType, ChangeNoteDataRequ
  * TEAM THUNKS
  */
 
-export const getProjectTeam = createAsyncThunk<BasicUserInfo[], string, { rejectValue: ErrorResponseType }>(
+export const getProjectTeam = createAsyncThunk<BasicUserInfo[], string, AsyncThunkConfig>(
     'project/getProjectTeam',
     async (projectId, thunkAPI) => {
         try {
@@ -103,7 +104,7 @@ export const getProjectTeam = createAsyncThunk<BasicUserInfo[], string, { reject
     }
 );
 
-export const changeProjectAdministrator = createAsyncThunk<void, ChangeProjectAdminRequestType, { rejectValue: ErrorResponseType }>(
+export const changeProjectAdministrator = createAsyncThunk<void, ChangeProjectAdminRequestType, AsyncThunkConfig>(
     'project/changeProjectAdministrator',
     async (data, thunkAPI) => {
         try {
@@ -114,7 +115,7 @@ export const changeProjectAdministrator = createAsyncThunk<void, ChangeProjectAd
     }
 );
 
-export const changeRoleUser = createAsyncThunk<TeamMemberType, ChangeRoleUserRequestType, { rejectValue: ErrorResponseType }>(
+export const changeRoleUser = createAsyncThunk<TeamMemberType, ChangeRoleUserRequestType, AsyncThunkConfig>(
     'project/changeRoleUser', // Назва дії
     async (data, thunkAPI) => {
         try {
@@ -125,7 +126,7 @@ export const changeRoleUser = createAsyncThunk<TeamMemberType, ChangeRoleUserReq
     }
 );
 
-export const leaveProject = createAsyncThunk<TeamMemberType, LeaveProjectRequestType, { rejectValue: ErrorResponseType }>(
+export const leaveProject = createAsyncThunk<TeamMemberType, LeaveProjectRequestType, AsyncThunkConfig>(
     'project/leaveProject',
     async (data, thunkAPI) => {
         try {
@@ -136,7 +137,7 @@ export const leaveProject = createAsyncThunk<TeamMemberType, LeaveProjectRequest
     }
 );
 
-export const removeUserFromTeam = createAsyncThunk<TeamMemberType[], RemoveUserFromTeamRequestType, { rejectValue: ErrorResponseType }>(
+export const removeUserFromTeam = createAsyncThunk<TeamMemberType[], RemoveUserFromTeamRequestType, AsyncThunkConfig>(
     'project/removeUserFromTeam',
     async (data, thunkAPI) => {
         try {
@@ -147,7 +148,7 @@ export const removeUserFromTeam = createAsyncThunk<TeamMemberType[], RemoveUserF
     }
 );
 
-export const addUserInTeam = createAsyncThunk<TeamMemberType[], AddUserInTeamRequestType, { rejectValue: ErrorResponseType }>(
+export const addUserInTeam = createAsyncThunk<TeamMemberType[], AddUserInTeamRequestType, AsyncThunkConfig>(
     'project/addUserInTeam',
     async (data, thunkAPI) => {
         try {

@@ -1,10 +1,11 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import ProjectMediaService from "../../api/services/ProjectMediaService";
-import {FileType, PhotoType} from "../types/FileType";
+import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
+import {FileType, PhotoType} from "../types/FileType";
 import {DeleteMediaRequestType, QueryMediaRequestType, GetMediaResponseType} from "../../api/types/ProjectMediaTypes";
 
-export const uploadMedia = createAsyncThunk<(FileType | PhotoType)[], FormData, { rejectValue: ErrorResponseType }>(
+export const uploadMedia = createAsyncThunk<(FileType | PhotoType)[], FormData, AsyncThunkConfig>(
     'project/uploadMedia',
     async (data, thunkAPI) => {
         try {
@@ -15,7 +16,7 @@ export const uploadMedia = createAsyncThunk<(FileType | PhotoType)[], FormData, 
     }
 );
 
-export const getMedia = createAsyncThunk<GetMediaResponseType, QueryMediaRequestType, { rejectValue: ErrorResponseType }>(
+export const getMedia = createAsyncThunk<GetMediaResponseType, QueryMediaRequestType, AsyncThunkConfig>(
     'project/getMedia',
     async (data, thunkAPI) => {
         try {
@@ -26,7 +27,7 @@ export const getMedia = createAsyncThunk<GetMediaResponseType, QueryMediaRequest
     }
 );
 
-export const deleteMedia = createAsyncThunk<FileType | PhotoType, DeleteMediaRequestType, { rejectValue: ErrorResponseType }>(
+export const deleteMedia = createAsyncThunk<FileType | PhotoType, DeleteMediaRequestType, AsyncThunkConfig>(
     'project/deleteMedia',
     async (data, thunkAPI) => {
         try {

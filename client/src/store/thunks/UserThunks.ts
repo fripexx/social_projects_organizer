@@ -1,5 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit"
 import UserService from "../../api/services/UserService";
+import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {
     LoginRequestType,
@@ -11,7 +12,7 @@ import {NoteType} from "../types/NoteType";
 import {ProjectType} from "../types/ProjectType";
 import {SettingUser, UserType} from "../types/UserType";
 
-export const login = createAsyncThunk<UserType, LoginRequestType, { rejectValue: ErrorResponseType }>(
+export const login = createAsyncThunk<UserType, LoginRequestType, AsyncThunkConfig>(
     'user/login',
     async (obj, thunkAPI) => {
         try {
@@ -23,7 +24,7 @@ export const login = createAsyncThunk<UserType, LoginRequestType, { rejectValue:
     }
 );
 
-export const registration = createAsyncThunk<UserType, RegistrationRequestType, { rejectValue: ErrorResponseType }>(
+export const registration = createAsyncThunk<UserType, RegistrationRequestType, AsyncThunkConfig>(
     'user/registration',
     async (obj, thunkAPI) => {
         try {
@@ -34,7 +35,7 @@ export const registration = createAsyncThunk<UserType, RegistrationRequestType, 
     }
 );
 
-export const logout = createAsyncThunk<void, void, { rejectValue: ErrorResponseType }>(
+export const logout = createAsyncThunk<void, void, AsyncThunkConfig>(
     'user/logout',
     async (_, thunkAPI) => {
         try {
@@ -45,7 +46,7 @@ export const logout = createAsyncThunk<void, void, { rejectValue: ErrorResponseT
     }
 );
 
-export const checkAuth = createAsyncThunk<UserType, void, { rejectValue: ErrorResponseType }>(
+export const checkAuth = createAsyncThunk<UserType, void, AsyncThunkConfig>(
     'user/checkAuth',
     async (_, thunkAPI) => {
         try {
@@ -57,7 +58,7 @@ export const checkAuth = createAsyncThunk<UserType, void, { rejectValue: ErrorRe
     }
 );
 
-export const sendActivateLink = createAsyncThunk<void, string, { rejectValue: ErrorResponseType }>(
+export const sendActivateLink = createAsyncThunk<void, string, AsyncThunkConfig>(
     'user/sendActivateLink',
     async (email, thunkAPI) => {
         try {
@@ -68,7 +69,7 @@ export const sendActivateLink = createAsyncThunk<void, string, { rejectValue: Er
     }
 );
 
-export const editUser = createAsyncThunk<UserType, FormData, { rejectValue: ErrorResponseType }>(
+export const editUser = createAsyncThunk<UserType, FormData, AsyncThunkConfig>(
     'user/editUser',
     async (data, thunkAPI) => {
         try {
@@ -79,7 +80,7 @@ export const editUser = createAsyncThunk<UserType, FormData, { rejectValue: Erro
     }
 );
 
-export const editSettingsUser = createAsyncThunk<UserType, SettingUser, { rejectValue: ErrorResponseType }>(
+export const editSettingsUser = createAsyncThunk<UserType, SettingUser, AsyncThunkConfig>(
     'user/editSettingsUser',
     async (data, thunkAPI) => {
         try {
@@ -90,7 +91,7 @@ export const editSettingsUser = createAsyncThunk<UserType, SettingUser, { reject
     }
 );
 
-export const addNoteUser = createAsyncThunk<NoteType, string, { rejectValue: ErrorResponseType }>(
+export const addNoteUser = createAsyncThunk<NoteType, string, AsyncThunkConfig>(
     'user/addNoteUser',
     async (text, thunkAPI) => {
         try {
@@ -101,7 +102,7 @@ export const addNoteUser = createAsyncThunk<NoteType, string, { rejectValue: Err
     }
 );
 
-export const deleteNoteUser = createAsyncThunk<NoteType, string, { rejectValue: ErrorResponseType }>(
+export const deleteNoteUser = createAsyncThunk<NoteType, string, AsyncThunkConfig>(
     'user/deleteNoteUser',
     async (id, thunkAPI) => {
         try {
@@ -112,7 +113,7 @@ export const deleteNoteUser = createAsyncThunk<NoteType, string, { rejectValue: 
     }
 );
 
-export const getNotesUser = createAsyncThunk<NoteType[], void, { rejectValue: ErrorResponseType }>(
+export const getNotesUser = createAsyncThunk<NoteType[], void, AsyncThunkConfig>(
     'user/getNotesUser',
     async (_, thunkAPI) => {
         try {
@@ -123,7 +124,7 @@ export const getNotesUser = createAsyncThunk<NoteType[], void, { rejectValue: Er
     }
 );
 
-export const changeNoteUser = createAsyncThunk<NoteType, ChangeNoteRequestType, { rejectValue: ErrorResponseType }>(
+export const changeNoteUser = createAsyncThunk<NoteType, ChangeNoteRequestType, AsyncThunkConfig>(
     'user/changeNoteUser',
     async (data, thunkAPI) => {
         try {
@@ -134,7 +135,7 @@ export const changeNoteUser = createAsyncThunk<NoteType, ChangeNoteRequestType, 
     }
 );
 
-export const addProject = createAsyncThunk<ProjectType, AddProjectRequestType, { rejectValue: ErrorResponseType }>(
+export const addProject = createAsyncThunk<ProjectType, AddProjectRequestType, AsyncThunkConfig>(
     'user/addProject',
     async (data, thunkAPI) => {
         try {
@@ -145,7 +146,7 @@ export const addProject = createAsyncThunk<ProjectType, AddProjectRequestType, {
     }
 );
 
-export const getProjects = createAsyncThunk<ProjectType[], void, { rejectValue: ErrorResponseType }>(
+export const getProjects = createAsyncThunk<ProjectType[], void, AsyncThunkConfig>(
     'user/getProjects',
     async (_, thunkAPI) => {
         try {
