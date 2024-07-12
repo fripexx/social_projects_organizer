@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import instanceServer from "../../api/instanceServer";
-import {ErrorResponseType} from "../types/ErrorResponseType";
+import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {isAxiosError} from "axios";
 import {MessageType} from "../types/MessageType";
 

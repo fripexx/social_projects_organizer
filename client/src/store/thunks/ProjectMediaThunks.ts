@@ -1,7 +1,7 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
 import instanceServer from "../../api/instanceServer";
 import {FileType, PhotoType} from "../types/FileType";
-import {ErrorResponseType} from "../types/ErrorResponseType";
+import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {isAxiosError} from "axios";
 import {GetMediaResponseType} from "../types/GetMediaResponseType";
 

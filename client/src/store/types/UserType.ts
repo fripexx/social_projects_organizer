@@ -10,8 +10,11 @@ export interface BasicUserInfo {
     photo: PhotoType | null,
 }
 
-export interface UserType extends BasicUserInfo {
+export interface SettingUser {
     darkMode: boolean,
     pushNotifications: boolean,
+}
+
+export interface UserType extends BasicUserInfo, SettingUser {
     isActivated: boolean,
 }

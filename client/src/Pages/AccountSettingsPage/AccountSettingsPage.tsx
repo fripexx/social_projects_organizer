@@ -1,4 +1,4 @@
-import React, {FC, ReactEventHandler, useState} from 'react';
+import React, {FC, useState} from 'react';
 import saveIcon from "../../assets/images/save_icon.svg";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
@@ -8,17 +8,16 @@ import Button from "../../Elements/Button/Button";
 import Content from "../../Components/Content/Content";
 import AccountSettingsForm from "./Components/AccountSettingsForm/AccountSettingsForm";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {FormStateType} from "./types/FormStateType";
 import {editSettingsUser} from "../../store/thunks/UserThunks";
 import SidebarUser from "../../Components/SidebarUser/SidebarUser";
+import {SettingUser} from "../../store/types/UserType";
 
 const AccountSettingsPage: FC = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user);
-    const isLoading = useAppSelector(state => state.UserReducer.isLoading);
-    const [formState, setFormState] = useState<FormStateType>({
-        darkMode: user?.darkMode ? user.darkMode : false,
-        pushNotifications: user?.pushNotifications ? user.pushNotifications : false,
+    const [formState, setFormState] = useState<SettingUser>({
+        darkMode: user?.darkMode || false,
+        pushNotifications: user?.pushNotifications || false,
     })
     const [saveState, setSaveState] = useState<boolean>(false);
 

@@ -1,320 +1,157 @@
 import {createAsyncThunk} from "@reduxjs/toolkit"
-import instanceServer from "../../api/instanceServer";
-import {AuthRequestType} from "../types/AuthRequestType";
-import {AuthResponseType} from "../types/AuthResponseType";
-import {RegistrationRequestType} from "../types/RegistrationRequestType";
-import axios, {isAxiosError} from "axios";
-import {ErrorResponseType} from "../types/ErrorResponseType";
-import * as fs from "fs";
-import {FormStateType} from "../../Pages/AccountSettingsPage/types/FormStateType";
+import UserService from "../../api/services/UserService";
+import {ErrorResponseType} from "../../api/types/ErrorResponseType";
+import {
+    LoginRequestType,
+    RegistrationRequestType,
+    ChangeNoteRequestType,
+    AddProjectRequestType
+} from "../../api/types/UserServiceTypes";
 import {NoteType} from "../types/NoteType";
-import {ChangeNoteRequestType} from "../types/ChangeNoteRequestType";
 import {ProjectType} from "../types/ProjectType";
-export const login = createAsyncThunk(
+import {SettingUser, UserType} from "../types/UserType";
+
+export const login = createAsyncThunk<UserType, LoginRequestType, { rejectValue: ErrorResponseType }>(
     'user/login',
-    async (obj: AuthRequestType, thunkAPI) => {
+    async (obj, thunkAPI) => {
         try {
-            const response = await instanceServer.post<AuthResponseType>('/login', obj);
-            localStorage.setItem('token', response.data.accessToken);
-            return response.data.user;
+            const response = await UserService.login(obj);
+            return response.user;
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Помилка авторизації"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const registration = createAsyncThunk(
+export const registration = createAsyncThunk<UserType, RegistrationRequestType, { rejectValue: ErrorResponseType }>(
     'user/registration',
-    async (obj: RegistrationRequestType, thunkAPI) => {
+    async (obj, thunkAPI) => {
         try {
-            const response = await instanceServer.post<AuthResponseType>('/registration', obj);
-            localStorage.setItem('token', response.data.accessToken);
-            return response.data.user;
+            return await UserService.registration(obj);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const logout = createAsyncThunk(
+export const logout = createAsyncThunk<void, void, { rejectValue: ErrorResponseType }>(
     'user/logout',
     async (_, thunkAPI) => {
         try {
-            const response = await instanceServer.post<AuthResponseType>('/logout');
-            localStorage.removeItem('token')
-            return response.data;
+            return await UserService.logout();
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const checkAuth = createAsyncThunk(
+export const checkAuth = createAsyncThunk<UserType, void, { rejectValue: ErrorResponseType }>(
     'user/checkAuth',
     async (_, thunkAPI) => {
         try {
-            const response = await axios.get<AuthResponseType>(`${process.env.REACT_APP_API_URL}/api/refresh`, {withCredentials: true})
-            localStorage.setItem('token', response.data.accessToken);
-            return response.data.user;
+            const response = await UserService.checkAuth();
+            return response.user;
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const sendActivateLink = createAsyncThunk(
+export const sendActivateLink = createAsyncThunk<void, string, { rejectValue: ErrorResponseType }>(
     'user/sendActivateLink',
-    async (email: string, thunkAPI) => {
+    async (email, thunkAPI) => {
         try {
-            const response = await instanceServer.post('/send-activate-link', {email});
-            return response;
+            await UserService.sendActivateLink(email);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const editUser = createAsyncThunk(
+export const editUser = createAsyncThunk<UserType, FormData, { rejectValue: ErrorResponseType }>(
     'user/editUser',
-    async (data: FormData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.post<AuthResponseType>(
-                '/edit-user',
-                data,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                },
-            );
-
-            return response.data;
+            return await UserService.editUser(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const editSettingsUser = createAsyncThunk(
+export const editSettingsUser = createAsyncThunk<UserType, SettingUser, { rejectValue: ErrorResponseType }>(
     'user/editSettingsUser',
-    async (data: FormStateType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.post<Response>(
-                '/edit-settings-user',
-                data
-            );
-            return response.data;
+            return await UserService.editSettingsUser(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if(isAxiosError(e) && e?.response){
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const addNoteUser = createAsyncThunk(
+export const addNoteUser = createAsyncThunk<NoteType, string, { rejectValue: ErrorResponseType }>(
     'user/addNoteUser',
-    async (text: string, thunkAPI) => {
+    async (text, thunkAPI) => {
         try {
-            const response = await instanceServer.post<NoteType>(
-                '/add-note-user',
-                {text}
-            );
-            return response.data;
+            return await UserService.addNoteUser(text);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const deleteNoteUser = createAsyncThunk(
+export const deleteNoteUser = createAsyncThunk<NoteType, string, { rejectValue: ErrorResponseType }>(
     'user/deleteNoteUser',
-    async (id: string, thunkAPI) => {
+    async (id, thunkAPI) => {
         try {
-            const response = await instanceServer.delete<NoteType>(`/delete-note-user/${id}`,);
-            return response.data;
+            return await UserService.deleteNoteUser(id);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const getNotesUser = createAsyncThunk(
+export const getNotesUser = createAsyncThunk<NoteType[], void, { rejectValue: ErrorResponseType }>(
     'user/getNotesUser',
     async (_, thunkAPI) => {
         try {
-            const response = await instanceServer.get<NoteType[]>('/get-notes-user',);
-            return response.data;
+            return await UserService.getNotesUser();
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const changeNoteUser = createAsyncThunk(
+export const changeNoteUser = createAsyncThunk<NoteType, ChangeNoteRequestType, { rejectValue: ErrorResponseType }>(
     'user/changeNoteUser',
-    async (data: ChangeNoteRequestType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<NoteType>(
-                '/change-note-user',
-                data
-            );
-            return response.data;
+            return await UserService.changeNoteUser(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface addProjectRequestType {
-    name: string;
-    role: string;
-}
-
-export const addProject = createAsyncThunk(
+export const addProject = createAsyncThunk<ProjectType, AddProjectRequestType, { rejectValue: ErrorResponseType }>(
     'user/addProject',
-    async (data: addProjectRequestType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.post<ProjectType>(
-                '/add-project',
-                data
-            );
-            return response.data;
+            return await UserService.addProject(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const getProjects = createAsyncThunk(
+export const getProjects = createAsyncThunk<ProjectType[], void, { rejectValue: ErrorResponseType }>(
     'user/getProjects',
     async (_, thunkAPI) => {
         try {
-            const response = await instanceServer.get<ProjectType[]>(
-                '/get-projects',
-            );
-            return response.data;
+            return await UserService.getProjects();
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );

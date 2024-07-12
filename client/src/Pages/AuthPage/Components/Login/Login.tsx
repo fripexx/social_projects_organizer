@@ -6,7 +6,7 @@ import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
 import {useAppDispatch, useAppSelector} from "../../../../store/hooks/redux";
 import {login, sendActivateLink} from "../../../../store/thunks/UserThunks";
-import {AuthRequestType} from "../../../../store/types/AuthRequestType";
+import {LoginRequestType} from "../../../../api/types/UserServiceTypes";
 import Error from "../../../../Elements/Error/Error";
 interface ErrorState {
     email: string | boolean,
@@ -20,7 +20,7 @@ const Login:FC = () => {
     const shouldRedirectToProjectsPage = useAppSelector(state => state.UserReducer.shouldRedirectToProjectsPage)
 
     const [errorState, setErrorState] = useState<ErrorState>({email: false, password: false})
-    const [formState, setFormState] = useState<AuthRequestType>({email: "", password: ""})
+    const [formState, setFormState] = useState<LoginRequestType>({email: "", password: ""})
 
     const onChangeInput = (e: React.FormEvent<HTMLInputElement>):void => {
         e.preventDefault();

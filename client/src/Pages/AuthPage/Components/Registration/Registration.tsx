@@ -6,7 +6,7 @@ import Radio from "../../../../Elements/Radio/Radio";
 import Input from "../../../../Elements/Input/Input";
 import Submit from "../../../../Elements/Submit/Submit";
 import Title from "../../../../Elements/Title/Title";
-import {RegistrationRequestType} from "../../../../store/types/RegistrationRequestType";
+import {RegistrationRequestType} from "../../../../api/types/UserServiceTypes";
 import {registration} from "../../../../store/thunks/UserThunks";
 import Error from "../../../../Elements/Error/Error";
 import Success from "../../../../Elements/Success/Success";

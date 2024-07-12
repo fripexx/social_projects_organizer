@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ErrorResponseType} from "../types/ErrorResponseType";
+import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 
 interface GeneralChatState {
     chat: string | null,

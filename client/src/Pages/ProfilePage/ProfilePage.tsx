@@ -21,12 +21,12 @@ const ProfilePage: FC = () => {
     const user = useAppSelector(state => state.UserReducer.user);
     const isLoading = useAppSelector(state => state.UserReducer.isLoading);
     const [formState, setFormState] = useState<FormStateType>({
-        name: user?.name ? user.name : "",
-        surname: user?.surname ? user.surname : "",
-        email: user?.email ? user.email : "",
-        phone: user?.phone ? user.phone : "",
-        photo: user?.photo?.cropped ? user.photo.cropped["300"] : "",
-        telegram: user?.telegram ? user.telegram : "",
+        name: user?.name || "",
+        surname: user?.surname || "",
+        email: user?.email || "",
+        phone: user?.phone || "",
+        photo: user?.photo?.cropped["300"] || "",
+        telegram: user?.telegram || "",
     })
     const [errorState, setErrorState] = useState<ErrorFormStateType>({
         name: false,

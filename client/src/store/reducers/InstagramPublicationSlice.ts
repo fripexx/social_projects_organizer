@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {ErrorResponseType} from "../types/ErrorResponseType";
+import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {InstagramPublicationType} from "../types/InstagramPostType";
 import {addInstagramPublication, getInstagramPublication} from "../thunks/InstagramPostsThunks";
 

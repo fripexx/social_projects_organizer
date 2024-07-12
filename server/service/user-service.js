@@ -32,7 +32,7 @@ class UserService {
         const tokens = tokenService.generateTokens({...userDto});
         await tokenService.saveToken(userDto.id, tokens.refreshToken)
 
-        return {user: userDto}
+        return userDto;
     }
 
     async activate(activationLink) {

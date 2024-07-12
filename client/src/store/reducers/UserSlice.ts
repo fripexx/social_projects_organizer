@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {UserType} from "../types/UserType";
-import {AuthResponseType} from "../types/AuthResponseType";
+import {LoginResponseType} from "../../api/types/UserServiceTypes";
 import {
     addNoteUser, addProject,
     changeNoteUser,
@@ -12,7 +12,7 @@ import {
     registration,
     sendActivateLink
 } from "../thunks/UserThunks";
-import {ErrorResponseType} from "../types/ErrorResponseType";
+import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {NoteType} from "../types/NoteType";
 import {ProjectType} from "../types/ProjectType";
 
@@ -80,7 +80,7 @@ export const userSlice = createSlice({
         [logout.pending.type]: (state) => {
             state.isLoading = true;
         },
-        [logout.fulfilled.type]: (state, action: PayloadAction<AuthResponseType>) => {
+        [logout.fulfilled.type]: (state, action: PayloadAction<LoginResponseType>) => {
             state.isLoading = false;
             state.error = null;
             state.user = null;

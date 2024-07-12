@@ -5,5 +5,5 @@ export interface FormStateType {
     phone: string,
     photo: string | File,
     telegram: string,
-    [key: string]: string | File; // Додайте індексний тип для дозволу використання будь-яких рядкових ключів
+    [key: string]: string | File;
 }

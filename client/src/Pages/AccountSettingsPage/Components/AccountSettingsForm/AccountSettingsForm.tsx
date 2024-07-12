@@ -2,10 +2,10 @@ import React, {FC} from 'react';
 import classes from "./AccountSettingsForm.module.scss";
 import Field from "../../../../Elements/Field/Field";
 import Toggle from "../../../../Elements/Toggle/Toggle";
-import {FormStateType} from "../../types/FormStateType";
+import {SettingUser} from "../../../../store/types/UserType";
 
 interface AccountSettingsFormProps {
-    formState: FormStateType,
+    formState: SettingUser,
     onChange: (e: React.FormEvent<HTMLInputElement>) => void,
 }
 

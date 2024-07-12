@@ -47,7 +47,7 @@ class UserController {
 
             res.clearCookie('refreshToken');
 
-            return res.json(token);
+            return res.json();
         } catch (e) {
             next(e);
         }
