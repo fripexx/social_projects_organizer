@@ -1,342 +1,159 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import instanceServer from "../../api/instanceServer";
+import ProjectService from "../../api/services/ProjectService";
 import {ProjectType} from "../types/ProjectType";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {isAxiosError} from "axios";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
 import {TeamMemberType} from "../types/TeamMemberType";
+import {
+    AddNoteInProjectRequestType,
+    AddUserInTeamRequestType,
+    ChangeNoteDataRequestType,
+    ChangeProjectAdminRequestType,
+    ChangeRoleUserRequestType,
+    DeleteNoteInProjectRequestType,
+    LeaveProjectRequestType,
+    RemoveUserFromTeamRequestType
+} from "../../api/types/ProjectServiceTypes";
 
-export const getProject = createAsyncThunk(
+export const getProject = createAsyncThunk<ProjectType, string, { rejectValue: ErrorResponseType }>(
     'project/getProject',
-    async (id: string, thunkAPI) => {
+    async (id, thunkAPI) => {
         try {
-            const response = await instanceServer.get<ProjectType>(
-                `/get-project`,
-                {
-                    params: {id}
-                }
-            );
-            return response.data;
+            return await ProjectService.getProject(id);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
-export const editSettingsProject = createAsyncThunk(
+
+export const editSettingsProject = createAsyncThunk<ProjectType, FormData, { rejectValue: ErrorResponseType }>(
     'project/editSettingsProject',
-    async (data: FormData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.put<ProjectType>(
-                `/edit-settings-project`,
-                data,
-                {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
-                    }
-                },
-            );
-            return response.data;
+            return await ProjectService.editSettingsProject(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-/*
-* NOTES
-*/
 
-export const getNotesProject = createAsyncThunk(
+/**
+ * NOTES THUNKS
+ */
+
+export const getNotesProject = createAsyncThunk<NoteType[], string, { rejectValue: ErrorResponseType }>(
     'project/getNotesProject',
-    async (id: string, thunkAPI) => {
+    async (id, thunkAPI) => {
         try {
-            const response = await instanceServer.get<NoteType[]>(
-                `/get-notes-project`,
-                {
-                    params: {id}
-                },
-            );
-            return response.data;
+            return await ProjectService.getNotesProject(id);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface AddNoteData {
-    text: string;
-    idProject: string;
-}
-
-export const addNoteInProject = createAsyncThunk(
+export const addNoteInProject = createAsyncThunk<NoteType, AddNoteInProjectRequestType, { rejectValue: ErrorResponseType }>(
     'project/addNoteInProject',
-    async (data: AddNoteData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.post<NoteType>(
-                `/add-note-in-project`,
-                data,
-            );
-            return response.data;
+            return await ProjectService.addNoteInProject(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface deleteNoteData {
-    idNote: string;
-    idProject: string;
-}
-export const deleteNoteInProject = createAsyncThunk(
+export const deleteNoteInProject = createAsyncThunk<NoteType, DeleteNoteInProjectRequestType, { rejectValue: ErrorResponseType }>(
     'project/deleteNoteInProject',
-    async (data: deleteNoteData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.delete<NoteType>(
-                `/delete-note-in-project`,
-                { params: data },
-            );
-            return response.data;
+            return await ProjectService.deleteNoteInProject(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface changeNoteData extends deleteNoteData{
-    text: string;
-}
-export const changeNoteInProject = createAsyncThunk(
+export const changeNoteInProject = createAsyncThunk<NoteType, ChangeNoteDataRequestType, { rejectValue: ErrorResponseType }>(
     'project/changeNoteInProject',
-    async (data: changeNoteData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<NoteType>(
-                `/change-note-in-project`,
-                data
-            );
-            return response.data;
+            return await ProjectService.changeNoteInProject(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export const getProjectTeam = createAsyncThunk(
+
+/**
+ * TEAM THUNKS
+ */
+
+export const getProjectTeam = createAsyncThunk<BasicUserInfo[], string, { rejectValue: ErrorResponseType }>(
     'project/getProjectTeam',
-    async (projectId: string, thunkAPI) => {
+    async (projectId, thunkAPI) => {
         try {
-            const response = await instanceServer.get<BasicUserInfo[]>(
-                `/get-project-team`,
-                {params: {projectId}}
-            );
-            return response.data;
+            return await ProjectService.getProjectTeam(projectId);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface changeAdministratorType {
-    projectId: string;
-    newAdministrator: string;
-}
-export const changeProjectAdministrator = createAsyncThunk(
+export const changeProjectAdministrator = createAsyncThunk<void, ChangeProjectAdminRequestType, { rejectValue: ErrorResponseType }>(
     'project/changeProjectAdministrator',
-    async (data: changeAdministratorType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<Response>(
-                `/change-project-administrator`,
-                data
-            );
-            return response.data;
+            await ProjectService.changeProjectAdministrator(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface changeRoleType {
-    projectId: string;
-    teamMember: string;
-    role: string;
-}
-export const changeRoleUser = createAsyncThunk(
-    'project/changeRoleUser',
-    async (data: changeRoleType, thunkAPI) => {
+export const changeRoleUser = createAsyncThunk<TeamMemberType, ChangeRoleUserRequestType, { rejectValue: ErrorResponseType }>(
+    'project/changeRoleUser', // Назва дії
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<TeamMemberType>(
-                `/change-role-user`,
-                data
-            );
-            return response.data;
-        } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return await ProjectService.changeRoleUserRequest(data); // Виклик методу класу
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error as ErrorResponseType); // Обробка помилки
         }
     }
 );
 
-interface leaveProjectType {
-    projectId: string;
-    leaveUserId: string;
-}
-export const leaveProject = createAsyncThunk(
+export const leaveProject = createAsyncThunk<TeamMemberType, LeaveProjectRequestType, { rejectValue: ErrorResponseType }>(
     'project/leaveProject',
-    async (data: leaveProjectType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<TeamMemberType>(
-                `/leave-project`,
-                data
-            );
-            return response.data;
+            return await ProjectService.leaveProject(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface removeUserFromTeamType {
-    projectId: string;
-    removeUserId: string;
-}
-export const removeUserFromTeam = createAsyncThunk(
+export const removeUserFromTeam = createAsyncThunk<TeamMemberType[], RemoveUserFromTeamRequestType, { rejectValue: ErrorResponseType }>(
     'project/removeUserFromTeam',
-    async (data: removeUserFromTeamType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<TeamMemberType[]>(
-                `/remove-user-from-team`,
-                data
-            );
-            return response.data;
+            return await ProjectService.removeUserFromTeam(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface addUserInTeamType {
-    projectId: string;
-    email: string;
-    role: string;
-}
-export const addUserInTeam = createAsyncThunk(
+export const addUserInTeam = createAsyncThunk<TeamMemberType[], AddUserInTeamRequestType, { rejectValue: ErrorResponseType }>(
     'project/addUserInTeam',
-    async (data: addUserInTeamType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.patch<TeamMemberType[]>(
-                `/add-user-in-team`,
-                data
-            );
-            return response.data;
+            return await ProjectService.addUserInTeam(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
