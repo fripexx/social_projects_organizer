@@ -1,5 +1,5 @@
 import instanceServer from "../instanceServer";
-import {isAxiosError} from "axios";
+import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {InstagramPublicationType} from "../../store/types/InstagramPostType";
 import {
@@ -10,10 +10,7 @@ import {
 class InstagramPostsService {
     async addInstagramPublication(data: AddInstagramPublicationRequestType): Promise<InstagramPublicationType> {
         try {
-            const response = await instanceServer.post<InstagramPublicationType>(
-                '/create-instagram-publication',
-                data
-            );
+            const response = await instanceServer.post<InstagramPublicationType>('/create-instagram-publication', data);
 
             return response.data;
         } catch (e) {
@@ -26,16 +23,15 @@ class InstagramPostsService {
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
+
             throw response;
         }
     }
 
     async getInstagramPublication(data: GetInstagramPublicationRequestType): Promise<InstagramPublicationType> {
         try {
-            const response = await instanceServer.get<InstagramPublicationType>(
-                '/get-instagram-publication',
-                { params: data }
-            );
+            const config: AxiosRequestConfig = {params: data}
+            const response = await instanceServer.get<InstagramPublicationType>('/get-instagram-publication', config);
 
             return response.data;
         } catch (e) {
@@ -48,6 +44,7 @@ class InstagramPostsService {
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
+
             throw response;
         }
     }

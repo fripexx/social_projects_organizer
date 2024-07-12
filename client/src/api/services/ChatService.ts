@@ -7,6 +7,7 @@ class ChatService {
     async sendMessage(data: FormData): Promise<MessageType> {
         try {
             const response = await instanceServer.post<MessageType>('/send-message', data);
+
             return response.data;
         } catch (e) {
             const response: ErrorResponseType = {
@@ -18,6 +19,7 @@ class ChatService {
                 response.status = e.response.status;
                 response.message = e.response.data.message;
             }
+
             throw response;
         }
     }
