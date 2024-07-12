@@ -1,68 +1,30 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import instanceServer from "../../api/instanceServer";
+import InstagramPostsService from "../../api/services/InstagramPostsService";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {isAxiosError} from "axios";
 import {InstagramPublicationType} from "../types/InstagramPostType";
+import {
+    AddInstagramPublicationRequestType,
+    GetInstagramPublicationRequestType
+} from "../../api/types/InstagramPostsServiceTypes";
 
-export interface addInstagramPublicationType {
-    project: string;
-    description: string;
-    aspectRatio: string;
-    datePublish: Date;
-    media: string[]
-}
-
-export const addInstagramPublication = createAsyncThunk(
+export const addInstagramPublication = createAsyncThunk<InstagramPublicationType, AddInstagramPublicationRequestType, { rejectValue: ErrorResponseType }>(
     'instagramPosts/addInstagramPublication',
-    async (data: addInstagramPublicationType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.post<InstagramPublicationType>(
-                `/create-instagram-publication`,
-                data
-            );
-            return response.data;
+            return await InstagramPostsService.addInstagramPublication(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export interface getInstagramPublicationType {
-    project: string;
-    id: string;
-}
-
-export const getInstagramPublication = createAsyncThunk(
+export const getInstagramPublication = createAsyncThunk<InstagramPublicationType, GetInstagramPublicationRequestType, { rejectValue: ErrorResponseType }>(
     'instagramPosts/getInstagramPublication',
-    async (data: getInstagramPublicationType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.get<InstagramPublicationType>(
-                `/get-instagram-publication`,
-                {
-                    params: data
-                }
-            );
-            return response.data;
+            return await InstagramPostsService.getInstagramPublication(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
