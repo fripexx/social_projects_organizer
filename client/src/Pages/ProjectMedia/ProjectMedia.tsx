@@ -7,7 +7,8 @@ import MediaFileUpload from "../../Components/MediaFileUpload/MediaFileUpload";
 import Media from "../../Components/Media/Media";
 import {PreviewFileType} from "../../Components/PreviewFile/PreviewFile";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {deleteMedia, getMedia, QueryMedia, uploadMedia} from "../../store/thunks/ProjectMediaThunks";
+import {deleteMedia, getMedia, uploadMedia} from "../../store/thunks/ProjectMediaThunks";
+import {QueryMediaRequestType} from "../../api/types/ProjectMediaTypes";
 import Tabs from "./Components/Tabs/Tabs";
 import {useSearchParams} from "react-router-dom";
 import {setMedia} from "../../store/reducers/ProjectMediaSlice";
@@ -23,7 +24,7 @@ const ProjectMedia:FC = () => {
     const isLoading = useAppSelector(state => state.ProjectMediaReducer.isLoading);
     const media = useAppSelector(state => state.ProjectMediaReducer.media);
     const totalMedia = useAppSelector(state => state.ProjectMediaReducer.totalCount)
-    const [query, setQuery] = useState<QueryMedia>();
+    const [query, setQuery] = useState<QueryMediaRequestType>();
     const [searchParams, setSearchParams] = useSearchParams();
 
     const uploadCallback = (files: PreviewFileType[]): void => {
@@ -53,7 +54,7 @@ const ProjectMedia:FC = () => {
 
     useEffect(() => {
         if(project) {
-            const query: QueryMedia = {
+            const query: QueryMediaRequestType = {
                 projectId: project.id,
                 skip: 0,
                 limit: 28

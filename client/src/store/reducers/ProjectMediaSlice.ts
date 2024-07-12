@@ -2,7 +2,7 @@ import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {getMedia, uploadMedia, deleteMedia} from "../thunks/ProjectMediaThunks";
 import {FileType, PhotoType} from "../types/FileType";
-import {GetMediaResponseType} from "../types/GetMediaResponseType";
+import {GetMediaResponseType} from "../../api/types/ProjectMediaTypes";
 
 interface ProjectState {
     isLoading: boolean,

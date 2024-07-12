@@ -7,9 +7,9 @@ import InputDate from "../../../../../Elements/InputDate/InputDate";
 import SetMedia from "../../../../../Components/SetMedia/SetMedia";
 import {FileType, PhotoType} from "../../../../../store/types/FileType";
 import {useAppSelector} from "../../../../../store/hooks/redux";
-import {QueryMedia} from "../../../../../store/thunks/ProjectMediaThunks";
+import {QueryMediaRequestType} from "../../../../../api/types/ProjectMediaTypes";
 import instanceServer from "../../../../../api/instanceServer";
-import {GetMediaResponseType} from "../../../../../store/types/GetMediaResponseType";
+import {GetMediaResponseType} from "../../../../../api/types/ProjectMediaTypes";
 import {AspectRatio} from "../../../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 import Select, {SelectOption} from "../../../../../Elements/Select/Select";
 import classNames from "classnames";
@@ -29,7 +29,7 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
     const project = useAppSelector(state => state.ProjectReducer.project);
     const [media, setMedia] = useState<(PhotoType | FileType)[]>([])
     const [total, setTotal] = useState<number>(0)
-    const [query, setQuery] = useState<QueryMedia>();
+    const [query, setQuery] = useState<QueryMediaRequestType>();
     const [loadMore, setLoadMore] = useState<boolean>(false);
     const aspectRatioOptions: SelectOption[] = [
         {

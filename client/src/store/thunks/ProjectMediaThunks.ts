@@ -1,93 +1,38 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import instanceServer from "../../api/instanceServer";
+import ProjectMediaService from "../../api/services/ProjectMediaService";
 import {FileType, PhotoType} from "../types/FileType";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {isAxiosError} from "axios";
-import {GetMediaResponseType} from "../types/GetMediaResponseType";
+import {DeleteMediaRequestType, QueryMediaRequestType, GetMediaResponseType} from "../../api/types/ProjectMediaTypes";
 
-export const uploadMedia = createAsyncThunk(
+export const uploadMedia = createAsyncThunk<(FileType | PhotoType)[], FormData, { rejectValue: ErrorResponseType }>(
     'project/uploadMedia',
-    async (data: FormData, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.post<(FileType | PhotoType)[]>(
-                `/upload-media`,
-                data
-            );
-            return response.data;
+            return await ProjectMediaService.uploadMedia(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-export interface QueryMedia {
-    projectId: string,
-    limit: number,
-    skip: number,
-    type?: string | string[]
-}
-
-export const getMedia = createAsyncThunk(
+export const getMedia = createAsyncThunk<GetMediaResponseType, QueryMediaRequestType, { rejectValue: ErrorResponseType }>(
     'project/getMedia',
-    async (data: QueryMedia, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.get<GetMediaResponseType>(
-                `/get-media`,
-                {
-                    params: data
-                }
-            );
-            return response.data;
+            return await ProjectMediaService.getMedia(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
 
-interface DeleteMediaType {
-    idMedia: string,
-    projectId: string
-}
-export const deleteMedia = createAsyncThunk(
+export const deleteMedia = createAsyncThunk<FileType | PhotoType, DeleteMediaRequestType, { rejectValue: ErrorResponseType }>(
     'project/deleteMedia',
-    async (data: DeleteMediaType, thunkAPI) => {
+    async (data, thunkAPI) => {
         try {
-            const response = await instanceServer.delete<FileType | PhotoType>(
-                `/delete-media`,
-                {
-                    params: data
-                }
-            );
-            return response.data;
+            return await ProjectMediaService.deleteMedia(data);
         } catch (e) {
-            const response: ErrorResponseType = {
-                status: 0,
-                message: "Непередбачена помилка"
-            }
-
-            if (isAxiosError(e) && e?.response) {
-                response.status = e.response.status;
-                response.message = e.response.data.message;
-            }
-            return thunkAPI.rejectWithValue(response);
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
     }
 );
