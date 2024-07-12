@@ -52,6 +52,29 @@ class InstagramPostService {
 
         return new InstagramPostDto(createInstagramPublication);
     }
+
+    async getInstagramPublication(user, query) {
+        const {project, id} = query;
+
+
+        /**
+         * Перевірка існувння проєкту
+         */
+        const findProject = await ProjectModel.findOne({_id: project, 'team.user': user.id}).lean();
+
+        if (!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+
+        /**
+         * Створення запису в БД
+         */
+        const instagramPublication = await InstagramModel.findOne({_id: id, typePost: 'publication'});
+
+        if (!instagramPublication) throw ApiError.BadRequest('Помилка: Публікацію з таким ID не знайдено');
+
+
+        return new InstagramPostDto(instagramPublication);
+    }
 }
 
 module.exports = new InstagramPostService();

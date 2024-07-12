@@ -35,3 +35,34 @@ export const addInstagramPublication = createAsyncThunk(
         }
     }
 );
+
+export interface getInstagramPublicationType {
+    project: string;
+    id: string;
+}
+
+export const getInstagramPublication = createAsyncThunk(
+    'instagramPosts/getInstagramPublication',
+    async (data: getInstagramPublicationType, thunkAPI) => {
+        try {
+            const response = await instanceServer.get<InstagramPublicationType>(
+                `/get-instagram-publication`,
+                {
+                    params: data
+                }
+            );
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: "Непередбачена помилка"
+            }
+
+            if (isAxiosError(e) && e?.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+            return thunkAPI.rejectWithValue(response);
+        }
+    }
+);

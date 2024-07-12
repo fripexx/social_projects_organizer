@@ -108,6 +108,7 @@ const setupRouter = ({io}) => {
      * InstagramPosts
      */
     router.post('/create-instagram-publication', [authMiddleware], InstagramPostsController.createInstagramPublication);
+    router.get('/get-instagram-publication', [authMiddleware], InstagramPostsController.getInstagramPublication);
 
     return router;
 };

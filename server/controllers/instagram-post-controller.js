@@ -13,6 +13,18 @@ class InstagramPostController {
             next(e)
         }
     }
+
+    async getInstagramPublication(req, res, next) {
+        try {
+            const user = await req.user;
+            const query = req.query;
+            const publication = await InstagramPostService.getInstagramPublication(user, query)
+
+            return res.json(publication);
+        } catch (e) {
+            next(e)
+        }
+    }
 }
 
 module.exports = new InstagramPostController();

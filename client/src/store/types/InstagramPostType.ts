@@ -1,9 +1,10 @@
 import {PostStatus} from "../reducers/PostStatus";
+import {AspectRatio} from "../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 
 interface InstagramPublication {
     media: string[];
     description: string;
-    aspectRatio: '1.91/1' | '1/1' | '4/5';
+    aspectRatio: AspectRatio;
 }
 
 interface InstagramStories {
@@ -23,12 +24,11 @@ interface InstagramBase {
     author: string;
     dateCreated: Date;
     datePublish: Date;
-    description: string;
     typePost: 'publication' | 'stories' | 'reels';
 }
 
 export interface InstagramPublicationType extends InstagramBase {
-    typePost: "reels";
+    typePost: "publication";
     params: InstagramPublication;
 }
 

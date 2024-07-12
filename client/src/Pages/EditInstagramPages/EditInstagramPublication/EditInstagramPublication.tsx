@@ -10,37 +10,37 @@ import StatusPostLabel from "../../../Components/StatusPostLabel/StatusPostLabel
 import InstagramPublicationPreview from "../../../Components/InstagramComponents/InstagramPublicationPreview/InstagramPublicationPreview";
 import PublicationParams from "./Componets/PublicationParams/PublicationParams";
 import {FileType, PhotoType} from "../../../store/types/FileType";
-import {
-    AspectRatio
-} from "../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
+import {AspectRatio} from "../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 import Chat from "../../../Components/Chat/Chat";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 import {TeamMemberType} from "../../../store/types/TeamMemberType";
-import {PostStatus} from "../../../store/reducers/PostStatus";
 import EditButtons from "./Componets/EditButtons/EditButtons";
 import {useSocket} from "../../../context/Socket-Context";
 import {BasicUserInfo} from "../../../store/types/UserType";
 import Tabs from "./Componets/Tabs/Tabs";
 import classNames from "classnames";
 import {setError} from "../../../store/reducers/ProjectSlice";
-import {addInstagramPublication} from "../../../store/thunks/InstagramPostsThunks";
+import {addInstagramPublication, getInstagramPublication} from "../../../store/thunks/InstagramPostsThunks";
+import {useSearchParams} from "react-router-dom";
+import {InstagramPublicationType} from "../../../store/types/InstagramPostType";
+import {v4 as uuid} from "uuid";
+import Loader from "../../../Elements/Loader/Loader";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
+    const socket = useSocket()
+
     const user = useAppSelector(state => state.UserReducer.user);
     const project = useAppSelector(state => state.ProjectReducer.project);
     const teamProject = useAppSelector(state => state.ProjectReducer.team);
     const publication = useAppSelector(state => state.InstagramPublicationSlice.publication)
-    const socket = useSocket()
 
-    const [status, setStatus] = useState<PostStatus | undefined>(undefined)
+    const [editPublication, setEditPublication] = useState<InstagramPublicationType>();
     const [teamPost, setTeamPost] = useState<TeamMemberType[]>([]);
     const [teamChat, setTeamChat] = useState<BasicUserInfo[]>([]);
-    const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([])
-    const [aspectRatio, setAspectRatio] = useState<AspectRatio>('1/1')
-    const [description, setDescription] = useState<string>('');
     const [currentTab, setCurrentTab] = useState<string>("preview")
-    const [date, setDate] = useState<Date>(new Date());
+    const [searchParams, setSearchParams] = useSearchParams();
+    const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([])
 
     const buttonsHandler = (key: string) => {
         switch (key) {
@@ -51,12 +51,12 @@ const EditInstagramPublication: FC = () => {
     }
     const saveCallback = () => {
         if(project && user) {
-            if(selectMedia.length !== 0 ) {
+            if(selectMedia.length !== 0 && editPublication) {
                 dispatch(addInstagramPublication({
                     project: project.id,
-                    description: description,
-                    aspectRatio: aspectRatio,
-                    datePublish: date,
+                    description: editPublication.params.description,
+                    aspectRatio: editPublication.params.aspectRatio,
+                    datePublish: editPublication.datePublish,
                     media: selectMedia.map(media => media.id),
                 }))
             } else {
@@ -64,17 +64,26 @@ const EditInstagramPublication: FC = () => {
             }
         }
     }
+    const changeRatioHandler = (value: string) => {
+        setEditPublication(prevState => {
+            if(prevState !== undefined) return {...prevState, params: {...prevState.params, aspectRatio: value as AspectRatio}};
+            return prevState;
+        })
+    }
+    const changeDescriptionHandler = (value: string) => {
+        setEditPublication(prevState => {
+            if(prevState !== undefined) return {...prevState, params: {...prevState.params, description: value}};
+            return prevState;
+        })
+    }
     const changeDateCallback = (date: Date) => {
-        setDate(date)
+        setEditPublication(prevState => {
+            if(prevState !== undefined) return {...prevState, datePublish: date};
+            return prevState;
+        })
     }
     const selectMediaHandler = (media: (PhotoType | FileType)[]): void => {
         setSelectMedia(media);
-    }
-    const changeRatioHandler = (value: string) => {
-        setAspectRatio(value as AspectRatio);
-    }
-    const changeDescriptionHandler = (value: string) => {
-        setDescription(value)
     }
     const changeTab = (key: string) => {
         setCurrentTab(key)
@@ -94,8 +103,38 @@ const EditInstagramPublication: FC = () => {
         setTeamChat(teamPost.map(item => item.user))
     }, [teamPost]);
     useEffect(() => {
-        if(publication) setStatus(publication.status)
+        if(project && user) {
+            if(publication) {
+                setEditPublication(publication)
+            } else {
+                setEditPublication({
+                    id: uuid(),
+                    project: project.id,
+                    status: 'unpublish',
+                    author: user.id,
+                    dateCreated: new Date(),
+                    datePublish: new Date(),
+                    typePost: 'publication',
+                    params: {
+                        media: [],
+                        description: '',
+                        aspectRatio: '1/1'
+                    }
+                })
+            }
+        }
     }, [publication]);
+    useEffect(() => {
+        if(searchParams && project) {
+            const id = searchParams.get("id");
+            if(id) dispatch(getInstagramPublication({project: project.id, id}))
+        }
+    }, [searchParams]);
+    useEffect(() => {
+        if(editPublication && editPublication.params.media.length > 0) {
+            
+        }
+    }, [editPublication])
 
     return (
         <Page>
@@ -103,74 +142,78 @@ const EditInstagramPublication: FC = () => {
             <SidebarProject/>
 
             <ContentPage>
+                {editPublication !== undefined ? (
+                    <>
+                        <HeaderPage className={classes.header}>
 
-                <HeaderPage className={classes.header}>
+                            <Button text={"Назад"} onClick={() => {}}/>
 
-                    <Button text={"Назад"} onClick={() => {}}/>
+                            <EditButtons
+                                status={editPublication.status}
+                                callback={buttonsHandler}
+                                isAdmin={false}
+                            />
 
-                    <EditButtons
-                        status={status}
-                        callback={buttonsHandler}
-                        isAdmin={false}
-                    />
+                            <StatusPostLabel status={editPublication.status}/>
 
-                    <StatusPostLabel status={status}/>
+                        </HeaderPage>
 
-                </HeaderPage>
+                        <Content className={classes.columns}>
 
-                <Content className={classes.columns}>
+                            <Tabs
+                                callback={changeTab}
+                                activeTab={currentTab}
+                            />
 
-                    <Tabs
-                        callback={changeTab}
-                        activeTab={currentTab}
-                    />
+                            <div className={classNames(classes.column, classes.previewContainer)} data-active={currentTab === "preview"}>
 
-                    <div className={classNames(classes.column, classes.previewContainer)} data-active={currentTab === "preview"}>
-                        <InstagramPublicationPreview
-                            className={classes.preview}
-                            media={selectMedia}
-                            profile={{
-                                name: "shirshonkova_a",
-                                picture: ""
-                            }}
-                            aspectRatio={aspectRatio}
-                            description={description}
-                        />
-                    </div>
-
-                    <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
-                        <PublicationParams
-                            className={classes.params}
-                            description={description}
-                            changeDescription={changeDescriptionHandler}
-                            selectMediaCallback={selectMediaHandler}
-                            aspectRatio={aspectRatio}
-                            changeRatioCallback={changeRatioHandler}
-                            date={date}
-                            changeDateCallback={changeDateCallback}
-                        />
-                    </div>
-
-                    <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
-                        {status && publication && user ? (
-                            <>
-                                <Chat
-                                    chat={publication.id}
-                                    socket={socket}
-                                    model={'Post'}
-                                    currentUser={user}
-                                    team={teamChat}
-                                    unreadCallback={() => {}}
+                                <InstagramPublicationPreview
+                                    className={classes.preview}
+                                    media={selectMedia}
+                                    profile={{ name: "shirshonkova_a", picture: ""}}
+                                    aspectRatio={editPublication.params.aspectRatio}
+                                    description={editPublication.params.description}
                                 />
-                            </>
-                        ) : (
-                            <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>
-                        )}
 
-                    </div>
+                            </div>
 
-                </Content>
+                            <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
 
+                                <PublicationParams
+                                    className={classes.params}
+                                    description={editPublication.params.description}
+                                    changeDescription={changeDescriptionHandler}
+                                    selectMediaCallback={selectMediaHandler}
+                                    aspectRatio={editPublication.params.aspectRatio}
+                                    changeRatioCallback={changeRatioHandler}
+                                    date={editPublication.datePublish}
+                                    changeDateCallback={changeDateCallback}
+                                />
+
+                            </div>
+
+                            <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
+
+                                {editPublication.status !== "unpublish" && publication && user ? (
+                                    <Chat
+                                        chat={publication.id}
+                                        socket={socket}
+                                        model={'Post'}
+                                        currentUser={user}
+                                        team={teamChat}
+                                        unreadCallback={() => {}}
+                                    />
+                                ) : (
+                                    <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>
+                                )}
+
+                            </div>
+
+                        </Content>
+                    </>
+                ) : (
+                    <Loader/>
+                )}
             </ContentPage>
 
         </Page>

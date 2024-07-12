@@ -1,1 +1,1 @@
-export type PostStatus = 'edit'| 'pending' | 'rejected' | 'confirmed';
+export type PostStatus = 'unpublish' | 'edit'| 'pending' | 'rejected' | 'confirmed';

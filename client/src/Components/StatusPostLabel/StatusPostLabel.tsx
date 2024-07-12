@@ -39,17 +39,17 @@ const StatusPostLabel:FC<StatusPostLabelProps> = ({status}) => {
             icon: confirmedIcon,
             iconColor: "var(--Color-Green)"
         },
+        unpublish: {
+            name: 'Не опубліковано',
+            icon: "",
+            iconColor: ""
+        },
+
     }
 
     useEffect(() => {
         if(status && data[status]) {
             setCurrentStatus(data[status])
-        } else {
-            setCurrentStatus({
-                name: 'Не опубліковано',
-                icon: "",
-                iconColor: ""
-            })
         }
     }, [status])
 
