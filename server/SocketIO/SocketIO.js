@@ -30,8 +30,11 @@ const setupSocket = (server) => {
     });
 
     io.on('connection', (socket) => {
-        const joinProject = async ({projectId, model}) => await SocketIOController.joinProject(socket, projectId, model);
-        socket.on('joinProject', joinProject);
+        const joinRoom = async ({room, model}) => await SocketIOController.joinRoom(socket, room, model);
+        socket.on('joinRoom', joinRoom);
+
+        const leaveRoom = async ({room}) => await SocketIOController.leaveRoom(socket, room);
+        socket.on('leaveRoom', leaveRoom);
 
         const disconnect = async() => await SocketIOController.disconnect(socket)
         socket.on('disconnect', disconnect);

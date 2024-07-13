@@ -3,24 +3,32 @@ const ProjectModal = require("../models/project-model");
 const ChatService = require("../service/chat-service");
 
 class SocketIOController {
-    async joinProject(socket, projectId, model) {
+    async joinRoom(socket, room, model) {
         try {
             const user = socket?.user;
 
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id }).lean();
+                const findProject = await ProjectModal.findOne({ _id: room, 'team.user': user.id }).lean();
 
                 if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
 
-                socket.join(projectId);
+                socket.join(room);
+                socket.emit("joinedRoom", room)
             }
 
             if(model === "Post") {
 
             }
 
+        } catch (e) {
+            console.error(e);
+        }
+    }
+    async leaveRoom(socket, room) {
+        try {
+            socket.leave(room)
         } catch (e) {
             console.error(e);
         }
