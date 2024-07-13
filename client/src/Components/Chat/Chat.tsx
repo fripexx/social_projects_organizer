@@ -14,6 +14,7 @@ import ChatMediaUpload from "./Components/ChatMediaUpload/ChatMediaUpload";
 import {useAppDispatch} from "../../store/hooks/redux";
 import {sendMessage as sendMessageThunk} from "../../store/thunks/ChatThunks";
 import {v4 as uuid} from "uuid";
+import classNames from "classnames";
 
 interface ChatProps {
     chat: string,
@@ -22,9 +23,10 @@ interface ChatProps {
     currentUser: UserType,
     unreadCallback?: (count: number) => void,
     socket: Socket;
+    className?: string;
 }
 
-const Chat:FC<ChatProps> = ({chat, socket, model, team, currentUser, unreadCallback}) => {
+const Chat:FC<ChatProps> = ({chat, socket, model, team, currentUser, unreadCallback, className}) => {
     const dispatch = useAppDispatch()
     const [sendMessage, setSendMessage] = useState<string>('');
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
@@ -151,7 +153,7 @@ const Chat:FC<ChatProps> = ({chat, socket, model, team, currentUser, unreadCallb
     }, [loadMore]);
 
     return (
-        <div className={classes.chat}>
+        <div className={classNames(classes.chat, className)}>
 
             <main className={classes.main} ref={mainRef}>
 

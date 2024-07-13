@@ -235,6 +235,7 @@ const EditInstagramPublication: FC = () => {
 
                                 {editPublication.status !== "unpublish" && publication && user ? (
                                     <Chat
+                                        className={classes.chat}
                                         chat={publication.id}
                                         socket={socket}
                                         model={'Post'}

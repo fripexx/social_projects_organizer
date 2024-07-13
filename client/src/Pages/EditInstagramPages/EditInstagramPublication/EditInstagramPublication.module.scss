@@ -68,11 +68,15 @@ div.preview {
 }
 
 .chatContainer {
-    background: var(--Color-Light-Grey-Blue);
+    background: var(--Color-Grey);
     padding: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.chat{
+    height: 100%;
 }
 
 .withoutChat {
