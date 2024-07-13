@@ -41,6 +41,7 @@ const Tabs:FC<TabsProps> = ({activeTab, callback, className}) => {
         <div className={classNames(classes.container, className)}>
             {tabs.map(tab => (
                 <Button
+                    key={tab.key}
                     className={classNames(classes.tab, activeTab === tab.key ? classes.activeTab : "")}
                     styleType={"grey"}
                     text={tab.text}

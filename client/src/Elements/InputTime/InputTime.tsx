@@ -6,18 +6,8 @@ interface InputTimeProps {
     value: Date,
 }
 
-const getFormattedTime = (date: Date): string => {
-    let hours: number | string = date.getHours();
-    let minutes: number | string = date.getMinutes();
-
-    hours = hours < 10 ? '0' + hours : hours;
-    minutes = minutes < 10 ? '0' + minutes : minutes;
-
-    return `${hours}:${minutes}`;
-};
-
 const InputTime:FC<InputTimeProps> = ({changeCallback, value}) => {
-    const [inputValue, setValue] = useState<string>(getFormattedTime(value));
+    const [inputValue, setValue] = useState<string>();
 
     const onChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
         const [hours, minutes] = e.target.value.split(':').map(Number);
@@ -31,19 +21,35 @@ const InputTime:FC<InputTimeProps> = ({changeCallback, value}) => {
         setValue(e.target.value);
         changeCallback(newDate);
     }
+    const getFormattedTime = (date: Date): string => {
+        let hours: number | string = date.getHours();
+        let minutes: number | string = date.getMinutes();
+
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+
+        return `${hours}:${minutes}`;
+    };
 
     useEffect(() => {
         const time = new Date();
         if(!inputValue) setValue(`${time.getHours()}:${time.getMinutes()}`)
     }, [inputValue]);
+    useEffect(() => {
+        setValue(getFormattedTime(value))
+    }, [value]);
 
     return (
-        <input
-            className={classes.input}
-            type={"time"}
-            onChange={onChange}
-            value={inputValue}
-        />
+        <>
+            {inputValue &&
+                <input
+                    className={classes.input}
+                    type={"time"}
+                    onChange={onChange}
+                    value={inputValue}
+                />
+            }
+        </>
     );
 };
 

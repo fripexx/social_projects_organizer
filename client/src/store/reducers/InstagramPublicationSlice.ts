@@ -41,11 +41,7 @@ const InstagramPublicationSlice = createSlice({
         [getInstagramPublication.fulfilled.type]: (state, action: PayloadAction<InstagramPublicationType>) => {
             state.isLoading = false;
             state.error = null;
-            state.publication = {
-                ...action.payload,
-                datePublish: new Date(action.payload.datePublish.toString()),
-                dateCreated: new Date(action.payload.dateCreated.toString()),
-            };
+            state.publication = action.payload;
         },
         [getInstagramPublication.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;

@@ -125,7 +125,11 @@ const EditInstagramPublication: FC = () => {
     useEffect(() => {
         if(project && user) {
             if(publication) {
-                setEditPublication(publication)
+                setEditPublication({
+                    ...publication,
+                    dateCreated: new Date(publication.dateCreated),
+                    datePublish: new Date(publication.datePublish),
+                })
             } else {
                 setEditPublication({
                     id: uuid(),
