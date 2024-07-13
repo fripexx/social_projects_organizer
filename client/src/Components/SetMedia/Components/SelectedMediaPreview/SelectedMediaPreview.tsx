@@ -5,11 +5,11 @@ import PreviewMedia from '../../../../Components/PreviewMedia/PreviewMedia';
 
 interface SelectedMediaPreviewProps {
     selectMedia: (PhotoType | FileType)[];
+    updateMediaCallback: (updateMedia: (PhotoType | FileType)[]) => void;
     unselectMediaItemHandler: (removeId: string) => void;
-    setSelectMedia: Dispatch<SetStateAction<(PhotoType | FileType)[]>>;
 }
 
-const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unselectMediaItemHandler, setSelectMedia }) => {
+const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unselectMediaItemHandler, updateMediaCallback }) => {
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
     const handleDragStart = (e: DragEvent<HTMLDivElement>, index: number) => {
@@ -34,7 +34,7 @@ const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unse
         updatedMedia.splice(draggedIndex, 1);
         updatedMedia.splice(currentIndex, 0, draggedMedia);
 
-        setSelectMedia(updatedMedia);
+        updateMediaCallback(updatedMedia);
         setDraggingIndex(null);
     };
 

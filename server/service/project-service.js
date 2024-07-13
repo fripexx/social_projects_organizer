@@ -255,7 +255,7 @@ class ProjectService {
     }
 
     async getMedia(query, user) {
-        const {projectId, skip, limit, type} = query
+        const {projectId, skip, limit, type, mediaIds} = query
         const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
@@ -269,6 +269,12 @@ class ProjectService {
             filter['type'] = { $in: type };
         } else if (type && typeof type === 'string') {
             filter['type'] = type;
+        }
+
+        if (mediaIds && Array.isArray(mediaIds)) {
+            filter['_id'] = { $in: mediaIds };
+        } else if (mediaIds && typeof mediaIds === 'string') {
+            filter['_id'] = mediaIds;
         }
 
         const totalMediaCount = await FileModel.countDocuments(filter);

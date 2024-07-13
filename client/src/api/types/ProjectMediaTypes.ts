@@ -4,7 +4,8 @@ export interface QueryMediaRequestType {
     projectId: string,
     limit: number,
     skip: number,
-    type?: string | string[]
+    type?: string | string[],
+    mediaIds?: string[]
 }
 
 export interface DeleteMediaRequestType {

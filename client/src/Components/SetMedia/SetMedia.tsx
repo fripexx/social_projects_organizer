@@ -11,18 +11,20 @@ import ModalFooter from "./Components/ModalFooter/ModalFooter";
 import SelectedMediaPreview from "./Components/SelectedMediaPreview/SelectedMediaPreview";
 
 interface MediaProps {
-    media: (PhotoType | FileType)[];
+    mediaLibrary: (PhotoType | FileType)[];
     total: number;
     title?: string;
     textButton?: string;
     loadMoreCallback?: () => void;
     maxSelectCount?: number;
-    selectCallback: (selectMedia: (PhotoType | FileType)[]) => void;
+    selectMedia: (PhotoType | FileType)[];
+    selectCallback: (selectMedia: PhotoType | FileType) => void;
+    unselectCallback: (removeId: string) => void;
+    updateMediaCallback: (updateMedia: (PhotoType | FileType)[]) => void;
 }
 
-const SetMedia:FC<MediaProps> = ({media, total, title, textButton, loadMoreCallback, maxSelectCount = 0, selectCallback}) => {
+const SetMedia:FC<MediaProps> = ({mediaLibrary, total, title, textButton, loadMoreCallback, maxSelectCount = 0, selectMedia, selectCallback, unselectCallback, updateMediaCallback}) => {
     const [showModal, setShowModal] = useState<boolean>(false)
-    const [selectMedia, setSelectMedia] = useState<(PhotoType | FileType)[]>([])
     const mainRef = useRef<HTMLDivElement>(null);
 
     const closeButtonHandler = (): void => {
@@ -35,40 +37,26 @@ const SetMedia:FC<MediaProps> = ({media, total, title, textButton, loadMoreCallb
         setShowModal(true)
     }
     const selectMediaItemHandler = (media: PhotoType | FileType) => {
-        setSelectMedia(prevState => {
-            if (prevState.some(item => item.id === media.id)) {
-                return prevState.filter(item => item.id !== media.id);
-            } else if (prevState.length < maxSelectCount) {
-                return [...prevState, media];
-            }
-            return prevState;
-        });
+        selectCallback(media)
     }
     const unselectMediaItemHandler = (removeId: string) => {
-        setSelectMedia(prevState => {
-            if (prevState.some(item => item.id === removeId)) {
-                return prevState.filter(item => item.id !== removeId);
-            }
-            return prevState;
-        });
+        unselectCallback(removeId)
     }
 
     const scrollMainHandler = useCallback(() => {
         if (mainRef.current) {
             const {scrollTop, scrollHeight, clientHeight} = mainRef.current;
 
-            if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && loadMoreCallback) {
-                loadMoreCallback();
-            }
+            if (Math.ceil(scrollTop + clientHeight) >= scrollHeight && loadMoreCallback) loadMoreCallback();
         }
     }, [loadMoreCallback]);
 
     useEffect(() => {
-        if (mainRef.current && loadMoreCallback && total !== 0 && total > media.length) {
+        if (mainRef.current && loadMoreCallback && total !== 0 && total > mediaLibrary.length) {
             const {scrollHeight, clientHeight} = mainRef.current;
             if (scrollHeight === clientHeight) loadMoreCallback();
         }
-    }, [media]);
+    }, [mediaLibrary]);
     useEffect(() => {
         const ref = mainRef.current;
         if (ref) {
@@ -78,9 +66,7 @@ const SetMedia:FC<MediaProps> = ({media, total, title, textButton, loadMoreCallb
             };
         }
     }, [scrollMainHandler]);
-    useEffect(() => {
-        selectCallback(selectMedia)
-    }, [selectMedia])
+
     return (
         <div className={classes.container}>
 
@@ -94,7 +80,7 @@ const SetMedia:FC<MediaProps> = ({media, total, title, textButton, loadMoreCallb
 
             <SelectedMediaPreview
                 selectMedia={selectMedia}
-                setSelectMedia={setSelectMedia}
+                updateMediaCallback={updateMediaCallback}
                 unselectMediaItemHandler={unselectMediaItemHandler}
             />
 
@@ -107,7 +93,7 @@ const SetMedia:FC<MediaProps> = ({media, total, title, textButton, loadMoreCallb
                     <main className={classes.main} ref={mainRef}>
 
                         <ModalMediaGrid
-                            media={media}
+                            media={mediaLibrary}
                             selectMedia={selectMedia}
                             selectMediaItemHandler={selectMediaItemHandler}
                         />

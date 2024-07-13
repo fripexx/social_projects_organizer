@@ -16,17 +16,20 @@ import Select, {SelectOption} from "../../../../../Elements/Select/Select";
 interface PublicationParamsProps {
     description: string;
     changeDescription: (value: string) => void;
-    selectMediaCallback: (selectMedia: (PhotoType | FileType)[]) => void;
     aspectRatio: AspectRatio;
     changeRatioCallback: (value: string) => void;
     date: Date;
     changeDateCallback: (date: Date) => void;
     className?: string;
+    selectMedia: (PhotoType | FileType)[];
+    selectMediaCallback: (selectMedia: PhotoType | FileType) => void;
+    unselectMediaCallback: (removeId: string) => void;
+    updateMediaCallback: (updateMedia: (PhotoType | FileType)[]) => void;
 }
 
-const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, selectMediaCallback, aspectRatio, changeRatioCallback, date, changeDateCallback, className}) => {
+const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescription, aspectRatio, changeRatioCallback, date, changeDateCallback, className, selectMedia, selectMediaCallback, unselectMediaCallback, updateMediaCallback}) => {
     const project = useAppSelector(state => state.ProjectReducer.project);
-    const [media, setMedia] = useState<(PhotoType | FileType)[]>([])
+    const [mediaLibrary, setMediaLibrary] = useState<(PhotoType | FileType)[]>([])
     const [total, setTotal] = useState<number>(0)
     const [query, setQuery] = useState<QueryMediaRequestType>();
     const [loadMore, setLoadMore] = useState<boolean>(false);
@@ -51,9 +54,6 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
     const changeDateHandler = (date: Date): void => {
         changeDateCallback(date)
     }
-    const getMediaRequest = async () => {
-        if (query) return await ProjectMediaService.getMedia(query)
-    }
     const loadMoreCallback = () => {
         if(!loadMore) setLoadMore(true)
     }
@@ -76,7 +76,7 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
             setQuery({
                 projectId: project.id,
                 limit: 5,
-                skip: media.length,
+                skip: mediaLibrary.length,
                 type: ['image', 'video']
             })
         }
@@ -84,10 +84,10 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
     useEffect(() => {
         const fetchMedia = async () => {
             if (query) {
-                const mediaData = await getMediaRequest();
+                const mediaData = await ProjectMediaService.getMedia(query)
 
                 if (mediaData) {
-                    setMedia(prevState => [...prevState, ...mediaData.media]);
+                    setMediaLibrary(prevState => [...prevState, ...mediaData.media]);
                     setTotal(mediaData.total)
                     setLoadMore(false);
                 }
@@ -101,12 +101,15 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
         <div className={classNames(classes.container, className)}>
 
             <SetMedia
-                media={media}
+                mediaLibrary={mediaLibrary}
                 total={total}
                 title={"Оберіть медіа"}
                 loadMoreCallback={loadMoreCallback}
                 maxSelectCount={10}
+                selectMedia={selectMedia}
                 selectCallback={selectMediaCallback}
+                unselectCallback={unselectMediaCallback}
+                updateMediaCallback={updateMediaCallback}
             />
 
             <Select

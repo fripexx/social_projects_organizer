@@ -25,6 +25,8 @@ import {useSearchParams} from "react-router-dom";
 import {InstagramPublicationType} from "../../../store/types/InstagramPostType";
 import {v4 as uuid} from "uuid";
 import Loader from "../../../Elements/Loader/Loader";
+import ProjectMediaService from "../../../api/services/ProjectMediaService";
+import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
@@ -82,8 +84,26 @@ const EditInstagramPublication: FC = () => {
             return prevState;
         })
     }
-    const selectMediaHandler = (media: (PhotoType | FileType)[]): void => {
-        setSelectMedia(media);
+    const selectMediaHandler = (media: PhotoType | FileType): void => {
+        setSelectMedia(prevState => {
+            if (prevState.some(item => item.id === media.id)) {
+                return prevState.filter(item => item.id !== media.id);
+            } else if (prevState.length < 10) {
+                return [...prevState, media];
+            }
+            return prevState;
+        });
+    }
+    const unselectMediaItemHandler = (removeId: string) => {
+        setSelectMedia(prevState => {
+            if (prevState.some(item => item.id === removeId)) {
+                return prevState.filter(item => item.id !== removeId);
+            }
+            return prevState;
+        });
+    }
+    const changeSelectMediaHandler=(updateMedia: (PhotoType | FileType)[]) => {
+        setSelectMedia(updateMedia)
     }
     const changeTab = (key: string) => {
         setCurrentTab(key)
@@ -131,9 +151,21 @@ const EditInstagramPublication: FC = () => {
         }
     }, [searchParams]);
     useEffect(() => {
-        if(editPublication && editPublication.params.media.length > 0) {
-            
-        }
+        const fetchMedia = async () => {
+            if (project && editPublication && editPublication.params.media.length > 0) {
+                const query:QueryMediaRequestType = {
+                    projectId: project.id,
+                    limit: editPublication.params.media.length,
+                    skip: 0,
+                    mediaIds: editPublication.params.media
+                }
+
+                const mediaData = await ProjectMediaService.getMedia(query)
+
+                if (mediaData) setSelectMedia(mediaData.media)
+            }
+        };
+        fetchMedia();
     }, [editPublication])
 
     return (
@@ -183,11 +215,14 @@ const EditInstagramPublication: FC = () => {
                                     className={classes.params}
                                     description={editPublication.params.description}
                                     changeDescription={changeDescriptionHandler}
-                                    selectMediaCallback={selectMediaHandler}
                                     aspectRatio={editPublication.params.aspectRatio}
                                     changeRatioCallback={changeRatioHandler}
                                     date={editPublication.datePublish}
                                     changeDateCallback={changeDateCallback}
+                                    selectMedia={selectMedia}
+                                    selectMediaCallback={selectMediaHandler}
+                                    unselectMediaCallback={unselectMediaItemHandler}
+                                    updateMediaCallback={changeSelectMediaHandler}
                                 />
 
                             </div>
