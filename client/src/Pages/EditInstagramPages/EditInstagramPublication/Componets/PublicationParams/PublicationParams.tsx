@@ -1,18 +1,17 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./PublicationParams.module.scss";
+import classNames from "classnames";
+import {useAppSelector} from "../../../../../store/hooks/redux";
+import ProjectMediaService from "../../../../../api/services/ProjectMediaService";
+import {FileType, PhotoType} from "../../../../../store/types/FileType";
+import {QueryMediaRequestType} from "../../../../../api/types/ProjectMediaTypes";
+import {AspectRatio} from "../../../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 import Description from "../../../Components/Description/Description";
 import Field from "../../../../../Elements/Field/Field";
 import InputTime from "../../../../../Elements/InputTime/InputTime";
 import InputDate from "../../../../../Elements/InputDate/InputDate";
 import SetMedia from "../../../../../Components/SetMedia/SetMedia";
-import {FileType, PhotoType} from "../../../../../store/types/FileType";
-import {useAppSelector} from "../../../../../store/hooks/redux";
-import {QueryMediaRequestType} from "../../../../../api/types/ProjectMediaTypes";
-import instanceServer from "../../../../../api/instanceServer";
-import {GetMediaResponseType} from "../../../../../api/types/ProjectMediaTypes";
-import {AspectRatio} from "../../../../../Components/InstagramComponents/Modules/InstagramPictureSlider/InstagramPictureSlider";
 import Select, {SelectOption} from "../../../../../Elements/Select/Select";
-import classNames from "classnames";
 
 interface PublicationParamsProps {
     description: string;
@@ -53,13 +52,7 @@ const PublicationParams: FC<PublicationParamsProps> = ({description, changeDescr
         changeDateCallback(date)
     }
     const getMediaRequest = async () => {
-        if (query) {
-            const response = await instanceServer.get<GetMediaResponseType>(
-                `/get-media`,
-                {params: query}
-            );
-            return response.data
-        }
+        if (query) return await ProjectMediaService.getMedia(query)
     }
     const loadMoreCallback = () => {
         if(!loadMore) setLoadMore(true)
