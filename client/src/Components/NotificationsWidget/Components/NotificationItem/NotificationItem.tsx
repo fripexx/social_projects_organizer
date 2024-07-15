@@ -13,8 +13,8 @@ interface NotificationItemProps {
 }
 
 const NotificationItem: FC<NotificationItemProps> = ({notification, hideCallback, readCallback, className}) => {
-    const {id, message, link, isRead, timestamp} = notification
-    const time = new Date(timestamp).toLocaleTimeString("uk-UA",{hour: "2-digit", minute: "2-digit" });
+    const {id, projectName, message, link, isRead, timestamp} = notification
+    const time = new Date(timestamp).toLocaleTimeString("uk-UA", {hour: "2-digit", minute: "2-digit" });
     const date = new Date(timestamp).toLocaleDateString();
     const notificationRef = useRef<HTMLDivElement>(null);
 
@@ -41,6 +41,8 @@ const NotificationItem: FC<NotificationItemProps> = ({notification, hideCallback
 
     return (
         <div className={classNames(classes.container, className)} ref={notificationRef} data-is-read={isRead}>
+
+            <div className={classes.projectName}>{projectName}</div>
 
             <div className={classes.message}>{message}</div>
 

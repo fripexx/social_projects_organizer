@@ -25,10 +25,6 @@ const UserProjectsPage:FC = () => {
     const [addProjectName, setAddProjectName] = useState<string>("")
     const [addProjectUserRole, setAddProjectUserRole] = useState<string>(rolesList[0] ? rolesList[0].value : "")
 
-    useEffect(() => {
-        dispatch(getProjects());
-    }, [dispatch]);
-
     const showModal = (e:React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         setActiveModal(true)
@@ -53,6 +49,10 @@ const UserProjectsPage:FC = () => {
     const handleChangeRole = (value: string) => {
         setAddProjectUserRole(value)
     }
+
+    useEffect(() => {
+        dispatch(getProjects());
+    }, []);
 
     return (
         <Page>

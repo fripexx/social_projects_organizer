@@ -12,14 +12,6 @@ interface NotificationsWidgetProps {
     readCallback?: readNotificationCallback
 }
 
-const initialLastNotification:NotificationType = {
-    id: "",
-    message: "",
-    timestamp: Date.now(),
-    link: "",
-    isRead: false,
-}
-
 const NotificationsWidget: FC<NotificationsWidgetProps> = ({notifications, readCallback}) => {
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [hasNewNotification, setHasNewNotification] = useState<boolean>(false);

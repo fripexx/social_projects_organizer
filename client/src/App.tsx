@@ -6,6 +6,8 @@ import {checkAuth} from "./store/thunks/UserThunks";
 import Loader from "./Elements/Loader/Loader";
 import ProjectPage from "./HOC/ProjectPage/ProjectPage";
 import {SocketProvider} from "./context/Socket-Context";
+import NotificationWrapper from "./HOC/NotificationWrapper/NotificationWrapper";
+import RoomsConnection from "./HOC/RoomsConnection/RoomsConnection";
 
 const App = () => {
     const dispatch = useAppDispatch();
@@ -50,13 +52,17 @@ const App = () => {
                             element={
                                 route.requiresAuth && isAuth ? (
                                     <SocketProvider>
-                                        {route.isProjectPath ? (
-                                            <ProjectPage>
-                                                {RouteElement}
-                                            </ProjectPage>
-                                        ) : (
-                                            RouteElement
-                                        )}
+                                        <RoomsConnection>
+                                            <NotificationWrapper>
+                                                {route.isProjectPath ? (
+                                                    <ProjectPage>
+                                                        {RouteElement}
+                                                    </ProjectPage>
+                                                ) : (
+                                                    RouteElement
+                                                )}
+                                            </NotificationWrapper>
+                                        </RoomsConnection>
                                     </SocketProvider>
                                 ) : (
                                     RouteElement

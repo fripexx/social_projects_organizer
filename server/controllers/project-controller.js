@@ -85,7 +85,15 @@ class ProjectController {
             const {key} = req.params;
             const {candidate, project} = await ProjectService.confirmNewAdministrator(key);
 
-            io.to(project.id).emit('teamNotification', `${candidate.name} новий адміністратор проєкту.`);
+            const notification = {
+                project: {
+                    id: project.id.toString(),
+                    name: project.name,
+                },
+                message: `${candidate.name} новий адміністратор проєкту.`
+            }
+
+            io.to(project.id.toString()).emit('teamNotification', notification);
 
             return res.redirect(`${process.env.CLIENT_URL}/project/${project.id}/teams`);
         } catch (e) {
@@ -99,7 +107,15 @@ class ProjectController {
             const {projectId, removeUserId} = req.body;
             const {candidate, project} = await ProjectService.removeUserFromTeam(projectId, user, removeUserId);
 
-            io.to(projectId).emit('teamNotification', `${candidate.name} більше не є частиною нашої команди.`);
+            const notification = {
+                project: {
+                    id: project.id.toString(),
+                    name: project.name,
+                },
+                message: `${candidate.name} більше не є частиною нашої команди.`
+            }
+
+            io.to(project.id.toString()).emit('teamNotification', notification);
 
             return res.json(project.team);
         } catch (e) {
@@ -108,12 +124,20 @@ class ProjectController {
     }
 
     async addUserInTeam(req, res, next, io) {
-        try{
+        try {
             const user = await req.user;
             const {projectId, email, role} = req.body;
             const {candidate, project} = await ProjectService.addUserInTeam(projectId, user, email, role);
 
-            io.to(projectId).emit('teamNotification', `${candidate.name} тепер частина нашої команди. Вітаємо!`);
+            const notification = {
+                project: {
+                    id: project.id.toString(),
+                    name: project.name,
+                },
+                message: `${candidate.name} тепер частина нашої команди. Вітаємо!`,
+            }
+
+            io.to(project.id.toString()).emit('teamNotification', notification);
 
             return res.json(project.team)
         } catch (e) {
@@ -122,12 +146,20 @@ class ProjectController {
     }
 
     async changeRoleUser(req, res, next, io) {
-        try{
+        try {
             const user = await req.user;
             const {projectId, teamMember, role} = req.body;
             const {candidate, project} = await ProjectService.changeRoleUser(projectId, user, teamMember, role);
 
-            io.to(projectId).emit('teamNotification', `${candidate.name} тепер має нову роль у команді.`);
+            const notification = {
+                project: {
+                    id: project.id.toString(),
+                    name: project.name,
+                },
+                message: `${candidate.name} тепер має нову роль у команді.`
+            }
+
+            io.to(project.id.toString()).emit('teamNotification', notification);
 
             return res.json(project.team)
         } catch (e) {
@@ -136,12 +168,20 @@ class ProjectController {
     }
 
     async leaveProject(req, res, next, io) {
-        try{
+        try {
             const user = await req.user;
             const {projectId, leaveUserId} = req.body;
-            const project = await ProjectService.leaveProject(projectId, leaveUserId, user);
+            const {candidate, project} = await ProjectService.leaveProject(projectId, leaveUserId, user);
 
-            io.to(projectId).emit('teamNotification', `${candidate.name} покинув нашу команду.`);
+            const notification = {
+                project: {
+                    id: project.id.toString(),
+                    name: project.name,
+                },
+                message: `${candidate.name} покинув нашу команду.`
+            }
+
+            io.to(project.id.toString()).emit('teamNotification', notification);
 
             return res.json(project.team)
         } catch (e) {

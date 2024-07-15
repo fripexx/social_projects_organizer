@@ -6,16 +6,26 @@
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-    gap: 15px;
 
     &[data-is-read="false"] {
         border-color: var(--Color-Dark);
     }
 }
 
+.projectName {
+    display: block;
+    width: 100%;
+    text-align: left;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
 .message {
     width: 100%;
     line-height: 25px;
+    margin-bottom: 15px;
 }
 
 .footer {
