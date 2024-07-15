@@ -1,6 +1,7 @@
-const ChatService = require("../service/chat-service");
-const ProjectModal = require("../models/project-model");
 const ApiError = require("../exceptions/api-error");
+const ChatService = require("../service/chat-service");
+const ProjectService = require("../service/project-service");
+const InstagramPostService = require("../service/instagram-post-service");
 const FileService = require("../service/file-service");
 
 class ChatController {
@@ -13,9 +14,8 @@ class ChatController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': user.id }).lean();
-
-                if(!findProject) throw ApiError.BadRequest('Проєкту за таким ID не знайдено.');
+                // Перевірка доступу до проєкту
+                await ProjectService.checkUserAccessToProject(chat, user);
 
                 const idsFile = []
 
@@ -27,7 +27,26 @@ class ChatController {
                 }
 
                 const message = await ChatService.addMessage(chat, user.id, content, idsFile);
-                io.to(chat).emit('newMessage', message);
+
+                io.to(chat).emit('newMessage', {chatId: chat, message});
+            }
+
+            if(model === "Post") {
+                // Перевірка доступу до посту
+                const post = await InstagramPostService.checkUserAccessToPost(chat, user);
+
+                const idsFile = []
+
+                if(files && Array.isArray(files)) {
+                    for (const file of files) {
+                        const fileData = await FileService.uploadFile(file, user, chat, "Chat");
+                        idsFile.push(fileData.id);
+                    }
+                }
+
+                const message = await ChatService.addMessage(chat, user.id, content, idsFile);
+
+                io.to(chat).emit('newMessage', {chatId: chat, message});
             }
 
             return res.json();

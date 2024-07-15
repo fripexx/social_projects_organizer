@@ -27,6 +27,8 @@ import {v4 as uuid} from "uuid";
 import Loader from "../../../Elements/Loader/Loader";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
 import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
+import {Socket} from "socket.io-client";
+import {setPublication} from "../../../store/reducers/InstagramPublicationSlice";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
@@ -43,6 +45,7 @@ const EditInstagramPublication: FC = () => {
     const [currentTab, setCurrentTab] = useState<string>("preview")
     const [searchParams, setSearchParams] = useSearchParams();
     const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([])
+    const [socketConnected, setSocketConnected] = useState<boolean>(false)
 
     const buttonsHandler = (key: string) => {
         switch (key) {
@@ -171,6 +174,18 @@ const EditInstagramPublication: FC = () => {
         };
         fetchMedia();
     }, [editPublication])
+    useEffect(() => {
+        if(publication && !socketConnected) {
+            const socketRoom: Socket = socket.emit('joinRoom', {room: publication.id, model: "Post"});
+            setSocketConnected(socketRoom.connected);
+        }
+        return () => {
+            if(publication) {
+                socket.emit("leaveRoom", {room: publication.id, model: "Post"});
+                dispatch(setPublication(null));
+            }
+        }
+    }, [publication]);
 
     return (
         <Page>
@@ -241,7 +256,6 @@ const EditInstagramPublication: FC = () => {
                                         model={'Post'}
                                         currentUser={user}
                                         team={teamChat}
-                                        unreadCallback={() => {}}
                                     />
                                 ) : (
                                     <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>

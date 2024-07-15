@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
-const tokenService = require("../service/token-service");
-const ProjectModal = require("../models/project-model");
 const ApiError = require("../exceptions/api-error");
+const tokenService = require("../service/token-service");
+const ProjectService = require("../service/project-service");
+const InstagramPostService = require("../service/instagram-post-service");
 const uploadRouter = express.Router();
 
 uploadRouter.get('/public/*', (req, res) => {
@@ -15,11 +16,29 @@ uploadRouter.get('/private/chats*', async (req, res) => {
         const relativePathFile = req.params[0]
         const chat = relativePathFile.split('/')[1]
 
+
+        /**
+         * Перевірка авторизації
+         */
+
         const userData = await tokenService.validateRefreshToken(refreshToken);
+
         if(!userData) throw ApiError.UnauthorizedError();
 
-        const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': userData.id }).lean();
-        if(!findProject) throw ApiError.BadRequest('Кориистувач немає доступу до файлів цього проєкту')
+
+        /**
+         * Перевірка прав доступу до проєкту або посту
+         */
+
+        const accessProject = await ProjectService.checkUserAccessToProject(chat, userData, true, false);
+        const accessPost =  await InstagramPostService.checkUserAccessToPost(chat, userData, true, false);
+
+        if(!accessProject && !accessPost) throw ApiError.BadRequest('Користувач немає доступу до файлів цього проєкту')
+
+
+        /**
+         * Надання доступу
+         */
 
         res.sendFile(path.join(__dirname, '../uploads/private/chats', req.params[0]));
     } catch (e) {
@@ -33,11 +52,25 @@ uploadRouter.get('/private/media_library*', async (req, res) => {
         const relativePathFile = req.params[0]
         const chat = relativePathFile.split('/')[1]
 
+
+        /**
+         * Перевірка авторизації
+         */
+
         const userData = await tokenService.validateRefreshToken(refreshToken);
         if(!userData) throw ApiError.UnauthorizedError();
 
-        const findProject = await ProjectModal.findOne({ _id: chat, 'team.user': userData.id }).lean();
-        if(!findProject) throw ApiError.BadRequest('Кориистувач немає доступу до файлів цього проєкту')
+
+        /**
+         * Перевірка прав доступу до проєкту
+         */
+
+        await ProjectService.checkUserAccessToProject(chat, userData);
+
+
+        /**
+         * Надання доступу
+         */
 
         res.sendFile(path.join(__dirname, '../uploads/private/media_library', req.params[0]));
     } catch (e) {

@@ -15,6 +15,11 @@ import {useAppDispatch} from "../../store/hooks/redux";
 import {sendMessage as sendMessageThunk} from "../../store/thunks/ChatThunks";
 import {v4 as uuid} from "uuid";
 import classNames from "classnames";
+import {GetMessagesType} from "./types/GetMessagesType";
+import {UnreadCountType} from "./types/UnreadCountType";
+import {LoadMessagesType} from "./types/LoadMessagesType";
+import {MessageIsReadType} from "./types/MessageIsReadType";
+import {NewMessageType} from "./types/NewMessageType";
 
 interface ChatProps {
     chat: string,
@@ -99,37 +104,48 @@ const Chat:FC<ChatProps> = ({chat, socket, model, team, currentUser, unreadCallb
         socket.emit('getMessages', {chat, model});
         socket.emit('getUnreadMessages', {chat, model});
 
-        socket.on('getMessages', (messages: MessageType[]) => {
-            setChatMessages(messages);
+        socket.on('getMessages', (data: GetMessagesType) => {
+            const {chatId, messages} = data;
+            if(chat === chatId) setChatMessages(messages);
         });
 
-        socket.on('setUnreadMessages', (unreadCount: number) => {
-            if(unreadCallback) unreadCallback(unreadCount);
+        socket.on('setUnreadMessages', (data: UnreadCountType) => {
+            const {chatId, unreadCount} = data;
+            if(chat === chatId && unreadCallback) unreadCallback(unreadCount);
         });
 
-        socket.on('loadMessages', (messages: MessageType[]) => {
-            setChatMessages(prevState => [...prevState, ...messages]);
-            setLoadMore(false)
+        socket.on('loadMessages', (data: LoadMessagesType) => {
+            const {chatId, messages} = data;
+            if(chat === chatId) {
+                setChatMessages(prevState => [...prevState, ...messages]);
+                setLoadMore(false)
+            }
         });
 
-        socket.on('messageIsRead', (readMessage: MessageType) => {
-            setTimeout(() => {
-                setChatMessages(prevState => {
-                    return [...prevState].map(message => {
-                        if(message.id === readMessage.id){
-                            return {...message, readBy: readMessage.readBy}
-                        }
-                        return message
+        socket.on('messageIsRead', (data: MessageIsReadType) => {
+            const {chatId, readMessage} = data;
+
+            if(chat === chatId) {
+                setTimeout(() => {
+                    setChatMessages(prevState => {
+                        return [...prevState].map(message => {
+                            if (message.id === readMessage.id) return {...message, readBy: readMessage.readBy}
+                            return message
+                        });
                     });
-                });
-                socket.emit('getUnreadMessages', {chat, model});
-            }, 1000)
+                    socket.emit('getUnreadMessages', {chat, model});
+                }, 1000)
+            }
         });
 
-        socket.on('newMessage', (message: MessageType) => {
-            setPendingMessage(null)
-            setChatMessages((prevMessages) => [message, ...prevMessages]);
-            socket.emit('getUnreadMessages', {chat, model});
+        socket.on('newMessage', (data: NewMessageType) => {
+            const {chatId, message} = data;
+
+            if(chat === chatId) {
+                setPendingMessage(null)
+                setChatMessages((prevMessages) => [message, ...prevMessages]);
+                socket.emit('getUnreadMessages', {chat, model});
+            }
         });
 
     }, []);

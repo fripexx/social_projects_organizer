@@ -75,6 +75,7 @@ class ProjectService {
     /**
      * Team handlers
      */
+
     async getProjectTeam(projectId, user) {
         const findProject = await ProjectModal
             .findOne({
@@ -239,6 +240,7 @@ class ProjectService {
     /**
      * Media handlers
      */
+
     async uploadMedia(files, projectId, user) {
         const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
 
@@ -296,6 +298,22 @@ class ProjectService {
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
         return await FileService.deleteFile(idMedia);
+    }
+
+    async checkUserAccessToProject(projectId, user, isLean = true, throwError = true) {
+        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id }, null, {lean: isLean} )
+
+        if(!findProject) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+            } else {
+                return false
+            }
+
+        }
+
+        return findProject;
     }
 }
 

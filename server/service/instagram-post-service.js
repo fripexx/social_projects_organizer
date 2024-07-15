@@ -1,8 +1,9 @@
+const ApiError = require("../exceptions/api-error");
+const ProjectService = require('../service/project-service');
 const InstagramModel = require('../models/instagram-model');
 const ProjectModel = require('../models/project-model');
 const FileModel = require('../models/file-model');
 const InstagramPostDto = require('../dtos/instagram-post-dto');
-const ApiError = require("../exceptions/api-error");
 
 class InstagramPostService {
     async createInstagramPublication(user, data) {
@@ -74,6 +75,53 @@ class InstagramPostService {
 
 
         return new InstagramPostDto(instagramPublication);
+    }
+
+    async checkUserAccessToPost(id, user, isLean = true, throwError = true) {
+
+        /**
+         * Перевірка існувння посту
+         */
+
+        const findPost = await InstagramModel.findById(id, null, {lean: isLean});
+
+        if(!findPost) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено.');
+            } else {
+                return false
+            }
+
+        }
+
+
+        /**
+         * Перевірка існувння та доступу до проєкту
+         */
+
+        const project = await ProjectService.checkUserAccessToProject(findPost.project, user)
+
+
+        /**
+         * Перевірка доступу юзера
+         */
+
+        const teamMember = project.team.find(member => member.user.toString() === user.id);
+        const accessRoles = ['smm_manager', 'customer']
+
+
+        if (!accessRoles.includes(teamMember.role) && project.administrator !== user.id) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Вашій ролі обмежено доступ до цього запиту.');
+            } else {
+                return false
+            }
+
+        }
+
+        return findPost;
     }
 }
 

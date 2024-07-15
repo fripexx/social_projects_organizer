@@ -18,7 +18,11 @@ const initialState: InstagramPublicationState = {
 const InstagramPublicationSlice = createSlice({
     name: "instagramPosts",
     initialState,
-    reducers: {},
+    reducers: {
+        setPublication: (state, action: PayloadAction<InstagramPublicationType | null>) => {
+            state.publication = action.payload;
+        },
+    },
     extraReducers: {
         /* addInstagramPublication */
         [addInstagramPublication.pending.type]: (state) => {
@@ -51,3 +55,4 @@ const InstagramPublicationSlice = createSlice({
 })
 
 export default InstagramPublicationSlice.reducer;
+export const { setPublication } = InstagramPublicationSlice.actions;
