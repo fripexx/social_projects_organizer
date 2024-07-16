@@ -5,6 +5,7 @@ import {setNotification, setNotifications} from "../../store/reducers/UISlice";
 import {v4 as uuid} from "uuid";
 import {TeamNotificationType} from "./types/TeamNotificationType";
 import {NotificationType} from "../../Components/NotificationsWidget/types/NotificationType";
+import {CommentPostType} from "./types/CommentPostType";
 
 interface NotificationWrapperProps {
     children: React.ReactNode;
@@ -24,6 +25,19 @@ const NotificationWrapper:FC<NotificationWrapperProps> = ({children}) => {
                 message: message,
                 timestamp: Date.now(),
                 link: `/project/${project.id}/teams`,
+                isRead: false
+            }))
+        })
+
+        socket.on('commentPost', (comment: CommentPostType) => {
+            const {project, postId, message} = comment
+
+            dispatch(setNotification({
+                id: uuid(),
+                projectName: project.name,
+                message: message,
+                timestamp: Date.now(),
+                link: `/project/${project.id}/edit-instagram-publication?id=${postId}`,
                 isRead: false
             }))
         })

@@ -77,15 +77,15 @@ class InstagramPostService {
         return new InstagramPostDto(instagramPublication);
     }
 
-    async checkUserAccessToPost(id, user, isLean = true, throwError = true) {
+    async checkUserAccessToPost(id, user, isLean = true, throwError = true, returnProject = false) {
 
         /**
          * Перевірка існувння посту
          */
 
-        const findPost = await InstagramModel.findById(id, null, {lean: isLean});
+        const post = await InstagramModel.findById(id, null, {lean: isLean});
 
-        if(!findPost) {
+        if(!post) {
 
             if(throwError) {
                 throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено.');
@@ -100,7 +100,7 @@ class InstagramPostService {
          * Перевірка існувння та доступу до проєкту
          */
 
-        const project = await ProjectService.checkUserAccessToProject(findPost.project, user)
+        const project = await ProjectService.checkUserAccessToProject(post.project, user)
 
 
         /**
@@ -121,7 +121,11 @@ class InstagramPostService {
 
         }
 
-        return findPost;
+        if(returnProject) {
+            return {project, post }
+        }
+
+        return post;
     }
 }
 

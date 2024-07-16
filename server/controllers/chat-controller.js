@@ -14,8 +14,18 @@ class ChatController {
             if(!user) throw ApiError.BadRequest('В запиті відсутні дані про юзера');
 
             if(model === "Project") {
-                // Перевірка доступу до проєкту
+
+
+                /**
+                 * Перевірка доступу до проєкту
+                 */
+
                 await ProjectService.checkUserAccessToProject(chat, user);
+
+
+                /**
+                 * Збереження файлів
+                 */
 
                 const idsFile = []
 
@@ -25,6 +35,11 @@ class ChatController {
                         idsFile.push(fileData.id);
                     }
                 }
+
+
+                /**
+                 * Створення та відправка повідомлення
+                 */
 
                 const message = await ChatService.addMessage(chat, user.id, content, idsFile);
 
@@ -32,8 +47,18 @@ class ChatController {
             }
 
             if(model === "Post") {
-                // Перевірка доступу до посту
-                const post = await InstagramPostService.checkUserAccessToPost(chat, user);
+
+
+                /**
+                 * Перевірка доступу до проєкту
+                 */
+
+                const {project, post} = await InstagramPostService.checkUserAccessToPost(chat, user, true, true, true);
+
+
+                /**
+                 * Збереження файлів
+                 */
 
                 const idsFile = []
 
@@ -44,9 +69,30 @@ class ChatController {
                     }
                 }
 
-                const message = await ChatService.addMessage(chat, user.id, content, idsFile);
+
+                /**
+                 * Створення та відправка повідомлення
+                 */
+
+                const message = await ChatService.addMessage(chat, user.id, content, idsFile)
 
                 io.to(chat).emit('newMessage', {chatId: chat, message});
+
+
+                /**
+                 * Відправлення нотифікацій команді
+                 */
+
+                const notification = {
+                    project: {
+                        id: project._id.toString(),
+                        name: project.name,
+                    },
+                    postId: post._id,
+                    message: `${user.name} залишив коментар до посту - ${post._id}`,
+                }
+
+                io.to(project._id.toString()).emit('commentPost', notification);
             }
 
             return res.json();
