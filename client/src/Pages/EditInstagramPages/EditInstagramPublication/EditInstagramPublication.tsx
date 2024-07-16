@@ -197,15 +197,16 @@ const EditInstagramPublication: FC = () => {
                     <>
                         <HeaderPage className={classes.header}>
 
-                            <Button text={"Назад"} onClick={() => {}}/>
+                            <Button className={classes.back} text={"Назад"} onClick={() => {}}/>
+
+                            <StatusPostLabel className={classes.status} status={editPublication.status}/>
 
                             <EditButtons
+                                className={classes.editButtons}
                                 status={editPublication.status}
                                 callback={buttonsHandler}
                                 isAdmin={false}
                             />
-
-                            <StatusPostLabel status={editPublication.status}/>
 
                         </HeaderPage>
 

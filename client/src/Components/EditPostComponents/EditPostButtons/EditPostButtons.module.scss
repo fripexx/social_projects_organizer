@@ -3,4 +3,86 @@
     flex-direction: row;
     align-items: center;
     gap: 15px;
+    position: relative;
+}
+
+@mixin activeOpenButton {
+    background: var(--Color-Dark);
+
+    svg {
+        --Color-SVG: var(--Color-White);
+    }
+}
+
+.openButton {
+    all: unset;
+
+    --size: 30px;
+
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size);
+    min-width: var(--size);
+    max-width: var(--size);
+    height: var(--size);
+    min-height: var(--size);
+    max-height: var(--size);
+    border-radius: 50%;
+    background: var(--Color-Light-Grey-Blue);
+    transition: 0.2s ease-in-out;
+
+    svg {
+        display: block;
+        --Color-SVG: var(--Color-White);
+        transition: 0.2s ease-in-out;
+    }
+
+    &[data-open="true"] {
+        z-index: 11;
+        background: var(--Color-White);
+
+        svg {
+            --Color-SVG: var(--Color-Dark);
+        }
+    }
+
+    @media (max-width: 900px) {
+        &:active {
+            @include activeOpenButton;
+        }
+    }
+    @media (min-width: 900px) {
+        &:hover {
+            @include activeOpenButton;
+        }
+    }
+
+}
+
+.buttonsList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--Color-White);
+    padding: 10px;
+    border-radius: 10px;
+    position: absolute;
+    top: calc(100% + 15px);
+    right: 0%;
+    opacity: 0;
+    transform: scale(0);
+    transition: 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+
+    &[data-open="true"] {
+        transform: scale(1);
+        opacity: 1;
+        z-index: 11;
+    }
+}
+
+
+.button {
+    white-space: nowrap;
 }

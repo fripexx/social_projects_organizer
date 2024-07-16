@@ -9,21 +9,19 @@
 
 .columns {
     display: grid;
-    grid-template-columns: auto 1fr 1fr;
-    gap: 25px;
+    grid-template-columns: auto 1fr auto;
     padding: 0px;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1670px) {
         display: flex;
         flex-direction: column;
-        gap: 15px;
     }
 }
 
 .column {
     height: 100%;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1670px) {
         display: none !important;
     }
 
@@ -35,7 +33,7 @@
 .previewContainer {
     padding: 15px;
 
-    @media (max-width: 900px) {
+    @media (max-width: 1670px) {
         display: flex;
         justify-content: center;
     }
@@ -43,14 +41,15 @@
 
 div.preview {
     margin: 0 auto;
+    --width: 300px;
 
     @media (max-width: 600px) {
         --width: 300px;
     }
-    @media (min-width: 600px) and (max-width: 1080px) {
+    @media (min-width: 600px) and (max-width: 1921px) {
         --width: 360px;
     }
-    @media (min-width: 1080px) and (max-width: 2560px) {
+    @media (min-width: 1921px) and (max-width: 2560px) {
         --width: 400px;
     }
     @media (min-width: 2560px) {
@@ -63,20 +62,35 @@ div.preview {
 }
 
 .params {
-    max-width: 700px !important;
+    max-width: 540px !important;
     width: 100%;
 }
 
 .chatContainer {
     background: var(--Color-Grey);
-    padding: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
+    max-width: 500px;
+    width: 100%;
+
+    @media (max-width: 1670px) {
+        max-width: 100%;
+    }
 }
 
-.chat{
+.chat {
     height: 100%;
+    max-height: calc(100vh - 100px);
+    width: 100%;
+
+    @media (min-width: 0px) and (max-width: 900px) {
+        max-height: calc(100vh - 226px);
+    }
+
+    @media (min-width: 900px) and (max-width: 1670px) {
+        max-height: calc(100vh - 165px);
+    }
 }
 
 .withoutChat {

@@ -6,9 +6,11 @@ import pendingIcon from "../../assets/images/icon-pending.svg";
 import confirmedIcon from "../../assets/images/icon-confirmed.svg";
 import RoundIcon from "../RoundIcon/RoundIcon";
 import {PostStatus} from "../../store/reducers/PostStatus";
+import classNames from "classnames";
 
 interface StatusPostLabelProps {
     status: PostStatus | undefined;
+    className?: string;
 }
 interface CurrentStatus {
     name: string,
@@ -16,7 +18,7 @@ interface CurrentStatus {
     iconColor: string,
 }
 
-const StatusPostLabel:FC<StatusPostLabelProps> = ({status}) => {
+const StatusPostLabel:FC<StatusPostLabelProps> = ({status, className}) => {
     const [currentStatus, setCurrentStatus] = useState<CurrentStatus | null>(null);
     const data = {
         edit: {
@@ -54,7 +56,7 @@ const StatusPostLabel:FC<StatusPostLabelProps> = ({status}) => {
     }, [status])
 
     return (
-        <div className={classes.container}>
+        <div className={classNames(classes.container, className)}>
 
             {currentStatus?.icon && currentStatus?.iconColor &&
                 <RoundIcon icon={currentStatus.icon} color={currentStatus.iconColor}/>
