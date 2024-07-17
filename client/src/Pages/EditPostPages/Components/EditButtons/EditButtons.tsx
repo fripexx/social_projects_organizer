@@ -1,15 +1,17 @@
 import React, {FC, useEffect, useState} from 'react';
-import EditPostButtons, {EditPostButton} from "../../../../../Components/EditPostComponents/EditPostButtons/EditPostButtons";
+import EditPostButtons, {EditPostButton} from "../../../../Components/EditPostComponents/EditPostButtons/EditPostButtons";
 import {
     confirmAdminButtons,
-    confirmButtons, editAdminButtons,
+    confirmButtons,
+    editAdminButtons,
     editButtons,
     pendingAdminButtons,
-    pendingButtons, rejectedAdminButtons,
+    pendingButtons,
+    rejectedAdminButtons,
     rejectedButtons,
     unpublishButtons
-} from "../../../constants/editButtons";
-import {PostStatus} from "../../../../../store/reducers/PostStatus";
+} from "../../constants/editButtons";
+import {PostStatus} from "../../../../store/reducers/PostStatus";
 
 interface EditButtonsProps {
     status: PostStatus | undefined;

@@ -19,9 +19,9 @@ import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
 import ProjectTeams from "../Pages/ProjectTeams/ProjectTeams";
 import ProjectMedia from "../Pages/ProjectMedia/ProjectMedia";
-import EditInstagramPublication from "../Pages/EditInstagramPages/EditInstagramPublication/EditInstagramPublication";
-import EditInstagramStories from "../Pages/EditInstagramPages/EditInstagramStories/EditInstagramStories";
-import EditInstagramReels from "../Pages/EditInstagramPages/EditInstagramReels/EditInstagramReels";
+import EditInstagramPublication from "../Pages/EditPostPages/EditInstagramPublication/EditInstagramPublication";
+import EditInstagramStories from "../Pages/EditPostPages/EditInstagramStories/EditInstagramStories";
+import EditInstagramReels from "../Pages/EditPostPages/EditInstagramReels/EditInstagramReels";
 
 export interface Route {
     key: string;

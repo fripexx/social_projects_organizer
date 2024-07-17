@@ -1,10 +1,10 @@
 import React, {FC} from 'react';
 import classes from "./Tabs.module.scss";
 import classNames from "classnames";
-import Button from "../../../../../Elements/Button/Button";
-import previewIcon from "../../../../../assets/images/eye-icon.svg";
-import paramsIcon from "../../../../../assets/images/params-icon.svg";
-import commentIcon from "../../../../../assets/images/comment-icon.svg";
+import Button from "../../../../Elements/Button/Button";
+import previewIcon from "../../../../assets/images/eye-icon.svg";
+import paramsIcon from "../../../../assets/images/params-icon.svg";
+import commentIcon from "../../../../assets/images/comment-icon.svg";
 
 export interface TabType {
     key: string;

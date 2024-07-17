@@ -6,7 +6,7 @@ import {AspectRatio} from "../../Components/InstagramComponents/Modules/Instagra
  * Базовий тип для всіх постів
  */
 
-interface PostBase {
+export interface PostBase {
     id: string;
     project: string;
     status: PostStatus;
