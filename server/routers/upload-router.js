@@ -3,7 +3,7 @@ const path = require('path');
 const ApiError = require("../exceptions/api-error");
 const tokenService = require("../service/token-service");
 const ProjectService = require("../service/project-service");
-const InstagramPostService = require("../service/instagram-post-service");
+const PostService = require("../service/post-service");
 const uploadRouter = express.Router();
 
 uploadRouter.get('/public/*', (req, res) => {
@@ -31,7 +31,7 @@ uploadRouter.get('/private/chats*', async (req, res) => {
          */
 
         const accessProject = await ProjectService.checkUserAccessToProject(chat, userData, true, false);
-        const accessPost =  await InstagramPostService.checkUserAccessToPost(chat, userData, true, false);
+        const accessPost =  await PostService.checkUserAccessToPost(chat, userData, true, false);
 
         if(!accessProject && !accessPost) throw ApiError.BadRequest('Користувач немає доступу до файлів цього проєкту')
 

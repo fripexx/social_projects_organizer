@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {InstagramPublicationType} from "../types/InstagramPostType";
-import {addInstagramPublication, getInstagramPublication} from "../thunks/InstagramPostsThunks";
+import {InstagramPublicationType} from "../types/PostType";
+import {publishInstagramPublication, getInstagramPublication} from "../thunks/PostThunks";
 
 interface InstagramPublicationState {
     isLoading: boolean,
@@ -24,16 +24,16 @@ const InstagramPublicationSlice = createSlice({
         },
     },
     extraReducers: {
-        /* addInstagramPublication */
-        [addInstagramPublication.pending.type]: (state) => {
+        /* publishInstagramPublication */
+        [publishInstagramPublication.pending.type]: (state) => {
             state.isLoading = true;
         },
-        [addInstagramPublication.fulfilled.type]: (state, action: PayloadAction<InstagramPublicationType>) => {
+        [publishInstagramPublication.fulfilled.type]: (state, action: PayloadAction<InstagramPublicationType>) => {
             state.isLoading = false;
             state.error = null;
             state.publication = action.payload;
         },
-        [addInstagramPublication.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
+        [publishInstagramPublication.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },

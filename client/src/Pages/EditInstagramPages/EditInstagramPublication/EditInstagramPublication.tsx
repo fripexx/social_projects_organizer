@@ -20,9 +20,12 @@ import {BasicUserInfo} from "../../../store/types/UserType";
 import Tabs from "./Componets/Tabs/Tabs";
 import classNames from "classnames";
 import {setError} from "../../../store/reducers/ProjectSlice";
-import {addInstagramPublication, getInstagramPublication} from "../../../store/thunks/InstagramPostsThunks";
+import {
+    publishInstagramPublication,
+    getInstagramPublication,
+} from "../../../store/thunks/PostThunks";
 import {useSearchParams} from "react-router-dom";
-import {InstagramPublicationType} from "../../../store/types/InstagramPostType";
+import {InstagramPublicationType} from "../../../store/types/PostType";
 import {v4 as uuid} from "uuid";
 import Loader from "../../../Elements/Loader/Loader";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
@@ -49,15 +52,15 @@ const EditInstagramPublication: FC = () => {
 
     const buttonsHandler = (key: string) => {
         switch (key) {
-            case "save":
-                saveCallback();
+            case "publish":
+                publishCallback();
                 break;
         }
     }
-    const saveCallback = () => {
+    const publishCallback = () => {
         if(project && user) {
             if(selectMedia.length !== 0 && editPublication) {
-                dispatch(addInstagramPublication({
+                dispatch(publishInstagramPublication({
                     project: project.id,
                     description: editPublication.params.description,
                     aspectRatio: editPublication.params.aspectRatio,
@@ -141,6 +144,7 @@ const EditInstagramPublication: FC = () => {
                     author: user.id,
                     dateCreated: new Date(),
                     datePublish: new Date(),
+                    social: 'instagram',
                     typePost: 'publication',
                     params: {
                         media: [],

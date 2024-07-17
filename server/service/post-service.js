@@ -1,11 +1,11 @@
 const ApiError = require("../exceptions/api-error");
 const ProjectService = require('../service/project-service');
-const InstagramModel = require('../models/instagram-model');
+const PostModel = require('../models/post-model');
 const ProjectModel = require('../models/project-model');
 const FileModel = require('../models/file-model');
-const InstagramPostDto = require('../dtos/instagram-post-dto');
+const PostDto = require('../dtos/post-dto');
 
-class InstagramPostService {
+class PostService {
     async createInstagramPublication(user, data) {
         const {project, description, aspectRatio, datePublish, media} = data;
 
@@ -34,15 +34,17 @@ class InstagramPostService {
 
         if (foundMediaIds.length === 0) throw ApiError.BadRequest('Помилка: Не вдалося знайти жодного медіа в базі даних.');
 
+        console.log(data)
 
         /**
          * Створення запису в БД
          */
-        const createInstagramPublication = await InstagramModel.create({
+        const createInstagramPublication = await PostModel.create({
             project: project,
             status: "edit",
             datePublish: datePublish,
             author: user.id,
+            social: "instagram",
             typePost: "publication",
             params: {
                 media: media,
@@ -51,7 +53,7 @@ class InstagramPostService {
             }
         })
 
-        return new InstagramPostDto(createInstagramPublication);
+        return new PostDto(createInstagramPublication);
     }
 
     async getInstagramPublication(user, query) {
@@ -69,12 +71,12 @@ class InstagramPostService {
         /**
          * Створення запису в БД
          */
-        const instagramPublication = await InstagramModel.findOne({_id: id, typePost: 'publication'});
+        const instagramPublication = await PostModel.findOne({_id: id, typePost: 'publication'});
 
         if (!instagramPublication) throw ApiError.BadRequest('Помилка: Публікацію з таким ID не знайдено');
 
 
-        return new InstagramPostDto(instagramPublication);
+        return new PostDto(instagramPublication);
     }
 
     async checkUserAccessToPost(id, user, isLean = true, throwError = true, returnProject = false) {
@@ -83,7 +85,7 @@ class InstagramPostService {
          * Перевірка існувння посту
          */
 
-        const post = await InstagramModel.findById(id, null, {lean: isLean});
+        const post = await PostModel.findById(id, null, {lean: isLean});
 
         if(!post) {
 
@@ -129,4 +131,4 @@ class InstagramPostService {
     }
 }
 
-module.exports = new InstagramPostService();
+module.exports = new PostService();

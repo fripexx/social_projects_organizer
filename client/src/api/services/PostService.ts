@@ -1,14 +1,14 @@
 import instanceServer from "../instanceServer";
 import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
-import {InstagramPublicationType} from "../../store/types/InstagramPostType";
+import {InstagramPublicationType} from "../../store/types/PostType";
 import {
     AddInstagramPublicationRequestType,
     GetInstagramPublicationRequestType
-} from "../types/InstagramPostsServiceTypes";
+} from "../types/PostServiceTypes";
 
-class InstagramPostsService {
-    async addInstagramPublication(data: AddInstagramPublicationRequestType): Promise<InstagramPublicationType> {
+class PostService {
+    async publishInstagramPublication(data: AddInstagramPublicationRequestType): Promise<InstagramPublicationType> {
         try {
             const response = await instanceServer.post<InstagramPublicationType>('/create-instagram-publication', data);
 
@@ -50,4 +50,4 @@ class InstagramPostsService {
     }
 }
 
-export default new InstagramPostsService();
+export default new PostService();

@@ -1,6 +1,6 @@
 const ApiError = require("../exceptions/api-error");
 const ChatService = require("../service/chat-service");
-const InstagramPostService = require("../service/instagram-post-service");
+const PostService = require("../service/post-service");
 const ProjectService = require("../service/project-service");
 
 class SocketIOController {
@@ -20,7 +20,7 @@ class SocketIOController {
 
             if(model === "Post") {
                 // Перевірка доступу до посту
-                await InstagramPostService.checkUserAccessToPost(room, user);
+                await PostService.checkUserAccessToPost(room, user);
 
                 socket.join(room);
                 socket.emit("joinedRoom", room)
@@ -64,7 +64,7 @@ class SocketIOController {
 
             if(model === "Post") {
                 // Перевірка доступу до посту
-                await InstagramPostService.checkUserAccessToPost(chat, user);
+                await PostService.checkUserAccessToPost(chat, user);
 
                 const messages = await ChatService.getMessages(chat);
                 socket.emit('getMessages', {chatId: chat, messages})
@@ -92,7 +92,7 @@ class SocketIOController {
 
             if(model === "Post") {
                 // Перевірка доступу до посту
-                await InstagramPostService.checkUserAccessToPost(chat, user);
+                await PostService.checkUserAccessToPost(chat, user);
 
                 const unreadCount = await ChatService.getUnreadMessages(chat, user);
                 socket.emit('setUnreadMessages', {chatId: chat, unreadCount})
@@ -120,7 +120,7 @@ class SocketIOController {
 
             if(model === "Post") {
                 // Перевірка доступу до посту
-                await InstagramPostService.checkUserAccessToPost(chat, user);
+                await PostService.checkUserAccessToPost(chat, user);
 
                 const messages = await ChatService.getMessages(chat, skip);
                 socket.emit('loadMessages', {chatId: chat, messages})
@@ -148,7 +148,7 @@ class SocketIOController {
 
             if(model === "Post") {
                 // Перевірка доступу до посту
-                await InstagramPostService.checkUserAccessToPost(chat, user);
+                await PostService.checkUserAccessToPost(chat, user);
 
                 const readMessage = await ChatService.readMessage(messageId, user);
                 io.to(chat).emit('messageIsRead', {chatId: chat, readMessage})

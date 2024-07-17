@@ -1,7 +1,7 @@
 const ApiError = require("../exceptions/api-error");
 const ChatService = require("../service/chat-service");
 const ProjectService = require("../service/project-service");
-const InstagramPostService = require("../service/instagram-post-service");
+const PostService = require("../service/post-service");
 const FileService = require("../service/file-service");
 
 class ChatController {
@@ -53,7 +53,7 @@ class ChatController {
                  * Перевірка доступу до проєкту
                  */
 
-                const {project, post} = await InstagramPostService.checkUserAccessToPost(chat, user, true, true, true);
+                const {project, post} = await PostService.checkUserAccessToPost(chat, user, true, true, true);
 
 
                 /**

@@ -1,5 +1,6 @@
 import dumpIcon from "../../../assets/images/dump_icon.svg";
 import saveIcon from "../../../assets/images/save_icon.svg";
+import publishIcon from "../../../assets/images/publish-icon.svg";
 import downloadIcon from "../../../assets/images/download-icon.svg";
 import clockIcon from "../../../assets/images/clock-icon.svg";
 import checkIcon from "../../../assets/images/check-icon.svg";
@@ -12,9 +13,9 @@ import {EditPostButton} from "../../../Components/EditPostComponents/EditPostBut
 
 export const unpublishButtons:EditPostButton[] = [
     {
-        key: "save",
-        text: "Зберегти",
-        icon: saveIcon,
+        key: "publish",
+        text: "Опублікувати",
+        icon: publishIcon,
         iconColor: "var(--Color-Green)"
     },
 ];

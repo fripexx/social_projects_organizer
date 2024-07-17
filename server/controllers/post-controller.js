@@ -1,12 +1,11 @@
-const ApiError = require("../exceptions/api-error");
-const InstagramPostService = require("../service/instagram-post-service");
+const PostService = require("../service/post-service");
 
-class InstagramPostController {
+class PostController {
     async createInstagramPublication(req, res, next) {
         try {
             const user = await req.user;
             const data = req.body;
-            const publication = await InstagramPostService.createInstagramPublication(user, data)
+            const publication = await PostService.createInstagramPublication(user, data)
 
             return res.json(publication);
         } catch (e) {
@@ -18,7 +17,7 @@ class InstagramPostController {
         try {
             const user = await req.user;
             const query = req.query;
-            const publication = await InstagramPostService.getInstagramPublication(user, query)
+            const publication = await PostService.getInstagramPublication(user, query)
 
             return res.json(publication);
         } catch (e) {
@@ -27,4 +26,4 @@ class InstagramPostController {
     }
 }
 
-module.exports = new InstagramPostController();
+module.exports = new PostController();
