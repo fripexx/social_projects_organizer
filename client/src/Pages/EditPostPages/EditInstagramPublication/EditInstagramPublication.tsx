@@ -23,9 +23,10 @@ import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 import {useSearchParams} from "react-router-dom";
 import {
     publishInstagramPublication,
-    getInstagramPublication,
+    getInstagramPublication, deletePost, updateInstagramPublication,
 } from "../../../store/thunks/PostThunks";
 import {v4 as uuid} from "uuid";
+import {setPublication} from "../../../store/reducers/InstagramPublicationSlice";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
@@ -38,12 +39,20 @@ const EditInstagramPublication: FC = () => {
     const [editPublication, setEditPublication] = useState<InstagramPublicationType>();
     const [currentTab, setCurrentTab] = useState<string>("preview")
     const [searchParams, setSearchParams] = useSearchParams();
-    const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([])
+    const [selectMedia, setSelectMedia] = useState<(FileType | PhotoType)[]>([]);
 
     const buttonsHandler = (key: string) => {
         switch (key) {
             case "publish":
                 publishCallback();
+                break;
+
+            case "delete":
+                deleteCallback();
+                break;
+
+            case "save":
+                saveCallback();
                 break;
         }
     }
@@ -61,6 +70,24 @@ const EditInstagramPublication: FC = () => {
                 dispatch(setError({ message: "Додайте хоча б один медіафайл" }))
             }
         }
+    }
+    const saveCallback = () => {
+        if(project && user) {
+            if(selectMedia.length !== 0 && editPublication) {
+                dispatch(updateInstagramPublication({
+                    id: editPublication.id,
+                    description: editPublication.params.description,
+                    aspectRatio: editPublication.params.aspectRatio,
+                    datePublish: editPublication.datePublish,
+                    media: selectMedia.map(media => media.id),
+                }))
+            } else {
+                dispatch(setError({ message: "Додайте хоча б один медіафайл" }))
+            }
+        }
+    }
+    const deleteCallback = () => {
+        if(project && user && editPublication?.id) dispatch(deletePost({id: editPublication.id}))
     }
     const changeTab = (key: string) => {
         setCurrentTab(key)
@@ -133,12 +160,22 @@ const EditInstagramPublication: FC = () => {
 
                 const mediaData = await ProjectMediaService.getMedia(query)
 
-                if (mediaData) setSelectMedia(mediaData.media)
+                if (mediaData) {
+                    const mediaMap = new Map();
+                    mediaData.media.forEach(media => mediaMap.set(media.id, media));
+
+                    const sortedMedia = editPublication.params.media.map(id => mediaMap.get(id));
+                    setSelectMedia(sortedMedia);
+                }
             }
         };
         fetchMedia();
     }, [editPublication])
-
+    useEffect(() => {
+        return () => {
+            dispatch(setPublication(null));
+        }
+    }, []);
     return (
         <Page>
 
@@ -185,12 +222,9 @@ const EditInstagramPublication: FC = () => {
 
                                 <PublicationParams
                                     className={classes.params}
-
                                     project={project}
-
                                     publication={editPublication}
                                     changePublicationCallback={setEditPublication}
-
                                     selectMedia={selectMedia}
                                     selectMediaCallback={selectMediaHandler}
                                     unselectMediaCallback={unselectMediaItemHandler}
@@ -202,8 +236,8 @@ const EditInstagramPublication: FC = () => {
                             <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
 
                                 <ChatPost
-                                    post={publication}
                                     className={classes.chat}
+                                    post={publication}
                                     user={user}
                                     team={teamProject}
                                 />

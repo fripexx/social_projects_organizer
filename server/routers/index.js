@@ -109,6 +109,8 @@ const setupRouter = ({io}) => {
      */
     router.post('/create-instagram-publication', [authMiddleware], PostController.createInstagramPublication);
     router.get('/get-instagram-publication', [authMiddleware], PostController.getInstagramPublication);
+    router.patch('/update-instagram-publication', [authMiddleware], PostController.updateInstagramPublication);
+    router.delete('/delete-post', [authMiddleware], PostController.deletePost);
 
     return router;
 };

@@ -13,6 +13,7 @@ class PostService {
         /**
          * Перевірка існувння проєкту
          */
+
         const findProject = await ProjectModel.findOne({_id: project, 'team.user': user.id}).lean();
 
         if (!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
@@ -21,6 +22,7 @@ class PostService {
         /**
          * Перевірка ролі юзера
          */
+
         const teamMember = findProject.team.find(member => member.user.toString() === user.id);
 
         if (teamMember.role !== 'smm_manager') throw new Error("Помилка: Вашій ролі обмежено доступ до цього запиту.");
@@ -29,16 +31,17 @@ class PostService {
         /**
          * Перевірка існування медіафайлів
          */
+
         const foundMedia = await FileModel.find({_id: {$in: media}}).lean();
         const foundMediaIds = foundMedia.map(project => project._id.toString());
 
         if (foundMediaIds.length === 0) throw ApiError.BadRequest('Помилка: Не вдалося знайти жодного медіа в базі даних.');
 
-        console.log(data)
 
         /**
          * Створення запису в БД
          */
+
         const createInstagramPublication = await PostModel.create({
             project: project,
             status: "edit",
@@ -63,6 +66,7 @@ class PostService {
         /**
          * Перевірка існувння проєкту
          */
+
         const findProject = await ProjectModel.findOne({_id: project, 'team.user': user.id}).lean();
 
         if (!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
@@ -71,15 +75,110 @@ class PostService {
         /**
          * Створення запису в БД
          */
+
         const instagramPublication = await PostModel.findOne({_id: id, typePost: 'publication'});
 
         if (!instagramPublication) throw ApiError.BadRequest('Помилка: Публікацію з таким ID не знайдено');
 
-
         return new PostDto(instagramPublication);
     }
 
+    async updateInstagramPublication(user, data){
+        const {id, description, aspectRatio, datePublish, media} = data;
+
+
+        /**
+         * Перевірка існувння та доступуп до посту
+         */
+
+        const checkPublication = await this.checkUserAccessToPost(id, user, true);
+
+
+        /**
+         * Пошук та оновлення публікації
+         */
+
+        const update = {
+            datePublish,
+            params: {
+                description,
+                aspectRatio,
+                media
+            }
+        }
+        const options = {
+            lean: true,
+            new: true
+        }
+        const updatePublication = await PostModel.findByIdAndUpdate(checkPublication._id, update, options)
+
+        if(!updatePublication) throw ApiError.BadRequest('Помилка: Невдалося оновити публікацію.');
+
+        return new PostDto(updatePublication);
+    }
+
+    async deletePost(user, query) {
+        const {id} = query;
+
+
+        /* Видалення масиву постів */
+
+        if(Array.isArray(id)) {
+            const deletePosts = [];
+
+            for (let i = 0; i < id.length; i++) {
+                const currentId = id[i];
+
+                if(typeof currentId === "string") {
+
+
+                    /**
+                     * Перевірка доступу до посту
+                     */
+
+                    const post = await this.checkUserAccessToPost(id, user, true);
+
+
+                    /**
+                     * Пошук та видалення посту
+                     */
+
+                    const deletePost = await PostModel.findByIdAndDelete(post._id);
+
+                    if(!deletePost) throw ApiError.BadRequest('Помилка: Невдалося видалити пост.');
+
+                    deletePosts.push(deletePost._id);
+                }
+
+                throw ApiError.BadRequest('Помилка: ID повинно бути строкою.');
+            }
+
+            return deletePosts;
+        }
+
+
+        /* Видалення одного поста */
+
+        /**
+         * Перевірка доступу до посту
+         */
+
+        const post = await this.checkUserAccessToPost(id, user, true);
+
+
+        /**
+         * Пошук та видалення посту
+         */
+
+        const deletePost = await PostModel.findByIdAndDelete(post._id);
+
+        if(!deletePost) throw ApiError.BadRequest('Помилка: Невдалося видалити пост.');
+
+        return deletePost._id;
+    }
+
     async checkUserAccessToPost(id, user, isLean = true, throwError = true, returnProject = false) {
+
 
         /**
          * Перевірка існувння посту
@@ -123,9 +222,7 @@ class PostService {
 
         }
 
-        if(returnProject) {
-            return {project, post }
-        }
+        if(returnProject) return {project, post }
 
         return post;
     }

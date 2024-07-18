@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {InstagramPublicationType} from "../types/PostType";
-import {publishInstagramPublication, getInstagramPublication} from "../thunks/PostThunks";
+import {publishInstagramPublication, getInstagramPublication, updateInstagramPublication} from "../thunks/PostThunks";
 
 interface InstagramPublicationState {
     isLoading: boolean,
@@ -15,8 +15,8 @@ const initialState: InstagramPublicationState = {
     error: null
 }
 
-const InstagramPublicationSlice = createSlice({
-    name: "instagramPosts",
+const instagramPublicationSlice = createSlice({
+    name: "instagramPublication",
     initialState,
     reducers: {
         setPublication: (state, action: PayloadAction<InstagramPublicationType | null>) => {
@@ -51,8 +51,22 @@ const InstagramPublicationSlice = createSlice({
             state.isLoading = false;
             state.error = action.payload;
         },
+
+        /* updateInstagramPublication */
+        [updateInstagramPublication.pending.type]: (state) => {
+            state.isLoading = true;
+        },
+        [updateInstagramPublication.fulfilled.type]: (state, action: PayloadAction<InstagramPublicationType>) => {
+            state.isLoading = false;
+            state.error = null;
+            state.publication = action.payload;
+        },
+        [updateInstagramPublication.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
+            state.isLoading = false;
+            state.error = action.payload;
+        },
     }
 })
 
-export default InstagramPublicationSlice.reducer;
-export const { setPublication } = InstagramPublicationSlice.actions;
+export default instagramPublicationSlice.reducer;
+export const { setPublication } = instagramPublicationSlice.actions;

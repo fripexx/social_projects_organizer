@@ -3,7 +3,6 @@ import classes from "../../EditInstagramPublication/EditInstagramPublication.mod
 import Chat from "../../../../Components/Chat/Chat";
 import {useSocket} from "../../../../context/Socket-Context";
 import {useAppDispatch} from "../../../../store/hooks/redux";
-import {setPublication} from "../../../../store/reducers/InstagramPublicationSlice";
 import {Socket} from "socket.io-client";
 import {PostBase} from "../../../../store/types/PostType";
 import {BasicUserInfo, UserType} from "../../../../store/types/UserType";
@@ -28,10 +27,7 @@ const ChatPost: FC<ChatPostProps> = ({post, className, team, user}) => {
             setSocketConnected(socketRoom.connected);
         }
         return () => {
-            if (post) {
-                socket.emit("leaveRoom", {room: post.id, model: "Post"});
-                dispatch(setPublication(null));
-            }
+            if (post) socket.emit("leaveRoom", {room: post.id, model: "Post"});
         }
     }, [post]);
     useEffect(() => {

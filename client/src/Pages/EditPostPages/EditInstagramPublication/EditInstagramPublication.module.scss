@@ -83,6 +83,7 @@ div.preview {
     height: 100%;
     max-height: calc(100vh - 100px);
     width: 100%;
+    padding-bottom: 30px;
 
     @media (min-width: 0px) and (max-width: 900px) {
         max-height: calc(100vh - 226px);
