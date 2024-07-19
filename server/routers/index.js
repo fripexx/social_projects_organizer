@@ -4,16 +4,23 @@ const NoteController = require('../controllers/note-controller')
 const ProjectController = require('../controllers/project-controller')
 const ChatController = require('../controllers/chat-controller')
 const PostController = require('../controllers/post-controller')
+const PostValidator = require('../validators/post-validator')
 const ApiError = require("../exceptions/api-error");
+const {body, validationResult} = require('express-validator')
 const uploadUserMiddleware = require('../middlewares/upload-user-middleware');
 const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
 const uploadMediaLibraryMiddleware = require('../middlewares/upload-media-library-middleware');
 const uploadChatMiddleware = require('../middlewares/upload-chat-middleware');
 const authMiddleware = require('../middlewares/auth-middleware')
-const {body} = require('express-validator')
 
 const setupRouter = ({io}) => {
     const router = new Router();
+
+    const validate = (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        next();
+    };
 
     /**
      * User routes
@@ -107,10 +114,26 @@ const setupRouter = ({io}) => {
     /**
      * InstagramPosts
      */
-    router.post('/create-instagram-publication', [authMiddleware], PostController.createInstagramPublication);
-    router.get('/get-instagram-publication', [authMiddleware], PostController.getInstagramPublication);
-    router.patch('/update-instagram-publication', [authMiddleware], PostController.updateInstagramPublication);
-    router.delete('/delete-post', [authMiddleware], PostController.deletePost);
+    router.post(
+        '/create-instagram-publication',
+        [authMiddleware, ...PostValidator.createInstagramPublication, validate],
+        PostController.createInstagramPublication
+    );
+    router.get(
+        '/get-instagram-publication',
+        [authMiddleware, ...PostValidator.getInstagramPublication, validate],
+        PostController.getInstagramPublication
+    );
+    router.patch(
+        '/update-instagram-publication',
+        [authMiddleware, ...PostValidator.updateInstagramPublication, validate],
+        PostController.updateInstagramPublication
+    );
+    router.delete(
+        '/delete-post',
+        [authMiddleware, ...PostValidator.deletePost, validate],
+        PostController.deletePost
+    );
 
     return router;
 };
