@@ -1,10 +1,13 @@
 import instanceServer from "../instanceServer";
 import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
-import {InstagramPublicationType} from "../../store/types/PostType";
+import {InstagramPublicationType, PostType} from "../../store/types/PostType";
 import {
-    AddInstagramPublicationRequestType, DeletePostRequestType,
-    GetInstagramPublicationRequestType, UpdateInstagramPublicationRequestType
+    AddInstagramPublicationRequestType,
+    DeletePostRequestType,
+    GetInstagramPublicationRequestType,
+    GetPostsRequestType,
+    UpdateInstagramPublicationRequestType
 } from "../types/PostServiceTypes";
 
 class PostService {
@@ -73,6 +76,27 @@ class PostService {
         try {
             const config: AxiosRequestConfig = {params: data}
             const response = await instanceServer.delete<string | string[]>('/delete-post', config);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async getPosts(data: GetPostsRequestType ) {
+        try {
+            const config: AxiosRequestConfig = {params: data}
+            const response = await instanceServer.get<PostType[]>('/get-posts', config);
 
             return response.data;
         } catch (e) {

@@ -21,13 +21,13 @@ export interface PostBase {
  * Базовий тип для постів Instagram
  */
 
-interface PostType extends PostBase {
+interface InstagramPostType extends PostBase {
     social: "instagram";
     typePost: 'publication' | 'stories' | 'reels';
 }
 
 // InstagramPublication
-export interface InstagramPublicationType extends PostType {
+export interface InstagramPublicationType extends InstagramPostType {
     typePost: "publication";
     params: InstagramPublicationParams;
 }
@@ -40,7 +40,7 @@ interface InstagramPublicationParams {
 
 
 // InstagramStoriesType
-export interface InstagramStoriesType extends PostType {
+export interface InstagramStoriesType extends InstagramPostType {
     typePost: 'stories';
     params: InstagramStoriesParams;
 }
@@ -51,7 +51,7 @@ interface InstagramStoriesParams {
 
 
 // InstagramReels
-export interface InstagramReelsType extends PostType {
+export interface InstagramReelsType extends InstagramPostType {
     typePost: 'reels';
     params: InstagramReelsParams;
 }
@@ -91,3 +91,5 @@ export interface TikTokStoriesType extends TikTokPostType {
 interface TikTokStoriesParams {
     media: string;
 }
+
+export type PostType = InstagramPublicationType | InstagramStoriesType | InstagramReelsType | TikTokPublicationType | TikTokStoriesType;

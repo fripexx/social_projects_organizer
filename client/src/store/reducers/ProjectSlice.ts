@@ -16,6 +16,8 @@ import {
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
 import {TeamMemberType} from "../types/TeamMemberType";
+import {PostType} from "../types/PostType";
+import {getPosts} from "../thunks/PostThunks";
 
 interface ProjectState {
     isLoading: boolean,
@@ -24,6 +26,7 @@ interface ProjectState {
     projectId: string | null,
     notes: NoteType[],
     team: TeamMemberType[],
+    posts: PostType[],
 }
 
 const initialState: ProjectState = {
@@ -33,6 +36,7 @@ const initialState: ProjectState = {
     projectId: null,
     notes: [],
     team: [],
+    posts: []
 }
 
 const projectSlice = createSlice({
@@ -167,6 +171,16 @@ const projectSlice = createSlice({
         },
         [leaveProject.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
+            state.error = action.payload;
+        },
+
+        /* getPosts */
+        [getPosts.pending.type]: (state) => {},
+        [getPosts.fulfilled.type]: (state, action: PayloadAction<PostType[]>) => {
+            state.error = null;
+            state.posts = action.payload
+        },
+        [getPosts.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.error = action.payload;
         }
     }

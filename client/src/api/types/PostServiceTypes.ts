@@ -22,3 +22,11 @@ export interface UpdateInstagramPublicationRequestType {
 export interface DeletePostRequestType {
     id: string;
 }
+
+export interface GetPostsRequestType {
+    project: string;
+    skip: number;
+    limit: number;
+    social?: "instagram" | "tiktok";
+    typePost?: "publication" | "stories" | "reels";
+}

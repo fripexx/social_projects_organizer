@@ -8,6 +8,11 @@ export interface QueryMediaRequestType {
     mediaIds?: string[]
 }
 
+export interface GetMediaRequestType {
+    projectId: string,
+    mediaId: string,
+}
+
 export interface DeleteMediaRequestType {
     idMedia: string,
     projectId: string
