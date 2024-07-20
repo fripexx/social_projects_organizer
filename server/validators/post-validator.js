@@ -123,7 +123,12 @@ const getPosts = [
             }
 
             return true;
-        })
+        }),
+
+    query('status')
+        .optional()
+        .isString().withMessage('status повинен бути строкою')
+        .isIn(['edit', 'pending', 'rejected', 'confirmed']).withMessage('status повинен бути одним з наступних значень: edit, pending, rejected, confirmed'),
 ];
 
 module.exports = {

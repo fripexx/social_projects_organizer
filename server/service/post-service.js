@@ -228,22 +228,22 @@ class PostService {
     }
 
     async getPosts(user, query) {
-        const {project, skip, limit, social, typePost} = query;
+        const {project, skip, limit, social, typePost, status} = query;
 
         const filter = {
             project,
         }
 
-        if(social && ["instagram", "tiktok"].includes(social)) {
+        if (social && ["instagram", "tiktok"].includes(social)) {
             filter["social"] = social;
         } else {
             throw ApiError.BadRequest('Помилка: social повинен бути одним з наступних значень: instagram, tiktok.');
         }
 
-        if(typePost && ["instagram", "tiktok"].includes(filter["social"])) {
+        if (typePost && ["instagram", "tiktok"].includes(filter["social"])) {
             switch (filter["social"]) {
                 case "instagram":
-                    if(["publication", "stories", "reels"].includes(typePost)) {
+                    if (["publication", "stories", "reels"].includes(typePost)) {
                         filter["typePost"] = typePost;
                     } else {
                         throw ApiError.BadRequest('Помилка: typePost для instagram повинен бути одним з наступних значень: publication, stories, reels');
@@ -251,12 +251,20 @@ class PostService {
                     break;
 
                 case "tiktok":
-                    if(["publication", "stories"].includes(typePost)) {
+                    if (["publication", "stories"].includes(typePost)) {
                         filter["typePost"] = typePost;
                     } else {
                         throw ApiError.BadRequest('Помилка: typePost для tiktok повинен бути одним з наступних значень: publication, stories');
                     }
                     break;
+            }
+        }
+
+        if (status) {
+            if (['edit', 'pending', 'rejected', 'confirmed'].includes(status)) {
+                filter["status"] = status;
+            } else {
+                throw ApiError.BadRequest('Помилка: status повинен бути одним з наступних значень: edit, pending, rejected, confirmed.');
             }
         }
 
