@@ -234,29 +234,33 @@ class PostService {
             project,
         }
 
-        if (social && ["instagram", "tiktok"].includes(social)) {
-            filter["social"] = social;
-        } else {
-            throw ApiError.BadRequest('Помилка: social повинен бути одним з наступних значень: instagram, tiktok.');
+        if(social) {
+            if (["instagram", "tiktok"].includes(social)) {
+                filter["social"] = social;
+            } else {
+                throw ApiError.BadRequest('Помилка: social повинен бути одним з наступних значень: instagram, tiktok.');
+            }
         }
 
-        if (typePost && ["instagram", "tiktok"].includes(filter["social"])) {
-            switch (filter["social"]) {
-                case "instagram":
-                    if (["publication", "stories", "reels"].includes(typePost)) {
-                        filter["typePost"] = typePost;
-                    } else {
-                        throw ApiError.BadRequest('Помилка: typePost для instagram повинен бути одним з наступних значень: publication, stories, reels');
-                    }
-                    break;
+        if(typePost) {
+            if (["instagram", "tiktok"].includes(filter["social"])) {
+                switch (filter["social"]) {
+                    case "instagram":
+                        if (["publication", "stories", "reels"].includes(typePost)) {
+                            filter["typePost"] = typePost;
+                        } else {
+                            throw ApiError.BadRequest('Помилка: typePost для instagram повинен бути одним з наступних значень: publication, stories, reels');
+                        }
+                        break;
 
-                case "tiktok":
-                    if (["publication", "stories"].includes(typePost)) {
-                        filter["typePost"] = typePost;
-                    } else {
-                        throw ApiError.BadRequest('Помилка: typePost для tiktok повинен бути одним з наступних значень: publication, stories');
-                    }
-                    break;
+                    case "tiktok":
+                        if (["publication", "stories"].includes(typePost)) {
+                            filter["typePost"] = typePost;
+                        } else {
+                            throw ApiError.BadRequest('Помилка: typePost для tiktok повинен бути одним з наступних значень: publication, stories');
+                        }
+                        break;
+                }
             }
         }
 
