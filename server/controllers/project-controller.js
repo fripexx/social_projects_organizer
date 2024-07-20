@@ -220,6 +220,18 @@ class ProjectController {
         }
     }
 
+    async getMediaOne(req, res, next) {
+        try {
+            const query = req.query;
+            const user = await req.user;
+            const media = await ProjectService.getMediaOne(query, user);
+
+            res.json(media);
+        } catch (e) {
+            next(e);
+        }
+    }
+
     async deleteMedia(req, res, next) {
         try {
             const {idMedia, projectId} = req.query;

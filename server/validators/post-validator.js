@@ -91,9 +91,45 @@ const deletePost = [
         })
 ];
 
+const getPosts = [
+    query('project')
+        .isString().withMessage('project повинен бути строкою')
+        .custom((project) => {
+            if (!mongoose.Types.ObjectId.isValid(project)) throw new Error('project повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    query('skip')
+        .isNumeric().withMessage('skip повинен бути цифрою'),
+
+    query('limit')
+        .isNumeric().withMessage('limit повинен бути цифрою'),
+
+    query('social')
+        .optional()
+        .isString().withMessage('social повинен бути строкою')
+        .isIn(['instagram', 'tiktok']).withMessage('social повинен бути одним з наступних значень: instagram, tiktok'),
+
+    query('typePost')
+        .optional()
+        .isString().withMessage('typePost повинен бути строкою')
+        .custom((typePost, { req }) => {
+            const { social } = req.query;
+
+            if (social === 'instagram' && !['publication', 'stories', 'reels'].includes(typePost)) {
+                throw new Error('typePost для instagram повинен бути одним з наступних значень: publication, stories, reels');
+            } else if (social === 'tiktok' && !['publication', 'stories'].includes(typePost)) {
+                throw new Error('typePost для tiktok повинен бути одним з наступних значень: publication, stories');
+            }
+
+            return true;
+        })
+];
+
 module.exports = {
     createInstagramPublication,
     getInstagramPublication,
     updateInstagramPublication,
-    deletePost
+    deletePost,
+    getPosts
 };

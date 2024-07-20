@@ -226,6 +226,50 @@ class PostService {
 
         return post;
     }
+
+    async getPosts(user, query) {
+        const {project, skip, limit, social, typePost} = query;
+
+        const filter = {
+            project,
+        }
+
+        if(social && ["instagram", "tiktok"].includes(social)) {
+            filter["social"] = social;
+        } else {
+            throw ApiError.BadRequest('Помилка: social повинен бути одним з наступних значень: instagram, tiktok.');
+        }
+
+        if(typePost && ["instagram", "tiktok"].includes(filter["social"])) {
+            switch (filter["social"]) {
+                case "instagram":
+                    if(["publication", "stories", "reels"].includes(typePost)) {
+                        filter["typePost"] = typePost;
+                    } else {
+                        throw ApiError.BadRequest('Помилка: typePost для instagram повинен бути одним з наступних значень: publication, stories, reels');
+                    }
+                    break;
+
+                case "tiktok":
+                    if(["publication", "stories"].includes(typePost)) {
+                        filter["typePost"] = typePost;
+                    } else {
+                        throw ApiError.BadRequest('Помилка: typePost для tiktok повинен бути одним з наступних значень: publication, stories');
+                    }
+                    break;
+            }
+        }
+
+        const options = {
+            skip,
+            limit,
+            lean: true
+        }
+
+        const posts = await PostModel.find(filter, null, options);
+
+        return posts.map(post => new PostDto(post));
+    }
 }
 
 module.exports = new PostService();

@@ -48,6 +48,18 @@ class PostController {
             next(e)
         }
     }
+
+    async getPosts(req, res, next){
+        try {
+            const user = await req.user;
+            const query = req.query;
+            const posts = await PostService.getPosts(user, query);
+
+            return res.json(posts);
+        } catch (e) {
+            next(e)
+        }
+    }
 }
 
 module.exports = new PostController();

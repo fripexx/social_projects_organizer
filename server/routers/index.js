@@ -2,6 +2,7 @@ const Router = require('express').Router;
 const UserController = require('../controllers/user-controller');
 const NoteController = require('../controllers/note-controller')
 const ProjectController = require('../controllers/project-controller')
+const ProjectValidator = require('../validators/project-validator')
 const ChatController = require('../controllers/chat-controller')
 const PostController = require('../controllers/post-controller')
 const PostValidator = require('../validators/post-validator')
@@ -99,8 +100,13 @@ const setupRouter = ({io}) => {
      * Project media routes
      */
     router.post('/upload-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.uploadMedia);
-    router.get('/get-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.getMedia);
-    router.delete('/delete-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.deleteMedia);
+    router.get('/get-media', [authMiddleware], ProjectController.getMedia);
+    router.get(
+        '/get-media-one',
+        [authMiddleware, ...ProjectValidator.getMediaOne, validate],
+        ProjectController.getMediaOne
+    );
+    router.delete('/delete-media', [authMiddleware], ProjectController.deleteMedia);
 
 
     /**
@@ -112,8 +118,25 @@ const setupRouter = ({io}) => {
 
 
     /**
-     * InstagramPosts
+     * Posts
      */
+
+    // General
+
+    router.delete(
+        '/delete-post',
+        [authMiddleware, ...PostValidator.deletePost, validate],
+        PostController.deletePost
+    );
+    router.get(
+        '/get-posts',
+        [authMiddleware, ...PostValidator.getPosts, validate],
+        PostController.getPosts
+    );
+
+
+    // Publication
+
     router.post(
         '/create-instagram-publication',
         [authMiddleware, ...PostValidator.createInstagramPublication, validate],
@@ -128,11 +151,6 @@ const setupRouter = ({io}) => {
         '/update-instagram-publication',
         [authMiddleware, ...PostValidator.updateInstagramPublication, validate],
         PostController.updateInstagramPublication
-    );
-    router.delete(
-        '/delete-post',
-        [authMiddleware, ...PostValidator.deletePost, validate],
-        PostController.deletePost
     );
 
     return router;

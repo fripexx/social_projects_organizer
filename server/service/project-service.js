@@ -292,6 +292,26 @@ class ProjectService {
         };
     }
 
+    async getMediaOne(query, user) {
+        const {projectId, mediaId} = query
+
+        const checkProject = await this.checkUserAccessToProject(projectId, user)
+
+        const filter = {
+            _id: mediaId,
+            'belongTo.id': checkProject._id,
+            'belongTo.model': 'Project'
+        }
+        const options = {
+            lean: true
+        }
+        const media = await FileModel.findOne(filter, null, options);
+
+        if(!media) throw ApiError.BadRequest('Помилка: Медіа із вказаним ID не знайдено');
+
+        return new FileDto(media);
+    }
+
     async deleteMedia(projectId, user, idMedia) {
         const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
 
