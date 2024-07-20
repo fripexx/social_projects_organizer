@@ -20,7 +20,7 @@ import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
 import {setError} from "../../../store/reducers/ProjectSlice";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
-import {useSearchParams} from "react-router-dom";
+import {useSearchParams, useNavigate} from "react-router-dom";
 import {
     publishInstagramPublication,
     getInstagramPublication, deletePost, updateInstagramPublication,
@@ -30,6 +30,7 @@ import {setPublication} from "../../../store/reducers/InstagramPublicationSlice"
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
+    const navigate = useNavigate();
 
     const user = useAppSelector(state => state.UserReducer.user);
     const project = useAppSelector(state => state.ProjectReducer.project);
@@ -66,6 +67,9 @@ const EditInstagramPublication: FC = () => {
                     datePublish: editPublication.datePublish,
                     media: selectMedia.map(media => media.id),
                 }))
+                .then((action) => {
+                    if (publishInstagramPublication.fulfilled.match(action)) navigate(`?id=${action.payload.id}`);
+                });
             } else {
                 dispatch(setError({ message: "Додайте хоча б один медіафайл" }))
             }
