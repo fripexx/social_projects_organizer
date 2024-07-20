@@ -7,6 +7,10 @@
     border-bottom: 1px solid var(--Color-Light-Grey-Blue);
 }
 
+.status {
+    margin-right: auto;
+}
+
 .columns {
     display: grid;
     grid-template-columns: auto 1fr auto;

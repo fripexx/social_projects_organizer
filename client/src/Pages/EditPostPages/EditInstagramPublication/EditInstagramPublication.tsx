@@ -6,7 +6,6 @@ import SidebarProject from "../../../Components/SidebarProject/SidebarProject";
 import ContentPage from "../../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../../Components/HeaderPage/HeaderPage";
 import Content from "../../../Components/Content/Content";
-import Button from "../../../Elements/Button/Button";
 import StatusPostLabel from "../../../Components/StatusPostLabel/StatusPostLabel";
 import InstagramPublicationPreview from "../../../Components/InstagramComponents/InstagramPublicationPreview/InstagramPublicationPreview";
 import PublicationParams from "./Componets/PublicationParams/PublicationParams";
@@ -14,19 +13,22 @@ import ChatPost from "../Components/ChatPost/ChatPost";
 import EditButtons from "../Components/EditButtons/EditButtons";
 import Tabs from "../Components/Tabs/Tabs";
 import Loader from "../../../Elements/Loader/Loader";
+import BackLink from "../Components/BackLink/BackLink";
 import {FileType, PhotoType} from "../../../store/types/FileType";
 import {InstagramPublicationType} from "../../../store/types/PostType";
 import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
-import {setError} from "../../../store/reducers/ProjectSlice";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
+import {setError} from "../../../store/reducers/ProjectSlice";
+import {v4 as uuid} from "uuid";
+import {setPublication} from "../../../store/reducers/InstagramPublicationSlice";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 import {useSearchParams, useNavigate} from "react-router-dom";
 import {
     publishInstagramPublication,
-    getInstagramPublication, deletePost, updateInstagramPublication,
+    getInstagramPublication,
+    deletePost,
+    updateInstagramPublication,
 } from "../../../store/thunks/PostThunks";
-import {v4 as uuid} from "uuid";
-import {setPublication} from "../../../store/reducers/InstagramPublicationSlice";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
@@ -190,7 +192,7 @@ const EditInstagramPublication: FC = () => {
                     <>
                         <HeaderPage className={classes.header}>
 
-                            <Button className={classes.back} text={"Назад"} onClick={() => {}}/>
+                            <BackLink className={classes.back} project={project.id}/>
 
                             <StatusPostLabel className={classes.status} status={editPublication.status}/>
 
