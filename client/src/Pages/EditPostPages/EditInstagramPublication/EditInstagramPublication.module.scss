@@ -9,6 +9,10 @@
 
 .status {
     margin-right: auto;
+
+    @media (max-width: 900px) {
+        margin-right: unset;
+    }
 }
 
 .columns {
