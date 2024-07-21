@@ -29,34 +29,39 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
 
             <InstagramHeader name={name}/>
 
-            <InstagramPublicationHeader
-                profile={profile}
-                colabProfile={colabProfile}
-                location={location}
-            />
+            <div className={classes.scrollContainer}>
 
-            {paginationRef &&
-                <InstagramPictureSlider
-                    media={media}
-                    paginationRef={paginationRef}
-                    aspectRatio={aspectRatio}
+                <InstagramPublicationHeader
+                    profile={profile}
+                    colabProfile={colabProfile}
+                    location={location}
                 />
-            }
 
-            <div className={classes.info}>
 
-                <InstagramPublicationButtons setRef={setPaginationRef}/>
-
-                <InstagramLikes name={name}/>
-
-                {description &&
-                    <InstagramPublicationDescription
-                        profile={profile}
-                        description={description}
+                {paginationRef &&
+                    <InstagramPictureSlider
+                        media={media}
+                        paginationRef={paginationRef}
+                        aspectRatio={aspectRatio}
                     />
                 }
 
-                <InstagramComments/>
+                <div className={classes.info}>
+
+                    <InstagramPublicationButtons setRef={setPaginationRef}/>
+
+                    <InstagramLikes name={name}/>
+
+                    {description &&
+                        <InstagramPublicationDescription
+                            profile={profile}
+                            description={description}
+                        />
+                    }
+
+                    <InstagramComments/>
+
+                </div>
 
             </div>
 

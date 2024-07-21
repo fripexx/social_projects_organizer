@@ -1,3 +1,11 @@
 .info {
     padding: 0 4%;
 }
+
+.scrollContainer {
+    height: 85%;
+    overflow-y: scroll;
+    &::-webkit-scrollbar {
+        width: 0px;
+    }
+}
