@@ -38,6 +38,7 @@ const Description: FC<CommentsProps> = ({value, changeCallback, label, className
                 placeholder={"..."}
                 onChange={changeHandler}
                 className={classes.textarea}
+                rows={10}
             />
 
             <footer className={classes.footer}>
