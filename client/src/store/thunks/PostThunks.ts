@@ -8,6 +8,7 @@ import {
     DeletePostRequestType,
     GetInstagramPublicationRequestType,
     GetPostsRequestType,
+    GetPostsResponseType,
     UpdateInstagramPublicationRequestType
 } from "../../api/types/PostServiceTypes";
 
@@ -55,7 +56,7 @@ export const deletePost = createAsyncThunk<(string | string[]), DeletePostReques
     }
 );
 
-export const getPosts = createAsyncThunk<PostType[], GetPostsRequestType, AsyncThunkConfig>(
+export const getPosts = createAsyncThunk<GetPostsResponseType, GetPostsRequestType, AsyncThunkConfig>(
     'project/getPosts',
     async (data, thunkAPI) => {
         try {

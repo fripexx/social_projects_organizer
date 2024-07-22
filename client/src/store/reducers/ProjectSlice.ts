@@ -18,6 +18,7 @@ import {NoteType} from "../types/NoteType";
 import {TeamMemberType} from "../types/TeamMemberType";
 import {PostType} from "../types/PostType";
 import {getPosts} from "../thunks/PostThunks";
+import {GetPostsResponseType} from "../../api/types/PostServiceTypes";
 
 interface ProjectState {
     isLoading: boolean,
@@ -26,7 +27,10 @@ interface ProjectState {
     projectId: string | null,
     notes: NoteType[],
     team: TeamMemberType[],
-    posts: PostType[],
+    postsData: {
+        posts: PostType[],
+        total: number,
+    }
 }
 
 const initialState: ProjectState = {
@@ -36,7 +40,10 @@ const initialState: ProjectState = {
     projectId: null,
     notes: [],
     team: [],
-    posts: []
+    postsData: {
+        posts: [],
+        total: 0,
+    }
 }
 
 const projectSlice = createSlice({
@@ -48,7 +55,10 @@ const projectSlice = createSlice({
         },
         setError: (state, action: PayloadAction<ErrorResponseType | null>) => {
             state.error = action.payload;
-        }
+        },
+        setLoadMorePosts: (state, action: PayloadAction<PostType[]>) => {
+            state.postsData.posts = [...state.postsData.posts, ...action.payload];
+        },
     },
     extraReducers: {
         [getProject.pending.type]: (state) => {
@@ -176,9 +186,12 @@ const projectSlice = createSlice({
 
         /* getPosts */
         [getPosts.pending.type]: (state) => {},
-        [getPosts.fulfilled.type]: (state, action: PayloadAction<PostType[]>) => {
+        [getPosts.fulfilled.type]: (state, action: PayloadAction<GetPostsResponseType>) => {
             state.error = null;
-            state.posts = action.payload
+            state.postsData = {
+                posts: action.payload.posts,
+                total: action.payload.total,
+            };
         },
         [getPosts.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.error = action.payload;
@@ -187,4 +200,4 @@ const projectSlice = createSlice({
 })
 
 export default projectSlice.reducer;
-export const { setProject, setError } = projectSlice.actions;
+export const { setProject, setError, setLoadMorePosts } = projectSlice.actions;

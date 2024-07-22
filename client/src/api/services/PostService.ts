@@ -7,6 +7,7 @@ import {
     DeletePostRequestType,
     GetInstagramPublicationRequestType,
     GetPostsRequestType,
+    GetPostsResponseType,
     UpdateInstagramPublicationRequestType
 } from "../types/PostServiceTypes";
 
@@ -96,7 +97,7 @@ class PostService {
     async getPosts(data: GetPostsRequestType ) {
         try {
             const config: AxiosRequestConfig = {params: data}
-            const response = await instanceServer.get<PostType[]>('/get-posts', config);
+            const response = await instanceServer.get<GetPostsResponseType>('/get-posts', config);
 
             return response.data;
         } catch (e) {

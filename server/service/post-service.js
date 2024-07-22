@@ -279,8 +279,12 @@ class PostService {
         }
 
         const posts = await PostModel.find(filter, null, options);
+        const totalPosts = await PostModel.countDocuments(filter);
 
-        return posts.map(post => new PostDto(post));
+        return {
+            posts: posts.map(post => new PostDto(post)),
+            total: totalPosts,
+        };
     }
 }
 

@@ -53,9 +53,9 @@ class PostController {
         try {
             const user = await req.user;
             const query = req.query;
-            const posts = await PostService.getPosts(user, query);
+            const postsData = await PostService.getPosts(user, query);
 
-            return res.json(posts);
+            return res.json(postsData);
         } catch (e) {
             next(e)
         }

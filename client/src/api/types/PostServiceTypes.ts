@@ -1,4 +1,5 @@
 import {PostStatus} from "../../store/reducers/PostStatus";
+import {PostType} from "../../store/types/PostType";
 
 export interface AddInstagramPublicationRequestType {
     project: string;
@@ -32,4 +33,9 @@ export interface GetPostsRequestType {
     social?: "instagram" | "tiktok";
     typePost?: "publication" | "stories" | "reels";
     status?: PostStatus
+}
+
+export interface GetPostsResponseType {
+    posts: PostType[],
+    total: number,
 }

@@ -3,6 +3,8 @@ import classes from "./ProjectPosts.module.scss";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import {GetPostsRequestType} from "../../api/types/PostServiceTypes";
 import {PostStatus} from "../../store/reducers/PostStatus";
+import PostService from "../../api/services/PostService";
+import {setLoadMorePosts} from "../../store/reducers/ProjectSlice";
 import {socialOptions} from "./constants/SocialOptions";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {getPosts} from "../../store/thunks/PostThunks";
@@ -17,14 +19,16 @@ import PostItem from "../../Components/PostItem/PostItem";
 import AddPostModal from "./Components/AddPostModal/AddPostModal";
 import {useSearchParams} from "react-router-dom";
 import Select from "../../Elements/Select/Select";
+import LoadMore from "../../Components/LoadMore/LoadMore";
 
 const ProjectPosts:FC = () => {
     const dispatch = useAppDispatch();
     const project = useAppSelector(state => state.ProjectReducer.project)
-    const posts = useAppSelector(state => state.ProjectReducer.posts)
+    const {total, posts} = useAppSelector(state => state.ProjectReducer.postsData)
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState<GetPostsRequestType | undefined>();
     const [addPostOpen, setAddPostOpen] = useState<boolean>(false);
+    const [loadMore, setLoadMore] = useState<boolean>(false);
 
     const changeSocialHandler = (value: string) => {
         if(value === "instagram" || value === "tiktok") {
@@ -40,7 +44,7 @@ const ProjectPosts:FC = () => {
             setQuery({
                 project: project.id,
                 skip: 0,
-                limit: 15,
+                limit: 20,
                 social: "instagram",
                 typePost: "publication",
             })
@@ -67,6 +71,17 @@ const ProjectPosts:FC = () => {
             }
         }
     }, [searchParams]);
+
+    useEffect(() => {
+        async function fetchLoadMore() {
+            if (loadMore && query) {
+                const loadMoreData = await PostService.getPosts({...query, skip: posts.length})
+                dispatch(setLoadMorePosts(loadMoreData.posts))
+                setLoadMore(false);
+            }
+        }
+        fetchLoadMore();
+    }, [loadMore]);
 
     return (
         <Page>
@@ -100,13 +115,19 @@ const ProjectPosts:FC = () => {
                     <div className={classes.postsContainer}>
                         {posts.map(post => {
                             return(
-                                <PostItem
-                                    key={post.id}
-                                    post={post}
-                                />
+                                <PostItem key={post.id} post={post}/>
                             )
                         })}
                     </div>
+
+                    <LoadMore
+                        load={loadMore}
+                        text={"Показати ще"}
+                        shown={posts.length}
+                        total={total}
+                        callback={() => setLoadMore(true)}
+                    />
+
                 </Content>
 
                 <AddPostModal open={addPostOpen} closeCallback={closeAddModal}/>
