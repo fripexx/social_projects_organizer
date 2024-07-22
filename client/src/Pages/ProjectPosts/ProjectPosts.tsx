@@ -11,6 +11,7 @@ import Content from "../../Components/Content/Content";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 import StatusTabs from "./Components/StatusTabs/StatusTabs";
 import PostItem from "../../Components/PostItem/PostItem";
+import AddPostModal from "./Components/AddPostModal/AddPostModal";
 import {useSearchParams} from "react-router-dom";
 import {GetPostsRequestType} from "../../api/types/PostServiceTypes";
 import {PostStatus} from "../../store/reducers/PostStatus";
@@ -21,6 +22,7 @@ const ProjectPosts:FC = () => {
     const posts = useAppSelector(state => state.ProjectReducer.posts)
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState<GetPostsRequestType | undefined>();
+    const [addPostOpen, setAddPostOpen] = useState<boolean>(false);
 
     useEffect(() => {
         if(project) {
@@ -62,7 +64,7 @@ const ProjectPosts:FC = () => {
                         icon={plusIcon}
                         iconColor={"var(--Color-Green)"}
                         style={{marginLeft: "auto"}}
-                        onClick={() => {}}
+                        onClick={() => setAddPostOpen(true)}
                     />
 
                 </HeaderPage>
@@ -79,6 +81,8 @@ const ProjectPosts:FC = () => {
                         })}
                     </div>
                 </Content>
+
+                <AddPostModal open={addPostOpen}/>
 
             </ContentPage>
 
