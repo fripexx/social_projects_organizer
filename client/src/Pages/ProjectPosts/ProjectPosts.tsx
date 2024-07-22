@@ -1,6 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./ProjectPosts.module.scss";
 import plusIcon from "../../assets/images/plus_icon.svg";
+import {GetPostsRequestType} from "../../api/types/PostServiceTypes";
+import {PostStatus} from "../../store/reducers/PostStatus";
+import {socialOptions} from "./constants/SocialOptions";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {getPosts} from "../../store/thunks/PostThunks";
 import Page from "../../Components/Page/Page";
@@ -13,10 +16,7 @@ import StatusTabs from "./Components/StatusTabs/StatusTabs";
 import PostItem from "../../Components/PostItem/PostItem";
 import AddPostModal from "./Components/AddPostModal/AddPostModal";
 import {useSearchParams} from "react-router-dom";
-import {GetPostsRequestType} from "../../api/types/PostServiceTypes";
-import {PostStatus} from "../../store/reducers/PostStatus";
 import Select from "../../Elements/Select/Select";
-import {socialOptions} from "./constants/SocialOptions";
 
 const ProjectPosts:FC = () => {
     const dispatch = useAppDispatch();
@@ -55,6 +55,15 @@ const ProjectPosts:FC = () => {
 
             if(status) {
                 setQuery(prevState => prevState ? {...prevState, status} : prevState);
+            } else {
+                setQuery(prevState => {
+                    if(prevState) {
+                        const updateState = {...prevState}
+                        delete updateState.status;
+                        return updateState
+                    }
+                    return prevState;
+                });
             }
         }
     }, [searchParams]);
