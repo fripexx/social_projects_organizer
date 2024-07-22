@@ -5,5 +5,16 @@
 }
 
 .link {
-    margin-top: 5px;
+    margin-top: 20px;
+}
+
+.close {
+    all: unset;
+    display: flex;
+    cursor: pointer;
+    margin-left: auto;
+
+    svg {
+        display: block;
+    }
 }

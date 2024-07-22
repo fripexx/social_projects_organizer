@@ -15,6 +15,8 @@ import AddPostModal from "./Components/AddPostModal/AddPostModal";
 import {useSearchParams} from "react-router-dom";
 import {GetPostsRequestType} from "../../api/types/PostServiceTypes";
 import {PostStatus} from "../../store/reducers/PostStatus";
+import Select from "../../Elements/Select/Select";
+import {socialOptions} from "./constants/SocialOptions";
 
 const ProjectPosts:FC = () => {
     const dispatch = useAppDispatch();
@@ -23,6 +25,15 @@ const ProjectPosts:FC = () => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [query, setQuery] = useState<GetPostsRequestType | undefined>();
     const [addPostOpen, setAddPostOpen] = useState<boolean>(false);
+
+    const changeSocialHandler = (value: string) => {
+        if(value === "instagram" || value === "tiktok") {
+            setQuery(prevState => (prevState ? {...prevState, social: value} : undefined))
+        }
+    }
+    const closeAddModal = () => {
+        setAddPostOpen(false)
+    }
 
     useEffect(() => {
         if(project) {
@@ -55,7 +66,14 @@ const ProjectPosts:FC = () => {
 
             <ContentPage>
 
-                <HeaderPage>
+                <HeaderPage className={classes.header}>
+
+                    <Select
+                        className={classes.socialSelect}
+                        options={socialOptions}
+                        value={query?.social || ""}
+                        onChange={changeSocialHandler}
+                    />
 
                     <StatusTabs/>
 
@@ -82,7 +100,7 @@ const ProjectPosts:FC = () => {
                     </div>
                 </Content>
 
-                <AddPostModal open={addPostOpen}/>
+                <AddPostModal open={addPostOpen} closeCallback={closeAddModal}/>
 
             </ContentPage>
 
