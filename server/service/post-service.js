@@ -7,35 +7,31 @@ const PostDto = require('../dtos/post-dto');
 
 class PostService {
     async createInstagramPublication(user, data) {
-        const {project, description, aspectRatio, datePublish, media} = data;
+        const {project, datePublish, params} = data;
+        const {aspectRatio, description, media} = params;
 
 
         /**
-         * Перевірка існувння проєкту
+         * Перевірка прав в проєкті
          */
 
-        const findProject = await ProjectModel.findOne({_id: project, 'team.user': user.id}).lean();
-
-        if (!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
-
-
-        /**
-         * Перевірка ролі юзера
-         */
-
-        const teamMember = findProject.team.find(member => member.user.toString() === user.id);
-
-        if (teamMember.role !== 'smm_manager') throw new Error("Помилка: Вашій ролі обмежено доступ до цього запиту.");
+        const checkProject = await ProjectService.checkProjectManagementPermissions(project, user, true)
 
 
         /**
          * Перевірка існування медіафайлів
          */
 
-        const foundMedia = await FileModel.find({_id: {$in: media}}).lean();
-        const foundMediaIds = foundMedia.map(project => project._id.toString());
+        const filterMedia = {
+            _id: {$in: media},
+            'belongTo.id': project,
+            'belongTo.model': "Project"
 
-        if (foundMediaIds.length === 0) throw ApiError.BadRequest('Помилка: Не вдалося знайти жодного медіа в базі даних.');
+        }
+        const foundMedia = await FileModel.find(filterMedia, null, {lean: true});
+        const foundMediaIds = foundMedia.map(item => item._id.toString());
+
+        if (foundMediaIds.length === 0) throw ApiError.BadRequest('Помилка: Не вдалося знайти жодного медіа.');
 
 
         /**
@@ -43,7 +39,7 @@ class PostService {
          */
 
         const createInstagramPublication = await PostModel.create({
-            project: project,
+            project: checkProject._id,
             status: "edit",
             datePublish: datePublish,
             author: user.id,
@@ -73,7 +69,7 @@ class PostService {
 
 
         /**
-         * Створення запису в БД
+         * Пошук публікації в БД
          */
 
         const instagramPublication = await PostModel.findOne({_id: id, typePost: 'publication'});
@@ -84,14 +80,22 @@ class PostService {
     }
 
     async updateInstagramPublication(user, data){
-        const {id, description, aspectRatio, datePublish, media} = data;
+        const {id, project, datePublish, params} = data;
+        const {aspectRatio, description, media} = params;
+
+
+        /**
+         * Перевірка прав в проєкті
+         */
+
+        const checkProject = await ProjectService.checkProjectManagementPermissions(project, user, true)
 
 
         /**
          * Перевірка існувння та доступуп до посту
          */
 
-        const checkPublication = await this.checkUserAccessToPost(id, user, true);
+        const checkPublication = await this.checkPostManagementPermissions(id, user);
 
 
         /**
@@ -133,10 +137,10 @@ class PostService {
 
 
                     /**
-                     * Перевірка доступу до посту
+                     * Перевірка прав редагування посту
                      */
 
-                    const post = await this.checkUserAccessToPost(id, user, true);
+                    const post = await this.checkPostManagementPermissions(id, user, true);
 
 
                     /**
@@ -160,10 +164,10 @@ class PostService {
         /* Видалення одного поста */
 
         /**
-         * Перевірка доступу до посту
+         * Перевірка прав редагування посту
          */
 
-        const post = await this.checkUserAccessToPost(id, user, true);
+        const post = await this.checkPostManagementPermissions(id, user, true);
 
 
         /**
@@ -175,56 +179,6 @@ class PostService {
         if(!deletePost) throw ApiError.BadRequest('Помилка: Невдалося видалити пост.');
 
         return deletePost._id;
-    }
-
-    async checkUserAccessToPost(id, user, isLean = true, throwError = true, returnProject = false) {
-
-
-        /**
-         * Перевірка існувння посту
-         */
-
-        const post = await PostModel.findById(id, null, {lean: isLean});
-
-        if(!post) {
-
-            if(throwError) {
-                throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено.');
-            } else {
-                return false
-            }
-
-        }
-
-
-        /**
-         * Перевірка існувння та доступу до проєкту
-         */
-
-        const project = await ProjectService.checkUserAccessToProject(post.project, user)
-
-
-        /**
-         * Перевірка доступу юзера
-         */
-
-        const teamMember = project.team.find(member => member.user.toString() === user.id);
-        const accessRoles = ['smm_manager', 'customer']
-
-
-        if (!accessRoles.includes(teamMember.role) && project.administrator !== user.id) {
-
-            if(throwError) {
-                throw ApiError.BadRequest('Помилка: Вашій ролі обмежено доступ до цього запиту.');
-            } else {
-                return false
-            }
-
-        }
-
-        if(returnProject) return {project, post }
-
-        return post;
     }
 
     async getPosts(user, query) {
@@ -286,6 +240,64 @@ class PostService {
             total: totalPosts,
         };
     }
+
+    /* Перевірка існувння посту */
+
+
+    async checkUserAccessToPost(id, user, isLean = true, throwError = true, returnProject = false) {
+
+
+        /**
+         * Перевірка існувння посту
+         */
+
+        const post = await PostModel.findById(id, null, {lean: isLean});
+
+        if(!post) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено.');
+            } else {
+                return false
+            }
+
+        }
+
+
+        /**
+         * Перевірка існувння та доступу до проєкту
+         */
+
+        const project = await ProjectService.checkUserAccessToProject(post.project, user)
+
+
+        if(returnProject) return {project, post}
+
+        return post;
+    }
+
+    async checkPostManagementPermissions(id, user, throwError = true){
+
+
+        /**
+         * Перевірка існувння посту
+         */
+
+        const post = await PostModel.findById(id, null, {lean: true});
+
+        if(post.author.toString() !== user.id.toString()) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Ви не маєте прав на редагування цього посту');
+            } else {
+                return false
+            }
+
+        }
+
+        return post;
+    }
+
 }
 
 module.exports = new PostService();

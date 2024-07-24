@@ -2,17 +2,15 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import PostService from "../../api/services/PostService";
 import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {InstagramPublicationType, PostType} from "../types/PostType";
+import {InstagramPublicationType} from "../types/PostType";
 import {
-    AddInstagramPublicationRequestType,
     DeletePostRequestType,
     GetInstagramPublicationRequestType,
     GetPostsRequestType,
     GetPostsResponseType,
-    UpdateInstagramPublicationRequestType
 } from "../../api/types/PostServiceTypes";
 
-export const publishInstagramPublication = createAsyncThunk<InstagramPublicationType, AddInstagramPublicationRequestType, AsyncThunkConfig>(
+export const publishInstagramPublication = createAsyncThunk<InstagramPublicationType, InstagramPublicationType, AsyncThunkConfig>(
     'instagramPublication/publishInstagramPublication',
     async (data, thunkAPI) => {
         try {
@@ -34,7 +32,7 @@ export const getInstagramPublication = createAsyncThunk<InstagramPublicationType
     }
 );
 
-export const updateInstagramPublication = createAsyncThunk<InstagramPublicationType, UpdateInstagramPublicationRequestType, AsyncThunkConfig>(
+export const updateInstagramPublication = createAsyncThunk<InstagramPublicationType, InstagramPublicationType, AsyncThunkConfig>(
     'instagramPublication/updateInstagramPublication',
     async (data, thunkAPI) => {
         try {

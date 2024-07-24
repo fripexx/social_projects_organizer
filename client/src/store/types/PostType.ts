@@ -11,8 +11,8 @@ export interface PostBase {
     project: string;
     status: PostStatus;
     author: string;
-    dateCreated: Date;
-    datePublish: Date;
+    dateCreated: string;
+    datePublish: string;
     social: 'instagram' | 'tiktok'
 }
 

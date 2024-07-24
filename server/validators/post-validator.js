@@ -9,17 +9,10 @@ const createInstagramPublication = [
             return true;
         }),
 
-    body('description')
-        .isString().withMessage('description повинен бути строкою'),
-
     body('datePublish')
         .isISO8601().withMessage('datePublish повинен бути датою у форматі ISO8601'),
 
-    body('aspectRatio')
-        .isString().withMessage('aspectRatio повинен бути строкою')
-        .isIn(['1.91/1', '1/1', '4/5']).withMessage('aspectRatio повинен бути одним з наступних значень: 1.91/1, 1/1, 4/5'),
-
-    body('media')
+    body('params.media')
         .isArray().withMessage('media повинен бути масивом')
         .custom((array) => {
             if (!Array.isArray(array)) throw new Error('media повинен бути масивом');
@@ -27,7 +20,14 @@ const createInstagramPublication = [
                 if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('Кожен елемент в media повинен бути валідним ObjectId');
             }
             return true;
-        })
+        }),
+
+    body('params.description')
+        .isString().withMessage('description повинен бути строкою'),
+
+    body('params.aspectRatio')
+        .isString().withMessage('aspectRatio повинен бути строкою')
+        .isIn(['1.91/1', '1/1', '4/5']).withMessage('aspectRatio повинен бути одним з наступних значень: 1.91/1, 1/1, 4/5'),
 ];
 
 const getInstagramPublication = [
@@ -54,17 +54,10 @@ const updateInstagramPublication = [
             return true;
         }),
 
-    body('description')
-        .isString().withMessage('description повинен бути строкою'),
-
     body('datePublish')
         .isISO8601().withMessage('datePublish повинен бути датою у форматі ISO8601'),
 
-    body('aspectRatio')
-        .isString().withMessage('aspectRatio повинен бути строкою')
-        .isIn(['1.91/1', '1/1', '4/5']).withMessage('aspectRatio повинен бути одним з наступних значень: 1.91/1, 1/1, 4/5'),
-
-    body('media')
+    body('params.media')
         .isArray().withMessage('media повинен бути масивом')
         .custom((array) => {
             if (!Array.isArray(array)) throw new Error('media повинен бути масивом');
@@ -72,7 +65,14 @@ const updateInstagramPublication = [
                 if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('Кожен елемент в media повинен бути валідним ObjectId');
             }
             return true;
-        })
+        }),
+
+    body('params.description')
+        .isString().withMessage('description повинен бути строкою'),
+
+    body('params.aspectRatio')
+        .isString().withMessage('aspectRatio повинен бути строкою')
+        .isIn(['1.91/1', '1/1', '4/5']).withMessage('aspectRatio повинен бути одним з наступних значень: 1.91/1, 1/1, 4/5'),
 ];
 
 const deletePost = [

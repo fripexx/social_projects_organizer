@@ -1,18 +1,16 @@
 import instanceServer from "../instanceServer";
 import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
-import {InstagramPublicationType, PostType} from "../../store/types/PostType";
+import {InstagramPublicationType} from "../../store/types/PostType";
 import {
-    AddInstagramPublicationRequestType,
     DeletePostRequestType,
     GetInstagramPublicationRequestType,
     GetPostsRequestType,
     GetPostsResponseType,
-    UpdateInstagramPublicationRequestType
 } from "../types/PostServiceTypes";
 
 class PostService {
-    async publishInstagramPublication(data: AddInstagramPublicationRequestType): Promise<InstagramPublicationType> {
+    async publishInstagramPublication(data: InstagramPublicationType): Promise<InstagramPublicationType> {
         try {
             const response = await instanceServer.post<InstagramPublicationType>('/create-instagram-publication', data);
 
@@ -53,7 +51,7 @@ class PostService {
         }
     }
 
-    async updateInstagramPublication(data: UpdateInstagramPublicationRequestType): Promise<InstagramPublicationType> {
+    async updateInstagramPublication(data: InstagramPublicationType): Promise<InstagramPublicationType> {
         try {
             const response = await instanceServer.patch<InstagramPublicationType>('/update-instagram-publication', data);
 

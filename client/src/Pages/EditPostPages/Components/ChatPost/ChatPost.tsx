@@ -9,34 +9,33 @@ import {BasicUserInfo, UserType} from "../../../../store/types/UserType";
 import {TeamMemberType} from "../../../../store/types/TeamMemberType";
 
 interface ChatPostProps {
-    post: PostBase | null;
+    post: PostBase;
     className?: string;
-    user: UserType | null;
+    user: UserType;
     team: TeamMemberType[]
 }
 
 const ChatPost: FC<ChatPostProps> = ({post, className, team, user}) => {
-    const dispatch = useAppDispatch()
     const socket = useSocket()
     const [teamChat, setTeamChat] = useState<BasicUserInfo[]>([]);
     const [socketConnected, setSocketConnected] = useState<boolean>(false)
 
     useEffect(() => {
-        if (post && !socketConnected) {
+        if (!socketConnected) {
             const socketRoom: Socket = socket.emit('joinRoom', {room: post.id, model: "Post"});
             setSocketConnected(socketRoom.connected);
         }
         return () => {
-            if (post) socket.emit("leaveRoom", {room: post.id, model: "Post"});
+            socket.emit("leaveRoom", {room: post.id, model: "Post"});
         }
-    }, [post]);
+    }, []);
     useEffect(() => {
         setTeamChat(team.map(item => item.user))
     }, [team]);
 
     return (
         <>
-            {post && user ? (
+            {/*{post && post.status !== "unpublish" && user ? (*/}
                 <Chat
                     className={className}
                     chat={post.id}
@@ -45,9 +44,9 @@ const ChatPost: FC<ChatPostProps> = ({post, className, team, user}) => {
                     currentUser={user}
                     team={teamChat}
                 />
-            ) : (
-                <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>
-            )}
+            {/*// ) : (*/}
+            {/*//     <span className={classes.withoutChat}>Для того щоб розпочати чат потрібно зберегти публікацію</span>*/}
+            {/*// )}*/}
         </>
     );
 };
