@@ -21,6 +21,7 @@ import {useSearchParams, useNavigate} from "react-router-dom";
 import {publishInstagramPublication, getInstagramPublication, deletePost, updateInstagramPublication} from "../../../store/thunks/PostThunks";
 import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
+import FileDownloader from "../../../utils/FileDownloader";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
@@ -48,6 +49,10 @@ const EditInstagramPublication: FC = () => {
 
             case "save":
                 saveCallback();
+                break;
+
+            case "download":
+                downloadCallback();
                 break;
         }
     }
@@ -78,6 +83,11 @@ const EditInstagramPublication: FC = () => {
     }
     const deleteCallback = () => {
         if(project && user && publication?.id) dispatch(deletePost({id: publication.id}))
+    }
+    const downloadCallback = () => {
+        const fileDownloader = new FileDownloader(selectMedia);
+        fileDownloader.downloadFiles();
+
     }
     const changeTab = (key: string) => {
         setCurrentTab(key)
