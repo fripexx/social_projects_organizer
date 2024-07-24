@@ -13,6 +13,7 @@ import Select, {SelectOption} from "../../../../../Elements/Select/Select";
 import ProjectMediaService from "../../../../../api/services/ProjectMediaService";
 import {useAppDispatch, useAppSelector} from "../../../../../store/hooks/redux";
 import {setEdit, setPublication, setSelectMedia} from "../../../../../store/reducers/InstagramPublicationSlice";
+import {setError} from "../../../../../store/reducers/ProjectSlice";
 
 interface PublicationParamsProps {
     className?: string;
@@ -112,18 +113,17 @@ const InstagramPublicationParams: FC<PublicationParamsProps> = ({className}) => 
         }
     }, [loadMore]);
     useEffect(() => {
-        const fetchMedia = async () => {
-            if (query) {
-                const mediaData = await ProjectMediaService.getMedia(query)
-
-                if (mediaData) {
-                    setMediaLibrary(prevState => [...prevState, ...mediaData.media]);
-                    setTotal(mediaData.total)
-                    setLoadMore(false);
-                }
-            }
-        };
-        fetchMedia();
+        if (query) {
+            ProjectMediaService.getMedia(query)
+                .then((mediaData) => {
+                    if (mediaData) {
+                        setMediaLibrary(prevState => [...prevState, ...mediaData.media]);
+                        setTotal(mediaData.total)
+                        setLoadMore(false);
+                    }
+                })
+                .catch((error) => dispatch(setError(error)))
+        }
     }, [query]);
 
 

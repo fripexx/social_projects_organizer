@@ -4,7 +4,6 @@ import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {InstagramPublicationType} from "../types/PostType";
 import {
-    DeletePostRequestType,
     GetInstagramPublicationRequestType,
     GetPostsRequestType,
     GetPostsResponseType,
@@ -37,17 +36,6 @@ export const updateInstagramPublication = createAsyncThunk<InstagramPublicationT
     async (data, thunkAPI) => {
         try {
             return await PostService.updateInstagramPublication(data);
-        } catch (e) {
-            return thunkAPI.rejectWithValue(e as ErrorResponseType);
-        }
-    }
-);
-
-export const deletePost = createAsyncThunk<(string | string[]), DeletePostRequestType, AsyncThunkConfig>(
-    'instagramPublication/deletePost',
-    async (data, thunkAPI) => {
-        try {
-            return await PostService.deletePost(data);
         } catch (e) {
             return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }

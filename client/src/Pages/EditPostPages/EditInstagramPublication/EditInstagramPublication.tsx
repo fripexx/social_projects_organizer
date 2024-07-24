@@ -18,9 +18,10 @@ import {setError} from "../../../store/reducers/ProjectSlice";
 import {resetPublication, setClearPublication, setSelectMedia} from "../../../store/reducers/InstagramPublicationSlice";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 import {useSearchParams, useNavigate} from "react-router-dom";
-import {publishInstagramPublication, getInstagramPublication, deletePost, updateInstagramPublication} from "../../../store/thunks/PostThunks";
+import {publishInstagramPublication, getInstagramPublication, updateInstagramPublication} from "../../../store/thunks/PostThunks";
 import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
+import PostService from "../../../api/services/PostService";
 import FileDownloader from "../../../utils/FileDownloader";
 
 const EditInstagramPublication: FC = () => {
@@ -82,7 +83,13 @@ const EditInstagramPublication: FC = () => {
         }
     }
     const deleteCallback = () => {
-        if(project && user && publication?.id) dispatch(deletePost({id: publication.id}))
+        if (project && user && publication?.id) {
+            PostService.deletePost({id: publication.id})
+                .then((response) => {
+                    if (response === publication.id) navigate(`/project/${project.id}/posts`)
+                })
+                .catch((error) => dispatch(setError(error)))
+        }
     }
     const downloadCallback = () => {
         const fileDownloader = new FileDownloader(selectMedia);
@@ -104,27 +111,28 @@ const EditInstagramPublication: FC = () => {
         }
     }, [searchParams, project, user]);
     useEffect(() => {
-        const fetchMedia = async () => {
-            if (project && publication && publication.params.media.length > 0 && selectMedia.length === 0) {
-                const query:QueryMediaRequestType = {
-                    projectId: project.id,
-                    limit: publication.params.media.length,
-                    skip: 0,
-                    mediaIds: publication.params.media
-                }
+        if (project && publication && publication.params.media.length > 0 && selectMedia.length === 0) {
 
-                const mediaData = await ProjectMediaService.getMedia(query)
-
-                if (mediaData) {
-                    const mediaMap = new Map();
-                    mediaData.media.forEach(media => mediaMap.set(media.id, media));
-
-                    const sortedMedia = publication.params.media.map(id => mediaMap.get(id));
-                    dispatch(setSelectMedia(sortedMedia))
-                }
+            const query:QueryMediaRequestType = {
+                projectId: project.id,
+                limit: publication.params.media.length,
+                skip: 0,
+                mediaIds: publication.params.media
             }
-        };
-        fetchMedia();
+
+            ProjectMediaService.getMedia(query)
+                .then((mediaData) => {
+                    if (mediaData) {
+                        const mediaMap = new Map();
+                        mediaData.media.forEach(media => mediaMap.set(media.id, media));
+
+                        const sortedMedia = publication.params.media.map(id => mediaMap.get(id));
+                        dispatch(setSelectMedia(sortedMedia))
+                    }
+                })
+                .catch(error => dispatch(setError(error)))
+
+        }
     }, [publication])
     useEffect(() => {
         return () => {
