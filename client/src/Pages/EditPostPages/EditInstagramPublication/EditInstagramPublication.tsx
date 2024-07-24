@@ -15,7 +15,12 @@ import Tabs from "../Components/Tabs/Tabs";
 import Loader from "../../../Elements/Loader/Loader";
 import BackLink from "../Components/BackLink/BackLink";
 import {setError} from "../../../store/reducers/ProjectSlice";
-import {resetPublication, setClearPublication, setSelectMedia} from "../../../store/reducers/InstagramPublicationSlice";
+import {
+    resetPublication,
+    setClearPublication,
+    setPublication,
+    setSelectMedia
+} from "../../../store/reducers/InstagramPublicationSlice";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
 import {useSearchParams, useNavigate} from "react-router-dom";
 import {publishInstagramPublication, getInstagramPublication, updateInstagramPublication} from "../../../store/thunks/PostThunks";
@@ -23,6 +28,7 @@ import {QueryMediaRequestType} from "../../../api/types/ProjectMediaTypes";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
 import PostService from "../../../api/services/PostService";
 import FileDownloader from "../../../utils/FileDownloader";
+import {InstagramPublicationType} from "../../../store/types/PostType";
 
 const EditInstagramPublication: FC = () => {
     const dispatch = useAppDispatch()
@@ -55,6 +61,10 @@ const EditInstagramPublication: FC = () => {
             case "download":
                 downloadCallback();
                 break;
+
+            case "send-for-confirmation":
+                sendForConfirmation();
+                break;
         }
     }
     const publishCallback = () => {
@@ -83,8 +93,8 @@ const EditInstagramPublication: FC = () => {
         }
     }
     const deleteCallback = () => {
-        if (project && user && publication?.id) {
-            PostService.deletePost({id: publication.id})
+        if (project && publication?.id) {
+            PostService.deletePost( publication.id)
                 .then((response) => {
                     if (response === publication.id) navigate(`/project/${project.id}/posts`)
                 })
@@ -94,7 +104,13 @@ const EditInstagramPublication: FC = () => {
     const downloadCallback = () => {
         const fileDownloader = new FileDownloader(selectMedia);
         fileDownloader.downloadFiles();
-
+    }
+    const sendForConfirmation = () => {
+        if(publication?.id) {
+            PostService.sendForConfirmation(publication.id)
+                .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
+                .catch((error) => dispatch(setError(error)))
+        }
     }
     const changeTab = (key: string) => {
         setCurrentTab(key)

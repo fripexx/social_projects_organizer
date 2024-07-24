@@ -6,10 +6,6 @@ export interface GetInstagramPublicationRequestType {
     id: string;
 }
 
-export interface DeletePostRequestType {
-    id: string;
-}
-
 export interface GetPostsRequestType {
     project: string;
     skip: number;

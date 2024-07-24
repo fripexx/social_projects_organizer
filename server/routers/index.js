@@ -128,6 +128,11 @@ const setupRouter = ({io}) => {
         [authMiddleware, ...PostValidator.deletePost, validate],
         PostController.deletePost
     );
+    router.patch(
+        '/send-for-confirmation',
+        [authMiddleware, ...PostValidator.sendForConfirmation, validate],
+        PostController.sendForConfirmation
+    );
     router.get(
         '/get-posts',
         [authMiddleware, ...PostValidator.getPosts, validate],

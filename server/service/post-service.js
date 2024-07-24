@@ -103,6 +103,7 @@ class PostService {
          */
 
         const update = {
+            status: "edit",
             datePublish,
             params: {
                 description,
@@ -181,6 +182,34 @@ class PostService {
         return deletePost._id;
     }
 
+    async sendForConfirmation(user, id){
+
+
+        /**
+         * Перевірка прав на редагування посту
+         */
+
+        const checkPost = await this.checkPostManagementPermissions(id, user);
+
+
+        /**
+         * Перевірка статусу поста
+         */
+
+        const acceptStatus = ["edit", "rejected"];
+
+        if (!acceptStatus.includes(checkPost.status)) throw ApiError.BadRequest('Помилка: Відправити на підтвердження можна тільки пости зі статусами edit або rejected.')
+
+
+        /**
+         * Оновлення статусу поста
+         */
+
+        const updatePost = await PostModel.findByIdAndUpdate(checkPost._id, {status: 'pending'}, {lean: true, new: true});
+
+        return new PostDto(updatePost);
+    }
+
     async getPosts(user, query) {
         const {project, skip, limit, social, typePost, status} = query;
 
@@ -242,7 +271,6 @@ class PostService {
     }
 
     /* Перевірка існувння посту */
-
 
     async checkUserAccessToPost(id, user, isLean = true, throwError = true, returnProject = false) {
 
