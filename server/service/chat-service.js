@@ -2,6 +2,8 @@ const ApiError = require("../exceptions/api-error");
 const MessageModel  = require('../models/message-model');
 const MessageDto = require('../dtos/message-dto');
 const Message = require("../models/message-model");
+const mongoose = require('mongoose');
+const FileService = require("../service/file-service")
 
 class ChatService {
     async addMessage(chat, sender, content, files) {
@@ -27,17 +29,21 @@ class ChatService {
         return new MessageDto(findMessage);
     }
 
-    async getMessages(chat, skip = 0) {
-        const limit = 20;
-        const messages = await Message.find({ chat })
-            .sort({ timeSend: -1 })
-            .skip(skip)
-            .limit(Number(limit))
-            .populate({
+    async getMessages(chat, skip = 0, limit = 20) {
+        const filter = {
+            chat,
+        }
+        const options = {
+            sort: { timeSend: -1 },
+            skip: skip,
+            limit: limit,
+            populate: {
                 path: 'files',
                 model: 'File'
-            })
-            .lean();
+            },
+            lean: true
+        }
+        const messages = await Message.find(filter, null, options);
 
         return messages.map(message => new MessageDto(message))
     }
@@ -65,6 +71,52 @@ class ChatService {
         if(!message) throw ApiError.BadRequest('Не знайдено повідомлення з таким ідентифікатором');
 
         return new MessageDto(message);
+    }
+
+    async deleteMessage(message, user) {
+        if(!mongoose.Types.ObjectId.isValid(message) && !Array.isArray(message)) throw ApiError.BadRequest("message повинен бути валідним ObjectId або масивом значень валідних ObjectId");
+
+        if(Array.isArray(message)) {
+            const returnMessages = [];
+
+            for (let i = 0; i < message.length; i++) {
+                if(!mongoose.Types.ObjectId.isValid(message[i])) throw ApiError.BadRequest("Кожне значення message повинно бути валідним ObjectId");
+
+
+                /**
+                 * Видалення повідомлення
+                 */
+
+                const deleteMessage = await Message.findByIdAndDelete(message[i]);
+
+                if(!deleteMessage) throw ApiError.BadRequest(`Помилка при видалені повідомленя (${message[i]}).`);
+
+                returnMessages.push(message[i]);
+
+
+                /**
+                 * Видалення файлів повідомлення
+                 */
+
+                const files = deleteMessage.files;
+
+                for (let j = 0; j < files.length; j++) {
+                    const deleteFile = await FileService.deleteFile(files[j]);
+                    if(!deleteFile) throw ApiError.BadRequest(`Помилка при видалені файлу (${message[i]}).`);
+                }
+            }
+
+            return returnMessages;
+        } else {
+            if(!mongoose.Types.ObjectId.isValid(message)) throw ApiError.BadRequest("message повинно бути валідним ObjectId");
+
+            const deleteMessage = await Message.findByIdAndDelete(message);
+
+            if(!deleteMessage) throw ApiError.BadRequest(`Повідомлення з таким id (${message}) не знайдено.`);
+
+            return deleteMessage._id;
+
+        }
     }
 }
 

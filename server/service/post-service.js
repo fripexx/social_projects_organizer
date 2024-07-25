@@ -1,5 +1,6 @@
 const ApiError = require("../exceptions/api-error");
 const ProjectService = require('../service/project-service');
+const ChatService = require('../service/chat-service');
 const PostModel = require('../models/post-model');
 const ProjectModel = require('../models/project-model');
 const FileModel = require('../models/file-model');
@@ -178,6 +179,9 @@ class PostService {
         const deletePost = await PostModel.findByIdAndDelete(post._id);
 
         if(!deletePost) throw ApiError.BadRequest('Помилка: Невдалося видалити пост.');
+
+        const postMessages = await ChatService.getMessages(post._id);
+        const deletedMessages = await ChatService.deleteMessage(postMessages.map(message => message.id.toString()))
 
         return deletePost._id;
     }
