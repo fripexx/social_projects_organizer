@@ -13,7 +13,7 @@ module.exports = class ProjectDto {
         this.isActive = model.isActive;
         this.name = model.name;
         this.logo = this.convertLogo(model.logo)
-        this.administrator = model.administrator;
+        this.administrator = model.administrator.toString();
         this.customer = this.convertCustomer(model.customer);
         this.team = this.convertTeam(model.team);
         this.color = model.color;
@@ -44,7 +44,7 @@ module.exports = class ProjectDto {
     convertCustomer(user) {
         if(!user) return null
 
-        if(user instanceof ObjectId) return user
+        if(user instanceof ObjectId) return user.toString()
 
         if(user?._id instanceof ObjectId) return new UserDto(user, 'basic')
 
@@ -52,6 +52,6 @@ module.exports = class ProjectDto {
     }
 
     convertTeam(team) {
-        return team.map(teamMember => ({user: teamMember.user, role: teamMember.role}))
+        return team.map(teamMember => ({user: teamMember.user.toString(), role: teamMember.role}))
     }
 };

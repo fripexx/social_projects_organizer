@@ -69,23 +69,46 @@ const setupRouter = ({io}) => {
     /**
      * Project team routes
      */
-    router.get('/get-project-team', [authMiddleware], ProjectController.getProjectTeam);
-    router.patch('/change-project-administrator', [authMiddleware], ProjectController.sendInviteNewAdmin);
-    router.get('/confirm-new-administrator/:key', async (req, res, next) => {
-        await ProjectController.confirmNewAdministrator(req, res, next, io);
-    });
-    router.patch('/remove-user-from-team', [authMiddleware], async (req, res, next) => {
-        await ProjectController.removeUserFromTeam(req, res, next, io);
-    });
-    router.patch('/add-user-in-team', [authMiddleware], async (req, res, next) => {
-        await ProjectController.addUserInTeam(req, res, next, io);
-    });
-    router.patch('/change-role-user', [authMiddleware], async (req, res, next) => {
-        await ProjectController.changeRoleUser(req, res, next, io);
-    });
-    router.patch('/leave-project', [authMiddleware], async (req, res, next) => {
-        await ProjectController.leaveProject(req, res, next, io);
-    });
+    router.get(
+        '/get-project-team',
+        [authMiddleware, ...ProjectValidator.getProjectTeam, validate],
+        ProjectController.getProjectTeam
+    );
+    router.patch(
+        '/change-project-administrator',
+        [authMiddleware, ...ProjectValidator.sendInviteNewAdmin, validate],
+        ProjectController.sendInviteNewAdmin
+    );
+    router.get('/confirm-new-administrator/:key',
+        [...ProjectValidator.confirmNewAdministrator, validate],
+        async (req, res, next) => {
+            await ProjectController.confirmNewAdministrator(req, res, next, io);
+        }
+    );
+    router.patch('/remove-user-from-team',
+        [authMiddleware, ...ProjectValidator.removeUserFromTeam, validate],
+        async (req, res, next) => {
+            await ProjectController.removeUserFromTeam(req, res, next, io);
+        }
+    );
+    router.patch('/add-user-in-team',
+        [authMiddleware, ...ProjectValidator.addUserInTeam, validate],
+        async (req, res, next) => {
+            await ProjectController.addUserInTeam(req, res, next, io);
+        }
+    );
+    router.patch('/change-role-user',
+        [authMiddleware, ...ProjectValidator.changeRoleUser, validate],
+        async (req, res, next) => {
+            await ProjectController.changeRoleUser(req, res, next, io);
+        }
+    );
+    router.patch('/leave-project',
+        [authMiddleware, ...ProjectValidator.leaveProject, validate],
+        async (req, res, next) => {
+            await ProjectController.leaveProject(req, res, next, io);
+        }
+    );
 
     /**
      * Project notes routes

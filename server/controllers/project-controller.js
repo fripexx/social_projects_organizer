@@ -52,9 +52,11 @@ class ProjectController {
         }
     }
 
+
     /**
      * Team handlers
      */
+
     async getProjectTeam(req, res, next) {
         try {
             const user = await req.user;
@@ -117,7 +119,10 @@ class ProjectController {
 
             io.to(project.id.toString()).emit('teamNotification', notification);
 
-            return res.json(project.team);
+            return res.json(project.team.map(teamMember => ({
+                user: teamMember.user.toString(),
+                role: teamMember.role.toString()
+            })));
         } catch (e) {
             next(e);
         }
@@ -139,7 +144,10 @@ class ProjectController {
 
             io.to(project.id.toString()).emit('teamNotification', notification);
 
-            return res.json(project.team)
+            return res.json(project.team.map(teamMember => ({
+                user: teamMember.user.toString(),
+                role: teamMember.role.toString()
+            })));
         } catch (e) {
             next(e);
         }
@@ -161,7 +169,10 @@ class ProjectController {
 
             io.to(project.id.toString()).emit('teamNotification', notification);
 
-            return res.json(project.team)
+            return res.json(project.team.map(teamMember => ({
+                user: teamMember.user.toString(),
+                role: teamMember.role.toString()
+            })));
         } catch (e) {
             next(e);
         }
@@ -183,15 +194,20 @@ class ProjectController {
 
             io.to(project.id.toString()).emit('teamNotification', notification);
 
-            return res.json(project.team)
+            return res.json(project.team.map(teamMember => ({
+                user: teamMember.user.toString(),
+                role: teamMember.role.toString()
+            })));
         } catch (e) {
             next(e);
         }
     }
 
+
     /**
      * Media handlers
      */
+
     async uploadMedia(req, res, next) {
         try {
             const {projectId} = req.body;

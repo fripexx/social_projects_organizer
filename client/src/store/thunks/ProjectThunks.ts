@@ -5,7 +5,7 @@ import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {NoteType} from "../types/NoteType";
 import {BasicUserInfo} from "../types/UserType";
-import {TeamMemberType} from "../types/TeamMemberType";
+import {BasicTeamMemberType} from "../types/TeamMemberType";
 import {
     AddNoteInProjectRequestType,
     AddUserInTeamRequestType,
@@ -115,18 +115,18 @@ export const changeProjectAdministrator = createAsyncThunk<void, ChangeProjectAd
     }
 );
 
-export const changeRoleUser = createAsyncThunk<TeamMemberType, ChangeRoleUserRequestType, AsyncThunkConfig>(
-    'project/changeRoleUser', // Назва дії
+export const changeRoleUser = createAsyncThunk<BasicTeamMemberType[], ChangeRoleUserRequestType, AsyncThunkConfig>(
+    'project/changeRoleUser',
     async (data, thunkAPI) => {
         try {
-            return await ProjectService.changeRoleUserRequest(data); // Виклик методу класу
+            return await ProjectService.changeRoleUserRequest(data);
         } catch (error) {
-            return thunkAPI.rejectWithValue(error as ErrorResponseType); // Обробка помилки
+            return thunkAPI.rejectWithValue(error as ErrorResponseType);
         }
     }
 );
 
-export const leaveProject = createAsyncThunk<TeamMemberType, LeaveProjectRequestType, AsyncThunkConfig>(
+export const leaveProject = createAsyncThunk<BasicTeamMemberType[], LeaveProjectRequestType, AsyncThunkConfig>(
     'project/leaveProject',
     async (data, thunkAPI) => {
         try {
@@ -137,7 +137,7 @@ export const leaveProject = createAsyncThunk<TeamMemberType, LeaveProjectRequest
     }
 );
 
-export const removeUserFromTeam = createAsyncThunk<TeamMemberType[], RemoveUserFromTeamRequestType, AsyncThunkConfig>(
+export const removeUserFromTeam = createAsyncThunk<BasicTeamMemberType[], RemoveUserFromTeamRequestType, AsyncThunkConfig>(
     'project/removeUserFromTeam',
     async (data, thunkAPI) => {
         try {
@@ -148,7 +148,7 @@ export const removeUserFromTeam = createAsyncThunk<TeamMemberType[], RemoveUserF
     }
 );
 
-export const addUserInTeam = createAsyncThunk<TeamMemberType[], AddUserInTeamRequestType, AsyncThunkConfig>(
+export const addUserInTeam = createAsyncThunk<BasicTeamMemberType[], AddUserInTeamRequestType, AsyncThunkConfig>(
     'project/addUserInTeam',
     async (data, thunkAPI) => {
         try {

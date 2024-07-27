@@ -1,4 +1,4 @@
-const ProjectModal = require('../models/project-model')
+const ProjectModel = require('../models/project-model')
 const UserModel = require('../models/user-model')
 const ProjectDto = require('../dtos/project-dto');
 const ApiError= require('../exceptions/api-error');
@@ -22,14 +22,14 @@ class ProjectService {
             }],
         }
 
-        const addProject = await ProjectModal.create(params);
-        const project = await ProjectModal.findById(addProject._id).lean();
+        const addProject = await ProjectModel.create(params);
+        const project = await ProjectModel.findById(addProject._id).lean();
 
         return new ProjectDto(project);
     }
 
     async getProjects(user) {
-        const projects = await ProjectModal
+        const projects = await ProjectModel
             .find({ 'team.user': user.id })
             .populate({ path: 'logo', model: 'File'})
             .populate({ path: 'customer', model: 'User'})
@@ -39,7 +39,7 @@ class ProjectService {
     }
 
     async getProject(user, id) {
-        const findProject = await ProjectModal
+        const findProject = await ProjectModel
             .findOne({ _id: id, 'team.user': user.id})
             .populate({ path: 'logo', model: 'File'})
             .lean();
@@ -54,7 +54,7 @@ class ProjectService {
 
         if(!id) throw ApiError.BadRequest('Відсутнє ID проєкту в запиті')
 
-        const findProject = await ProjectModal.findOneAndUpdate({ _id: id, administrator: user.id }, newData, { new: true });
+        const findProject = await ProjectModel.findOneAndUpdate({ _id: id, administrator: user.id }, newData, { new: true });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
@@ -67,7 +67,7 @@ class ProjectService {
             await findProject.save();
         }
 
-        const returnProject = await ProjectModal.findById(findProject._id).populate({ path: 'logo', model: 'File'}).lean();
+        const returnProject = await ProjectModel.findById(findProject._id).populate({ path: 'logo', model: 'File'}).lean();
 
         return new ProjectDto(returnProject);
     }
@@ -77,7 +77,7 @@ class ProjectService {
      */
 
     async getProjectTeam(projectId, user) {
-        const findProject = await ProjectModal
+        const findProject = await ProjectModel
             .findOne({
                 _id: projectId,
                 'team.user': user.id
@@ -103,7 +103,7 @@ class ProjectService {
     }
 
     async sendInviteNewAdmin(projectId, user, newAdmin) {
-        const findProject = await ProjectModal.findOne({ _id: projectId, administrator: user.id });
+        const findProject = await ProjectModel.findOne({ _id: projectId, administrator: user.id });
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
         const adminCandidate = await UserModel.findById(newAdmin);
@@ -123,7 +123,7 @@ class ProjectService {
     }
 
     async confirmNewAdministrator(key) {
-        const findProject = await ProjectModal.findOne({ "inviteNewAdmin.key": key });
+        const findProject = await ProjectModel.findOne({ "inviteNewAdmin.key": key });
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт не знайдено');
 
         const {time, candidate} = findProject.inviteNewAdmin;
@@ -149,7 +149,7 @@ class ProjectService {
     }
 
     async removeUserFromTeam(projectId, user, removeUserId) {
-        const findProject = await ProjectModal.findOneAndUpdate(
+        const findProject = await ProjectModel.findOneAndUpdate(
             {_id: projectId, administrator: user.id},
             {$pull: {team: {user: removeUserId}}},
             {new: true}
@@ -166,7 +166,7 @@ class ProjectService {
     }
 
     async addUserInTeam(projectId, user, email, role) {
-        const findProject = await ProjectModal.findOne({ _id: projectId, administrator: user.id });
+        const findProject = await ProjectModel.findOne({ _id: projectId, administrator: user.id });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
@@ -189,7 +189,7 @@ class ProjectService {
     }
 
     async changeRoleUser(projectId, user, teamMember, role) {
-        const findProject = await ProjectModal.findOneAndUpdate(
+        const findProject = await ProjectModel.findOneAndUpdate(
             {
                 _id: projectId,
                 administrator: user.id,
@@ -219,7 +219,7 @@ class ProjectService {
     async leaveProject(projectId, leaveUserId, user) {
         if(leaveUserId !== user.id) throw ApiError.BadRequest('Ідентифікатор юзера повинен співпадати з ідентифікатором юзера який надсилає запит.');
 
-        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': leaveUserId });
+        const findProject = await ProjectModel.findOne({ _id: projectId, 'team.user': leaveUserId });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
@@ -242,7 +242,7 @@ class ProjectService {
      */
 
     async uploadMedia(files, projectId, user) {
-        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
+        const findProject = await ProjectModel.findOne({ _id: projectId, 'team.user': user.id });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
@@ -258,7 +258,7 @@ class ProjectService {
 
     async getMedia(query, user) {
         const {projectId, skip, limit, type, mediaIds} = query
-        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
+        const findProject = await ProjectModel.findOne({ _id: projectId, 'team.user': user.id });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
@@ -313,7 +313,7 @@ class ProjectService {
     }
 
     async deleteMedia(projectId, user, idMedia) {
-        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id });
+        const findProject = await ProjectModel.findOne({ _id: projectId, 'team.user': user.id });
 
         if(!findProject) throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
 
@@ -321,7 +321,7 @@ class ProjectService {
     }
 
     async checkUserAccessToProject(projectId, user, isLean = true, throwError = true) {
-        const findProject = await ProjectModal.findOne({ _id: projectId, 'team.user': user.id }, null, {lean: isLean} )
+        const findProject = await ProjectModel.findOne({ _id: projectId, 'team.user': user.id }, null, {lean: isLean} )
 
         if(!findProject) {
 

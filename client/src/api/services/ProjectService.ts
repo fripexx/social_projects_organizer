@@ -12,7 +12,7 @@ import {
     LeaveProjectRequestType, RemoveUserFromTeamRequestType
 } from "../types/ProjectServiceTypes";
 import {BasicUserInfo} from "../../store/types/UserType";
-import {TeamMemberType} from "../../store/types/TeamMemberType";
+import {BasicTeamMemberType} from "../../store/types/TeamMemberType";
 
 class ProjectService {
     async getProject(id: string): Promise<ProjectType> {
@@ -178,9 +178,9 @@ class ProjectService {
         }
     }
 
-    async changeRoleUserRequest(data: ChangeRoleUserRequestType): Promise<TeamMemberType> {
+    async changeRoleUserRequest(data: ChangeRoleUserRequestType): Promise<BasicTeamMemberType[]> {
         try {
-            const response = await instanceServer.patch<TeamMemberType>(`/change-role-user`, data);
+            const response = await instanceServer.patch<BasicTeamMemberType[]>(`/change-role-user`, data);
 
             return response.data;
         } catch (e) {
@@ -198,9 +198,9 @@ class ProjectService {
         }
     }
 
-    async leaveProject(data: LeaveProjectRequestType): Promise<TeamMemberType> {
+    async leaveProject(data: LeaveProjectRequestType): Promise<BasicTeamMemberType[]> {
         try {
-            const response = await instanceServer.patch<TeamMemberType>('/leave-project', data);
+            const response = await instanceServer.patch<BasicTeamMemberType[]>('/leave-project', data);
 
             return response.data;
         } catch (e) {
@@ -218,9 +218,9 @@ class ProjectService {
         }
     }
 
-    async removeUserFromTeam(data: RemoveUserFromTeamRequestType): Promise<TeamMemberType[]> {
+    async removeUserFromTeam(data: RemoveUserFromTeamRequestType): Promise<BasicTeamMemberType[]> {
         try {
-            const response = await instanceServer.patch<TeamMemberType[]>('/remove-user-from-team', data);
+            const response = await instanceServer.patch<BasicTeamMemberType[]>('/remove-user-from-team', data);
 
             return response.data;
         } catch (e) {
@@ -238,9 +238,9 @@ class ProjectService {
         }
     }
 
-    async addUserInTeam(data: AddUserInTeamRequestType): Promise<TeamMemberType[]> {
+    async addUserInTeam(data: AddUserInTeamRequestType): Promise<BasicTeamMemberType[]> {
         try {
-            const response = await instanceServer.patch<TeamMemberType[]>('/add-user-in-team', data);
+            const response = await instanceServer.patch<BasicTeamMemberType[]>('/add-user-in-team', data);
 
             return response.data;
         } catch (e) {

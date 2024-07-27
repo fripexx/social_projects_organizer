@@ -15,7 +15,7 @@ import {
     leaveProject,
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
-import {TeamMemberType} from "../types/TeamMemberType";
+import {BasicTeamMemberType, TeamMemberType} from "../types/TeamMemberType";
 import {PostType} from "../types/PostType";
 import {getPosts} from "../thunks/PostThunks";
 import {GetPostsResponseType} from "../../api/types/PostServiceTypes";
@@ -148,7 +148,7 @@ const projectSlice = createSlice({
             state.team = [];
         },
         [removeUserFromTeam.pending.type]: (state) => {},
-        [removeUserFromTeam.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
+        [removeUserFromTeam.fulfilled.type]: (state, action: PayloadAction<BasicTeamMemberType[]>) => {
             state.error = null;
             if (state.project) state.project.team = action.payload;
         },
@@ -157,7 +157,7 @@ const projectSlice = createSlice({
             state.error = action.payload;
         },
         [addUserInTeam.pending.type]: (state) => {},
-        [addUserInTeam.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
+        [addUserInTeam.fulfilled.type]: (state, action: PayloadAction<BasicTeamMemberType[]>) => {
             state.error = null;
             if(state.project) state.project.team = [...action.payload]
         },
@@ -166,7 +166,7 @@ const projectSlice = createSlice({
             state.error = action.payload;
         },
         [changeRoleUser.pending.type]: (state) => {},
-        [changeRoleUser.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
+        [changeRoleUser.fulfilled.type]: (state, action: PayloadAction<BasicTeamMemberType[]>) => {
             state.error = null;
             if(state.project) state.project.team = action.payload
         },
@@ -175,7 +175,7 @@ const projectSlice = createSlice({
             state.error = action.payload;
         },
         [leaveProject.pending.type]: (state) => {},
-        [leaveProject.fulfilled.type]: (state, action: PayloadAction<TeamMemberType[]>) => {
+        [leaveProject.fulfilled.type]: (state, action: PayloadAction<BasicTeamMemberType[]>) => {
             state.error = null;
             if(state.project) state.project.team = action.payload
         },
