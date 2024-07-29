@@ -14,13 +14,9 @@ interface PageProps {
 const Page: FC<PageProps> = ({children, ...pageProps}) => {
     const dispatch = useAppDispatch()
     const filesSlider = useAppSelector(state => state.UIReducer.filesSlider)
-    const notifications = useAppSelector(state => state.UIReducer.notifications)
 
     const closeFilesSliderCallback = () => {
         dispatch(setFilesInSlider([]))
-    }
-    const readNotificationCallback = (id: string): void => {
-        dispatch(readNotification(id))
     }
 
     return (
@@ -36,8 +32,6 @@ const Page: FC<PageProps> = ({children, ...pageProps}) => {
                 activeSlide={filesSlider.activeIndex}
                 closeCallback={closeFilesSliderCallback}
             />
-
-            <NotificationsWidget notifications={notifications} readCallback={readNotificationCallback}/>
 
         </div>
     );

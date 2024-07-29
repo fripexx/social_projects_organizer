@@ -4,6 +4,7 @@ import {NotificationType} from "./types/NotificationType";
 import NotificationsButton from "./Components/NotificationsButton/NotificationsButton";
 import Backdrop from "../Backdrop/Backdrop";
 import NotificationsList from "./Components/NotificationsList/NotificationsList";
+import bellSound from "../../assets/sounds/bell.mp3";
 
 export type readNotificationCallback = (id: string) => void;
 
@@ -16,6 +17,7 @@ const NotificationsWidget: FC<NotificationsWidgetProps> = ({notifications, readC
     const [isOpen, setIsOpen] = React.useState<boolean>(false);
     const [hasNewNotification, setHasNewNotification] = useState<boolean>(false);
     const [unreadCount, setUnreadCount] = useState<number>(0);
+    const [isUserInteracted, setIsUserInteracted] = useState(false);
 
     const toggleWidget = () => {
         setIsOpen(prevState => !prevState);
@@ -34,6 +36,31 @@ const NotificationsWidget: FC<NotificationsWidgetProps> = ({notifications, readC
         setHasNewNotification(true);
         setTimeout(() => setHasNewNotification(false), 1000)
     }, [notifications]);
+    useEffect(() => {
+        const handleUserInteraction = () => {
+            setIsUserInteracted(true);
+        };
+
+        document.addEventListener('click', handleUserInteraction);
+        document.addEventListener('keydown', handleUserInteraction);
+
+        return () => {
+            document.removeEventListener('click', handleUserInteraction);
+            document.removeEventListener('keydown', handleUserInteraction);
+        };
+    }, []);
+    useEffect(() => {
+        if(unreadCount !== 0) {
+            const audio = new Audio(bellSound);
+            audio.volume = 0.1;
+
+            const playSound = () => {
+                if (isUserInteracted) audio.play();
+            };
+
+            playSound()
+        }
+    }, [unreadCount]);
 
     return (
         <>
