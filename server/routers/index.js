@@ -154,17 +154,23 @@ const setupRouter = ({io}) => {
     router.patch(
         '/send-for-confirmation',
         [authMiddleware, ...PostValidator.sendForConfirmation, validate],
-        PostController.sendForConfirmation
+        async (req, res, next) => {
+            await PostController.sendForConfirmation(req, res, next, io);
+        }
     );
     router.patch(
         '/reject-post',
         [authMiddleware, ...PostValidator.rejectPost, validate],
-        PostController.rejectPost
+        async (req, res, next) => {
+            await PostController.rejectPost(req, res, next, io);
+        }
     );
     router.patch(
         '/confirm-post',
         [authMiddleware, ...PostValidator.confirmPost, validate],
-        PostController.confirmPost
+        async (req, res, next) => {
+            await PostController.confirmPost(req, res, next, io);
+        }
     );
     router.get(
         '/get-posts',

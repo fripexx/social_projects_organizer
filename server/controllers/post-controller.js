@@ -49,11 +49,28 @@ class PostController {
         }
     }
 
-    async sendForConfirmation(req, res, next) {
+    async sendForConfirmation(req, res, next, io) {
         try {
             const user = await req.user;
             const {id} = req.body;
-            const post = await PostService.sendForConfirmation(user, id);
+            const {post, project} = await PostService.sendForConfirmation(user, id);
+
+
+            /**
+             * Відправлення нотифікації автору поста
+             */
+
+            const notification = {
+                project: {
+                    id: project.id,
+                    name: project.name,
+                },
+                postId: post.id,
+                to: project.team.filter(item => item.role === "customer").map(item => item.user.toString()),
+                message: `Публікація ${post.id} очікує підтвердження.`,
+            }
+
+            io.to(project.id).emit('changePostStatus', notification);
 
             return res.json(post);
         } catch (e) {
@@ -61,11 +78,28 @@ class PostController {
         }
     }
 
-    async rejectPost(req, res, next) {
+    async rejectPost(req, res, next, io) {
         try {
             const user = await req.user;
             const {id} = req.body;
-            const post = await PostService.rejectPost(user, id);
+            const {post, project} = await PostService.rejectPost(user, id);
+
+
+            /**
+             * Відправлення нотифікації автору поста
+             */
+
+            const notification = {
+                project: {
+                    id: project.id,
+                    name: project.name,
+                },
+                postId: post.id,
+                to: [post.author],
+                message: `Публікація ${post.id} відхилена замовником.`,
+            }
+
+            io.to(project.id).emit('changePostStatus', notification);
 
             return res.json(post);
         } catch (e) {
@@ -73,11 +107,28 @@ class PostController {
         }
     }
 
-    async confirmPost(req, res, next) {
+    async confirmPost(req, res, next, io) {
         try {
             const user = await req.user;
             const {id} = req.body;
-            const post = await PostService.confirmPost(user, id);
+            const {post, project} = await PostService.confirmPost(user, id);
+
+
+            /**
+             * Відправлення нотифікації автору поста
+             */
+
+            const notification = {
+                project: {
+                    id: project.id,
+                    name: project.name,
+                },
+                postId: post.id,
+                to: [post.author],
+                message: `Публікація ${post.id} підтверджена замовником.`,
+            }
+
+            io.to(project.id).emit('changePostStatus', notification);
 
             return res.json(post);
         } catch (e) {

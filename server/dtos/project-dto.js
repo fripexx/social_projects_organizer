@@ -9,7 +9,7 @@ module.exports = class ProjectDto {
         strategy: null,
     };
     constructor(model) {
-        this.id = model._id;
+        this.id = model._id.toString();
         this.isActive = model.isActive;
         this.name = model.name;
         this.logo = this.convertLogo(model.logo)

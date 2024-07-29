@@ -5,6 +5,7 @@ const PostModel = require('../models/post-model');
 const ProjectModel = require('../models/project-model');
 const FileModel = require('../models/file-model');
 const PostDto = require('../dtos/post-dto');
+const ProjectDto = require('../dtos/project-dto');
 
 class PostService {
     async createInstagramPublication(user, data) {
@@ -211,7 +212,17 @@ class PostService {
 
         const updatePost = await PostModel.findByIdAndUpdate(checkPost._id, {status: 'pending'}, {lean: true, new: true});
 
-        return new PostDto(updatePost);
+
+        /**
+         * Отримання данних проєкту
+         */
+
+        const project = await ProjectModel.findById(updatePost.project)
+
+        return {
+            post: new PostDto(updatePost),
+            project: new ProjectDto(project),
+        };
     }
 
     async rejectPost(user, id) {
@@ -250,7 +261,10 @@ class PostService {
 
         await post.save()
 
-        return new PostDto(post);
+        return {
+            post: new PostDto(post),
+            project: new ProjectDto(checkProject),
+        };
     }
 
     async confirmPost(user, id) {
@@ -289,7 +303,10 @@ class PostService {
 
         await post.save()
 
-        return new PostDto(post);
+        return {
+            post: new PostDto(post),
+            project: new ProjectDto(checkProject),
+        };
     }
 
     async getPosts(user, query) {
