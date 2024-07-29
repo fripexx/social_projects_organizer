@@ -64,7 +64,7 @@ const StatusTabs: FC = () => {
                         key={uuid()}
                         className={classes.item}
                         to={status ? `?status=${status}` : ""}
-                        data-active={status === activeStatus}
+                        data-active={status === undefined && activeStatus === "" ? true : status === activeStatus}
                     >
 
                         {icon && color &&
