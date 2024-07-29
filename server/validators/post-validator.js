@@ -100,6 +100,24 @@ const sendForConfirmation = [
         }),
 ];
 
+const rejectPost = [
+    body('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+];
+
+const confirmPost = [
+    body('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+];
+
 const getPosts = [
     query('project')
         .isString().withMessage('project повинен бути строкою')
@@ -146,5 +164,7 @@ module.exports = {
     updateInstagramPublication,
     deletePost,
     sendForConfirmation,
+    rejectPost,
+    confirmPost,
     getPosts
 };

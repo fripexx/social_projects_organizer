@@ -214,6 +214,84 @@ class PostService {
         return new PostDto(updatePost);
     }
 
+    async rejectPost(user, id) {
+
+
+        /**
+         * Перевірка існування поста
+         */
+
+        const post = await PostModel.findById(id, null);
+
+        if (!post) throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено')
+
+
+        /**
+         * Перевірка прав на адміністрування постів
+         */
+
+        const checkProject = await ProjectService.checkProjectAdministrationPermissions(post.project, user);
+
+
+        /**
+         * Перевірка статусу поста
+         */
+
+        const acceptStatus = ["pending", "confirmed"];
+
+        if (!acceptStatus.includes(post.status)) throw ApiError.BadRequest('Помилка: Відправити на підтвердження можна тільки пости зі статусами edit або rejected.')
+
+
+        /**
+         * Оновлення статусу поста
+         */
+
+        post.status = 'rejected';
+
+        await post.save()
+
+        return new PostDto(post);
+    }
+
+    async confirmPost(user, id) {
+
+
+        /**
+         * Перевірка існування поста
+         */
+
+        const post = await PostModel.findById(id, null);
+
+        if (!post) throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено')
+
+
+        /**
+         * Перевірка прав на адміністрування постів
+         */
+
+        const checkProject = await ProjectService.checkProjectAdministrationPermissions(post.project, user);
+
+
+        /**
+         * Перевірка статусу поста
+         */
+
+        const acceptStatus = ["pending", "rejected"];
+
+        if (!acceptStatus.includes(post.status)) throw ApiError.BadRequest('Помилка: Відправити на підтвердження можна тільки пости зі статусами edit або rejected.')
+
+
+        /**
+         * Оновлення статусу поста
+         */
+
+        post.status = 'confirmed';
+
+        await post.save()
+
+        return new PostDto(post);
+    }
+
     async getPosts(user, query) {
         const {project, skip, limit, social, typePost, status} = query;
 

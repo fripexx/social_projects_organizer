@@ -156,6 +156,16 @@ const setupRouter = ({io}) => {
         [authMiddleware, ...PostValidator.sendForConfirmation, validate],
         PostController.sendForConfirmation
     );
+    router.patch(
+        '/reject-post',
+        [authMiddleware, ...PostValidator.rejectPost, validate],
+        PostController.rejectPost
+    );
+    router.patch(
+        '/confirm-post',
+        [authMiddleware, ...PostValidator.confirmPost, validate],
+        PostController.confirmPost
+    );
     router.get(
         '/get-posts',
         [authMiddleware, ...PostValidator.getPosts, validate],

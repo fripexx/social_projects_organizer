@@ -48,11 +48,36 @@ class PostController {
             next(e)
         }
     }
+
     async sendForConfirmation(req, res, next) {
         try {
             const user = await req.user;
             const {id} = req.body;
             const post = await PostService.sendForConfirmation(user, id);
+
+            return res.json(post);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async rejectPost(req, res, next) {
+        try {
+            const user = await req.user;
+            const {id} = req.body;
+            const post = await PostService.rejectPost(user, id);
+
+            return res.json(post);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async confirmPost(req, res, next) {
+        try {
+            const user = await req.user;
+            const {id} = req.body;
+            const post = await PostService.confirmPost(user, id);
 
             return res.json(post);
         } catch (e) {

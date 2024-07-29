@@ -1,13 +1,13 @@
 import React, {FC, useEffect, useState} from 'react';
 import EditPostButtons, {EditPostButton} from "../../../../Components/EditPostComponents/EditPostButtons/EditPostButtons";
 import {
-    confirmAdminButtons,
+    confirmCustomerButtons,
     confirmButtons,
-    editAdminButtons,
+    editCustomerButtons,
     editButtons,
-    pendingAdminButtons,
+    pendingCustomerButtons,
     pendingButtons,
-    rejectedAdminButtons,
+    rejectedCustomerButtons,
     rejectedButtons,
     unpublishButtons
 } from "../../constants/editButtons";
@@ -15,32 +15,17 @@ import {PostStatus} from "../../../../store/reducers/PostStatus";
 
 interface EditButtonsProps {
     status: PostStatus | undefined;
-    isAdmin: boolean;
+    isAuthor: boolean;
     callback: (key: string) => void;
     className?: string;
 }
 
-const EditButtons: FC<EditButtonsProps> = ({status, isAdmin = false, callback, className}) => {
+const EditButtons: FC<EditButtonsProps> = ({status, isAuthor = false, callback, className}) => {
     const [buttons, setButtons] = useState<EditPostButton[]>(unpublishButtons)
 
     useEffect(() => {
         if(status) {
-            if(isAdmin) {
-                switch (status) {
-                    case "edit":
-                        setButtons(editAdminButtons)
-                        break;
-                    case "pending":
-                        setButtons(pendingAdminButtons)
-                        break;
-                    case "rejected":
-                        setButtons(rejectedAdminButtons)
-                        break;
-                    case "confirmed":
-                        setButtons(confirmAdminButtons)
-                        break;
-                }
-            } else {
+            if(isAuthor) {
                 switch (status) {
                     case "edit":
                         setButtons(editButtons)
@@ -55,11 +40,26 @@ const EditButtons: FC<EditButtonsProps> = ({status, isAdmin = false, callback, c
                         setButtons(confirmButtons)
                         break;
                 }
+            } else {
+                switch (status) {
+                    case "edit":
+                        setButtons(editCustomerButtons)
+                        break;
+                    case "pending":
+                        setButtons(pendingCustomerButtons)
+                        break;
+                    case "rejected":
+                        setButtons(rejectedCustomerButtons)
+                        break;
+                    case "confirmed":
+                        setButtons(confirmCustomerButtons)
+                        break;
+                }
             }
         } else {
             setButtons(unpublishButtons)
         }
-    }, [status, isAdmin]);
+    }, [status, isAuthor]);
 
     return (
         <EditPostButtons

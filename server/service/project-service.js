@@ -366,6 +366,37 @@ class ProjectService {
 
         return checkProject;
     }
+
+    async checkProjectAdministrationPermissions(project, user, isLean = true, throwError = true) {
+
+
+        /**
+         * Перевірка існувння та доступу до проєкту
+         */
+
+        const checkProject = await this.checkUserAccessToProject(project, user, isLean, throwError)
+
+
+        /**
+         * Перевірка доступу юзера
+         */
+
+        const teamMember = checkProject.team.find(member => member.user.toString() === user.id);
+        const accessRoles = ['customer']
+
+
+        if (!accessRoles.includes(teamMember.role)) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Вашій ролі обмежено доступ до цього запиту.');
+            } else {
+                return false
+            }
+
+        }
+
+        return checkProject;
+    }
 }
 
 module.exports = new ProjectService()

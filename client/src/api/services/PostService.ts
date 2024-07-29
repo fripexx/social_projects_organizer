@@ -111,6 +111,46 @@ class PostService {
         }
     }
 
+    async rejectPost(id: string) {
+        try {
+            const response = await instanceServer.patch<PostType>('/reject-post', {id});
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async confirmPost(id: string) {
+        try {
+            const response = await instanceServer.patch<PostType>('/confirm-post', {id});
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
     async getPosts(data: GetPostsRequestType ) {
         try {
             const config: AxiosRequestConfig = {params: data}

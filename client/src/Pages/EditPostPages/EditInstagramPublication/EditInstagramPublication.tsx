@@ -43,6 +43,8 @@ const EditInstagramPublication: FC = () => {
 
     const [currentTab, setCurrentTab] = useState<string>("preview")
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isAuthor, setAuthor] = useState<boolean>(false);
+    const [isCustomer, setCustomer] = useState<boolean>(false);
 
     const buttonsHandler = (key: string) => {
         switch (key) {
@@ -65,10 +67,18 @@ const EditInstagramPublication: FC = () => {
             case "send-for-confirmation":
                 sendForConfirmation();
                 break;
+
+            case "reject":
+                rejectCallback();
+                break;
+
+            case "confirm":
+                confirmCallback();
+                break;
         }
     }
     const publishCallback = () => {
-        if(project && user) {
+        if(project && user && isAuthor) {
             if(selectMedia.length !== 0 && publication) {
                 dispatch(publishInstagramPublication(publication))
                 .then((action) => {
@@ -80,7 +90,7 @@ const EditInstagramPublication: FC = () => {
         }
     }
     const saveCallback = () => {
-        if(isEdit) {
+        if(isEdit && isAuthor) {
             if(project && user) {
                 if(selectMedia.length !== 0 && publication) {
                     dispatch(updateInstagramPublication(publication))
@@ -93,7 +103,7 @@ const EditInstagramPublication: FC = () => {
         }
     }
     const deleteCallback = () => {
-        if (project && publication?.id) {
+        if (project && publication?.id && isAuthor) {
             PostService.deletePost( publication.id)
                 .then((response) => {
                     if (response === publication.id) navigate(`/project/${project.id}/posts`)
@@ -106,8 +116,22 @@ const EditInstagramPublication: FC = () => {
         fileDownloader.downloadFiles();
     }
     const sendForConfirmation = () => {
-        if(publication?.id) {
+        if(publication?.id && isAuthor) {
             PostService.sendForConfirmation(publication.id)
+                .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
+                .catch((error) => dispatch(setError(error)))
+        }
+    }
+    const rejectCallback = () => {
+        if(publication?.id && isCustomer) {
+            PostService.rejectPost(publication.id)
+                .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
+                .catch((error) => dispatch(setError(error)))
+        }
+    }
+    const confirmCallback = () => {
+        if(publication?.id && isCustomer) {
+            PostService.confirmPost(publication.id)
                 .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
                 .catch((error) => dispatch(setError(error)))
         }
@@ -155,6 +179,14 @@ const EditInstagramPublication: FC = () => {
             dispatch(resetPublication());
         }
     }, []);
+    useEffect(() => {
+        if(publication && user && project) {
+            const userInTeam = project.team.find((item) => item.user === user.id);
+
+            setCustomer(userInTeam?.role === "customer")
+            setAuthor(publication.author  === user.id)
+        }
+    }, [project, user, publication]);
 
     return (
         <Page>
@@ -174,7 +206,7 @@ const EditInstagramPublication: FC = () => {
                                 className={classes.editButtons}
                                 status={publication.status}
                                 callback={buttonsHandler}
-                                isAdmin={false}
+                                isAuthor={isAuthor}
                             />
 
                         </HeaderPage>

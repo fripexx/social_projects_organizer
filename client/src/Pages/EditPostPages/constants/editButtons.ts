@@ -108,13 +108,19 @@ export const confirmButtons:EditPostButton[] = [
         icon: downloadIcon,
         iconColor: "var(--Color-Blue)"
     },
+    {
+        key: "save",
+        text: "Зберегти",
+        icon: saveIcon,
+        iconColor: "var(--Color-Green)"
+    },
 ];
 
 /**
- * Admin buttons
+ * Customer buttons
  */
 
-export const editAdminButtons:EditPostButton[] = [
+export const editCustomerButtons:EditPostButton[] = [
     {
         key: "download",
         text: "Завантажити медіа",
@@ -123,7 +129,7 @@ export const editAdminButtons:EditPostButton[] = [
     }
 ];
 
-export const pendingAdminButtons:EditPostButton[] = [
+export const pendingCustomerButtons:EditPostButton[] = [
     {
         key: "download",
         text: "Завантажити медіа",
@@ -144,7 +150,7 @@ export const pendingAdminButtons:EditPostButton[] = [
     },
 ];
 
-export const rejectedAdminButtons:EditPostButton[] = [
+export const rejectedCustomerButtons:EditPostButton[] = [
     {
         key: "download",
         text: "Завантажити медіа",
@@ -159,7 +165,7 @@ export const rejectedAdminButtons:EditPostButton[] = [
     },
 ];
 
-export const confirmAdminButtons:EditPostButton[] = [
+export const confirmCustomerButtons:EditPostButton[] = [
     {
         key: "download",
         text: "Завантажити медіа",

@@ -37,7 +37,7 @@ const StatusPostLabel:FC<StatusPostLabelProps> = ({status, className}) => {
             iconColor: "var(--Color-Yellow)"
         },
         confirmed: {
-            name: 'Затверджені',
+            name: 'Затверджено',
             icon: confirmedIcon,
             iconColor: "var(--Color-Green)"
         },
