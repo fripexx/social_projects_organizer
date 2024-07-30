@@ -6,6 +6,7 @@ import {Swiper, SwiperRef, SwiperSlide} from "swiper/react";
 import {Pagination} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
+import ImageServer from "../../../../Elements/ImageServer/ImageServer";
 
 export type AspectRatio = '1.91/1' | '1/1' | '4/5';
 
@@ -33,11 +34,11 @@ const InstagramPictureSlider: FC<InstagramPictureSliderProps> = ({media, paginat
 
             {media.map((mediaItem) => (
                 <SwiperSlide key={mediaItem.id} className={classes.swiperSlide}>
-                    <img
+                    <ImageServer
                         decoding={"async"}
                         loading={"lazy"}
                         className={classes.media}
-                        src={`${process.env.REACT_APP_API_URL}/${mediaItem.path}`}
+                        path={mediaItem.path}
                         alt={""}
                         style={{aspectRatio}}
                     />
