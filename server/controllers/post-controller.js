@@ -1,6 +1,12 @@
 const PostService = require("../service/post-service");
 
 class PostController {
+
+
+    /**
+     * Publication
+     */
+
     async createInstagramPublication(req, res, next) {
         try {
             const user = await req.user;
@@ -36,6 +42,52 @@ class PostController {
             next(e)
         }
     }
+
+
+    /**
+     * Reels
+     */
+
+    async createInstagramReels(req, res, next) {
+        try {
+            const user = await req.user;
+            const data = req.body;
+            const reels = await PostService.createInstagramReels(user, data)
+
+            return res.json(reels);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async getInstagramReels(req, res, next) {
+        try {
+            const user = await req.user;
+            const query = req.query;
+            const reels = await PostService.getInstagramReels(user, query)
+
+            return res.json(reels);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async updateInstagramReels(req, res, next) {
+        try {
+            const user = await req.user;
+            const data = req.body;
+            const reels = await PostService.updateInstagramReels(user, data);
+
+            return res.json(reels);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+
+    /**
+     * General
+     */
 
     async deletePost(req, res, next) {
         try {

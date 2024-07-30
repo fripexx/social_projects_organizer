@@ -1,6 +1,8 @@
 const { body, param, query } = require('express-validator');
 const mongoose = require('mongoose');
 
+// Publication
+
 const createInstagramPublication = [
     body('project')
         .isString().withMessage('project повинен бути строкою')
@@ -74,6 +76,71 @@ const updateInstagramPublication = [
         .isString().withMessage('aspectRatio повинен бути строкою')
         .isIn(['1.91/1', '1/1', '4/5']).withMessage('aspectRatio повинен бути одним з наступних значень: 1.91/1, 1/1, 4/5'),
 ];
+
+
+// Reels
+
+const createInstagramReels = [
+    body('project')
+        .isString().withMessage('project повинен бути строкою')
+        .custom((project) => {
+            if (!mongoose.Types.ObjectId.isValid(project)) throw new Error('project повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('datePublish')
+        .isISO8601().withMessage('datePublish повинен бути датою у форматі ISO8601'),
+
+    body('params.media')
+        .custom((media) => {
+            if (!mongoose.Types.ObjectId.isValid(media)) throw new Error('media повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('params.description')
+        .isString().withMessage('description повинен бути строкою'),
+
+];
+
+const getInstagramReels = [
+    query('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    query('project')
+        .isString().withMessage('project повинен бути строкою')
+        .custom((project) => {
+            if (!mongoose.Types.ObjectId.isValid(project)) throw new Error('project повинен бути валідним ObjectId');
+            return true;
+        }),
+];
+
+const updateInstagramReels = [
+    body('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('datePublish')
+        .isISO8601().withMessage('datePublish повинен бути датою у форматі ISO8601'),
+
+
+    body('params.media')
+        .custom((media) => {
+            if (!mongoose.Types.ObjectId.isValid(media)) throw new Error('media повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('params.description')
+        .isString().withMessage('description повинен бути строкою'),
+];
+
+// General
 
 const deletePost = [
     query('id')
@@ -162,6 +229,9 @@ module.exports = {
     createInstagramPublication,
     getInstagramPublication,
     updateInstagramPublication,
+    createInstagramReels,
+    getInstagramReels,
+    updateInstagramReels,
     deletePost,
     sendForConfirmation,
     rejectPost,

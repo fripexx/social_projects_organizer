@@ -197,6 +197,25 @@ const setupRouter = ({io}) => {
         PostController.updateInstagramPublication
     );
 
+
+    // Reels
+
+    router.post(
+        '/create-instagram-reels',
+        [authMiddleware, ...PostValidator.createInstagramReels, validate],
+        PostController.createInstagramReels
+    );
+    router.get(
+        '/get-instagram-reels',
+        [authMiddleware, ...PostValidator.getInstagramReels, validate],
+        PostController.getInstagramReels
+    );
+    router.patch(
+        '/update-instagram-reels',
+        [authMiddleware, ...PostValidator.updateInstagramReels, validate],
+        PostController.updateInstagramReels
+    );
+
     return router;
 };
 
