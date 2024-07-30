@@ -1,4 +1,4 @@
-import React, {FC, ImgHTMLAttributes} from 'react';
+import React, {forwardRef, ImgHTMLAttributes} from 'react';
 import classNames from "classnames";
 import classes from "./ImageServer.module.scss";
 
@@ -7,14 +7,15 @@ interface ImageServerProps extends ImgHTMLAttributes<HTMLImageElement> {
     className?: string;
 }
 
-const ImageServer:FC<ImageServerProps> = ({path, className, ...rest}) => {
+const ImageServer = forwardRef<HTMLImageElement, ImageServerProps>(({path, className, ...rest}, ref) => {
     return (
         <img
+            ref={ref}
             className={classNames(classes.image, className)}
             src={`${process.env.REACT_APP_API_URL}/${path}`}
             {...rest}
         />
     );
-};
+});
 
 export default ImageServer;

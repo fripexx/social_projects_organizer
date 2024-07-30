@@ -5,6 +5,7 @@ import {FileType} from "../../../../store/types/FileType";
 import {VideoProgressType} from "../../types/VideoProgressType";
 import notFoundVideo from "../../images/not-found-video.svg"
 import {ReactSVG} from "react-svg";
+import VideoServer from "../../../../Elements/VideoServer/VideoServer";
 
 interface ReelsVideoProps {
     className?: string;
@@ -40,10 +41,10 @@ const InstagramFullscreenVideo: FC<ReelsVideoProps> = ({video, className, progre
         <div className={classNames(classes.container, className)}>
 
             {video &&
-                <video
+                <VideoServer
                     ref={videoRef}
                     className={classes.video}
-                    src={typeof video === "string" ? video : ""}
+                    path={typeof video === "string" ? video : ""}
                     autoPlay={false}
                     loop={true}
                     muted={false}
