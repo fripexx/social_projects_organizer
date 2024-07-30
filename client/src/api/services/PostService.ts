@@ -1,14 +1,19 @@
 import instanceServer from "../instanceServer";
 import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
-import {InstagramPublicationType, PostType} from "../../store/types/PostType";
+import {InstagramPublicationType, InstagramReelsType, PostType} from "../../store/types/PostType";
 import {
-    GetInstagramPublicationRequestType,
+    GetPostRequestType,
     GetPostsRequestType,
     GetPostsResponseType,
 } from "../types/PostServiceTypes";
 
 class PostService {
+
+    /**
+     * Instagram Publication
+     */
+
     async publishInstagramPublication(data: InstagramPublicationType): Promise<InstagramPublicationType> {
         try {
             const response = await instanceServer.post<InstagramPublicationType>('/create-instagram-publication', data);
@@ -29,7 +34,7 @@ class PostService {
         }
     }
 
-    async getInstagramPublication(data: GetInstagramPublicationRequestType): Promise<InstagramPublicationType> {
+    async getInstagramPublication(data: GetPostRequestType): Promise<InstagramPublicationType> {
         try {
             const config: AxiosRequestConfig = {params: data}
             const response = await instanceServer.get<InstagramPublicationType>('/get-instagram-publication', config);
@@ -69,6 +74,77 @@ class PostService {
             throw response;
         }
     }
+
+
+    /**
+     * Instagram Reels
+     */
+
+    async publishInstagramReels(data: InstagramReelsType): Promise<InstagramReelsType> {
+        try {
+            const response = await instanceServer.post<InstagramReelsType>('/create-instagram-reels', data);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async getInstagramReels(data: GetPostRequestType): Promise<InstagramReelsType> {
+        try {
+            const config: AxiosRequestConfig = {params: data}
+            const response = await instanceServer.get<InstagramReelsType>('/get-instagram-reels', config);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async updateInstagramReels(data: InstagramReelsType): Promise<InstagramReelsType> {
+        try {
+            const response = await instanceServer.patch<InstagramReelsType>('/update-instagram-reels', data);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+
+    /**
+     * General
+     */
 
     async deletePost(id: string | string[]) {
         try {

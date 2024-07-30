@@ -1,7 +1,7 @@
 import {PostStatus} from "../../store/reducers/PostStatus";
 import {PostType} from "../../store/types/PostType";
 
-export interface GetInstagramPublicationRequestType {
+export interface GetPostRequestType {
     project: string;
     id: string;
 }
