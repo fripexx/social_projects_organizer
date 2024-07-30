@@ -37,7 +37,7 @@ const EditInstagramPublication: FC = () => {
     const user = useAppSelector(state => state.UserReducer.user);
     const project = useAppSelector(state => state.ProjectReducer.project);
     const teamProject = useAppSelector(state => state.ProjectReducer.team);
-    const publication = useAppSelector(state => state.InstagramPublicationSlice.publication)
+    const post = useAppSelector(state => state.InstagramPublicationSlice.publication)
     const isEdit = useAppSelector(state => state.InstagramPublicationSlice.isEdit)
     const selectMedia = useAppSelector(state => state.InstagramPublicationSlice.selectMedia)
 
@@ -79,8 +79,8 @@ const EditInstagramPublication: FC = () => {
     }
     const publishCallback = () => {
         if(project && user && isAuthor) {
-            if(selectMedia.length !== 0 && publication) {
-                dispatch(publishInstagramPublication(publication))
+            if(selectMedia.length !== 0 && post) {
+                dispatch(publishInstagramPublication(post))
                 .then((action) => {
                     if (publishInstagramPublication.fulfilled.match(action)) navigate(`?id=${action.payload.id}`);
                 });
@@ -92,8 +92,8 @@ const EditInstagramPublication: FC = () => {
     const saveCallback = () => {
         if(isEdit && isAuthor) {
             if(project && user) {
-                if(selectMedia.length !== 0 && publication) {
-                    dispatch(updateInstagramPublication(publication))
+                if(selectMedia.length !== 0 && post) {
+                    dispatch(updateInstagramPublication(post))
                 } else {
                     dispatch(setError({ message: "Додайте хоча б один медіафайл" }))
                 }
@@ -103,10 +103,10 @@ const EditInstagramPublication: FC = () => {
         }
     }
     const deleteCallback = () => {
-        if (project && publication?.id && isAuthor) {
-            PostService.deletePost( publication.id)
+        if (project && post?.id && isAuthor) {
+            PostService.deletePost( post.id)
                 .then((response) => {
-                    if (response === publication.id) navigate(`/project/${project.id}/posts`)
+                    if (response === post.id) navigate(`/project/${project.id}/posts`)
                 })
                 .catch((error) => dispatch(setError(error)))
         }
@@ -116,22 +116,22 @@ const EditInstagramPublication: FC = () => {
         fileDownloader.downloadFiles();
     }
     const sendForConfirmation = () => {
-        if(publication?.id && isAuthor) {
-            PostService.sendForConfirmation(publication.id)
+        if(post?.id && isAuthor) {
+            PostService.sendForConfirmation(post.id)
                 .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
                 .catch((error) => dispatch(setError(error)))
         }
     }
     const rejectCallback = () => {
-        if(publication?.id && isCustomer) {
-            PostService.rejectPost(publication.id)
+        if(post?.id && isCustomer) {
+            PostService.rejectPost(post.id)
                 .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
                 .catch((error) => dispatch(setError(error)))
         }
     }
     const confirmCallback = () => {
-        if(publication?.id && isCustomer) {
-            PostService.confirmPost(publication.id)
+        if(post?.id && isCustomer) {
+            PostService.confirmPost(post.id)
                 .then((response) => dispatch(setPublication(response as InstagramPublicationType)))
                 .catch((error) => dispatch(setError(error)))
         }
@@ -141,7 +141,7 @@ const EditInstagramPublication: FC = () => {
     }
 
     useEffect(() => {
-        if (searchParams && project && user && !publication) {
+        if (searchParams && project && user && !post) {
             const id = searchParams.get("id");
             if (id) {
                 dispatch(getInstagramPublication({project: project.id, id}))
@@ -151,13 +151,13 @@ const EditInstagramPublication: FC = () => {
         }
     }, [searchParams, project, user]);
     useEffect(() => {
-        if (project && publication && publication.params.media.length > 0 && selectMedia.length === 0) {
+        if (project && post && post.params.media.length > 0 && selectMedia.length === 0) {
 
             const query:QueryMediaRequestType = {
                 projectId: project.id,
-                limit: publication.params.media.length,
+                limit: post.params.media.length,
                 skip: 0,
-                mediaIds: publication.params.media
+                mediaIds: post.params.media
             }
 
             ProjectMediaService.getMedia(query)
@@ -166,27 +166,27 @@ const EditInstagramPublication: FC = () => {
                         const mediaMap = new Map();
                         mediaData.media.forEach(media => mediaMap.set(media.id, media));
 
-                        const sortedMedia = publication.params.media.map(id => mediaMap.get(id));
+                        const sortedMedia = post.params.media.map(id => mediaMap.get(id));
                         dispatch(setSelectMedia(sortedMedia))
                     }
                 })
                 .catch(error => dispatch(setError(error)))
 
         }
-    }, [publication])
+    }, [post])
     useEffect(() => {
         return () => {
             dispatch(resetPublication());
         }
     }, []);
     useEffect(() => {
-        if(publication && user && project) {
+        if(post && user && project) {
             const userInTeam = project.team.find((item) => item.user === user.id);
 
             setCustomer(userInTeam?.role === "customer")
-            setAuthor(publication.author  === user.id)
+            setAuthor(post.author  === user.id)
         }
-    }, [project, user, publication]);
+    }, [project, user, post]);
 
     return (
         <Page>
@@ -194,17 +194,17 @@ const EditInstagramPublication: FC = () => {
             <SidebarProject/>
 
             <ContentPage>
-                {(project && publication && user) ? (
+                {(project && post && user) ? (
                     <>
                         <HeaderPage className={classes.header}>
 
                             <BackLink className={classes.back} project={project.id}/>
 
-                            <StatusPostLabel className={classes.status} status={publication.status}/>
+                            <StatusPostLabel className={classes.status} status={post.status}/>
 
                             <EditButtons
                                 className={classes.editButtons}
-                                status={publication.status}
+                                status={post.status}
                                 callback={buttonsHandler}
                                 isAuthor={isAuthor}
                             />
@@ -224,8 +224,8 @@ const EditInstagramPublication: FC = () => {
                                     className={classes.preview}
                                     media={selectMedia}
                                     profile={{ name: "shirshonkova_a", picture: ""}}
-                                    aspectRatio={publication.params.aspectRatio}
-                                    description={publication.params.description}
+                                    aspectRatio={post.params.aspectRatio}
+                                    description={post.params.description}
                                 />
 
                             </div>
@@ -238,10 +238,10 @@ const EditInstagramPublication: FC = () => {
 
                             <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
 
-                                {publication.status !== "unpublish" &&
+                                {post.status !== "unpublish" &&
                                     <ChatPost
                                         className={classes.chat}
-                                        post={publication}
+                                        post={post}
                                         user={user}
                                         team={teamProject}
                                     />
