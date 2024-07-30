@@ -91,12 +91,13 @@ const ProjectMedia:FC = () => {
                             "video/mp4",
                             "video/quicktime",
                             "video/webm",
+                            "video/mov",
                             "text/plain",
                             "application/pdf",
                             "application/xml",
                             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                         ]}
-                        maxSize={5 * 1024 * 1024}
+                        maxSize={15 * 1024 * 1024}
                         maxCountFiles={9}
                     />
 
