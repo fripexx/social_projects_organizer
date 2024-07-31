@@ -35,7 +35,7 @@ const InstagramFullscreenVideo: FC<ReelsVideoProps> = ({video, className, progre
                 video.removeEventListener('timeupdate', updateProgress);
             };
         }
-    }, [videoRef]);
+    }, [videoRef, progressCallback]);
 
     return (
         <div className={classNames(classes.container, className)}>
