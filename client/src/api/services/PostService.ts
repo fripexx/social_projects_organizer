@@ -1,7 +1,7 @@
 import instanceServer from "../instanceServer";
 import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
-import {InstagramPublicationType, InstagramReelsType, PostType} from "../../store/types/PostType";
+import {InstagramPublicationType, InstagramReelsType, InstagramStoriesType, PostType} from "../../store/types/PostType";
 import {GetPostRequestType, GetPostsResponseType} from "../types/PostServiceTypes";
 import {PostsQueryType} from "../../store/types/PostsQueryType";
 
@@ -121,6 +121,72 @@ class PostService {
     async updateInstagramReels(data: InstagramReelsType): Promise<InstagramReelsType> {
         try {
             const response = await instanceServer.patch<InstagramReelsType>('/update-instagram-reels', data);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+
+    /**
+     * Instagram Stories
+     */
+
+    async publishInstagramStories(data: InstagramStoriesType): Promise<InstagramStoriesType> {
+        try {
+            const response = await instanceServer.post<InstagramStoriesType>('/create-instagram-stories', data);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async getInstagramStories(data: GetPostRequestType): Promise<InstagramStoriesType> {
+        try {
+            const config: AxiosRequestConfig = {params: data}
+            const response = await instanceServer.get<InstagramStoriesType>('/get-instagram-stories', config);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async updateInstagramStories(data: InstagramStoriesType): Promise<InstagramStoriesType> {
+        try {
+            const response = await instanceServer.patch<InstagramStoriesType>('/update-instagram-stories', data);
 
             return response.data;
         } catch (e) {

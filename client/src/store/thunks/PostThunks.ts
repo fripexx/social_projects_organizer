@@ -2,7 +2,7 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import PostService from "../../api/services/PostService";
 import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {InstagramPublicationType, InstagramReelsType} from "../types/PostType";
+import {InstagramPublicationType, InstagramReelsType, InstagramStoriesType} from "../types/PostType";
 import { GetPostRequestType, GetPostsResponseType,} from "../../api/types/PostServiceTypes";
 import {PostsQueryType} from "../types/PostsQueryType";
 
@@ -76,6 +76,44 @@ export const updateInstagramReels = createAsyncThunk<InstagramReelsType, Instagr
     async (data, thunkAPI) => {
         try {
             return await PostService.updateInstagramReels(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
+        }
+    }
+);
+
+
+/**
+ * Instagram Stories
+ */
+
+export const publishInstagramStories = createAsyncThunk<InstagramStoriesType, InstagramStoriesType, AsyncThunkConfig>(
+    'instagramStories/publishInstagramStories',
+    async (data, thunkAPI) => {
+        try {
+            return await PostService.publishInstagramStories(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
+        }
+    }
+);
+
+export const getInstagramStories = createAsyncThunk<InstagramStoriesType, GetPostRequestType, AsyncThunkConfig>(
+    'instagramStories/getInstagramStories',
+    async (data, thunkAPI) => {
+        try {
+            return await PostService.getInstagramStories(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
+        }
+    }
+);
+
+export const updateInstagramStories = createAsyncThunk<InstagramStoriesType, InstagramStoriesType, AsyncThunkConfig>(
+    'instagramStories/updateInstagramStories',
+    async (data, thunkAPI) => {
+        try {
+            return await PostService.updateInstagramStories(data);
         } catch (e) {
             return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }

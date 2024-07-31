@@ -1,18 +1,18 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
-import {InstagramReelsType} from "../types/PostType";
+import {InstagramStoriesType} from "../types/PostType";
 import {FileType} from "../types/FileType";
-import {publishInstagramReels, getInstagramReels, updateInstagramReels} from "../thunks/PostThunks";
+import {publishInstagramStories, getInstagramStories, updateInstagramStories} from "../thunks/PostThunks";
 
 interface InstagramReelsState {
     isLoading: boolean,
     error: ErrorResponseType | null;
     isEdit: boolean;
-    reels: InstagramReelsType | null,
+    stories: InstagramStoriesType | null,
     selectMedia: FileType | undefined;
 }
 
-const clearPublication: InstagramReelsType = {
+const clearPublication: InstagramStoriesType = {
     id: '',
     project: '',
     status: 'unpublish',
@@ -20,11 +20,9 @@ const clearPublication: InstagramReelsType = {
     dateCreated: new Date().toISOString(),
     datePublish: new Date().toISOString(),
     social: 'instagram',
-    typePost: 'reels',
+    typePost: 'stories',
     params: {
         media: '',
-        description: '',
-        musicTrack: ''
     }
 }
 
@@ -32,7 +30,7 @@ const initialState: InstagramReelsState = {
     isLoading: false,
     error: null,
     isEdit: false,
-    reels: null,
+    stories: null,
     selectMedia: undefined
 }
 
@@ -41,15 +39,15 @@ interface SetClearPublicationType {
     author: string;
 }
 
-const instagramReelsSlice = createSlice({
-    name: "instagramReels",
+const instagramStoriesSlice = createSlice({
+    name: "instagramStories",
     initialState,
     reducers: {
-        setPost: (state, action: PayloadAction<InstagramReelsType | null>) => {
-            state.reels = action.payload;
+        setPost: (state, action: PayloadAction<InstagramStoriesType | null>) => {
+            state.stories = action.payload;
         },
         setClearPost: (state, action: PayloadAction<SetClearPublicationType>) => {
-            state.reels = {...clearPublication, project: action.payload.project, author: action.payload.author};
+            state.stories = {...clearPublication, project: action.payload.project, author: action.payload.author};
         },
         setEdit: (state, action: PayloadAction<boolean>) => {
             state.isEdit = action.payload;
@@ -57,11 +55,11 @@ const instagramReelsSlice = createSlice({
         setSelectMedia: (state, action: PayloadAction<FileType | undefined>) => {
             state.selectMedia = action.payload;
 
-            if(state.reels) {
-                state.reels = {
-                    ...state.reels,
+            if(state.stories) {
+                state.stories = {
+                    ...state.stories,
                     params: {
-                        ...state.reels.params,
+                        ...state.stories.params,
                         media: action.payload === undefined ? '' : action.payload.id
                     }
                 };
@@ -71,60 +69,60 @@ const instagramReelsSlice = createSlice({
             state.isLoading = false;
             state.error = null;
             state.isEdit = false;
-            state.reels = null;
+            state.stories = null;
             state.selectMedia = undefined;
         },
     },
     extraReducers: {
         /* getInstagramReels */
-        [getInstagramReels.pending.type]: (state) => {
+        [getInstagramStories.pending.type]: (state) => {
             state.isLoading = true;
         },
-        [getInstagramReels.fulfilled.type]: (state, action: PayloadAction<InstagramReelsType>) => {
+        [getInstagramStories.fulfilled.type]: (state, action: PayloadAction<InstagramStoriesType>) => {
             state.isLoading = false;
             state.error = null;
-            state.reels = action.payload;
+            state.stories = action.payload;
         },
-        [getInstagramReels.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
+        [getInstagramStories.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
 
         /* publishInstagramReels */
-        [publishInstagramReels.pending.type]: (state) => {
+        [publishInstagramStories.pending.type]: (state) => {
             state.isLoading = true;
         },
-        [publishInstagramReels.fulfilled.type]: (state, action: PayloadAction<InstagramReelsType>) => {
+        [publishInstagramStories.fulfilled.type]: (state, action: PayloadAction<InstagramStoriesType>) => {
             state.isLoading = false;
             state.error = null;
-            state.reels = action.payload;
+            state.stories = action.payload;
         },
-        [publishInstagramReels.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
+        [publishInstagramStories.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
 
         /* updateInstagramReels */
-        [updateInstagramReels.pending.type]: (state) => {
+        [updateInstagramStories.pending.type]: (state) => {
             state.isLoading = true;
         },
-        [updateInstagramReels.fulfilled.type]: (state, action: PayloadAction<InstagramReelsType>) => {
+        [updateInstagramStories.fulfilled.type]: (state, action: PayloadAction<InstagramStoriesType>) => {
             state.isLoading = false;
             state.error = null;
-            state.reels = action.payload;
+            state.stories = action.payload;
         },
-        [updateInstagramReels.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
+        [updateInstagramStories.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
             state.error = action.payload;
         },
     }
 })
 
-export default instagramReelsSlice.reducer;
+export default instagramStoriesSlice.reducer;
 export const {
     setPost,
     setClearPost,
     setEdit,
     setSelectMedia,
     resetPublication
-} = instagramReelsSlice.actions;
+} = instagramStoriesSlice.actions;
