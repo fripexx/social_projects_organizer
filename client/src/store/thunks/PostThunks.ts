@@ -3,11 +3,8 @@ import PostService from "../../api/services/PostService";
 import {AsyncThunkConfig} from "./types/AsyncThunkConfig";
 import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {InstagramPublicationType, InstagramReelsType} from "../types/PostType";
-import {
-    GetPostRequestType,
-    GetPostsRequestType,
-    GetPostsResponseType,
-} from "../../api/types/PostServiceTypes";
+import { GetPostRequestType, GetPostsResponseType,} from "../../api/types/PostServiceTypes";
+import {PostsQueryType} from "../types/PostsQueryType";
 
 
 /**
@@ -89,7 +86,7 @@ export const updateInstagramReels = createAsyncThunk<InstagramReelsType, Instagr
  * General
  */
 
-export const getPosts = createAsyncThunk<GetPostsResponseType, GetPostsRequestType, AsyncThunkConfig>(
+export const getPosts = createAsyncThunk<GetPostsResponseType, PostsQueryType, AsyncThunkConfig>(
     'project/getPosts',
     async (data, thunkAPI) => {
         try {

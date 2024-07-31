@@ -2,11 +2,8 @@ import instanceServer from "../instanceServer";
 import {AxiosRequestConfig, isAxiosError} from "axios";
 import {ErrorResponseType} from "../types/ErrorResponseType";
 import {InstagramPublicationType, InstagramReelsType, PostType} from "../../store/types/PostType";
-import {
-    GetPostRequestType,
-    GetPostsRequestType,
-    GetPostsResponseType,
-} from "../types/PostServiceTypes";
+import {GetPostRequestType, GetPostsResponseType} from "../types/PostServiceTypes";
+import {PostsQueryType} from "../../store/types/PostsQueryType";
 
 class PostService {
 
@@ -227,7 +224,7 @@ class PostService {
         }
     }
 
-    async getPosts(data: GetPostsRequestType ) {
+    async getPosts(data: PostsQueryType) {
         try {
             const config: AxiosRequestConfig = {params: data}
             const response = await instanceServer.get<GetPostsResponseType>('/get-posts', config);

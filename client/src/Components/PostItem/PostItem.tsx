@@ -10,6 +10,7 @@ import SocialLogo from "./Components/SocialLogo/SocialLogo";
 import StatusPost from "./Components/StatusPost/StatusPost";
 import checkedIcon from "../../assets/images/check-icon.svg";
 import {ReactSVG} from "react-svg";
+import VideoServer from "../../Elements/VideoServer/VideoServer";
 
 interface PostCardProps {
     post: PostType;
@@ -69,6 +70,15 @@ const PostItem: FC<PostCardProps> = ({post, checked= false}) => {
                     width={"300px"}
                     height={"300px"}
                     decoding={"async"}
+                />
+            }
+
+            {preview && preview.type === "video" &&
+                <VideoServer
+                    className={classes.image}
+                    path={cropped ? cropped["300"] : preview.path}
+                    width={"300px"}
+                    height={"300px"}
                 />
             }
 

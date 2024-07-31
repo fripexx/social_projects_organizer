@@ -19,6 +19,7 @@ import {BasicTeamMemberType, TeamMemberType} from "../types/TeamMemberType";
 import {PostType} from "../types/PostType";
 import {getPosts} from "../thunks/PostThunks";
 import {GetPostsResponseType} from "../../api/types/PostServiceTypes";
+import {PostsQueryType} from "../types/PostsQueryType";
 
 interface ProjectState {
     isLoading: boolean,
@@ -30,6 +31,7 @@ interface ProjectState {
     postsData: {
         posts: PostType[],
         total: number,
+        query: PostsQueryType | undefined
     }
 }
 
@@ -43,6 +45,7 @@ const initialState: ProjectState = {
     postsData: {
         posts: [],
         total: 0,
+        query: undefined
     }
 }
 
@@ -58,6 +61,9 @@ const projectSlice = createSlice({
         },
         setLoadMorePosts: (state, action: PayloadAction<PostType[]>) => {
             state.postsData.posts = [...state.postsData.posts, ...action.payload];
+        },
+        setPostsQuery: (state, action: PayloadAction<PostsQueryType | undefined>) => {
+            state.postsData.query = action.payload
         },
     },
     extraReducers: {
@@ -191,6 +197,7 @@ const projectSlice = createSlice({
             state.postsData = {
                 posts: action.payload.posts,
                 total: action.payload.total,
+                query: state.postsData.query
             };
         },
         [getPosts.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
@@ -200,4 +207,9 @@ const projectSlice = createSlice({
 })
 
 export default projectSlice.reducer;
-export const { setProject, setError, setLoadMorePosts } = projectSlice.actions;
+export const {
+    setProject,
+    setError,
+    setLoadMorePosts,
+    setPostsQuery
+} = projectSlice.actions;

@@ -1,10 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./ProjectPosts.module.scss";
 import plusIcon from "../../assets/images/plus_icon.svg";
-import {GetPostsRequestType} from "../../api/types/PostServiceTypes";
 import {PostStatus} from "../../store/reducers/PostStatus";
 import PostService from "../../api/services/PostService";
-import {setLoadMorePosts} from "../../store/reducers/ProjectSlice";
+import {setLoadMorePosts, setPostsQuery} from "../../store/reducers/ProjectSlice";
 import {socialOptions} from "./constants/SocialOptions";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {getPosts} from "../../store/thunks/PostThunks";
@@ -23,16 +22,17 @@ import LoadMore from "../../Components/LoadMore/LoadMore";
 
 const ProjectPosts:FC = () => {
     const dispatch = useAppDispatch();
+
     const project = useAppSelector(state => state.ProjectReducer.project)
-    const {total, posts} = useAppSelector(state => state.ProjectReducer.postsData)
+    const {total, posts, query} = useAppSelector(state => state.ProjectReducer.postsData)
+
     const [searchParams, setSearchParams] = useSearchParams();
-    const [query, setQuery] = useState<GetPostsRequestType | undefined>();
     const [addPostOpen, setAddPostOpen] = useState<boolean>(false);
     const [loadMore, setLoadMore] = useState<boolean>(false);
 
     const changeSocialHandler = (value: string) => {
-        if(value === "instagram" || value === "tiktok") {
-            setQuery(prevState => (prevState ? {...prevState, social: value} : undefined))
+        if((value === "instagram" || value === "tiktok") && query) {
+            dispatch(setPostsQuery({...query, social: value}))
         }
     }
     const closeAddModal = () => {
@@ -41,37 +41,31 @@ const ProjectPosts:FC = () => {
 
     useEffect(() => {
         if(project) {
-            setQuery({
+            dispatch(setPostsQuery({
+                ...query,
                 project: project.id,
                 skip: 0,
                 limit: 20,
                 social: "instagram",
-                typePost: "publication",
-            })
+            }))
         }
     }, [project]);
     useEffect(() => {
         if(query) dispatch(getPosts(query))
     }, [query]);
     useEffect(() => {
-        if(searchParams) {
+        if(searchParams && query) {
             const status = searchParams.get("status") as PostStatus;
 
             if(status) {
-                setQuery(prevState => prevState ? {...prevState, status} : prevState);
+                dispatch(setPostsQuery({...query, status}))
             } else {
-                setQuery(prevState => {
-                    if(prevState) {
-                        const updateState = {...prevState}
-                        delete updateState.status;
-                        return updateState
-                    }
-                    return prevState;
-                });
+                const newQuery = {...query}
+                delete newQuery.status;
+                dispatch(setPostsQuery(newQuery))
             }
         }
     }, [searchParams]);
-
     useEffect(() => {
         async function fetchLoadMore() {
             if (loadMore && query) {
