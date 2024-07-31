@@ -1,4 +1,12 @@
 .container{
-    display: block;
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
     filter: drop-shadow(0px 0px 5px rgba(0,0,0,0.1));
+}
+
+.typePost {
+    color: var(--Color-White);
+    font-weight: 300;
+    text-transform: capitalize;
 }

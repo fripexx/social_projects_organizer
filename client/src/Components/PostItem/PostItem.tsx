@@ -85,6 +85,7 @@ const PostItem: FC<PostCardProps> = ({post, checked= false}) => {
             <SocialLogo
                 className={classes.social}
                 social={social}
+                typePost={typePost}
             />
 
             <StatusPost className={classes.status} status={status}/>

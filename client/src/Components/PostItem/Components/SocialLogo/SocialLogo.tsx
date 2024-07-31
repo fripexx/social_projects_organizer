@@ -4,10 +4,11 @@ import classNames from "classnames";
 
 interface SocialLogoProps {
     social: "instagram" | "tiktok";
+    typePost: 'publication' | 'stories' | 'reels';
     className?: string;
 }
 
-const SocialLogo:FC<SocialLogoProps> = ({social, className}) => {
+const SocialLogo:FC<SocialLogoProps> = ({social, typePost, className}) => {
     return (
         <div className={classNames(classes.container, className)}>
 
@@ -39,6 +40,10 @@ const SocialLogo:FC<SocialLogoProps> = ({social, className}) => {
                     />
                 </svg>
             }
+
+            <span className={classes.typePost}>
+                {typePost}
+            </span>
 
         </div>
     );
