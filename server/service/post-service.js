@@ -202,7 +202,7 @@ class PostService {
 
         const post = await PostModel.findOne({_id: id, typePost: 'reels'});
 
-        if (!post) throw ApiError.BadRequest('Помилка: Публікацію з таким ID не знайдено');
+        if (!post) throw ApiError.BadRequest('Помилка: Поста з таким ID не знайдено');
 
         return new PostDto(post);
     }
@@ -244,7 +244,122 @@ class PostService {
         }
         const updatePost = await PostModel.findByIdAndUpdate(checkPublication._id, update, options)
 
-        if(!updatePost) throw ApiError.BadRequest('Помилка: Невдалося оновити публікацію.');
+        if(!updatePost) throw ApiError.BadRequest('Помилка: Невдалося оновити пост.');
+
+        return new PostDto(updatePost);
+    }
+
+
+    /**
+     * Stories
+     */
+
+    async createInstagramStories(user, data) {
+        const {project, datePublish, params} = data;
+        const {media} = params;
+
+
+        /**
+         * Перевірка прав в проєкті
+         */
+
+        const checkProject = await ProjectService.checkProjectManagementPermissions(project, user, true)
+
+
+        /**
+         * Перевірка існування медіафайлів
+         */
+
+        const filterMedia = {
+            _id: {$in: media},
+            'belongTo.id': project,
+            'belongTo.model': "Project"
+
+        }
+        const foundMedia = await FileModel.find(filterMedia, null, {lean: true});
+        const foundMediaIds = foundMedia.map(item => item._id.toString());
+
+        if (foundMediaIds.length === 0) throw ApiError.BadRequest('Помилка: Не вдалося знайти жодного медіа.');
+
+
+        /**
+         * Створення запису в БД
+         */
+
+        const createInstagramPublication = await PostModel.create({
+            project: checkProject._id,
+            status: "edit",
+            datePublish: datePublish,
+            author: user.id,
+            social: "instagram",
+            typePost: "stories",
+            params: {
+                media: media,
+            }
+        })
+
+        return new PostDto(createInstagramPublication);
+    }
+
+    async getInstagramStories(user, query) {
+        const {project, id} = query;
+
+
+        /**
+         * Перевірка існувння проєкту
+         */
+
+        const findProject = await ProjectModel.findOne({_id: project, 'team.user': user.id}).lean();
+
+        if (!findProject) throw ApiError.BadRequest('Помилка: Пост із вказаним ID не знайдено або у вас немає прав доступу до нього');
+
+
+        /**
+         * Пошук поста в БД
+         */
+
+        const post = await PostModel.findOne({_id: id, typePost: 'stories'});
+
+        if (!post) throw ApiError.BadRequest('Помилка: Пост з таким ID не знайдено');
+
+        return new PostDto(post);
+    }
+
+    async updateInstagramStories(user, data) {
+        const {id, project, datePublish, params} = data;
+        const {media} = params;
+
+
+        /**
+         * Перевірка прав в проєкті
+         */
+
+        const checkProject = await ProjectService.checkProjectManagementPermissions(project, user, true)
+
+
+        /**
+         * Перевірка існувння та доступуп до посту
+         */
+
+        const checkPublication = await this.checkPostManagementPermissions(id, user);
+
+
+        /**
+         * Пошук та оновлення поста
+         */
+
+        const update = {
+            status: "edit",
+            datePublish,
+            params: {media}
+        }
+        const options = {
+            lean: true,
+            new: true
+        }
+        const updatePost = await PostModel.findByIdAndUpdate(checkPublication._id, update, options)
+
+        if(!updatePost) throw ApiError.BadRequest('Помилка: Невдалося оновити пост.');
 
         return new PostDto(updatePost);
     }

@@ -140,6 +140,63 @@ const updateInstagramReels = [
         .isString().withMessage('description повинен бути строкою'),
 ];
 
+
+// Stories
+
+const createInstagramStories = [
+    body('project')
+        .isString().withMessage('project повинен бути строкою')
+        .custom((project) => {
+            if (!mongoose.Types.ObjectId.isValid(project)) throw new Error('project повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('datePublish')
+        .isISO8601().withMessage('datePublish повинен бути датою у форматі ISO8601'),
+
+    body('params.media')
+        .custom((media) => {
+            if (!mongoose.Types.ObjectId.isValid(media)) throw new Error('media повинен бути валідним ObjectId');
+            return true;
+        }),
+
+];
+
+const getInstagramStories = [
+    query('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    query('project')
+        .isString().withMessage('project повинен бути строкою')
+        .custom((project) => {
+            if (!mongoose.Types.ObjectId.isValid(project)) throw new Error('project повинен бути валідним ObjectId');
+            return true;
+        }),
+];
+
+const updateInstagramStories = [
+    body('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('datePublish')
+        .isISO8601().withMessage('datePublish повинен бути датою у форматі ISO8601'),
+
+
+    body('params.media')
+        .custom((media) => {
+            if (!mongoose.Types.ObjectId.isValid(media)) throw new Error('media повинен бути валідним ObjectId');
+            return true;
+        }),
+];
+
 // General
 
 const deletePost = [
@@ -232,6 +289,9 @@ module.exports = {
     createInstagramReels,
     getInstagramReels,
     updateInstagramReels,
+    createInstagramStories,
+    getInstagramStories,
+    updateInstagramStories,
     deletePost,
     sendForConfirmation,
     rejectPost,

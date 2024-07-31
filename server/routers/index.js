@@ -216,6 +216,25 @@ const setupRouter = ({io}) => {
         PostController.updateInstagramReels
     );
 
+
+    // Stories
+
+    router.post(
+        '/create-instagram-stories',
+        [authMiddleware, ...PostValidator.createInstagramStories, validate],
+        PostController.createInstagramStories
+    );
+    router.get(
+        '/get-instagram-stories',
+        [authMiddleware, ...PostValidator.getInstagramStories, validate],
+        PostController.getInstagramStories
+    );
+    router.patch(
+        '/update-instagram-stories',
+        [authMiddleware, ...PostValidator.updateInstagramStories, validate],
+        PostController.updateInstagramStories
+    );
+
     return router;
 };
 

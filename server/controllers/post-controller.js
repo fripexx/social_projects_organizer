@@ -86,6 +86,47 @@ class PostController {
 
 
     /**
+     * Stories
+     */
+
+    async createInstagramStories(req, res, next) {
+        try {
+            const user = await req.user;
+            const data = req.body;
+            const reels = await PostService.createInstagramStories(user, data)
+
+            return res.json(reels);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async getInstagramStories(req, res, next) {
+        try {
+            const user = await req.user;
+            const query = req.query;
+            const reels = await PostService.getInstagramStories(user, query)
+
+            return res.json(reels);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async updateInstagramStories(req, res, next) {
+        try {
+            const user = await req.user;
+            const data = req.body;
+            const reels = await PostService.updateInstagramStories(user, data);
+
+            return res.json(reels);
+        } catch (e) {
+            next(e)
+        }
+    }
+
+
+    /**
      * General
      */
 
