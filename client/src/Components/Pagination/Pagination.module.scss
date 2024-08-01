@@ -1,0 +1,90 @@
+.pagination {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 15px 0;
+}
+
+@mixin pageLinkActive {
+    background-color: var(--Color-Dark);
+    border-color: var(--Color-Dark);
+    color: var(--Color-White);
+
+    svg {
+        --Color-SVG: var(--Color-White);
+    }
+}
+
+@mixin pageLinkDisabled {
+    pointer-events: none;
+    background-color: var(--Color-White);
+    border-color: var(--Color-Light-Grey-Blue);
+    color: var(--Color-Light-Grey-Blue);
+
+    svg {
+        --Color-SVG: var(--Color-Light-Grey-Blue);
+    }
+}
+
+.pageLink {
+    --size: 35px;
+
+    width: var(--size);
+    min-width: var(--size);
+    max-width: var(--size);
+    height: var(--size);
+    min-height: var(--size);
+    max-height: var(--size);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    background-color: var(--Color-Light-Grey-Blue);
+    border: 1px solid var(--Color-Light-Grey-Blue);
+    border-radius: 50%;
+    text-decoration: none;
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 1;
+    text-align: center;
+    color: var(--Color-Dark);
+    transition: 0.2s all linear;
+
+    &.active {
+        @include pageLinkActive
+    }
+
+    &.disabled {
+        @include pageLinkDisabled
+    }
+
+    @media (max-width: 900px) {
+        --size: 30px;
+        &:active {
+            @include pageLinkActive
+        }
+    }
+
+    @media (min-width: 900px) {
+        &:hover {
+            @include pageLinkActive
+        }
+    }
+
+    svg {
+        --Color-SVG: var(--Color-Dark);
+        display: block;
+        transition: 0.2s all linear;
+    }
+}
+
+.next {
+    svg {
+        transform: rotate(180deg);
+    }
+}

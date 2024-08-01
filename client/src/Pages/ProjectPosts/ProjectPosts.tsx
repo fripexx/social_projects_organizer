@@ -2,8 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import classes from "./ProjectPosts.module.scss";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import {PostStatus} from "../../store/reducers/PostStatus";
-import PostService from "../../api/services/PostService";
-import {setLoadMorePosts, setPostsQuery} from "../../store/reducers/ProjectSlice";
+import {setPostsQuery} from "../../store/reducers/ProjectSlice";
 import {socialOptions} from "./constants/SocialOptions";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {getPosts} from "../../store/thunks/PostThunks";
@@ -18,7 +17,7 @@ import PostItem from "../../Components/PostItem/PostItem";
 import AddPostModal from "./Components/AddPostModal/AddPostModal";
 import {useSearchParams} from "react-router-dom";
 import Select from "../../Elements/Select/Select";
-import LoadMore from "../../Components/LoadMore/LoadMore";
+import Pagination from "../../Components/Pagination/Pagination";
 
 const ProjectPosts:FC = () => {
     const dispatch = useAppDispatch();
@@ -28,7 +27,6 @@ const ProjectPosts:FC = () => {
 
     const [searchParams, setSearchParams] = useSearchParams();
     const [addPostOpen, setAddPostOpen] = useState<boolean>(false);
-    const [loadMore, setLoadMore] = useState<boolean>(false);
 
     const changeSocialHandler = (value: string) => {
         if((value === "instagram" || value === "tiktok") && query) {
@@ -38,6 +36,9 @@ const ProjectPosts:FC = () => {
     const closeAddModal = () => {
         setAddPostOpen(false)
     }
+    const changePage = (page: number) => {
+        if(query) dispatch(setPostsQuery({...query, skip: query.limit * (page - 1)}))
+    }
 
     useEffect(() => {
         if(project) {
@@ -45,7 +46,7 @@ const ProjectPosts:FC = () => {
                 ...query,
                 project: project.id,
                 skip: 0,
-                limit: 20,
+                limit: 30,
                 social: "instagram",
             }))
         }
@@ -66,16 +67,6 @@ const ProjectPosts:FC = () => {
             }
         }
     }, [searchParams]);
-    useEffect(() => {
-        async function fetchLoadMore() {
-            if (loadMore && query) {
-                const loadMoreData = await PostService.getPosts({...query, skip: posts.length})
-                dispatch(setLoadMorePosts(loadMoreData.posts))
-                setLoadMore(false);
-            }
-        }
-        fetchLoadMore();
-    }, [loadMore]);
 
     return (
         <Page>
@@ -105,7 +96,8 @@ const ProjectPosts:FC = () => {
 
                 </HeaderPage>
 
-                <Content>
+                <Content className={classes.content}>
+
                     <div className={classes.postsContainer}>
                         {posts.map(post => {
                             return(
@@ -114,13 +106,16 @@ const ProjectPosts:FC = () => {
                         })}
                     </div>
 
-                    <LoadMore
-                        load={loadMore}
-                        text={"Показати ще"}
-                        shown={posts.length}
-                        total={total}
-                        callback={() => setLoadMore(true)}
-                    />
+                    {query &&
+                        <Pagination
+                            className={classes.pagination}
+                            limit={query.limit}
+                            total={total}
+                            currentPage={Math.floor(query.skip  / query.limit) + 1}
+                            siblings={1}
+                            onPageChange={changePage}
+                        />
+                    }
 
                 </Content>
 

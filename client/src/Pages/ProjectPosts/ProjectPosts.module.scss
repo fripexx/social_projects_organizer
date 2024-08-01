@@ -12,3 +12,13 @@
     width: auto;
     min-width: 200px;
 }
+
+.content {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    .pagination {
+        margin-top: auto;
+    }
+}
