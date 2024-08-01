@@ -18,7 +18,7 @@ import {
     publishInstagramReels,
     updateInstagramReels
 } from "../../../store/thunks/PostThunks";
-import {setClearPost, setSelectMedia, setPost} from "../../../store/reducers/InstagramReelsSlice";
+import {setClearPost, setSelectMedia, setPost, resetPost} from "../../../store/reducers/InstagramReelsSlice";
 import Tabs from "../Components/Tabs/Tabs";
 import classNames from "classnames";
 import ChatPost from "../Components/ChatPost/ChatPost";
@@ -177,6 +177,11 @@ const EditInstagramReels:FC = () => {
             setAuthor(post.author  === user.id)
         }
     }, [project, user, post]);
+    useEffect(() => {
+        return () => {
+            dispatch(resetPost());
+        }
+    }, []);
 
     return (
         <ProjectPage>

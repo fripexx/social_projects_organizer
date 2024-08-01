@@ -18,7 +18,7 @@ import Loader from "../../../Elements/Loader/Loader";
 import {useNavigate, useSearchParams} from "react-router-dom";
 import {getInstagramStories, publishInstagramStories, updateInstagramStories} from "../../../store/thunks/PostThunks";
 import {useAppDispatch, useAppSelector} from "../../../store/hooks/redux";
-import {setClearPost, setPost, setSelectMedia} from "../../../store/reducers/InstagramStoriesSlice";
+import {setClearPost, setPost, setSelectMedia, resetPost} from "../../../store/reducers/InstagramStoriesSlice";
 import {setError} from "../../../store/reducers/ProjectSlice";
 import PostService from "../../../api/services/PostService";
 import ProjectMediaService from "../../../api/services/ProjectMediaService";
@@ -174,6 +174,11 @@ const EditInstagramStories:FC = () => {
             setAuthor(post.author  === user.id)
         }
     }, [project, user, post]);
+    useEffect(() => {
+        return () => {
+            dispatch(resetPost());
+        }
+    }, []);
 
     return (
         <ProjectPage>

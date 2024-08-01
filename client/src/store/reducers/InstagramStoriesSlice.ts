@@ -65,7 +65,7 @@ const instagramStoriesSlice = createSlice({
                 };
             }
         },
-        resetPublication: (state) => {
+        resetPost: (state) => {
             state.isLoading = false;
             state.error = null;
             state.isEdit = false;
@@ -124,5 +124,5 @@ export const {
     setClearPost,
     setEdit,
     setSelectMedia,
-    resetPublication
+    resetPost
 } = instagramStoriesSlice.actions;
