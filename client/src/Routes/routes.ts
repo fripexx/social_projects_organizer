@@ -22,6 +22,7 @@ import ProjectMedia from "../Pages/ProjectMedia/ProjectMedia";
 import EditInstagramPublication from "../Pages/EditPostPages/EditInstagramPublication/EditInstagramPublication";
 import EditInstagramStories from "../Pages/EditPostPages/EditInstagramStories/EditInstagramStories";
 import EditInstagramReels from "../Pages/EditPostPages/EditInstagramReels/EditInstagramReels";
+import ProjectCalendar from "../Pages/ProjectCalendar/ProjectCalendar";
 
 export interface Route {
     key: string;
@@ -122,7 +123,7 @@ export const routes: Route[] = [
         key: "calendar",
         name: "Календар",
         path: "/project/:id/calendar",
-        component: ProjectPosts,
+        component: ProjectCalendar,
         icon: calendarIcon,
         requiresAuth: true,
         isProjectPath: true,
