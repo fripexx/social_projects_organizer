@@ -6,6 +6,16 @@
     position: relative;
     border-radius: 10px;
     overflow: hidden;
+
+    &[data-compact="true"] {
+        width: 80px;
+
+        .status {
+            --size: 16px !important;
+            top: 5px;
+            left: 5px;
+        }
+    }
 }
 
 .image {

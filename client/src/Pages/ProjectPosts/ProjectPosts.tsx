@@ -37,7 +37,7 @@ const ProjectPosts:FC = () => {
         setAddPostOpen(false)
     }
     const changePage = (page: number) => {
-        if(query) dispatch(setPostsQuery({...query, skip: query.limit * (page - 1)}))
+        if(query?.limit) dispatch(setPostsQuery({...query, skip: query.limit * (page - 1)}))
     }
 
     useEffect(() => {
@@ -109,9 +109,9 @@ const ProjectPosts:FC = () => {
                     {query &&
                         <Pagination
                             className={classes.pagination}
-                            limit={query.limit}
+                            limit={query.limit || 0}
                             total={total}
-                            currentPage={Math.floor(query.skip  / query.limit) + 1}
+                            currentPage={Math.floor(query.skip  / (query.limit || 1)) + 1}
                             siblings={1}
                             onPageChange={changePage}
                         />

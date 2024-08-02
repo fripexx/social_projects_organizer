@@ -1,0 +1,64 @@
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+@mixin ChangeMonthButtonActive {
+    background: var(--Color-Dark);
+
+    svg {
+        --Color-SVG: var(--Color-White);
+    }
+}
+
+.changeMonthButton {
+    --size: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--size);
+    min-width: var(--size);
+    max-width: var(--size);
+    height: var(--size);
+    min-height: var(--size);
+    max-height: var(--size);
+    background: var(--Color-Light-Grey-Blue);
+    border: none;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.2s all linear;
+
+    svg {
+        --Color-SVG: var(--Color-Dark);
+        display: block;
+        transition: 0.2s all linear;
+    }
+
+    &.nextButton {
+        transform: rotate(180deg);
+    }
+
+    @media (max-width: 900px) {
+        &:active {
+            @include ChangeMonthButtonActive
+        }
+    }
+    @media (min-width: 900px) {
+        &:hover {
+            @include ChangeMonthButtonActive
+        }
+    }
+}
+
+.nameMonth {
+    margin: 0;
+    width: 180px;
+    text-align: center;
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 300;
+}

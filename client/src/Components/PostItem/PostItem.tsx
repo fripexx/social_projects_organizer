@@ -15,9 +15,10 @@ import VideoServer from "../../Elements/VideoServer/VideoServer";
 interface PostCardProps {
     post: PostType;
     checked?: boolean;
+    compact?: boolean;
 }
 
-const PostItem: FC<PostCardProps> = ({post, checked= false}) => {
+const PostItem: FC<PostCardProps> = ({post, checked= false, compact = false}) => {
     const {id, project, author, status, social, typePost, datePublish, dateCreated, params} = post;
     const [preview, setPreview] = useState<PhotoType | FileType>();
     const [cropped, setCropped] = useState<PhotoCroppedType>();
@@ -60,6 +61,7 @@ const PostItem: FC<PostCardProps> = ({post, checked= false}) => {
             to={`/project/${project}/edit-${social}-${typePost}?id=${id}`}
             className={classes.container}
             title={`${social} ${typePost} ${id}`}
+            data-compact={compact}
         >
 
             {preview && preview.type === "image" &&
@@ -82,19 +84,21 @@ const PostItem: FC<PostCardProps> = ({post, checked= false}) => {
                 />
             }
 
-            <SocialLogo
-                className={classes.social}
-                social={social}
-                typePost={typePost}
-            />
+            {!compact &&
+                <SocialLogo
+                    className={classes.social}
+                    social={social}
+                    typePost={typePost}
+                />
+            }
 
             <StatusPost className={classes.status} status={status}/>
 
-            {preview &&
+            {(preview && !compact) &&
                 <TypeMedia className={classes.type} type={preview.type}/>
             }
 
-            {checked &&
+            {(checked && !compact)&&
                 <div className={classes.checked}>
                     <ReactSVG src={checkedIcon}/>
                 </div>

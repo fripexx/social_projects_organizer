@@ -555,7 +555,7 @@ class PostService {
     }
 
     async getPosts(user, query) {
-        const {project, skip, limit, social, typePost, status} = query;
+        const {project, skip, limit, social, typePost, status, datePublish} = query;
 
         const filter = {
             project,
@@ -596,6 +596,18 @@ class PostService {
                 filter["status"] = status;
             } else {
                 throw ApiError.BadRequest('Помилка: status повинен бути одним з наступних значень: edit, pending, rejected, confirmed.');
+            }
+        }
+
+        if (datePublish) {
+            const { from, to } = datePublish;
+
+            if (from) {
+                filter['datePublish'] = { ...filter['datePublish'], $gte: new Date(from) };
+            }
+
+            if (to) {
+                filter['datePublish'] = { ...filter['datePublish'], $lte: new Date(to) };
             }
         }
 

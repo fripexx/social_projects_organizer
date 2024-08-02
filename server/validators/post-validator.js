@@ -254,6 +254,7 @@ const getPosts = [
         .isNumeric().withMessage('skip повинен бути цифрою'),
 
     query('limit')
+        .optional()
         .isNumeric().withMessage('limit повинен бути цифрою'),
 
     query('social')
@@ -280,6 +281,14 @@ const getPosts = [
         .optional()
         .isString().withMessage('status повинен бути строкою')
         .isIn(['edit', 'pending', 'rejected', 'confirmed']).withMessage('status повинен бути одним з наступних значень: edit, pending, rejected, confirmed'),
+
+    query('datePublish.from')
+        .optional()
+        .isISO8601().withMessage('datePublish.from повинен бути датою у форматі ISO8601'),
+
+    query('datePublish.to')
+        .optional()
+        .isISO8601().withMessage('datePublish.from повинен бути датою у форматі ISO8601'),
 ];
 
 module.exports = {
