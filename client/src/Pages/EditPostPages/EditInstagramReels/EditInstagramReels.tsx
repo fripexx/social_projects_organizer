@@ -230,7 +230,10 @@ const EditInstagramReels:FC = () => {
                                 </div>
 
                                 <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
-                                    <InstagramReelsParams className={classes.params}/>
+                                    <InstagramReelsParams
+                                        className={classes.params}
+                                        readonly={!isAuthor}
+                                    />
                                 </div>
 
                                 <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>

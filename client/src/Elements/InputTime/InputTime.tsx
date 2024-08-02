@@ -4,9 +4,10 @@ import classes from "./InputTime.module.scss";
 interface InputTimeProps {
     changeCallback: (date: Date) => void,
     value: Date,
+    readonly?: boolean;
 }
 
-const InputTime:FC<InputTimeProps> = ({changeCallback, value}) => {
+const InputTime:FC<InputTimeProps> = ({changeCallback, value, readonly = false}) => {
     const [inputValue, setValue] = useState<string>();
 
     const onChange = (e:React.ChangeEvent<HTMLInputElement>) =>{
@@ -47,6 +48,7 @@ const InputTime:FC<InputTimeProps> = ({changeCallback, value}) => {
                     type={"time"}
                     onChange={onChange}
                     value={inputValue}
+                    disabled={readonly}
                 />
             }
         </>

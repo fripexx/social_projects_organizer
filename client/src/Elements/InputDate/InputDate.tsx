@@ -2,11 +2,12 @@ import React, {FC, useEffect, useState} from 'react';
 import classes from "./InputDate.module.scss";
 
 interface InputDateProps {
-    changeCallback: (date: Date) => void,
-    value: Date,
+    changeCallback: (date: Date) => void;
+    value: Date;
+    readonly?: boolean;
 }
 
-const InputDate:FC<InputDateProps> = ({changeCallback, value}) => {
+const InputDate:FC<InputDateProps> = ({changeCallback, value, readonly = false}) => {
     const [inputValue, setInputValue] = useState<string>();
 
     const onChange = (e:React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +41,7 @@ const InputDate:FC<InputDateProps> = ({changeCallback, value}) => {
                     type="date"
                     onChange={onChange}
                     value={inputValue}
+                    disabled={readonly}
                 />
 
             }

@@ -13,6 +13,23 @@
         }
     }
 
+    &[data-disabled="true"] {
+        .options {
+            display: none;
+        }
+
+        .current {
+            background: var(--Color-Light-Grey-Blue);
+            color: var(--Color-Dark);
+            cursor: unset;
+        }
+
+        .arrow {
+            --ColorSVG: var(--Color-Dark) !important;
+            transform: rotate(0deg);
+        }
+    }
+
     &[data-dropdown-type="absolute"] {
         .options {
             position: absolute;

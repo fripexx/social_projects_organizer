@@ -15,9 +15,10 @@ interface SelectProps {
     className?: string;
     style?: CSSProperties;
     dropdownType?: "absolute" | "relative";
+    readonly?: boolean;
 }
 
-const Select: FC<SelectProps> = ({options, value, onChange, label, className, style = {}, dropdownType = "absolute"}) => {
+const Select: FC<SelectProps> = ({options, value, onChange, label, className, style = {}, dropdownType = "absolute", readonly = false}) => {
     const [currentOption, setCurrent] = useState<SelectOption>({value: "", label: ""});
     const [active, setActive] = useState<boolean>(false);
 
@@ -27,7 +28,7 @@ const Select: FC<SelectProps> = ({options, value, onChange, label, className, st
     }
     const showOptions = (e: React.MouseEvent<HTMLDivElement>) => {
         e.preventDefault();
-        setActive(prevState => !prevState)
+        if(!readonly) setActive(prevState => !prevState)
     }
     useEffect(() => {
         const findOption = options.find(option => option.value === value);
@@ -35,7 +36,7 @@ const Select: FC<SelectProps> = ({options, value, onChange, label, className, st
     }, [value]);
 
     return (
-        <div className={classNames(classes.container, className)} style={style} data-active={active} data-dropdown-type={dropdownType}>
+        <div className={classNames(classes.container, className)} style={style} data-active={active} data-dropdown-type={dropdownType} data-disabled={readonly}>
 
             {label &&
                 <span className={classes.label}>

@@ -15,9 +15,10 @@ import {QueryMediaRequestType} from "../../../../../api/types/ProjectMediaTypes"
 
 interface InstagramReelsParamsProps {
     className?: string;
+    readonly: boolean;
 }
 
-const InstagramReelsParams:FC<InstagramReelsParamsProps> = ({className}) => {
+const InstagramReelsParams:FC<InstagramReelsParamsProps> = ({className, readonly}) => {
     const dispatch = useAppDispatch()
 
     const project = useAppSelector(state => state.ProjectReducer.project)
@@ -28,7 +29,6 @@ const InstagramReelsParams:FC<InstagramReelsParamsProps> = ({className}) => {
     const [total, setTotal] = useState<number>(0)
     const [query, setQuery] = useState<QueryMediaRequestType>();
     const [loadMore, setLoadMore] = useState<boolean>(false);
-
 
     const changeDescriptionHandler = (value: string) => {
         if(reels) {
@@ -57,6 +57,7 @@ const InstagramReelsParams:FC<InstagramReelsParamsProps> = ({className}) => {
         dispatch(setSelectMedia(updateMedia[0]))
         dispatch(setEdit(true))
     }
+
     useEffect(() => {
         if(project) {
             setQuery({
@@ -105,20 +106,30 @@ const InstagramReelsParams:FC<InstagramReelsParamsProps> = ({className}) => {
                     selectCallback={selectMediaHandler}
                     unselectCallback={unselectMediaItemHandler}
                     updateMediaCallback={updateSelectMediaHandler}
+                    readonly={readonly}
                 />
 
                 <Description
                     value={reels.params.description}
                     changeCallback={changeDescriptionHandler}
                     label={"Опис публікацї"}
+                    readonly={readonly}
                 />
 
                 <Field text={'Час публікації'}>
-                    <InputTime changeCallback={changeDateHandler} value={new Date(reels.datePublish)}/>
+                    <InputTime
+                        changeCallback={changeDateHandler}
+                        value={new Date(reels.datePublish)}
+                        readonly={readonly}
+                    />
                 </Field>
 
                 <Field text={'Дата публікації'}>
-                    <InputDate changeCallback={changeDateHandler} value={new Date(reels.datePublish)}/>
+                    <InputDate
+                        changeCallback={changeDateHandler}
+                        value={new Date(reels.datePublish)}
+                        readonly={readonly}
+                    />
                 </Field>
 
             </div>

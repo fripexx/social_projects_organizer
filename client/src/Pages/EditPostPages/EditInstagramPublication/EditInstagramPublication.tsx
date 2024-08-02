@@ -232,7 +232,10 @@ const EditInstagramPublication: FC = () => {
 
                             <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
 
-                                <InstagramPublicationParams className={classes.params}/>
+                                <InstagramPublicationParams
+                                    className={classes.params}
+                                    readonly={!isAuthor}
+                                />
 
                             </div>
 

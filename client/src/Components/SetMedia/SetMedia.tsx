@@ -21,26 +21,27 @@ interface MediaProps {
     selectCallback: (selectMedia: PhotoType | FileType) => void;
     unselectCallback: (removeId: string) => void;
     updateMediaCallback: (updateMedia: (PhotoType | FileType)[]) => void;
+    readonly?: boolean;
 }
 
-const SetMedia:FC<MediaProps> = ({mediaLibrary, total, title, textButton, loadMoreCallback, maxSelectCount = 0, selectMedia, selectCallback, unselectCallback, updateMediaCallback}) => {
+const SetMedia:FC<MediaProps> = ({mediaLibrary, total, title, textButton, loadMoreCallback, maxSelectCount = 0, selectMedia, selectCallback, unselectCallback, updateMediaCallback, readonly = false}) => {
     const [showModal, setShowModal] = useState<boolean>(false)
     const mainRef = useRef<HTMLDivElement>(null);
 
     const closeButtonHandler = (): void => {
-        setShowModal(false)
+        if(!readonly) setShowModal(false)
     }
     const addButtonHandler = (): void => {
-        setShowModal(false)
+        if(!readonly) setShowModal(false)
     }
     const showModalHandler = (e: React.MouseEvent<HTMLButtonElement>): void => {
-        setShowModal(true)
+        if(!readonly) setShowModal(true)
     }
     const selectMediaItemHandler = (media: PhotoType | FileType) => {
-        selectCallback(media)
+        if(!readonly) selectCallback(media)
     }
     const unselectMediaItemHandler = (removeId: string) => {
-        unselectCallback(removeId)
+        if(!readonly) unselectCallback(removeId)
     }
 
     const scrollMainHandler = useCallback(() => {
@@ -70,45 +71,53 @@ const SetMedia:FC<MediaProps> = ({mediaLibrary, total, title, textButton, loadMo
     return (
         <div className={classes.container}>
 
-            <Button
-                className={classes.addButton}
-                text={textButton || "Додати медіа"}
-                onClick={showModalHandler}
-                icon={addIcon}
-                iconColor={'var(--Color-Green)'}
-            />
+            {!readonly &&
+                <>
+                    <Button
+                        className={classes.addButton}
+                        text={textButton || "Додати медіа"}
+                        onClick={showModalHandler}
+                        icon={addIcon}
+                        iconColor={'var(--Color-Green)'}
+                        disabled={readonly}
+                    />
+                </>
+            }
 
             <SelectedMediaPreview
                 selectMedia={selectMedia}
                 updateMediaCallback={updateMediaCallback}
                 unselectMediaItemHandler={unselectMediaItemHandler}
+                readonly={readonly}
             />
 
-            <Backdrop isOpen={showModal} className={classes.backdropContainer}>
+            {!readonly &&
+                <Backdrop isOpen={showModal} className={classes.backdropContainer}>
 
-                <Modal className={classes.modal}>
+                    <Modal className={classes.modal}>
 
-                    <ModalHeader title={title}/>
+                        <ModalHeader title={title}/>
 
-                    <main className={classes.main} ref={mainRef}>
+                        <main className={classes.main} ref={mainRef}>
 
-                        <ModalMediaGrid
-                            media={mediaLibrary}
-                            selectMedia={selectMedia}
-                            selectMediaItemHandler={selectMediaItemHandler}
+                            <ModalMediaGrid
+                                media={mediaLibrary}
+                                selectMedia={selectMedia}
+                                selectMediaItemHandler={selectMediaItemHandler}
+                            />
+
+                        </main>
+
+                        <ModalFooter
+                            selectMediaLength={selectMedia.length}
+                            closeButtonCallback={closeButtonHandler}
+                            addButtonCallback={addButtonHandler}
                         />
 
-                    </main>
+                    </Modal>
 
-                    <ModalFooter
-                        selectMediaLength={selectMedia.length}
-                        closeButtonCallback={closeButtonHandler}
-                        addButtonCallback={addButtonHandler}
-                    />
-
-                </Modal>
-
-            </Backdrop>
+                </Backdrop>
+            }
 
         </div>
     );

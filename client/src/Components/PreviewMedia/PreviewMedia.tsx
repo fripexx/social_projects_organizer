@@ -9,9 +9,10 @@ interface PreviewFileProps extends HTMLAttributes<HTMLDivElement> {
     file: PhotoType | FileType;
     removeCallback: (removeId: string) => void;
     className?: string;
+    readonly?: boolean;
 }
 
-const PreviewMedia:FC<PreviewFileProps> = ({file, removeCallback, className}) => {
+const PreviewMedia:FC<PreviewFileProps> = ({file, removeCallback, className, readonly = false}) => {
     const {id, name, type, path, extension, mimetype} = file
     const [cropped, setCropped] = useState<PhotoCroppedType>();
 
@@ -27,9 +28,11 @@ const PreviewMedia:FC<PreviewFileProps> = ({file, removeCallback, className}) =>
     return (
         <div className={classNames(classes.container, className)}>
 
-            <div className={classes.close} onClick={onRemove}>
-                <svg width="10px" height="10px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0L0 15M0 0L15 15" stroke="var(--Color-White)" strokeWidth="2" strokeLinecap="round"/></svg>
-            </div>
+            {!readonly &&
+                <div className={classes.close} onClick={onRemove}>
+                    <svg width="10px" height="10px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M15 0L0 15M0 0L15 15" stroke="var(--Color-White)" strokeWidth="2" strokeLinecap="round"/></svg>
+                </div>
+            }
 
             <div className={classes.item} title={name}>
 

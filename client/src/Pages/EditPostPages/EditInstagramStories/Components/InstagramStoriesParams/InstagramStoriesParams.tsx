@@ -14,9 +14,10 @@ import {QueryMediaRequestType} from "../../../../../api/types/ProjectMediaTypes"
 
 interface InstagramStoriesParamsProps {
     className?: string;
+    readonly: boolean;
 }
 
-const InstagramStoriesParams:FC<InstagramStoriesParamsProps> = ({className}) => {
+const InstagramStoriesParams:FC<InstagramStoriesParamsProps> = ({className, readonly}) => {
     const dispatch = useAppDispatch()
 
     const project = useAppSelector(state => state.ProjectReducer.project)
@@ -98,14 +99,23 @@ const InstagramStoriesParams:FC<InstagramStoriesParamsProps> = ({className}) => 
                     selectCallback={selectMediaHandler}
                     unselectCallback={unselectMediaItemHandler}
                     updateMediaCallback={updateSelectMediaHandler}
+                    readonly={readonly}
                 />
 
                 <Field text={'Час публікації'}>
-                    <InputTime changeCallback={changeDateHandler} value={new Date(stories.datePublish)}/>
+                    <InputTime
+                        changeCallback={changeDateHandler}
+                        value={new Date(stories.datePublish)}
+                        readonly={readonly}
+                    />
                 </Field>
 
                 <Field text={'Дата публікації'}>
-                    <InputDate changeCallback={changeDateHandler} value={new Date(stories.datePublish)}/>
+                    <InputDate
+                        changeCallback={changeDateHandler}
+                        value={new Date(stories.datePublish)}
+                        readonly={readonly}
+                    />
                 </Field>
 
             </div>

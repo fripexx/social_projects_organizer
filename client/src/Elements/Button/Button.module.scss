@@ -64,6 +64,12 @@
         }
     }
 
+    &[disabled] {
+        background: var(--Color-Grey) !important;
+        color: var(--Color-Light-Grey-Blue) !important;
+        cursor: unset !important;
+    }
+
     @media (max-width: 900px) {
         min-height: unset;
         padding: 10px 10px;

@@ -11,9 +11,10 @@ interface CommentsProps {
     label?: string;
     className?: string;
     style?: CSSProperties;
+    readonly?: boolean;
 }
 
-const Description: FC<CommentsProps> = ({value, changeCallback, label, className, style}) => {
+const Description: FC<CommentsProps> = ({value, changeCallback, label, className, style, readonly = false}) => {
     const [showEmojiPicker, setShowEmojiPicker] = useState<boolean>(false);
 
     const toggleEmojiPicker = () => {
@@ -39,22 +40,28 @@ const Description: FC<CommentsProps> = ({value, changeCallback, label, className
                 onChange={changeHandler}
                 className={classes.textarea}
                 rows={10}
+                disabled={readonly}
             />
 
-            <footer className={classes.footer}>
+            {!readonly &&
+                <>
+                    <footer className={classes.footer}>
 
-                <button className={classes.emojiButton} onClick={toggleEmojiPicker} data-active={showEmojiPicker}>
-                    <ReactSVG src={emojiIcon}/>
-                </button>
+                        <button className={classes.emojiButton} onClick={toggleEmojiPicker}
+                                data-active={showEmojiPicker}>
+                            <ReactSVG src={emojiIcon}/>
+                        </button>
 
-            </footer>
+                    </footer>
 
-            <EmojiPicker
-                className={classes.emojiPicker}
-                lazyLoadEmojis={true}
-                open={showEmojiPicker}
-                onEmojiClick={emojiHandler}
-            />
+                    <EmojiPicker
+                        className={classes.emojiPicker}
+                        lazyLoadEmojis={true}
+                        open={showEmojiPicker}
+                        onEmojiClick={emojiHandler}
+                    />
+                </>
+            }
 
         </div>
     );

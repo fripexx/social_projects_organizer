@@ -11,4 +11,8 @@
     cursor: pointer;
     min-width: 105px;
     width: 105px;
+
+    &[disabled] {
+        cursor: unset;
+    }
 }

@@ -17,9 +17,10 @@ import {setError} from "../../../../../store/reducers/ProjectSlice";
 
 interface PublicationParamsProps {
     className?: string;
+    readonly: boolean;
 }
 
-const InstagramPublicationParams: FC<PublicationParamsProps> = ({className}) => {
+const InstagramPublicationParams: FC<PublicationParamsProps> = ({className, readonly}) => {
     const dispatch = useAppDispatch()
 
     const project = useAppSelector(state => state.ProjectReducer.project)
@@ -141,6 +142,7 @@ const InstagramPublicationParams: FC<PublicationParamsProps> = ({className}) => 
                     selectCallback={selectMediaHandler}
                     unselectCallback={unselectMediaItemHandler}
                     updateMediaCallback={updateSelectMediaHandler}
+                    readonly={readonly}
                 />
 
                 <Select
@@ -150,20 +152,30 @@ const InstagramPublicationParams: FC<PublicationParamsProps> = ({className}) => 
                     options={aspectRatioOptions}
                     onChange={changeAspectRatioHandler}
                     dropdownType={"relative"}
+                    readonly={readonly}
                 />
 
                 <Description
                     value={publication.params.description}
                     changeCallback={changeDescriptionHandler}
                     label={"Опис публікацї"}
+                    readonly={readonly}
                 />
 
                 <Field text={'Час публікації'}>
-                    <InputTime changeCallback={changeDateHandler} value={new Date(publication.datePublish)}/>
+                    <InputTime
+                        changeCallback={changeDateHandler}
+                        value={new Date(publication.datePublish)}
+                        readonly={readonly}
+                    />
                 </Field>
 
                 <Field text={'Дата публікації'}>
-                    <InputDate changeCallback={changeDateHandler} value={new Date(publication.datePublish)}/>
+                    <InputDate
+                        changeCallback={changeDateHandler}
+                        value={new Date(publication.datePublish)}
+                        readonly={readonly}
+                    />
                 </Field>
 
             </div>

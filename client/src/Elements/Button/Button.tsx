@@ -17,7 +17,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
     [key: string]: any
 }
 
-const Button: FC<ButtonProps> = ({text, icon, iconColor, iconSize = 25, buttonColor, textColor, style, onClick, className, styleType, rest}) => {
+const Button: FC<ButtonProps> = ({text, icon, iconColor, iconSize = 25, buttonColor, textColor, style, onClick, className, styleType, ...rest}) => {
     return (
         <button
             onClick={onClick}

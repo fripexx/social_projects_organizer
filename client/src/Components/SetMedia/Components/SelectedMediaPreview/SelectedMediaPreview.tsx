@@ -7,18 +7,21 @@ interface SelectedMediaPreviewProps {
     selectMedia: (PhotoType | FileType)[];
     updateMediaCallback: (updateMedia: (PhotoType | FileType)[]) => void;
     unselectMediaItemHandler: (removeId: string) => void;
+    readonly?: boolean;
 }
 
-const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unselectMediaItemHandler, updateMediaCallback }) => {
+const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unselectMediaItemHandler, updateMediaCallback, readonly = false}) => {
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
 
     const handleDragStart = (e: DragEvent<HTMLDivElement>, index: number) => {
-        e.dataTransfer.setData('index', index.toString());
-        setDraggingIndex(index);
+        if(!readonly) {
+            e.dataTransfer.setData('index', index.toString());
+            setDraggingIndex(index);
+        }
     };
 
     const handleDragEnd = () => {
-        setDraggingIndex(null);
+        if(!readonly) setDraggingIndex(null);
     };
 
     const handleDragOver = (e: DragEvent<HTMLDivElement>) => {
@@ -27,15 +30,17 @@ const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unse
 
     const handleDrop = (e: DragEvent<HTMLDivElement>, currentIndex: number) => {
         e.preventDefault();
-        const draggedIndex = parseInt(e.dataTransfer.getData('index'));
-        const updatedMedia = [...selectMedia];
-        const draggedMedia = updatedMedia[draggedIndex];
+        if(!readonly) {
+            const draggedIndex = parseInt(e.dataTransfer.getData('index'));
+            const updatedMedia = [...selectMedia];
+            const draggedMedia = updatedMedia[draggedIndex];
 
-        updatedMedia.splice(draggedIndex, 1);
-        updatedMedia.splice(currentIndex, 0, draggedMedia);
+            updatedMedia.splice(draggedIndex, 1);
+            updatedMedia.splice(currentIndex, 0, draggedMedia);
 
-        updateMediaCallback(updatedMedia);
-        setDraggingIndex(null);
+            updateMediaCallback(updatedMedia);
+            setDraggingIndex(null);
+        }
     };
 
     return (
@@ -49,11 +54,13 @@ const SelectedMediaPreview: FC<SelectedMediaPreviewProps> = ({ selectMedia, unse
                     onDragOver={(e) => handleDragOver(e)}
                     onDrop={(e) => handleDrop(e, index)}
                     onDragEnd={handleDragEnd}
+                    data-disabled={readonly}
                 >
                     <PreviewMedia
                         className={classes.previewItem}
                         file={file}
                         removeCallback={unselectMediaItemHandler}
+                        readonly={readonly}
                     />
                 </div>
             ))}

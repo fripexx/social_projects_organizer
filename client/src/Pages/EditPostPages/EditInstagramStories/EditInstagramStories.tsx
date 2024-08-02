@@ -225,7 +225,12 @@ const EditInstagramStories:FC = () => {
                                 </div>
 
                                 <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
-                                    <InstagramStoriesParams className={classes.params}/>
+
+                                    <InstagramStoriesParams
+                                        className={classes.params}
+                                        readonly={!isAuthor}
+                                    />
+
                                 </div>
 
                                 <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>

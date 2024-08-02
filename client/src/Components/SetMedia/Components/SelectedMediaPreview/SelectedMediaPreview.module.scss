@@ -33,4 +33,8 @@
     &.dragging {
         opacity: 0.5;
     }
+    
+    &[data-disabled="true"] {
+        cursor: unset;
+    }
 }
