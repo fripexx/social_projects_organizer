@@ -5,6 +5,11 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        height: 10px;
+    }
 }
 
 .nameDays {
@@ -12,6 +17,7 @@
     text-align: center;
     text-transform: uppercase;
     font-weight: 300;
+    min-width: 130px;
 }
 
 .daysHeader,
@@ -43,6 +49,7 @@
     border: 1px solid var(--Color-Light-Grey-Blue);
     display: flex;
     flex-direction: column;
+    min-width: 130px;
 
     &.pastDay {
         @include pastDay;

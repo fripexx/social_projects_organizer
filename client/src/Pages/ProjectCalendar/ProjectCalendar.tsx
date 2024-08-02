@@ -73,7 +73,7 @@ const ProjectCalendar = () => {
                         <CalendarControl date={date} changeMonth={changeMonth}/>
                     </HeaderPage>
 
-                    <Content>
+                    <Content className={classes.content}>
                         <Calendar date={date} items={calendarCollection}/>
                     </Content>
 
