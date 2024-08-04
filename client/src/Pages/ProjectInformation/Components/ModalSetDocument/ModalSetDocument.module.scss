@@ -1,0 +1,36 @@
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.fileContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.fileLabel {
+    color: var(--Color-Dark, #212121);
+    font-family: var(--font-family);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.fileName {
+    color: var(--Color-Light-Grey-Blue);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+    word-break: break-all;
+}
+
+.footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}

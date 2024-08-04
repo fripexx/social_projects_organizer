@@ -23,6 +23,7 @@ import EditInstagramPublication from "../Pages/EditPostPages/EditInstagramPublic
 import EditInstagramStories from "../Pages/EditPostPages/EditInstagramStories/EditInstagramStories";
 import EditInstagramReels from "../Pages/EditPostPages/EditInstagramReels/EditInstagramReels";
 import ProjectCalendar from "../Pages/ProjectCalendar/ProjectCalendar";
+import ProjectInformation from "../Pages/ProjectInformation/ProjectInformation";
 
 export interface Route {
     key: string;
@@ -168,7 +169,7 @@ export const routes: Route[] = [
         key: "information",
         name: "Інформація",
         path: "/project/:id/information",
-        component: ProjectPosts,
+        component: ProjectInformation,
         icon: infoIcon,
         requiresAuth: true,
         isProjectPath: true,

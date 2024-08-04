@@ -1,0 +1,32 @@
+.inputFileContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.inputFileButton {
+    background-color: var(--Color-Dark);
+    width: 100%;
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+    text-align: center;
+    font-family: var(--font-family);
+    font-weight: 300;
+    font-size: 18px;
+    color: var(--Color-White);
+
+    &:hover {
+        background-color: var(--Color-Light-Grey-Blue);
+        color: var(--Color-Dark);
+    }
+}
+
+.inputFileHidden {
+    display: none;
+}

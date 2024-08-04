@@ -1,0 +1,64 @@
+.container {
+    border: 1px solid var(--Color-Light-Grey-Blue);
+    border-radius: 5px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 15px;
+    width: 100%;
+    max-width: 500px;
+}
+
+.field {
+    display: block;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 20px;
+    word-break: break-all
+}
+
+.label {
+    color: var(--Color-Light-Grey-Blue);
+}
+
+.footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 15px;
+}
+
+.button {
+    width: 100%;
+}
+
+.delete {
+    --size: 35px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    width: var(--size);
+    min-width: var(--size);
+    max-width: var(--size);
+    height: var(--size);
+    min-height: var(--size);
+    max-height: var(--size);
+    border-radius: 50%;
+    background: var(--Color-Blue);
+    cursor: pointer;
+    transition: 0.1s all ease-in-out;
+
+    @media (min-width: 900px) {
+        &:hover {
+            transform: scale(1.1);
+        }
+    }
+    @media (max-width: 900px) {
+        &:active {
+            transform: scale(1.1);
+        }
+    }
+}
