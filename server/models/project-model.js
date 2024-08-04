@@ -22,11 +22,6 @@ const ProjectSchema = new Schema({
         to: {type: String, default: null}
     },
     workingDays: {type: String, default: null},
-    files: {
-        brif: { type: String, default: null},
-        contract: { type: String, default: null},
-        strategy: { type: String, default: null}
-    },
     notes: [{type: Schema.Types.ObjectId, ref: 'Note'}],
     inviteNewAdmin: {
         time: {type: Date, default: 0},

@@ -25,7 +25,7 @@ const FileSchema = new Schema({
     },
     belongTo: {
         id: { type: Schema.Types.ObjectId, required: true },
-        model: { type: String, required: true, enum: ['Project', 'Chat', 'User'] }
+        model: { type: String, required: true, enum: ['Project', 'Chat', 'User', 'Document'] }
     },
     author: {type: Schema.Types.ObjectId, ref: 'User', required: true},
     name: { type: String, required: true },

@@ -320,6 +320,11 @@ class ProjectService {
         return await FileService.deleteFile(idMedia);
     }
 
+
+    /**
+     * Допоміжні функції
+     */
+
     async checkUserAccessToProject(projectId, user, isLean = true, throwError = true) {
         const findProject = await ProjectModel.findOne({ _id: projectId, 'team.user': user.id }, null, {lean: isLean} )
 
@@ -396,6 +401,22 @@ class ProjectService {
         }
 
         return checkProject;
+    }
+
+    async checkIsAdmin(projectId, user, lean = false, throwError = true) {
+        const findProject = await ProjectModel.findOne({ _id: projectId, administrator: user.id }, null, {lean} )
+
+        if(!findProject) {
+
+            if(throwError) {
+                throw ApiError.BadRequest('Помилка: Проєкт із вказаним ID не знайдено або у вас немає прав доступу до нього');
+            } else {
+                return false
+            }
+
+        }
+
+        return findProject;
     }
 }
 

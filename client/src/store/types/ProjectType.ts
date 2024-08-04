@@ -1,4 +1,4 @@
-import {PhotoType} from "./FileType";
+import {FileType, PhotoType} from "./FileType";
 import {NoteType} from "./NoteType";
 import {BasicUserInfo} from "./UserType";
 import {BasicTeamMemberType} from "./TeamMemberType";
@@ -23,10 +23,5 @@ export interface ProjectType {
         to: string | null
     },
     workingDays: string | null,
-    files: {
-        brif: string | null,
-        contract: string | null,
-        strategy: string | null
-    },
     notes: NoteType[],
 }
