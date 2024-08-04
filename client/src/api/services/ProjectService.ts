@@ -13,6 +13,7 @@ import {
 } from "../types/ProjectServiceTypes";
 import {BasicUserInfo} from "../../store/types/UserType";
 import {BasicTeamMemberType} from "../../store/types/TeamMemberType";
+import {ProjectDocument} from "../../store/types/ProjectDocument";
 
 class ProjectService {
     async getProject(id: string): Promise<ProjectType> {
@@ -241,6 +242,68 @@ class ProjectService {
     async addUserInTeam(data: AddUserInTeamRequestType): Promise<BasicTeamMemberType[]> {
         try {
             const response = await instanceServer.patch<BasicTeamMemberType[]>('/add-user-in-team', data);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async getDocuments(projectId: string): Promise<ProjectDocument[]> {
+        try {
+            const config: AxiosRequestConfig = {params: {projectId}}
+            const response = await instanceServer.get<ProjectDocument[]>('/get-documents', config);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async setDocument(data: FormData): Promise<ProjectDocument> {
+        try {
+            const response = await instanceServer.post<ProjectDocument>('/set-document', data);
+
+            return response.data;
+        } catch (e) {
+            const response: ErrorResponseType = {
+                status: 0,
+                message: 'Непередбачена помилка',
+            };
+
+            if (isAxiosError(e) && e.response) {
+                response.status = e.response.status;
+                response.message = e.response.data.message;
+            }
+
+            throw response;
+        }
+    }
+
+    async deleteDocument(id: string): Promise<string> {
+        try {
+            const config: AxiosRequestConfig = {params: {id}}
+            const response = await instanceServer.delete<string>('/delete-document', config);
 
             return response.data;
         } catch (e) {

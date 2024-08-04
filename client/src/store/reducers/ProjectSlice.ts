@@ -13,6 +13,9 @@ import {
     addUserInTeam,
     changeRoleUser,
     leaveProject,
+    getDocuments,
+    setDocument,
+    deleteDocument,
 } from "../thunks/ProjectThunks";
 import {NoteType} from "../types/NoteType";
 import {BasicTeamMemberType, TeamMemberType} from "../types/TeamMemberType";
@@ -20,6 +23,7 @@ import {PostType} from "../types/PostType";
 import {getPosts} from "../thunks/PostThunks";
 import {GetPostsResponseType} from "../../api/types/PostServiceTypes";
 import {PostsQueryType} from "../types/PostsQueryType";
+import {ProjectDocument} from "../types/ProjectDocument";
 
 interface ProjectState {
     isLoading: boolean,
@@ -28,6 +32,7 @@ interface ProjectState {
     projectId: string | null,
     notes: NoteType[],
     team: TeamMemberType[],
+    documents: ProjectDocument[],
     postsData: {
         posts: PostType[],
         total: number,
@@ -42,6 +47,7 @@ const initialState: ProjectState = {
     projectId: null,
     notes: [],
     team: [],
+    documents: [],
     postsData: {
         posts: [],
         total: 0,
@@ -201,6 +207,32 @@ const projectSlice = createSlice({
             };
         },
         [getPosts.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.error = action.payload;
+        },
+
+        /* getPosts */
+        [getDocuments.pending.type]: (state) => {},
+        [getDocuments.fulfilled.type]: (state, action: PayloadAction<ProjectDocument[]>) => {
+            state.error = null;
+            state.documents = action.payload;
+        },
+        [getDocuments.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.error = action.payload;
+        },
+        [setDocument.pending.type]: (state) => {},
+        [setDocument.fulfilled.type]: (state, action: PayloadAction<ProjectDocument>) => {
+            state.error = null;
+            state.documents = [...state.documents, action.payload];
+        },
+        [setDocument.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
+            state.error = action.payload;
+        },
+        [deleteDocument.pending.type]: (state) => {},
+        [deleteDocument.fulfilled.type]: (state, action: PayloadAction<string>) => {
+            state.error = null;
+            state.documents = [...state.documents].filter(doc => doc.id !== action.payload);
+        },
+        [deleteDocument.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {
             state.error = action.payload;
         }
     }

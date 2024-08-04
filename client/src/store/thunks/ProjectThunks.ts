@@ -16,6 +16,7 @@ import {
     LeaveProjectRequestType,
     RemoveUserFromTeamRequestType
 } from "../../api/types/ProjectServiceTypes";
+import {ProjectDocument} from "../types/ProjectDocument";
 
 export const getProject = createAsyncThunk<ProjectType, string, AsyncThunkConfig>(
     'project/getProject',
@@ -153,6 +154,44 @@ export const addUserInTeam = createAsyncThunk<BasicTeamMemberType[], AddUserInTe
     async (data, thunkAPI) => {
         try {
             return await ProjectService.addUserInTeam(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
+        }
+    }
+);
+
+
+/**
+ * DOCUMENTS THUNKS
+ */
+
+export const getDocuments = createAsyncThunk<ProjectDocument[], string, AsyncThunkConfig>(
+    'project/getDocuments',
+    async (projectId, thunkAPI) => {
+        try {
+            return await ProjectService.getDocuments(projectId);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
+        }
+    }
+);
+
+export const setDocument = createAsyncThunk<ProjectDocument, FormData, AsyncThunkConfig>(
+    'project/setDocument',
+    async (data, thunkAPI) => {
+        try {
+            return await ProjectService.setDocument(data);
+        } catch (e) {
+            return thunkAPI.rejectWithValue(e as ErrorResponseType);
+        }
+    }
+);
+
+export const deleteDocument = createAsyncThunk<string, string, AsyncThunkConfig>(
+    'project/deleteDocument',
+    async (id, thunkAPI) => {
+        try {
+            return await ProjectService.deleteDocument(id);
         } catch (e) {
             return thunkAPI.rejectWithValue(e as ErrorResponseType);
         }
