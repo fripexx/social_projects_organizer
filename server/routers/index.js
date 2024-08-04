@@ -6,12 +6,15 @@ const ProjectValidator = require('../validators/project-validator')
 const ChatController = require('../controllers/chat-controller')
 const PostController = require('../controllers/post-controller')
 const PostValidator = require('../validators/post-validator')
+const DocumentController = require('../controllers/document-controller')
+const DocumentValidator = require('../validators/document-validator')
 const ApiError = require("../exceptions/api-error");
 const {body, validationResult} = require('express-validator')
 const uploadUserMiddleware = require('../middlewares/upload-user-middleware');
 const uploadProjectLogoMiddleware = require('../middlewares/upload-project-logo-middleware');
 const uploadMediaLibraryMiddleware = require('../middlewares/upload-media-library-middleware');
 const uploadChatMiddleware = require('../middlewares/upload-chat-middleware');
+const uploadProjectDocumentMiddleware = require('../middlewares/upload-project-document-middleware');
 const authMiddleware = require('../middlewares/auth-middleware')
 
 const setupRouter = ({io}) => {
@@ -19,7 +22,7 @@ const setupRouter = ({io}) => {
 
     const validate = (req, res, next) => {
         const errors = validationResult(req);
-        if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+        if (!errors.isEmpty()) throw ApiError.BadRequest("Помилка валідації", errors.array())
         next();
     };
 
@@ -138,6 +141,26 @@ const setupRouter = ({io}) => {
     router.post('/send-message', [authMiddleware, uploadChatMiddleware], async (req, res, next) => {
         await ChatController.sendMessage(req, res, next, io);
     });
+
+
+    /**
+     * Project documents routes
+     */
+    router.get(
+        '/get-documents',
+        [authMiddleware, ...DocumentValidator.getDocuments, validate],
+        DocumentController.getDocuments
+    );
+    router.post(
+        '/set-document',
+        [authMiddleware, ...DocumentValidator.setDocument, validate, uploadProjectDocumentMiddleware],
+        DocumentController.setDocument
+    );
+    router.delete(
+        '/delete-document',
+        [authMiddleware, ...DocumentValidator.deleteDocument, validate],
+        DocumentController.deleteDocument
+    );
 
 
     /**

@@ -78,4 +78,36 @@ uploadRouter.get('/private/media_library*', async (req, res) => {
     }
 });
 
+uploadRouter.get('/private/documents*', async (req, res) => {
+    try {
+        const {refreshToken} = req.cookies;
+        const relativePathFile = req.params[0]
+        const chat = relativePathFile.split('/')[1]
+
+
+        /**
+         * Перевірка авторизації
+         */
+
+        const userData = await tokenService.validateRefreshToken(refreshToken);
+        if(!userData) throw ApiError.UnauthorizedError();
+
+
+        /**
+         * Перевірка прав доступу до проєкту
+         */
+
+        await ProjectService.checkUserAccessToProject(chat, userData);
+
+
+        /**
+         * Надання доступу
+         */
+
+        res.sendFile(path.join(__dirname, '../uploads/private/documents', req.params[0]));
+    } catch (e) {
+        res.json({error: e});
+    }
+});
+
 module.exports = uploadRouter;
