@@ -16,6 +16,7 @@ import LoadMore from "../../Components/LoadMore/LoadMore";
 import classes from "./ProjectMedia.module.scss";
 import Loader from "../../Elements/Loader/Loader";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
+import {setActiveIndexSlider, setFilesInSlider} from "../../store/reducers/UISlice";
 
 const ProjectMedia:FC = () => {
     const dispatch = useAppDispatch();
@@ -39,6 +40,14 @@ const ProjectMedia:FC = () => {
     }
     const deleteCallback = (id: string) => {
         if(project) dispatch(deleteMedia({idMedia: id, projectId: project.id}))
+    }
+    const openHandler = (id: string) => {
+        let activeIndex = 0
+
+        media.find((file, index) => file.id === id ? activeIndex = index : activeIndex = 0);
+
+        dispatch(setActiveIndexSlider(activeIndex))
+        dispatch(setFilesInSlider(media))
     }
     const loadMore = () => {
         setQuery(prevState => {
@@ -66,10 +75,10 @@ const ProjectMedia:FC = () => {
             setQuery(query)
         }
     }, [project, searchParams]);
-
     useEffect(() => {
         if(query) dispatch(getMedia(query))
     }, [query]);
+
     return (
         <Page>
 
@@ -115,6 +124,7 @@ const ProjectMedia:FC = () => {
                                     user={user}
                                     project={project}
                                     deleteCallback={deleteCallback}
+                                    openCallback={openHandler}
                                 />
                             )}
 

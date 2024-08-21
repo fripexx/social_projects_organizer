@@ -12,12 +12,12 @@ interface MediaProps {
     media: (FileType | PhotoType)[],
     user: UserType,
     project: ProjectType,
-    deleteCallback: (id: string) => void
+    deleteCallback: (id: string) => void,
+    openCallback: (id: string) => void,
 }
 
-const Media:FC<MediaProps> = ({media, user, project, deleteCallback}) => {
+const Media:FC<MediaProps> = ({media, user, project, deleteCallback, openCallback}) => {
     const [deleteId, setDeleteId] = useState<string | null>(null);
-    const [openMedia, setOpenMedia] = useState<FileType | PhotoType>();
 
     const showDeletePopup = (id: string) => {
         setDeleteId(id)
@@ -35,10 +35,7 @@ const Media:FC<MediaProps> = ({media, user, project, deleteCallback}) => {
         }
     }
     const showMedia = (media: FileType | PhotoType) => {
-        setOpenMedia(media)
-    }
-    const closeMedia = () => {
-        setOpenMedia(undefined)
+        openCallback(media.id);
     }
 
     return (
@@ -62,16 +59,6 @@ const Media:FC<MediaProps> = ({media, user, project, deleteCallback}) => {
                     onConfirm={acceptDelete}
                 />
             </Backdrop>
-
-            {openMedia &&
-                <Backdrop isOpen={true}>
-                    <ModalMedia
-                        media={openMedia}
-                        closeCallback={closeMedia}
-                    />
-                </Backdrop>
-            }
-
 
         </div>
     );
