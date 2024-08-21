@@ -2,12 +2,13 @@ import {ErrorResponseType} from "../../api/types/ErrorResponseType";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {getMedia, uploadMedia, deleteMedia} from "../thunks/ProjectMediaThunks";
 import {FileType, PhotoType} from "../types/FileType";
-import {GetMediaResponseType} from "../../api/types/ProjectMediaTypes";
+import {GetMediaResponseType, QueryMediaRequestType} from "../../api/types/ProjectMediaTypes";
 
 interface ProjectState {
     isLoading: boolean,
     error: ErrorResponseType | null;
     media: (FileType | PhotoType)[];
+    query: QueryMediaRequestType | null;
     totalCount: number
 }
 
@@ -15,6 +16,7 @@ const initialState: ProjectState = {
     isLoading: false,
     error: null,
     media: [],
+    query: null,
     totalCount: 0
 }
 
@@ -28,6 +30,9 @@ const projectMediaSlice = createSlice({
         setMedia: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
             state.media = action.payload;
         },
+        setQuery: (state, action: PayloadAction<QueryMediaRequestType | null>) => {
+            state.query = action.payload;
+        },
     },
     extraReducers: {
         /* getMedia */
@@ -38,7 +43,7 @@ const projectMediaSlice = createSlice({
             state.isLoading = false;
             state.error = null;
             state.totalCount = action.payload.total;
-            state.media = [...state.media, ...action.payload.media]
+            state.media = action.payload.media
         },
         [getMedia.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
@@ -76,4 +81,8 @@ const projectMediaSlice = createSlice({
 })
 
 export default projectMediaSlice.reducer;
-export const { setError, setMedia } = projectMediaSlice.actions;
+export const {
+    setError,
+    setMedia,
+    setQuery
+} = projectMediaSlice.actions;

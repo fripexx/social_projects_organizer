@@ -1,32 +1,36 @@
-import React, {FC, useEffect, useState} from 'react';
+import React, {FC, useEffect} from 'react';
+import classes from "./ProjectMedia.module.scss";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Content from "../../Components/Content/Content";
 import MediaFileUpload from "../../Components/MediaFileUpload/MediaFileUpload";
 import Media from "../../Components/Media/Media";
-import {PreviewFileType} from "../../Components/PreviewFile/PreviewFile";
-import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import {deleteMedia, getMedia, uploadMedia} from "../../store/thunks/ProjectMediaThunks";
-import {QueryMediaRequestType} from "../../api/types/ProjectMediaTypes";
-import Tabs from "./Components/Tabs/Tabs";
-import {useSearchParams} from "react-router-dom";
-import {setMedia} from "../../store/reducers/ProjectMediaSlice";
-import LoadMore from "../../Components/LoadMore/LoadMore";
-import classes from "./ProjectMedia.module.scss";
 import Loader from "../../Elements/Loader/Loader";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
+import Tabs from "./Components/Tabs/Tabs";
+import Pagination from "../../Components/Pagination/Pagination";
+import {useSearchParams} from "react-router-dom";
+import {deleteMedia, getMedia, uploadMedia} from "../../store/thunks/ProjectMediaThunks";
+import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {setActiveIndexSlider, setFilesInSlider} from "../../store/reducers/UISlice";
+import {setMedia} from "../../store/reducers/ProjectMediaSlice";
+import {PreviewFileType} from "../../Components/PreviewFile/PreviewFile";
+import {QueryMediaRequestType} from "../../api/types/ProjectMediaTypes";
+import {setQuery} from "../../store/reducers/ProjectMediaSlice";
 
 const ProjectMedia:FC = () => {
     const dispatch = useAppDispatch();
+
     const project = useAppSelector(state => state.ProjectReducer.project);
     const user = useAppSelector(state => state.UserReducer.user)
     const isLoading = useAppSelector(state => state.ProjectMediaReducer.isLoading);
     const media = useAppSelector(state => state.ProjectMediaReducer.media);
+    const query = useAppSelector(state => state.ProjectMediaReducer.query);
     const totalMedia = useAppSelector(state => state.ProjectMediaReducer.totalCount)
-    const [query, setQuery] = useState<QueryMediaRequestType>();
+
     const [searchParams, setSearchParams] = useSearchParams();
+
 
     const uploadCallback = (files: PreviewFileType[]): void => {
         if(project) {
@@ -49,30 +53,24 @@ const ProjectMedia:FC = () => {
         dispatch(setActiveIndexSlider(activeIndex))
         dispatch(setFilesInSlider(media))
     }
-    const loadMore = () => {
-        setQuery(prevState => {
-            if(prevState) {
-                return {
-                    ...prevState,
-                    skip: prevState.skip + prevState.limit
-                }
-            }
-            return prevState
-        })
+    const changePage = (page: number) => {
+        if(query?.limit) dispatch(setQuery({...query, skip: query.limit * (page - 1)}));
     }
 
+
     useEffect(() => {
-        if(project) {
+        if(project && query == null) {
             const query: QueryMediaRequestType = {
                 projectId: project.id,
                 skip: 0,
-                limit: 28
+                limit: 21
             }
 
             const type = searchParams.get('type');
             if(type) query['type'] = [type]
+
             dispatch(setMedia([]))
-            setQuery(query)
+            dispatch(setQuery(query))
         }
     }, [project, searchParams]);
     useEffect(() => {
@@ -112,7 +110,7 @@ const ProjectMedia:FC = () => {
 
                 </HeaderPage>
 
-                <Content>
+                <Content className={classes.content}>
 
                     {isLoading ? (
                         <Loader type={"relative"} />
@@ -128,15 +126,18 @@ const ProjectMedia:FC = () => {
                                 />
                             )}
 
-                            <LoadMore
-                                callback={loadMore}
-                                total={totalMedia}
-                                shown={media.length}
-                                load={false}
-                            />
+                            {query &&
+                                <Pagination
+                                    className={classes.pagination}
+                                    limit={query.limit || 0}
+                                    total={totalMedia}
+                                    currentPage={Math.floor(query.skip  / (query.limit || 1)) + 1}
+                                    siblings={1}
+                                    onPageChange={changePage}
+                                />
+                            }
                         </>
                     )}
-
 
                 </Content>
 

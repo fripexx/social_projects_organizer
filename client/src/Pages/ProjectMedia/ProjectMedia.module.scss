@@ -7,3 +7,12 @@
         align-items: flex-start;
     }
 }
+
+.content {
+    display: flex;
+    flex-direction: column;
+}
+
+.pagination {
+    margin-top: auto;
+}

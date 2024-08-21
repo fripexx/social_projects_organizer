@@ -72,14 +72,13 @@ const FilesSlider:FC<FilesSliderProps> = ({files, show, activeSlide = 0, closeCa
                                     </div>
                                 }
 
+
                                 {file.type === "video" &&
-                                    <video controls className={classes.video}>
-                                        <source
-                                            src={`${process.env.REACT_APP_API_URL}/${file.path}`}
-                                            type={file.mimetype}
-                                        />
-                                        Your browser does not support the video tag.
-                                    </video>
+                                    <video
+                                        controls
+                                        className={classes.video}
+                                        src={`${process.env.REACT_APP_API_URL}/${file.path}`}
+                                    />
                                 }
 
                             </SwiperSlide>

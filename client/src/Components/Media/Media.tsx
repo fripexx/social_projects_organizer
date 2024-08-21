@@ -6,7 +6,6 @@ import {ProjectType} from "../../store/types/ProjectType";
 import MediaItem from "../MediaItem/MediaItem";
 import Backdrop from "../Backdrop/Backdrop";
 import ModalConfirmAction from "../Modals/ModalConfirmAction/ModalConfirmAction";
-import ModalMedia from "../Modals/ModalMedia/ModalMedia";
 
 interface MediaProps {
     media: (FileType | PhotoType)[],
