@@ -1,6 +1,7 @@
 const Router = require('express').Router;
 const UserController = require('../controllers/user-controller');
 const NoteController = require('../controllers/note-controller')
+const NoteValidator = require('../validators/note-validator')
 const ProjectController = require('../controllers/project-controller')
 const ProjectValidator = require('../validators/project-validator')
 const ChatController = require('../controllers/chat-controller')
@@ -64,10 +65,26 @@ const setupRouter = ({io}) => {
     /**
      * Project routes
      */
-    router.post('/add-project', [authMiddleware], ProjectController.addProject);
-    router.get('/get-projects', [authMiddleware], ProjectController.getProjects);
-    router.get('/get-project', [authMiddleware], ProjectController.getProject);
-    router.put('/edit-settings-project', [authMiddleware, uploadProjectLogoMiddleware], ProjectController.editSettingsProject);
+    router.post(
+        '/add-project',
+        [authMiddleware, ...ProjectValidator.addProject, validate],
+        ProjectController.addProject
+    );
+    router.get(
+        '/get-projects',
+        [authMiddleware],
+        ProjectController.getProjects
+    );
+    router.get(
+        '/get-project',
+        [authMiddleware, ...ProjectValidator.getProject, validate],
+        ProjectController.getProject
+    );
+    router.put(
+        '/edit-settings-project',
+        [authMiddleware, ...ProjectValidator.editSettingsProject, validate, uploadProjectLogoMiddleware],
+        ProjectController.editSettingsProject
+    );
 
     /**
      * Project team routes
@@ -82,31 +99,36 @@ const setupRouter = ({io}) => {
         [authMiddleware, ...ProjectValidator.sendInviteNewAdmin, validate],
         ProjectController.sendInviteNewAdmin
     );
-    router.get('/confirm-new-administrator/:key',
+    router.get(
+        '/confirm-new-administrator/:key',
         [...ProjectValidator.confirmNewAdministrator, validate],
         async (req, res, next) => {
             await ProjectController.confirmNewAdministrator(req, res, next, io);
         }
     );
-    router.patch('/remove-user-from-team',
+    router.patch(
+        '/remove-user-from-team',
         [authMiddleware, ...ProjectValidator.removeUserFromTeam, validate],
         async (req, res, next) => {
             await ProjectController.removeUserFromTeam(req, res, next, io);
         }
     );
-    router.patch('/add-user-in-team',
+    router.patch(
+        '/add-user-in-team',
         [authMiddleware, ...ProjectValidator.addUserInTeam, validate],
         async (req, res, next) => {
             await ProjectController.addUserInTeam(req, res, next, io);
         }
     );
-    router.patch('/change-role-user',
+    router.patch(
+        '/change-role-user',
         [authMiddleware, ...ProjectValidator.changeRoleUser, validate],
         async (req, res, next) => {
             await ProjectController.changeRoleUser(req, res, next, io);
         }
     );
-    router.patch('/leave-project',
+    router.patch(
+        '/leave-project',
         [authMiddleware, ...ProjectValidator.leaveProject, validate],
         async (req, res, next) => {
             await ProjectController.leaveProject(req, res, next, io);
@@ -116,31 +138,63 @@ const setupRouter = ({io}) => {
     /**
      * Project notes routes
      */
-    router.get('/get-notes-project', [authMiddleware], NoteController.getAllProject);
-    router.post('/add-note-in-project', [authMiddleware], NoteController.addNoteInProject);
-    router.delete('/delete-note-in-project', [authMiddleware], NoteController.deleteNoteInProject);
-    router.patch('/change-note-in-project', [authMiddleware], NoteController.changeNoteInProject);
+    router.get(
+        '/get-notes-project',
+        [authMiddleware, ...NoteValidator.getNotesProject, validate],
+        NoteController.getAllProject
+    );
+    router.post(
+        '/add-note-in-project',
+        [authMiddleware, ...NoteValidator.addNoteInProject, validate],
+        NoteController.addNoteInProject
+    );
+    router.delete(
+        '/delete-note-in-project',
+        [authMiddleware, ...NoteValidator.deleteNoteInProject, validate],
+        NoteController.deleteNoteInProject
+    );
+    router.patch(
+        '/change-note-in-project',
+        [authMiddleware, ...NoteValidator.changeNoteInProject, validate],
+        NoteController.changeNoteInProject
+    );
 
 
     /**
      * Project media routes
      */
-    router.post('/upload-media', [authMiddleware, uploadMediaLibraryMiddleware], ProjectController.uploadMedia);
-    router.get('/get-media', [authMiddleware], ProjectController.getMedia);
+    router.post(
+        '/upload-media',
+        [authMiddleware, ...ProjectValidator.uploadMedia, validate, uploadMediaLibraryMiddleware],
+        ProjectController.uploadMedia
+    );
+    router.get(
+        '/get-media',
+        [authMiddleware, ...ProjectValidator.getMedia, validate],
+        ProjectController.getMedia
+    );
     router.get(
         '/get-media-one',
         [authMiddleware, ...ProjectValidator.getMediaOne, validate],
         ProjectController.getMediaOne
     );
-    router.delete('/delete-media', [authMiddleware], ProjectController.deleteMedia);
+    router.delete(
+        '/delete-media',
+        [authMiddleware, ...ProjectValidator.deleteMedia, validate],
+        ProjectController.deleteMedia
+    );
 
 
     /**
      * Project chat routes
      */
-    router.post('/send-message', [authMiddleware, uploadChatMiddleware], async (req, res, next) => {
+    router.post(
+        '/send-message',
+        [authMiddleware, uploadChatMiddleware],
+        async (req, res, next) => {
         await ChatController.sendMessage(req, res, next, io);
-    });
+    }
+    );
 
 
     /**
