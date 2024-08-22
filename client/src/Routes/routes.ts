@@ -10,10 +10,10 @@ import statisticsIcon from "../assets/images/statistics-icon.svg";
 import postsIcon from "../assets/images/posts-icon.svg";
 import paintIcon from "../assets/images/paint-icon.svg";
 import AuthPage from "../Pages/AuthPage/AuthPage";
-import AccountSettingsPage from "../Pages/AccountSettingsPage/AccountSettingsPage";
-import UserProjectsPage from "../Pages/UserProjectsPage/UserProjectsPage";
-import ProfilePage from "../Pages/ProfilePage/ProfilePage";
-import UserNotePage from "../Pages/UserNotePage/UserNotePage";
+import UserSettings from "../Pages/UserSettings/UserSettings";
+import UserProjects from "../Pages/UserProjects/UserProjects";
+import UserProfile from "../Pages/UserProfile/UserProfile";
+import UserNotes from "../Pages/UserNotes/UserNotes";
 import ProjectPosts from "../Pages/ProjectPosts/ProjectPosts";
 import ProjectSettings from "../Pages/ProjectSettings/ProjectSettings";
 import ProjectNotes from "../Pages/ProjectNotes/ProjectNotes";
@@ -62,7 +62,7 @@ export const routes: Route[] = [
         key: "projects",
         name: "Пости",
         path: "/projects",
-        component: UserProjectsPage,
+        component: UserProjects,
         icon: postsIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
@@ -72,7 +72,7 @@ export const routes: Route[] = [
         key: "profile",
         name: "Профіль",
         path: "/profile",
-        component: ProfilePage,
+        component: UserProfile,
         icon: userIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
@@ -82,7 +82,7 @@ export const routes: Route[] = [
         key: "settings",
         name: "Налаштування",
         path: "/settings",
-        component: AccountSettingsPage,
+        component: UserSettings,
         icon: settingsIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,
@@ -92,7 +92,7 @@ export const routes: Route[] = [
         key: "notes",
         name: "Нотатки",
         path: "/notes",
-        component: UserNotePage,
+        component: UserNotes,
         icon: notesIcon,
         requiresAuth: true,
         redirectIfAuthenticated: false,

@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import classes from "./UserProjectsPage.module.scss";
+import classes from "./UserProjects.module.scss";
 import {addProject, getProjects} from "../../store/thunks/UserThunks";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import plusIcon from "../../assets/images/plus_icon.svg";
@@ -17,7 +17,7 @@ import Select from "../../Elements/Select/Select";
 import Input from "../../Elements/Input/Input";
 import {rolesList} from "../../constants/rolesList";
 
-const UserProjectsPage:FC = () => {
+const UserProjects:FC = () => {
     const dispatch = useAppDispatch();
     const projects = useAppSelector(state => state.UserReducer.projects);
 
@@ -128,4 +128,4 @@ const UserProjectsPage:FC = () => {
     );
 };
 
-export default UserProjectsPage;
+export default UserProjects;

@@ -6,13 +6,13 @@ import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Title from "../../Elements/Title/Title";
 import Button from "../../Elements/Button/Button";
 import Content from "../../Components/Content/Content";
-import AccountSettingsForm from "./Components/AccountSettingsForm/AccountSettingsForm";
+import UserSettingsForm from "./Components/UserSettingsForm/UserSettingsForm";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {editSettingsUser} from "../../store/thunks/UserThunks";
 import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 import {SettingUser} from "../../store/types/UserType";
 
-const AccountSettingsPage: FC = () => {
+const UserSettings: FC = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user);
     const [formState, setFormState] = useState<SettingUser>({
@@ -62,7 +62,7 @@ const AccountSettingsPage: FC = () => {
 
                 <Content>
 
-                    <AccountSettingsForm
+                    <UserSettingsForm
                         formState={formState}
                         onChange={onChange}
                     />
@@ -75,4 +75,4 @@ const AccountSettingsPage: FC = () => {
     );
 };
 
-export default AccountSettingsPage;
+export default UserSettings;

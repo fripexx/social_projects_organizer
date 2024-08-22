@@ -1,5 +1,5 @@
 import React, {FC, useState, useEffect} from 'react';
-import classes from "./UserNotePage.module.scss";
+import classes from "./UserNotes.module.scss";
 import plusIcon from "../../assets/images/plus_icon.svg";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {addNoteUser, getNotesUser, deleteNoteUser, changeNoteUser} from "../../store/thunks/UserThunks";
@@ -16,7 +16,7 @@ import {ChangeCallback, DeleteCallback} from "../../Components/Note/Note";
 import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/ModalConfirmAction";
 import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 
-const UserNotePage:FC = () => {
+const UserNotes:FC = () => {
 
     const dispatch = useAppDispatch();
     const notes = useAppSelector(state => state.UserReducer.notes);
@@ -138,4 +138,4 @@ const UserNotePage:FC = () => {
     );
 };
 
-export default UserNotePage;
+export default UserNotes;

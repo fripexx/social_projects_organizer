@@ -7,7 +7,7 @@ import HeaderPage from "../../Components/HeaderPage/HeaderPage";
 import Button from "../../Elements/Button/Button";
 import Title from "../../Elements/Title/Title";
 import Content from "../../Components/Content/Content";
-import ProfilePageForm from "./Components/ProfilePageForm/ProfilePageForm";
+import UserProfileForm from "./Components/UserProfileForm/UserProfileForm";
 import {FormStateType} from "./types/FormStateType";
 import {ErrorFormStateType} from "./types/ErrorFormStateType";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
@@ -16,7 +16,7 @@ import Backdrop from "../../Components/Backdrop/Backdrop";
 import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/ModalConfirmAction";
 import Loader from "../../Elements/Loader/Loader";
 
-const ProfilePage: FC = () => {
+const UserProfile: FC = () => {
     const dispatch = useAppDispatch();
     const user = useAppSelector(state => state.UserReducer.user);
     const isLoading = useAppSelector(state => state.UserReducer.isLoading);
@@ -134,7 +134,7 @@ const ProfilePage: FC = () => {
 
                 <Content>
 
-                    <ProfilePageForm
+                    <UserProfileForm
                         formState={formState}
                         errorState={errorState}
                         onChange={onChangeInput}
@@ -160,4 +160,4 @@ const ProfilePage: FC = () => {
     );
 };
 
-export default ProfilePage;
+export default UserProfile;

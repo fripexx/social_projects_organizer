@@ -1,15 +1,15 @@
 import React, {FC} from 'react';
-import classes from "./AccountSettingsForm.module.scss";
+import classes from "./UserSettingsForm.module.scss";
 import Field from "../../../../Elements/Field/Field";
 import Toggle from "../../../../Elements/Toggle/Toggle";
 import {SettingUser} from "../../../../store/types/UserType";
 
-interface AccountSettingsFormProps {
+interface UserSettingsFormProps {
     formState: SettingUser,
     onChange: (e: React.FormEvent<HTMLInputElement>) => void,
 }
 
-const AccountSettingsForm:FC<AccountSettingsFormProps> = ({formState, onChange}) => {
+const UserSettingsForm:FC<UserSettingsFormProps> = ({formState, onChange}) => {
     return (
         <form className={classes.form}>
 
@@ -37,4 +37,4 @@ const AccountSettingsForm:FC<AccountSettingsFormProps> = ({formState, onChange})
     );
 };
 
-export default AccountSettingsForm;
+export default UserSettingsForm;
