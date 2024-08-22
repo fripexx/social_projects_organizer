@@ -279,11 +279,15 @@ class ProjectService {
         }
 
         const totalMediaCount = await FileModel.countDocuments(filter);
-        const media = await FileModel
-            .find(filter)
-            .skip(skip ? skip : 0)
-            .limit(limit ? limit : 10)
-            .lean();
+
+        const options = {
+            sort: { dateCreated: -1 },
+            skip: skip ? skip : 0,
+            limit: limit ? limit : 10,
+            lean: true
+        };
+
+        const media = await FileModel.find(filter, null, options);
 
         return {
             total: totalMediaCount,

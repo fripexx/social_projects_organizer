@@ -57,7 +57,7 @@ const projectMediaSlice = createSlice({
         [uploadMedia.fulfilled.type]: (state, action: PayloadAction<(FileType | PhotoType)[]>) => {
             state.isLoading = false;
             state.error = null;
-            state.media = [...state.media, ...action.payload]
+            state.media = [...action.payload, ...state.media]
         },
         [uploadMedia.rejected.type]: (state, action: PayloadAction<ErrorResponseType>) => {
             state.isLoading = false;
