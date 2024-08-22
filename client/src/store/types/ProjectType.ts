@@ -1,6 +1,5 @@
-import {FileType, PhotoType} from "./FileType";
+import {PhotoType} from "./FileType";
 import {NoteType} from "./NoteType";
-import {BasicUserInfo} from "./UserType";
 import {BasicTeamMemberType} from "./TeamMemberType";
 
 export interface ProjectType {
@@ -9,7 +8,6 @@ export interface ProjectType {
     name: string,
     logo: PhotoType | string | null,
     administrator: string,
-    customer: BasicUserInfo | string | null,
     team: BasicTeamMemberType[],
     color: string | null,
     instagram: string | null,

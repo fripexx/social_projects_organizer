@@ -9,7 +9,7 @@ interface ProjectCardProps {
 }
 
 const ProjectData: FC<ProjectCardProps> = ({project}) => {
-    const {name, logo, customer} = project;
+    const {name, logo} = project;
 
     return (
         <>
@@ -20,12 +20,6 @@ const ProjectData: FC<ProjectCardProps> = ({project}) => {
                 <span className={classes.name}>
                     {name}
                 </span>
-
-                {customer !== null && typeof customer === "object" &&
-                    <span className={classes.customer}>
-                        {customer.name} {customer.surname}
-                    </span>
-                }
 
             </div>
         </>

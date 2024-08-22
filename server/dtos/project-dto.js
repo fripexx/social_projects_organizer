@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 const FileDto = require("./file-dto");
-const UserDto = require("./user-dto");
 const { ObjectId } = mongoose.Types;
+
 module.exports = class ProjectDto {
     files = {
         brif: null,
@@ -14,7 +14,6 @@ module.exports = class ProjectDto {
         this.name = model.name;
         this.logo = this.convertLogo(model.logo)
         this.administrator = model.administrator.toString();
-        this.customer = this.convertCustomer(model.customer);
         this.team = this.convertTeam(model.team);
         this.color = model.color;
         this.instagram = model.instagram;
@@ -39,16 +38,6 @@ module.exports = class ProjectDto {
         if(logo?._id instanceof ObjectId) return new FileDto(logo)
 
         return null;
-    }
-
-    convertCustomer(user) {
-        if(!user) return null
-
-        if(user instanceof ObjectId) return user.toString()
-
-        if(user?._id instanceof ObjectId) return new UserDto(user, 'basic')
-
-        return null
     }
 
     convertTeam(team) {

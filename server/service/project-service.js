@@ -32,7 +32,6 @@ class ProjectService {
         const projects = await ProjectModel
             .find({ 'team.user': user.id })
             .populate({ path: 'logo', model: 'File'})
-            .populate({ path: 'customer', model: 'User'})
             .lean();
 
         return projects.map(project => new ProjectDto(project));
