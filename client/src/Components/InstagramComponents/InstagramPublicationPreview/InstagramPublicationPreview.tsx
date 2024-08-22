@@ -1,4 +1,4 @@
-import React, {FC, RefObject, useState} from 'react';
+import React, {FC, useRef} from 'react';
 import {FileType, PhotoType} from "../../../store/types/FileType";
 import PhoneWrapper from "../../PhoneWrapper/PhoneWrapper";
 import InstagramFooter from "../Modules/InstagramFooter/InstagramFooter";
@@ -22,7 +22,7 @@ interface InstagramPublicationPreviewProps extends InstagramPreviewType{
 
 const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({media, profile, colabProfile, location, width, className, aspectRatio, description}) => {
     const {name, picture} = profile
-    const [paginationRef, setPaginationRef] = useState<RefObject<HTMLDivElement>>()
+    const paginationRef = useRef<HTMLDivElement>(null)
 
     return (
         <PhoneWrapper width={width} className={className}>
@@ -48,7 +48,7 @@ const InstagramPublicationPreview: FC<InstagramPublicationPreviewProps> = ({medi
 
                 <div className={classes.info}>
 
-                    <InstagramPublicationButtons setRef={setPaginationRef}/>
+                    <InstagramPublicationButtons paginationRef={paginationRef}/>
 
                     <InstagramLikes name={name}/>
 

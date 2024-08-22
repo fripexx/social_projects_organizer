@@ -1,12 +1,13 @@
-import React, {FC, useEffect, useRef, useState} from 'react';
+import React, {FC, useEffect, useRef} from 'react';
 import classes from "./FilesSlider.module.scss";
 import Backdrop from "../Backdrop/Backdrop";
-import {FileType, PhotoType} from "../../store/types/FileType";
-import {Swiper, SwiperSlide} from 'swiper/react';
+import SwiperPagination from "../SwiperPagination/SwiperPagination";
+import {Swiper, SwiperRef, SwiperSlide} from 'swiper/react';
 import {Pagination, Zoom} from 'swiper/modules';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/zoom';
+import {FileType, PhotoType} from "../../store/types/FileType";
 
 interface FilesSliderProps {
     files: (FileType | PhotoType)[],
@@ -16,7 +17,8 @@ interface FilesSliderProps {
 }
 
 const FilesSlider:FC<FilesSliderProps> = ({files, show, activeSlide = 0, closeCallback}) => {
-    const swiperRef = useRef<any>(null);
+    const swiperRef = useRef<SwiperRef>(null);
+    const paginationRef = useRef<HTMLDivElement>(null);
 
     const handleClickContainer = (e: React.MouseEvent) => {
         const target = e.target as HTMLElement
@@ -52,8 +54,10 @@ const FilesSlider:FC<FilesSliderProps> = ({files, show, activeSlide = 0, closeCa
                     spaceBetween={15}
                     modules={[Zoom, Pagination]}
                     zoom={true}
-                    pagination={{clickable: true}}
-
+                    pagination={{
+                        el: paginationRef.current,
+                        clickable: true
+                    }}
                 >
                     {files.map(file => {
                         return (
@@ -85,6 +89,8 @@ const FilesSlider:FC<FilesSliderProps> = ({files, show, activeSlide = 0, closeCa
                         )
                     })}
                 </Swiper>
+
+                <SwiperPagination className={classes.pagination} ref={paginationRef}/>
 
             </div>
 

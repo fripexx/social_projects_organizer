@@ -1,21 +1,20 @@
-import React, {FC} from 'react';
+import React, { forwardRef, Ref } from 'react';
+import classes from "./SwiperPagination.module.scss";
 import 'swiper/css';
 import 'swiper/css/pagination';
-import classes from "./SwiperPagination.module.scss";
 import classNames from "classnames";
 
 interface SwiperPaginationProps {
-    paginationRef: React.RefObject<HTMLDivElement>,
-    className?: string
+    className?: string;
 }
 
-const SwiperPagination:FC<SwiperPaginationProps> = ({paginationRef, className}) => {
+const SwiperPagination = forwardRef<HTMLDivElement, SwiperPaginationProps>(({ className }, ref: Ref<HTMLDivElement>) => {
     return (
         <div
+            ref={ref}
             className={classNames(classes.pagination, className)}
-            ref={paginationRef}
         />
     );
-};
+});
 
 export default SwiperPagination;
