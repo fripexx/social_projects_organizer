@@ -7,4 +7,11 @@
     display: flex;
     flex-direction: row;
     align-items: center;
+
+    @media (max-width: 900px) {
+        padding: 10px 15px;
+        height: auto;
+        max-height: initial;
+        min-height: initial;
+    }
 }

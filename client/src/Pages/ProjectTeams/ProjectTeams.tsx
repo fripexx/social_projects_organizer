@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import saveIcon from "../../assets/images/save_icon.svg";
+import plusIcon from "../../assets/images/plus_icon.svg";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";
@@ -15,6 +15,7 @@ import {rolesList} from "../../constants/rolesList";
 
 const ProjectTeams = () => {
     const project = useAppSelector(state => state.ProjectReducer.project);
+    const user = useAppSelector(state => state.UserReducer.user);
     const team = useAppSelector(state => state.ProjectReducer.team);
     const dispatch = useAppDispatch()
 
@@ -62,13 +63,15 @@ const ProjectTeams = () => {
                         Команда
                     </Title>
 
-                    <Button
-                        text={"Додати юзера"}
-                        icon={saveIcon}
-                        iconColor={"var(--Color-Green)"}
-                        style={{marginLeft: "auto"}}
-                        onClick={showModal}
-                    />
+                    {project && user && project.administrator === user.id &&
+                        <Button
+                            text={"Додати юзера"}
+                            icon={plusIcon}
+                            iconColor={"var(--Color-Green)"}
+                            style={{marginLeft: "auto"}}
+                            onClick={showModal}
+                        />
+                    }
 
                 </HeaderPage>
 

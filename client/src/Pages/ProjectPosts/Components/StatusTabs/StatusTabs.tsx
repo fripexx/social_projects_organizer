@@ -7,6 +7,7 @@ import rejectIcon from "../../../../assets/images/icon-reject.svg";
 import pendingIcon from "../../../../assets/images/icon-pending.svg";
 import confirmedIcon from "../../../../assets/images/icon-confirmed.svg";
 import RoundIcon from "../../../../Components/RoundIcon/RoundIcon";
+import classNames from "classnames";
 
 interface TabType {
     text: string,
@@ -15,7 +16,11 @@ interface TabType {
     color?: string,
 }
 
-const StatusTabs: FC = () => {
+interface StatusTabsProps {
+    className?: string;
+}
+
+const StatusTabs: FC<StatusTabsProps> = ({className}) => {
     const [searchParams, setSearchParams] = useSearchParams();
     const [activeStatus, setActiveStatus] = useState<string>("");
 
@@ -55,7 +60,7 @@ const StatusTabs: FC = () => {
     }, [searchParams])
 
     return (
-        <div className={classes.container}>
+        <div className={classNames(classes.container, className)}>
             {tabs.map(tab => {
                 const {status, text, icon, color} = tab
 

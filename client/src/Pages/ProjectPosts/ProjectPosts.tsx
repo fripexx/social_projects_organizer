@@ -73,7 +73,7 @@ const ProjectPosts:FC = () => {
 
             <SidebarProject/>
 
-            <ContentPage>
+            <ContentPage className={classes.contentPage}>
 
                 <HeaderPage className={classes.header}>
 
@@ -84,9 +84,10 @@ const ProjectPosts:FC = () => {
                         onChange={changeSocialHandler}
                     />
 
-                    <StatusTabs/>
+                    <StatusTabs className={classes.tabs}/>
 
                     <Button
+                        className={classes.buttonAdd}
                         text={"Додати"}
                         icon={plusIcon}
                         iconColor={"var(--Color-Green)"}
