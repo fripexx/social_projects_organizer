@@ -1,10 +1,10 @@
-import dumpIcon from "../../../assets/images/dump_icon.svg";
-import saveIcon from "../../../assets/images/save_icon.svg";
-import publishIcon from "../../../assets/images/publish-icon.svg";
+import dumpIcon from "../../../assets/images/icons/dump-icon.svg";
+import saveIcon from "../../../assets/images/icons/save-icon.svg";
+import publishIcon from "../../../assets/images/icons/publish-icon.svg";
 import downloadIcon from "../../../assets/images/download-icon.svg";
-import clockIcon from "../../../assets/images/clock-icon.svg";
-import checkIcon from "../../../assets/images/check-icon.svg";
-import rejectIcon from "../../../assets/images/reject-icon.svg";
+import clockIcon from "../../../assets/images/icons/clock-icon.svg";
+import checkIcon from "../../../assets/images/icons/check-icon.svg";
+import rejectIcon from "../../../assets/images/icons/reject-icon.svg";
 import {EditPostButton} from "../../../Components/EditPostComponents/EditPostButtons/EditPostButtons";
 
 /*

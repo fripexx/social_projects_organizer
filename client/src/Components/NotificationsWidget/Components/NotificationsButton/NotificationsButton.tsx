@@ -2,7 +2,7 @@ import React, {FC} from 'react';
 import classes from "./NotificationsButton.module.scss";
 import classNames from "classnames";
 import {ReactSVG} from "react-svg";
-import iconBell from "../../../../assets/images/icon-bell.svg";
+import iconBell from "../../../../assets/images/icons/bell-icon.svg";
 
 interface NotificationButtonProps {
     isOpen: boolean;

@@ -2,7 +2,7 @@ import React, {FC, useEffect, useState} from 'react';
 import classes from "./UserProjects.module.scss";
 import {addProject, getProjects} from "../../store/thunks/UserThunks";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import plusIcon from "../../assets/images/plus_icon.svg";
+import plusIcon from "../../assets/images/icons/plus-icon.svg";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";

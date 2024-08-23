@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState, useRef, Ref} from 'react';
 import classes from "./Note.module.scss";
 import {NoteType} from "../../store/types/NoteType";
-import dumpIcon from "../../assets/images/dump_icon.svg";
+import dumpIcon from "../../assets/images/icons/dump-icon.svg";
 import {useAppSelector} from "../../store/hooks/redux";
 import {PhotoType} from "../../store/types/FileType";
 import Logo from "../Logo/Logo";

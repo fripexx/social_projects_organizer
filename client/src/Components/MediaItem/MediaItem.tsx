@@ -2,9 +2,9 @@ import React, {FC, useEffect, useState} from 'react';
 import classes from "./MediaItem.module.scss";
 import {FileType, PhotoCroppedType, PhotoType} from "../../store/types/FileType";
 import TypeMedia from "../TypeMedia/TypeMedia";
-import deleteIcon from "../../assets/images/dump_icon.svg"
+import deleteIcon from "../../assets/images/icons/dump-icon.svg"
 import {ReactSVG} from "react-svg";
-import checkIcon from "../../assets/images/check-icon.svg";
+import checkIcon from "../../assets/images/icons/check-icon.svg";
 
 interface MediaItem {
     file: FileType | PhotoType,

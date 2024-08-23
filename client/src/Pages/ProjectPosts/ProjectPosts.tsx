@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./ProjectPosts.module.scss";
-import plusIcon from "../../assets/images/plus_icon.svg";
+import plusIcon from "../../assets/images/icons/plus-icon.svg";
 import {PostStatus} from "../../store/reducers/PostStatus";
 import {setPostsQuery} from "../../store/reducers/ProjectSlice";
 import {socialOptions} from "./constants/SocialOptions";

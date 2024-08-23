@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useState} from 'react';
 import {v4 as uuid} from "uuid";
 import {PreviewFileType} from "../PreviewFile/PreviewFile";
-import plusIcon from "../../assets/images/plus_icon.svg";
+import plusIcon from "../../assets/images/icons/plus-icon.svg";
 import Button from "../../Elements/Button/Button";
 import Backdrop from "../Backdrop/Backdrop";
 import ModalUploadFile from "../Modals/ModalUploadFile/ModalUploadFile";

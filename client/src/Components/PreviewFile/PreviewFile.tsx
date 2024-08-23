@@ -1,8 +1,8 @@
 import React, {FC, HTMLAttributes} from 'react';
 import classes from "./PreviewFile.module.scss";
-import iconPhoto from "../../assets/images/icon_photo.svg";
-import iconVideo from "../../assets/images/icon_video.svg";
-import iconDocument from "../../assets/images/icon_document.svg";
+import iconPhoto from "../../assets/images/icons/photo-icon.svg";
+import iconVideo from "../../assets/images/icons/video-icon.svg";
+import iconDocument from "../../assets/images/icons/document-icon.svg";
 import TypeMedia from "../TypeMedia/TypeMedia";
 
 export interface PreviewFileType {

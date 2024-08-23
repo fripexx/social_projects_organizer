@@ -1,6 +1,6 @@
 import React, {FC, useCallback, useEffect, useRef, useState} from 'react';
 import classes from "./SetMedia.module.scss";
-import addIcon from "../../assets/images/plus_icon.svg";
+import addIcon from "../../assets/images/icons/plus-icon.svg";
 import {FileType, PhotoType} from "../../store/types/FileType";
 import Button from "../../Elements/Button/Button";
 import Backdrop from "../Backdrop/Backdrop";

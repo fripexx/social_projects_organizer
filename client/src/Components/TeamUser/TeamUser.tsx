@@ -1,10 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./TeamUser.module.scss";
 import {BasicUserInfo} from "../../store/types/UserType";
-import deleteIcon from "../../assets/images/dump_icon.svg";
-import editIcon from "../../assets/images/edit-icon.svg";
-import changeRoleIcon from "../../assets/images/icon-change-user.svg";
-import exitIcon from "../../assets/images/exit-icon.svg";
+import deleteIcon from "../../assets/images/icons/dump-icon.svg";
+import editIcon from "../../assets/images/icons/edit-icon.svg";
+import changeRoleIcon from "../../assets/images/icons/change-user-icon.svg";
+import exitIcon from "../../assets/images/icons/exit-icon.svg";
 import Logo from "../Logo/Logo";
 import Button from "../../Elements/Button/Button";
 import Backdrop from "../Backdrop/Backdrop";

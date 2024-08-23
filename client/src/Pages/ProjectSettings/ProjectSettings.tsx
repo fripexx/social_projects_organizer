@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react';
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
-import saveIcon from "../../assets/images/save_icon.svg";
+import saveIcon from "../../assets/images/icons/save-icon.svg";
 import Page from "../../Components/Page/Page";
 import ContentPage from "../../Components/ContentPage/ContentPage";
 import HeaderPage from "../../Components/HeaderPage/HeaderPage";

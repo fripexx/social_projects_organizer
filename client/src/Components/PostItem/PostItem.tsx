@@ -8,7 +8,7 @@ import ImageServer from "../../Elements/ImageServer/ImageServer";
 import TypeMedia from "../TypeMedia/TypeMedia";
 import SocialLogo from "./Components/SocialLogo/SocialLogo";
 import StatusPost from "./Components/StatusPost/StatusPost";
-import checkedIcon from "../../assets/images/check-icon.svg";
+import checkedIcon from "../../assets/images/icons/check-icon.svg";
 import {ReactSVG} from "react-svg";
 import VideoServer from "../../Elements/VideoServer/VideoServer";
 

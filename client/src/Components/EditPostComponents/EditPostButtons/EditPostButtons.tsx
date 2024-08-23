@@ -2,7 +2,7 @@ import React, {FC, MouseEvent, useEffect, useState} from 'react';
 import classes from "./EditPostButtons.module.scss";
 import classNames from "classnames";
 import Button from "../../../Elements/Button/Button";
-import dots from "../../../assets/images/three-dots-icon.svg";
+import dots from "../../../assets/images/icons/three-dots-icon.svg";
 import {ReactSVG} from "react-svg";
 import Backdrop from "../../Backdrop/Backdrop";
 

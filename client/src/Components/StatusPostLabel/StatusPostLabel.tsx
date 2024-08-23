@@ -1,9 +1,9 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./StatusPostLabel.module.scss";
-import editIcon from "../../assets/images/edit-icon.svg";
-import rejectIcon from "../../assets/images/icon-reject.svg";
-import pendingIcon from "../../assets/images/icon-pending.svg";
-import confirmedIcon from "../../assets/images/icon-confirmed.svg";
+import editIcon from "../../assets/images/icons/edit-icon.svg";
+import rejectIcon from "../../assets/images/icons/reject-icon.svg";
+import pendingIcon from "../../assets/images/icons/pending-icon.svg";
+import confirmedIcon from "../../assets/images/icons/confirmed-icon.svg";
 import RoundIcon from "../RoundIcon/RoundIcon";
 import {PostStatus} from "../../store/reducers/PostStatus";
 import classNames from "classnames";

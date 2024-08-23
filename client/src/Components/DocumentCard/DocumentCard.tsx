@@ -3,7 +3,7 @@ import classes from "./DocumentCard.module.scss";
 import {ProjectDocument} from "../../store/types/ProjectDocument";
 import {FileType} from "../../store/types/FileType";
 import Button from "../../Elements/Button/Button";
-import dumpIcon from "../../assets/images/dump_icon.svg";
+import dumpIcon from "../../assets/images/icons/dump-icon.svg";
 
 interface DocumentCardProps {
     document: ProjectDocument,

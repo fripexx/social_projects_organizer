@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import classes from "./Chat.module.scss";
-import emojiIcon from "../../assets/images/emoji-icon.svg";
-import paperClipIcon from "../../assets/images/paper-clip-icon.svg";
+import emojiIcon from "../../assets/images/icons/emoji-icon.svg";
+import paperClipIcon from "../../assets/images/icons/paper-clip-icon.svg";
 import dotsLoaderIcon from "../../assets/images/dots-loader.svg";
 import {ReactSVG} from "react-svg";
 import {MessageType} from "../../store/types/MessageType";

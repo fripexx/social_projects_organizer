@@ -1,7 +1,7 @@
 import React, {forwardRef} from 'react';
 import classes from "./InputFile.module.scss";
 import RoundIcon from "../../Components/RoundIcon/RoundIcon";
-import plusIcon from "../../assets/images/plus_icon.svg";
+import plusIcon from "../../assets/images/icons/plus-icon.svg";
 
 interface InputFileProps extends React.InputHTMLAttributes<HTMLInputElement> {
     label?: string;

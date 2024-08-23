@@ -1,10 +1,10 @@
 import React, {FC, useEffect, useState} from 'react';
 import classNames from "classnames";
 import {PostStatus} from "../../../../store/reducers/PostStatus";
-import iconReject from "../../../../assets/images/icon-reject.svg";
-import iconEdit from "../../../../assets/images/icon-edit.svg";
-import iconConfirmed from "../../../../assets/images/icon-confirmed.svg";
-import iconPending from "../../../../assets/images/icon-pending.svg";
+import iconReject from "../../../../assets/images/icons/reject-icon.svg";
+import iconEdit from "../../../../assets/images/icons/edit-icon.svg";
+import iconConfirmed from "../../../../assets/images/icons/confirmed-icon.svg";
+import iconPending from "../../../../assets/images/icons/pending-icon.svg";
 import RoundIcon from "../../../RoundIcon/RoundIcon";
 
 interface StatusPostProps {

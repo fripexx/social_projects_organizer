@@ -1,5 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
-import saveIcon from "../../assets/images/save_icon.svg";
+import saveIcon from "../../assets/images/icons/save-icon.svg";
 import Page from "../../Components/Page/Page";
 import SidebarUser from "../../Components/SidebarUser/SidebarUser";
 import ContentPage from "../../Components/ContentPage/ContentPage";

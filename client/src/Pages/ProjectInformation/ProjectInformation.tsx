@@ -14,7 +14,7 @@ import ModalConfirmAction from "../../Components/Modals/ModalConfirmAction/Modal
 import Backdrop from "../../Components/Backdrop/Backdrop";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {deleteDocument, getDocuments, setDocument} from "../../store/thunks/ProjectThunks";
-import plusIcon from "../../assets/images/plus_icon.svg";
+import plusIcon from "../../assets/images/icons/plus-icon.svg";
 
 
 const ProjectInformation:FC = () => {

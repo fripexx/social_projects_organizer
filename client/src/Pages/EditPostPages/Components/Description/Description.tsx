@@ -3,7 +3,7 @@ import classes from "./Description.module.scss"
 import classNames from "classnames"
 import EmojiPicker, {EmojiClickData} from "emoji-picker-react";
 import {ReactSVG} from "react-svg";
-import emojiIcon from "../../../../assets/images/emoji-icon.svg";
+import emojiIcon from "../../../../assets/images/icons/emoji-icon.svg";
 
 interface CommentsProps {
     value: string;

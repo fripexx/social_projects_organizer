@@ -1,7 +1,7 @@
 import React, {FC, useEffect, useRef, useState} from 'react';
 import {v4 as uuid} from "uuid";
 import classes from "./ModalUploadFile.module.scss";
-import addIcon from "../../../assets/images/plus_icon.svg";
+import addIcon from "../../../assets/images/icons/plus-icon.svg";
 import Modal from "../Modal/Modal";
 import Button from "../../../Elements/Button/Button";
 import PreviewFile, {PreviewFileType} from "../../PreviewFile/PreviewFile";

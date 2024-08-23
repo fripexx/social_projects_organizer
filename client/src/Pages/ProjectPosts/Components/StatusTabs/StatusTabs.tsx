@@ -2,10 +2,10 @@ import React, {FC, useEffect, useState} from 'react';
 import classes from "./StatusTabs.module.scss";
 import {NavLink, useSearchParams} from "react-router-dom";
 import {v4 as uuid} from "uuid";
-import editIcon from "../../../../assets/images/icon-edit.svg";
-import rejectIcon from "../../../../assets/images/icon-reject.svg";
-import pendingIcon from "../../../../assets/images/icon-pending.svg";
-import confirmedIcon from "../../../../assets/images/icon-confirmed.svg";
+import editIcon from "../../../../assets/images/icons/edit-icon.svg";
+import rejectIcon from "../../../../assets/images/icons/reject-icon.svg";
+import pendingIcon from "../../../../assets/images/icons/pending-icon.svg";
+import confirmedIcon from "../../../../assets/images/icons/confirmed-icon.svg";
 import RoundIcon from "../../../../Components/RoundIcon/RoundIcon";
 import classNames from "classnames";
 

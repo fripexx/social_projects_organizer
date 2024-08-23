@@ -1,6 +1,6 @@
 import React, {FC, useState, useEffect} from 'react';
 import classes from "./UserNotes.module.scss";
-import plusIcon from "../../assets/images/plus_icon.svg";
+import plusIcon from "../../assets/images/icons/plus-icon.svg";
 import {useAppDispatch, useAppSelector} from "../../store/hooks/redux";
 import {addNoteUser, getNotesUser, deleteNoteUser, changeNoteUser} from "../../store/thunks/UserThunks";
 import Page from "../../Components/Page/Page";
