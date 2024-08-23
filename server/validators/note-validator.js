@@ -3,6 +3,37 @@ const mongoose = require('mongoose');
 
 
 /**
+ * User notes validators
+ */
+
+const addNoteUser = [
+    body('text')
+        .isString().withMessage('text повинен бути строкою')
+]
+
+const deleteNoteUser = [
+    param('id')
+        .isString().withMessage('id повинен бути строкою')
+        .custom((id) => {
+            if (!mongoose.Types.ObjectId.isValid(id)) throw new Error('id повинен бути валідним ObjectId');
+            return true;
+        }),
+]
+
+const changeNoteUser = [
+    body('noteId')
+        .isString().withMessage('noteId повинен бути строкою')
+        .custom((noteId) => {
+            if (!mongoose.Types.ObjectId.isValid(noteId)) throw new Error('noteId повинен бути валідним ObjectId');
+            return true;
+        }),
+
+    body('text')
+        .isString().withMessage('text повинен бути строкою')
+]
+
+
+/**
  * Project notes validators
  */
 
@@ -66,5 +97,8 @@ module.exports = {
     getNotesProject,
     addNoteInProject,
     deleteNoteInProject,
-    changeNoteInProject
+    changeNoteInProject,
+    addNoteUser,
+    deleteNoteUser,
+    changeNoteUser
 };

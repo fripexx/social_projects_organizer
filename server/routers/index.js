@@ -57,10 +57,26 @@ const setupRouter = ({io}) => {
     /**
      * User notes routes
      */
-    router.post('/add-note-user', [authMiddleware], NoteController.addNoteUser);
-    router.delete('/delete-note-user/:id', [authMiddleware], NoteController.deleteNoteUser);
-    router.patch('/change-note-user', [authMiddleware], NoteController.changeNoteUser);
-    router.get('/get-notes-user', [authMiddleware], NoteController.getAllUser);
+    router.post(
+        '/add-note-user',
+        [authMiddleware, ...NoteValidator.addNoteUser, validate],
+        NoteController.addNoteUser
+    );
+    router.delete(
+        '/delete-note-user/:id',
+        [authMiddleware, ...NoteValidator.deleteNoteUser, validate],
+        NoteController.deleteNoteUser
+    );
+    router.patch(
+        '/change-note-user',
+        [authMiddleware, ...NoteValidator.changeNoteUser, validate],
+        NoteController.changeNoteUser
+    );
+    router.get(
+        '/get-notes-user',
+        [authMiddleware],
+        NoteController.getAllUser
+    );
 
     /**
      * Project routes
