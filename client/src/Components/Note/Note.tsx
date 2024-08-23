@@ -109,11 +109,12 @@ const Note: FC<NoteProps> = ({note, changeCallback, deleteCallback, showPhoto}) 
                         // Виносимо попап в центр вікна
                         setPopupStyles(notePopupRef, {
                             'transition': 'all 0.2s ease-in-out',
-                            'top': `calc(50% - 250px)`,
-                            'left': `calc(50% - 350px)`,
-                            'width': '700px',
-                            'height': '500px',
-                            'max-height': '500px',
+                            'top': `calc(50% - var(--open-height, 500px) / 2)`,
+                            'left': `calc(50% - var(--open-width, 700px) / 2)`,
+                            'width': 'var(--open-width, 700px)',
+                            'max-width': 'var(--open-width, 700px)',
+                            'height': 'var(--open-height, 500px)',
+                            'max-height': 'var(--open-height, 500px)',
                             'padding-top': '51px',
                         })
 
