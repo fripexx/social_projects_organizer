@@ -1,5 +1,6 @@
 const Router = require('express').Router;
 const UserController = require('../controllers/user-controller');
+const UserValidator = require('../validators/user-validator')
 const NoteController = require('../controllers/note-controller')
 const NoteValidator = require('../validators/note-validator')
 const ProjectController = require('../controllers/project-controller')
@@ -32,27 +33,36 @@ const setupRouter = ({io}) => {
      */
     router.post(
         '/registration',
-        body('email').isEmail(),
-        body('password').custom((value, { req }) => {
-            if (value.length < 8 || value.length > 32) {
-                throw ApiError.BadRequest('Пароль повинен бути від 8 до 32 символів');
-            }
-
-            if (!/^(?=.*\d)(?=.*[a-zA-Z])/.test(value)) {
-                throw ApiError.BadRequest('Пароль повинен містити хоча б одну цифру і латинську букву');
-            }
-
-            return true;
-        }),
+        [...UserValidator.registration, validate],
         UserController.registration
     );
-    router.post('/login', UserController.login);
-    router.post('/send-activate-link', UserController.sendActivateLink);
+    router.post(
+        '/login',
+        [...UserValidator.login, validate],
+        UserController.login
+    );
+    router.post(
+        '/send-activate-link',
+        [...UserValidator.sendActivateLink, validate],
+        UserController.sendActivateLink
+    );
     router.post('/logout', UserController.logout);
-    router.get('/activate/:link', UserController.activate);
+    router.get(
+        '/activate/:link',
+        [...UserValidator.activate, validate],
+        UserController.activate
+    );
     router.get('/refresh', UserController.refresh);
-    router.post('/edit-user', [authMiddleware, uploadUserMiddleware], UserController.editUser);
-    router.post('/edit-settings-user', [authMiddleware], UserController.editSettingsUser);
+    router.post(
+        '/edit-user',
+        [authMiddleware, ...UserValidator.editUser, validate, uploadUserMiddleware],
+        UserController.editUser
+    );
+    router.post(
+        '/edit-settings-user',
+        [authMiddleware, ...UserValidator.editSettings, validate],
+        UserController.editSettingsUser
+    );
 
     /**
      * User notes routes

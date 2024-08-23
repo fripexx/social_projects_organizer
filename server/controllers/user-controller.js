@@ -79,7 +79,8 @@ class UserController {
         try {
             const photo = req?.photo;
             const user = await req.user;
-            const data = await UserService.editUser(user, {...req.body, photo});
+            const editData = req.body;
+            const data = await UserService.editUser(user, {...editData, photo});
 
             return res.json(data);
         } catch (e) {
