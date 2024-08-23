@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import classes from "./ProjectCalendar.module.scss";
-import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 import ContentPage from "../../Components/ContentPage/ContentPage";
@@ -13,7 +12,6 @@ import {PostsQueryType} from "../../store/types/PostsQueryType";
 import {useAppSelector} from "../../store/hooks/redux";
 import PostItem from "../../Components/PostItem/PostItem";
 import CalendarControl from "../../Components/Calendar/Components/CalendarControl/CalendarControl";
-
 
 const ProjectCalendar = () => {
     const project = useAppSelector(state => state.ProjectReducer.project);
@@ -61,28 +59,24 @@ const ProjectCalendar = () => {
     }, [posts]);
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage>
+                    <CalendarControl date={date} changeMonth={changeMonth}/>
+                </HeaderPage>
 
-                    <HeaderPage>
-                        <CalendarControl date={date} changeMonth={changeMonth}/>
-                    </HeaderPage>
+                <Content className={classes.content}>
+                    <Calendar date={date} items={calendarCollection}/>
+                </Content>
 
-                    <Content className={classes.content}>
-                        <Calendar date={date} items={calendarCollection}/>
-                    </Content>
+            </ContentPage>
 
-                </ContentPage>
-
-            </Page>
-
-        </ProjectPage>
-    );
+        </Page>
+    )
 };
 
 export default ProjectCalendar;
