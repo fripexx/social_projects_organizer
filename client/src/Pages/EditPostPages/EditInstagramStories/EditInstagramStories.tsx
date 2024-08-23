@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./EditInstagramStories.module.scss";
-import ProjectPage from "../../../HOC/ProjectPage/ProjectPage";
 import Page from "../../../Components/Page/Page";
 import SidebarProject from "../../../Components/SidebarProject/SidebarProject";
 import ContentPage from "../../../Components/ContentPage/ContentPage";
@@ -181,81 +180,77 @@ const EditInstagramStories:FC = () => {
     }, []);
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
+                {(project && post && user) ? (
+                    <>
+                        <HeaderPage className={classes.header}>
 
-                <ContentPage>
-                    {(project && post && user) ? (
-                        <>
-                            <HeaderPage className={classes.header}>
+                            <BackLink className={classes.back} project={project.id}/>
 
-                                <BackLink className={classes.back} project={project.id}/>
+                            <StatusPostLabel className={classes.status} status={post.status}/>
 
-                                <StatusPostLabel className={classes.status} status={post.status}/>
+                            <EditButtons
+                                className={classes.editButtons}
+                                status={post.status}
+                                callback={buttonsHandler}
+                                isAuthor={isAuthor}
+                            />
 
-                                <EditButtons
-                                    className={classes.editButtons}
-                                    status={post.status}
-                                    callback={buttonsHandler}
-                                    isAuthor={isAuthor}
+                        </HeaderPage>
+
+                        <Content className={classes.columns}>
+
+                            <Tabs
+                                callback={changeTab}
+                                activeTab={currentTab}
+                            />
+
+                            <div className={classNames(classes.column, classes.previewContainer)} data-active={currentTab === "preview"}>
+
+                               <InstagramStoriesPreview
+                                    profile={{
+                                        name: "",
+                                        picture: ""
+                                    }}
+                                    media={selectMedia}
                                 />
 
-                            </HeaderPage>
+                            </div>
 
-                            <Content className={classes.columns}>
+                            <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
 
-                                <Tabs
-                                    callback={changeTab}
-                                    activeTab={currentTab}
+                                <InstagramStoriesParams
+                                    className={classes.params}
+                                    readonly={!isAuthor}
                                 />
 
-                                <div className={classNames(classes.column, classes.previewContainer)} data-active={currentTab === "preview"}>
-                                    
-                                   <InstagramStoriesPreview
-                                        profile={{
-                                            name: "",
-                                            picture: ""
-                                        }}
-                                        media={selectMedia}
+                            </div>
+
+                            <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
+
+                                {post.status !== "unpublish" &&
+                                    <ChatPost
+                                        className={classes.chat}
+                                        post={post}
+                                        user={user}
+                                        team={teamProject}
                                     />
+                                }
 
-                                </div>
+                            </div>
 
-                                <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
+                        </Content>
+                    </>
+                ) : (
+                    <Loader/>
+                )}
+            </ContentPage>
 
-                                    <InstagramStoriesParams
-                                        className={classes.params}
-                                        readonly={!isAuthor}
-                                    />
-
-                                </div>
-
-                                <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
-
-                                    {post.status !== "unpublish" &&
-                                        <ChatPost
-                                            className={classes.chat}
-                                            post={post}
-                                            user={user}
-                                            team={teamProject}
-                                        />
-                                    }
-
-                                </div>
-
-                            </Content>
-                        </>
-                    ) : (
-                        <Loader/>
-                    )}
-                </ContentPage>
-
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 

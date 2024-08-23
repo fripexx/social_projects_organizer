@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./ProjectInformation.module.scss";
-import ProjectPage from "../../HOC/ProjectPage/ProjectPage";
 import Page from "../../Components/Page/Page";
 import SidebarProject from "../../Components/SidebarProject/SidebarProject";
 import ContentPage from "../../Components/ContentPage/ContentPage";
@@ -62,75 +61,71 @@ const ProjectInformation:FC = () => {
     }, [project, user]);
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
 
-                <ContentPage>
+                <HeaderPage>
 
-                    <HeaderPage>
+                    <Title level={2}>
+                        Інформація
+                    </Title>
 
-                        <Title level={2}>
-                            Інформація
-                        </Title>
+                    {isAdmin &&
+                        <Button
+                            text={"Додати документ"}
+                            icon={plusIcon}
+                            iconColor={"var(--Color-Green)"}
+                            style={{marginLeft: "auto"}}
+                            onClick={() => setDocModal(true)}
+                        />
+                    }
 
-                        {isAdmin &&
-                            <Button
-                                text={"Додати документ"}
-                                icon={plusIcon}
-                                iconColor={"var(--Color-Green)"}
-                                style={{marginLeft: "auto"}}
-                                onClick={() => setDocModal(true)}
-                            />
-                        }
+                </HeaderPage>
 
-                    </HeaderPage>
+                <Content>
 
-                    <Content>
+                    {documents.length > 0 &&
+                        <div className={classes.documents}>
+                            {documents.map(document => {
+                                return(
+                                    <DocumentCard
+                                        key={document.id}
+                                        document={document}
+                                        deleteCallback={deleteHandler}
+                                        isAdmin={isAdmin}
+                                    />
+                                )
+                            })}
+                        </div>
+                    }
 
-                        {documents.length > 0 &&
-                            <div className={classes.documents}>
-                                {documents.map(document => {
-                                    return(
-                                        <DocumentCard
-                                            key={document.id}
-                                            document={document}
-                                            deleteCallback={deleteHandler}
-                                            isAdmin={isAdmin}
-                                        />
-                                    )
-                                })}
-                            </div>
-                        }
+                    {documents.length === 0 &&
+                        <p>Поки що не додано жодного документа.</p>
+                    }
 
-                        {documents.length === 0 &&
-                            <p>Поки що не додано жодного документа.</p>
-                        }
+                </Content>
 
-                    </Content>
+            </ContentPage>
 
-                </ContentPage>
+            <ModalSetDocument
+                isOpen={docModal}
+                accept={['application/pdf', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
+                closeCallback={closeDocModal}
+                confirmCallback={confirmSetDocHandler}
+            />
 
-                <ModalSetDocument
-                    isOpen={docModal}
-                    accept={['application/pdf', 'text/plain', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document']}
-                    closeCallback={closeDocModal}
-                    confirmCallback={confirmSetDocHandler}
+            <Backdrop isOpen={!!deleteDoc} clickCallback={() => setDeleteDoc("")}>
+                <ModalConfirmAction
+                    text={"Ви впевнені що хочете видалити цей документ?"}
+                    onCancel={() => setDeleteDoc("")}
+                    onConfirm={confirmDeleteHandler}
                 />
+            </Backdrop>
 
-                <Backdrop isOpen={!!deleteDoc} clickCallback={() => setDeleteDoc("")}>
-                    <ModalConfirmAction
-                        text={"Ви впевнені що хочете видалити цей документ?"}
-                        onCancel={() => setDeleteDoc("")}
-                        onConfirm={confirmDeleteHandler}
-                    />
-                </Backdrop>
-
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 

@@ -6,6 +6,7 @@ import Loader from "../../Elements/Loader/Loader";
 import ErrorMessagePopup from "../../Components/ErrorMessagePopup/ErrorMessagePopup";
 import NotificationsWidget from "../../Components/NotificationsWidget/NotificationsWidget";
 import {readNotification} from "../../store/reducers/UISlice";
+import {resetProject} from "../../store/reducers/ProjectSlice";
 
 interface ProjectPageProps {
     children: ReactNode
@@ -32,7 +33,11 @@ const ProjectPage: FC<ProjectPageProps> = ({children}) => {
     useEffect(() => {
         if (project && project.id) dispatch(getProjectTeam(project.id))
     }, [project]);
-
+    useEffect(() => {
+        return () => {
+            dispatch(resetProject())
+        }
+    }, [])
     return (
         <>
             {(project && !loading) ? (

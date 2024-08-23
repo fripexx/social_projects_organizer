@@ -1,6 +1,5 @@
 import React, {FC, useEffect, useState} from 'react';
 import classes from "./EditInstagramReels.module.scss";
-import ProjectPage from "../../../HOC/ProjectPage/ProjectPage";
 import Page from "../../../Components/Page/Page";
 import SidebarProject from "../../../Components/SidebarProject/SidebarProject";
 import ContentPage from "../../../Components/ContentPage/ContentPage";
@@ -184,81 +183,77 @@ const EditInstagramReels:FC = () => {
     }, []);
 
     return (
-        <ProjectPage>
+        <Page>
 
-            <Page>
+            <SidebarProject/>
 
-                <SidebarProject/>
+            <ContentPage>
+                {(project && post && user) ? (
+                    <>
+                        <HeaderPage className={classes.header}>
 
-                <ContentPage>
-                    {(project && post && user) ? (
-                        <>
-                            <HeaderPage className={classes.header}>
+                            <BackLink className={classes.back} project={project.id}/>
 
-                                <BackLink className={classes.back} project={project.id}/>
+                            <StatusPostLabel className={classes.status} status={post.status}/>
 
-                                <StatusPostLabel className={classes.status} status={post.status}/>
+                            <EditButtons
+                                className={classes.editButtons}
+                                status={post.status}
+                                callback={buttonsHandler}
+                                isAuthor={isAuthor}
+                            />
 
-                                <EditButtons
-                                    className={classes.editButtons}
-                                    status={post.status}
-                                    callback={buttonsHandler}
-                                    isAuthor={isAuthor}
+                        </HeaderPage>
+
+                        <Content className={classes.columns}>
+
+                            <Tabs
+                                callback={changeTab}
+                                activeTab={currentTab}
+                            />
+
+                            <div className={classNames(classes.column, classes.previewContainer)}
+                                 data-active={currentTab === "preview"}>
+
+                                <InstagramReelsPreview
+                                    video={selectMedia}
+                                    profile={{
+                                        name: "shirshonkova_a",
+                                        picture: "http://localhost:5000/uploads/public/project_logos/2024/6/11909a4d-b652-471b-a9b9-52bbba5c461a-300x300.png"
+                                    }}
+                                    description={post.params.description}
                                 />
 
-                            </HeaderPage>
+                            </div>
 
-                            <Content className={classes.columns}>
-
-                                <Tabs
-                                    callback={changeTab}
-                                    activeTab={currentTab}
+                            <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
+                                <InstagramReelsParams
+                                    className={classes.params}
+                                    readonly={!isAuthor}
                                 />
+                            </div>
 
-                                <div className={classNames(classes.column, classes.previewContainer)}
-                                     data-active={currentTab === "preview"}>
+                            <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
 
-                                    <InstagramReelsPreview
-                                        video={selectMedia}
-                                        profile={{
-                                            name: "shirshonkova_a",
-                                            picture: "http://localhost:5000/uploads/public/project_logos/2024/6/11909a4d-b652-471b-a9b9-52bbba5c461a-300x300.png"
-                                        }}
-                                        description={post.params.description}
+                                {post.status !== "unpublish" &&
+                                    <ChatPost
+                                        className={classes.chat}
+                                        post={post}
+                                        user={user}
+                                        team={teamProject}
                                     />
+                                }
 
-                                </div>
+                            </div>
 
-                                <div className={classNames(classes.column, classes.paramsContainer)} data-active={currentTab === "params"}>
-                                    <InstagramReelsParams
-                                        className={classes.params}
-                                        readonly={!isAuthor}
-                                    />
-                                </div>
+                        </Content>
+                    </>
+                ) : (
+                    <Loader/>
+                )}
+            </ContentPage>
 
-                                <div className={classNames(classes.column, classes.chatContainer)} data-active={currentTab === "comments"}>
-
-                                    {post.status !== "unpublish" &&
-                                        <ChatPost
-                                            className={classes.chat}
-                                            post={post}
-                                            user={user}
-                                            team={teamProject}
-                                        />
-                                    }
-
-                                </div>
-
-                            </Content>
-                        </>
-                    ) : (
-                        <Loader/>
-                    )}
-                </ContentPage>
-
-            </Page>
-
-        </ProjectPage>
+        </Page>
     );
 };
 

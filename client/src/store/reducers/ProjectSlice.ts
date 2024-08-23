@@ -71,6 +71,21 @@ const projectSlice = createSlice({
         setPostsQuery: (state, action: PayloadAction<PostsQueryType | undefined>) => {
             state.postsData.query = action.payload
         },
+        resetProject: (state) => {
+            state.isLoading = false;
+            state.error = null;
+            state.project = null;
+            state.projectId = null;
+            state.documents = [];
+            state.notes = [];
+            state.team = [];
+            state.documents = [];
+            state.postsData = {
+                posts: [],
+                total: 0,
+                query: undefined
+            }
+        },
     },
     extraReducers: {
         [getProject.pending.type]: (state) => {
@@ -196,7 +211,7 @@ const projectSlice = createSlice({
             state.error = action.payload;
         },
 
-        /* getPosts */
+        /* Posts */
         [getPosts.pending.type]: (state) => {},
         [getPosts.fulfilled.type]: (state, action: PayloadAction<GetPostsResponseType>) => {
             state.error = null;
@@ -210,7 +225,7 @@ const projectSlice = createSlice({
             state.error = action.payload;
         },
 
-        /* getPosts */
+        /* Documents */
         [getDocuments.pending.type]: (state) => {},
         [getDocuments.fulfilled.type]: (state, action: PayloadAction<ProjectDocument[]>) => {
             state.error = null;
@@ -243,5 +258,6 @@ export const {
     setProject,
     setError,
     setLoadMorePosts,
-    setPostsQuery
+    setPostsQuery,
+    resetProject
 } = projectSlice.actions;
