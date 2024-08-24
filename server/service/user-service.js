@@ -26,7 +26,14 @@ class UserService {
         })
         await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${activationLink}`);
 
-        const user = await UserModel.findById(createdUser._id).populate({path: 'photo', model: 'File'}).lean();
+        const options = {
+            populate: {
+                path: 'photo',
+                model: 'File'
+            },
+            lean: true
+        }
+        const user = await UserModel.findById(createdUser._id, null, options);
 
         return new UserDto(user);
     }
@@ -38,7 +45,14 @@ class UserService {
     }
 
     async login(email, password) {
-        const user = await UserModel.findOne({email}).populate({path: 'photo', model: 'File'}).lean();
+        const options = {
+            populate: {
+                path: 'photo',
+                model: 'File'
+            },
+            lean: true
+        }
+        const user = await UserModel.findOne({ email }, null, options);
 
         if (!user) throw ApiError.BadRequest("Користувач з таким email не знайдений")
         if (user.isActivated === false) throw ApiError.UnconfirmedEmail();
@@ -78,7 +92,14 @@ class UserService {
 
         if (!userData || !tokenFromDB) throw ApiError.UnauthorizedError();
 
-        const user = await UserModel.findById(userData.id).populate({path: 'photo', model: 'File'}).lean();
+        const options = {
+            populate: {
+                path: 'photo',
+                model: 'File'
+            },
+            lean: true
+        }
+        const user = await UserModel.findById(userData.id, null, options);
         const userDto = new UserDto(user);
         const tokens = tokenService.generateTokens({...userDto})
 
@@ -101,14 +122,28 @@ class UserService {
             await findUser.save();
         }
 
-        const user = await UserModel.findById(userData.id).populate({path: 'photo', model: 'File'}).lean();
+        const options = {
+            populate: {
+                path: 'photo',
+                model: 'File'
+            },
+            lean: true
+        }
+        const user = await UserModel.findById(userData.id, null, options);
 
         return new UserDto(user);
     }
 
     async editSettingsUser(userData, editData) {
         const {darkMode, pushNotifications} = editData
-        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications}).populate({path: 'photo', model: 'File'}).lean();
+        const options = {
+            populate: {
+                path: 'photo',
+                model: 'File'
+            },
+            lean: true
+        }
+        const findUser = await UserModel.findByIdAndUpdate(userData.id, {darkMode, pushNotifications}, options);
 
         if (!findUser) throw ApiError.BadRequest("Користувач з таким id не знайдений")
 
