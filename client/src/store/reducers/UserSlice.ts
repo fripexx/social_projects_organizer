@@ -67,8 +67,6 @@ export const userSlice = createSlice({
         [registration.fulfilled.type]: (state, action: PayloadAction<UserType>) => {
             state.isLoading = false;
             state.error = null;
-            //state.user = action.payload;
-            state.isAuth = true;
             state.shouldRedirectToLoginPage = true;
         },
         [registration.rejected.type]: (state,  action: PayloadAction<ErrorResponseType>) => {

@@ -27,12 +27,8 @@ class UserService {
         await mailService.sendActivationMail(email, `${process.env.API_URL}api/activate/${activationLink}`);
 
         const user = await UserModel.findById(createdUser._id).populate({path: 'photo', model: 'File'}).lean();
-        const userDto = new UserDto(user);
 
-        const tokens = tokenService.generateTokens({...userDto});
-        await tokenService.saveToken(userDto.id, tokens.refreshToken)
-
-        return userDto;
+        return new UserDto(user);
     }
 
     async activate(activationLink) {
